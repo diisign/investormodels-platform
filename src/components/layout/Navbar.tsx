@@ -4,30 +4,24 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/utils/auth';
 
 interface NavbarProps {
-  isLoggedIn?: boolean;
+  isLoggedIn: boolean;
+  onLogout?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isLoggedIn: isLoggedInProp }) => {
+const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
-  
-  // Utiliser useAuth pour obtenir l'état d'authentification et la fonction de déconnexion
-  const { isAuthenticated, logout } = useAuth();
-  
-  // Utiliser isAuthenticated de useAuth si isLoggedInProp n'est pas fourni
-  const isLoggedIn = isLoggedInProp !== undefined ? isLoggedInProp : isAuthenticated;
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
   const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
   
   const handleLogout = () => {
-    logout();
+    if (onLogout) onLogout();
     setIsUserMenuOpen(false);
   };
 

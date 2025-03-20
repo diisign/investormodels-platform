@@ -58,8 +58,8 @@ const Dashboard = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar - removing the onLogout prop that doesn't exist */}
-      <Navbar isLoggedIn={true} />
+      {/* Navbar */}
+      <Navbar isLoggedIn={true} onLogout={logout} />
       
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
@@ -79,7 +79,7 @@ const Dashboard = () => {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Solde disponible</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600">
+                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
                       <Wallet className="h-5 w-5" />
                     </div>
                   </div>
@@ -117,7 +117,7 @@ const Dashboard = () => {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
+                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
                       <TrendingUp className="h-5 w-5" />
                     </div>
                   </div>
@@ -135,7 +135,7 @@ const Dashboard = () => {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Créateurs suivis</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
+                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
                       <Users className="h-5 w-5" />
                     </div>
                   </div>
