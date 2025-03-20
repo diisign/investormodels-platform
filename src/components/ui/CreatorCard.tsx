@@ -88,7 +88,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
         
         <div 
           className="w-full mt-4 h-9 bg-gradient-to-r from-investment-600 to-investment-500 rounded-lg 
-                    flex items-center justify-center text-white font-medium text-sm
+                    flex items-center justify-center text-black font-medium text-sm
                     transform transition-all duration-300 opacity-0 translate-y-2
                     group-hover:opacity-100 group-hover:translate-y-0 shadow-md"
         >

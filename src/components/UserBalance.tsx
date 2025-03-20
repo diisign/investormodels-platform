@@ -34,13 +34,13 @@ const UserBalance = () => {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium">Votre solde</CardTitle>
+        <CardTitle className="text-sm font-medium text-black dark:text-white">Votre solde</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
           <div className="h-6 w-20 bg-gray-200 animate-pulse rounded"></div>
         ) : (
-          <div className="text-2xl font-bold">{balance.toFixed(2)} €</div>
+          <div className="text-2xl font-bold text-black dark:text-white">{balance.toFixed(2)} €</div>
         )}
       </CardContent>
     </Card>

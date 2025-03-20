@@ -31,7 +31,7 @@
   letter-spacing: -0.5px;
 }
 
-/* Add new styles for better text contrast */
+/* Updated text contrast colors */
 .text-on-dark {
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -42,7 +42,6 @@
 }
 
 .text-on-gradient {
-  color: white;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.9);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.2);
 }
-
