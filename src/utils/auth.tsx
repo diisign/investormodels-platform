@@ -31,16 +31,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Configurer l'écouteur de changement d'état d'authentification
+    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
+      (event, newSession) => {
+        console.log('Auth state changed:', event, newSession);
+        setSession(newSession);
         
-        if (session?.user) {
+        if (newSession?.user) {
           const userData: User = {
-            id: session.user.id,
-            email: session.user.email || '',
-            name: session.user.user_metadata?.name,
+            id: newSession.user.id,
+            email: newSession.user.email || '',
+            name: newSession.user.user_metadata?.name,
           };
           setUser(userData);
           setIsAuthenticated(true);
@@ -53,15 +54,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     );
 
-    // Vérifier la session existante
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      console.log('Got existing session:', currentSession);
+      setSession(currentSession);
       
-      if (session?.user) {
+      if (currentSession?.user) {
         const userData: User = {
-          id: session.user.id,
-          email: session.user.email || '',
-          name: session.user.user_metadata?.name,
+          id: currentSession.user.id,
+          email: currentSession.user.email || '',
+          name: currentSession.user.user_metadata?.name,
         };
         setUser(userData);
         setIsAuthenticated(true);
@@ -75,16 +77,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
+      console.log('Attempting login with:', email);
       setIsLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Login error:', error);
+        throw error;
+      }
 
+      console.log('Login successful:', data);
       toast.success("Connexion réussie");
       navigate('/dashboard');
       return true;
@@ -97,8 +104,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (email: string, name: string, password: string) => {
+  const register = async (email: string, name: string, password: string): Promise<boolean> => {
     try {
+      console.log('Attempting registration with:', email, name);
       setIsLoading(true);
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -110,8 +118,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Registration error:', error);
+        throw error;
+      }
 
+      console.log('Registration successful:', data);
       toast.success("Inscription réussie");
       navigate('/dashboard');
       return true;
@@ -126,6 +138,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
+      console.log('Attempting logout');
       setIsLoading(true);
       await supabase.auth.signOut();
       toast.success("Déconnexion réussie");
@@ -166,6 +179,7 @@ export const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
+      console.log('RequireAuth: Not authenticated, redirecting to login');
       navigate('/login', { replace: true });
     }
   }, [isAuthenticated, isLoading, navigate]);

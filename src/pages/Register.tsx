@@ -83,13 +83,17 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Register form submitted');
     
     if (validateForm()) {
       try {
+        console.log('Attempting registration with form validation passed');
         await register(email, name, password);
       } catch (error) {
         console.error('Registration error:', error);
       }
+    } else {
+      console.log('Form validation failed');
     }
   };
 

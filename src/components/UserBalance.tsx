@@ -26,7 +26,7 @@ const UserBalance = () => {
         if (error) throw error;
         
         // Calculer le solde total
-        const total = data.reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+        const total = data ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) : 0;
         setBalance(total);
       } catch (error) {
         console.error('Erreur lors de la récupération du solde:', error);

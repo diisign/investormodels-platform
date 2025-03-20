@@ -52,16 +52,28 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Login form submitted');
     
     if (validateForm()) {
       try {
-        await login(email, password);
+        console.log('Attempting login with form validation passed');
+        const success = await login(email, password);
+        console.log('Login attempt result:', success);
+        if (!success) {
+          setErrors({
+            ...errors,
+            general: 'Identifiants incorrects'
+          });
+        }
       } catch (error) {
+        console.error('Login submission error:', error);
         setErrors({
           ...errors,
-          general: 'Identifiants incorrects'
+          general: 'Une erreur est survenue'
         });
       }
+    } else {
+      console.log('Form validation failed');
     }
   };
 
