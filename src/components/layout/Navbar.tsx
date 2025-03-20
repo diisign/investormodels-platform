@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/utils/auth';
 
 interface NavbarProps {
   isLoggedIn: boolean;
@@ -15,6 +16,8 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -22,7 +25,14 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   
   const handleLogout = () => {
     if (onLogout) onLogout();
+    else if (logout) logout();
     setIsUserMenuOpen(false);
+  };
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    closeMenu();
+    navigate('/');
   };
 
   useEffect(() => {
@@ -48,13 +58,12 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link 
-            to="/" 
+          <button 
+            onClick={handleLogoClick}
             className="text-2xl font-bold text-gradient"
-            onClick={closeMenu}
           >
             InvestorModels
-          </Link>
+          </button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
