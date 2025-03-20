@@ -10,8 +10,8 @@
     --popover: 210 40% 96%;
     --popover-foreground: 222 30% 18%;
 
-    --primary: 270 80% 55%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 180 70% 90%;
+    --primary-foreground: 222 30% 18%;
 
     --secondary: 180 70% 90%;
     --secondary-foreground: 222 30% 18%;
@@ -27,18 +27,18 @@
 
     --border: 215 25% 85%;
     --input: 215 25% 85%;
-    --ring: 270 80% 55%;
+    --ring: 180 70% 90%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 270 50% 20%;
+    --sidebar-background: 180 50% 30%;
     --sidebar-foreground: 215 15% 90%;
-    --sidebar-primary: 270 70% 65%;
+    --sidebar-primary: 180 70% 90%;
     --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 270 50% 30%;
+    --sidebar-accent: 180 50% 30%;
     --sidebar-accent-foreground: 215 15% 90%;
-    --sidebar-border: 270 50% 30%;
-    --sidebar-ring: 270 70% 65%;
+    --sidebar-border: 180 50% 30%;
+    --sidebar-ring: 180 70% 90%;
   }
 
   .dark {
@@ -51,13 +51,13 @@
     --popover: 265 30% 13%;
     --popover-foreground: 215 15% 90%;
 
-    --primary: 270 75% 65%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 180 70% 90%;
+    --primary-foreground: 222 30% 18%;
 
-    --secondary: 270 25% 20%;
+    --secondary: 180 25% 20%;
     --secondary-foreground: 215 15% 90%;
 
-    --muted: 270 25% 20%;
+    --muted: 180 25% 20%;
     --muted-foreground: 215 15% 65%;
 
     --accent: 140 60% 55%;
@@ -66,17 +66,17 @@
     --destructive: 350 80% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 270 25% 20%;
-    --input: 270 25% 20%;
-    --ring: 270 75% 65%;
+    --border: 180 25% 20%;
+    --input: 180 25% 20%;
+    --ring: 180 70% 90%;
     
-    --sidebar-background: 265 35% 9%;
+    --sidebar-background: 180 35% 9%;
     --sidebar-foreground: 215 15% 85%;
-    --sidebar-primary: 270 75% 65%;
+    --sidebar-primary: 180 75% 65%;
     --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 265 35% 16%;
+    --sidebar-accent: 180 35% 16%;
     --sidebar-accent-foreground: 215 15% 90%;
-    --sidebar-border: 265 35% 16%;
-    --sidebar-ring: 270 75% 65%;
+    --sidebar-border: 180 35% 16%;
+    --sidebar-ring: 180 75% 65%;
   }
 }
