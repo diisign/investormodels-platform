@@ -15,6 +15,7 @@ import HowItWorks from "./pages/HowItWorks";
 import NotFound from "./pages/NotFound";
 import { AuthProvider, RequireAuth } from "./utils/auth";
 import Deposit from "./pages/Deposit";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,12 @@ const App = () => (
             <Route path="/deposit" element={
               <RequireAuth>
                 <Deposit />
+              </RequireAuth>
+            } />
+            
+            <Route path="/profile" element={
+              <RequireAuth>
+                <Profile />
               </RequireAuth>
             } />
             
