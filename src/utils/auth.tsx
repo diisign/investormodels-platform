@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
@@ -49,11 +48,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserData = async (userId: string) => {
     try {
       // Récupérer les transactions de l'utilisateur
-      // Use a direct query with type casting to avoid TypeScript errors
-      const { data: transactionsData, error: transactionsError } = await supabase
+      const query = supabase
         .from('transactions')
         .select('*')
-        .eq('user_id', userId) as any;
+        .eq('user_id', userId);
+      
+      // Apply type assertion to the entire query
+      const { data: transactionsData, error: transactionsError } = await (query as any);
       
       if (transactionsError) throw transactionsError;
       
