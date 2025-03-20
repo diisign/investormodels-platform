@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -23,7 +22,7 @@
     --secondary-foreground: 300 10% 95%;
 
     --muted: 270 20% 20%;
-    --muted-foreground: 270 10% 70%;
+    --muted-foreground: 270 10% 75%;  /* Increased brightness for better visibility */
 
     --accent: 300 95% 60%;
     --accent-foreground: 300 10% 98%;
@@ -64,7 +63,7 @@
     --secondary-foreground: 300 10% 95%;
 
     --muted: 270 30% 15%;
-    --muted-foreground: 270 10% 65%;
+    --muted-foreground: 270 10% 75%;  /* Increased brightness for better visibility */
 
     --accent: 300 95% 60%;
     --accent-foreground: 300 10% 98%;
@@ -155,7 +154,27 @@
   }
   
   .input-field {
-    @apply w-full px-4 py-3 rounded-lg border border-border focus:border-creator-400 focus:ring focus:ring-creator-300 focus:ring-opacity-30 transition-all duration-300 bg-muted dark:bg-muted dark:border-border;
+    @apply w-full px-4 py-3 rounded-lg border border-border focus:border-creator-400 focus:ring focus:ring-creator-300 focus:ring-opacity-30 transition-all duration-300 bg-muted text-foreground dark:bg-muted dark:text-foreground dark:border-border;
+  }
+  
+  .card-content {
+    @apply text-card-foreground;
+  }
+  
+  .dark-bg-text {
+    @apply text-gray-100;
+  }
+  
+  .light-bg-text {
+    @apply text-gray-800;
+  }
+  
+  .muted-text {
+    @apply text-gray-400 dark:text-gray-300;
+  }
+  
+  .highlight-text {
+    @apply text-creator-300 dark:text-creator-400;
   }
 }
 
