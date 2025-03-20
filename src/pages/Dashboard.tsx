@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter } from 'lucide-react';
@@ -36,8 +37,8 @@ const Dashboard = () => {
   ];
   
   const portfolioData = [
-    { name: 'Sophia Martinez', value: 500 },
-    { name: 'Emma Wilson', value: 700 },
+    { name: 'Sophia Martinez', value: 0 },
+    { name: 'Emma Wilson', value: 0 },
     { name: 'Non investi', value: user?.balance || 0 },
   ];
   
