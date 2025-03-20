@@ -37,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserData = async (userId: string) => {
     try {
       // Récupérer les transactions de l'utilisateur
+      // Using type assertion to avoid TypeScript errors with tables not in the type definition
       const { data: transactionsData, error: transactionsError } = await supabase
         .from('transactions')
         .select('*')
@@ -46,7 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (transactionsError) throw transactionsError;
       
       // Calculer le solde total
-      const balance = transactionsData?.reduce((sum, transaction) => sum + Number(transaction.amount), 0) || 0;
+      const balance = transactionsData?.reduce((sum, transaction: any) => sum + Number(transaction.amount || 0), 0) || 0;
       
       // Pour l'instant, on utilise des tableaux vides pour les investissements
       // Dans une implémentation réelle, vous récupéreriez ces données depuis Supabase

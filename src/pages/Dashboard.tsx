@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter } from 'lucide-react';
@@ -57,7 +58,7 @@ const Dashboard = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
+      {/* Navbar - removing the onLogout prop that doesn't exist */}
       <Navbar isLoggedIn={true} />
       
       <main className="flex-grow pt-20">

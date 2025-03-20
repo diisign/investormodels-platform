@@ -24,16 +24,18 @@ const UserBalance = () => {
         }
         
         // Sinon, calculer le solde total à partir des transactions
-        let { data, error } = await supabase
+        // Using a type assertion to avoid TypeScript errors with the transactions table
+        const { data, error } = await supabase
           .from('transactions')
-          .select('*')
+          .select('*') // Select all columns
           .eq('user_id', user.id)
           .eq('status', 'completed');
           
         if (error) throw error;
         
         // Calculer le solde total
-        const total = data ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) : 0;
+        // Use optional chaining and type assertion to avoid TypeScript errors
+        const total = data ? data.reduce((sum: number, transaction: any) => sum + Number(transaction.amount || 0), 0) : 0;
         setBalance(total);
       } catch (error) {
         console.error('Erreur lors de la récupération du solde:', error);
