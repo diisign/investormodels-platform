@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
@@ -17,7 +16,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -31,8 +30,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
 
   const handleLogoClick = () => {
     closeMenu();
-    // Simply navigate to home without any additional action
-    navigate('/');
+    navigate('/', { replace: true });
   };
 
   useEffect(() => {
@@ -48,6 +46,8 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
     return location.pathname === path;
   };
 
+  const userIsLoggedIn = isAuthenticated;
+
   return (
     <nav 
       className={cn(
@@ -57,7 +57,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <button 
             onClick={handleLogoClick}
             className="text-2xl font-bold text-gradient"
@@ -65,7 +64,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             InvestorModels
           </button>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link 
               to="/creators" 
@@ -102,9 +100,8 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             </Link>
           </div>
 
-          {/* User Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            {isLoggedIn ? (
+            {userIsLoggedIn ? (
               <div className="relative">
                 <button 
                   className="flex items-center space-x-2 font-medium text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
@@ -146,7 +143,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                       className="flex items-center w-full px-4 py-3 text-sm text-orange-600 dark:text-orange-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                       onClick={() => {
                         setIsUserMenuOpen(false);
-                        // This assumes we'll use a modal in Profile.tsx, so we navigate there first
                         window.location.href = '/profile?action=withdraw';
                       }}
                     >
@@ -187,7 +183,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <button 
             className="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
             onClick={toggleMenu}
@@ -196,7 +191,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           </button>
         </div>
 
-        {/* Mobile menu */}
         <div 
           className={cn(
             'md:hidden absolute left-0 right-0 bg-white dark:bg-gray-900 shadow-lg border-t border-gray-100 dark:border-gray-800 transition-all duration-300 ease-out-expo',
@@ -244,7 +238,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             </Link>
             
             <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
-              {isLoggedIn ? (
+              {userIsLoggedIn ? (
                 <>
                   <Link 
                     to="/dashboard" 
