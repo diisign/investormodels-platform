@@ -10,14 +10,42 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import UserBalance from '@/components/UserBalance';
 import FadeIn from '@/components/animations/FadeIn';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Deposit = () => {
   const { user, isAuthenticated } = useAuth();
   const [amount, setAmount] = useState<number>(50);
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  
+  // Vérifier si l'utilisateur revient d'une session de paiement
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get('success');
+    const sessionId = params.get('session_id');
+    
+    if (success === 'true' && sessionId) {
+      setPaymentSuccess(true);
+      
+      // Invalider le cache pour forcer la mise à jour du solde
+      queryClient.invalidateQueries({
+        queryKey: ['userBalance'],
+      });
+      
+      // Nettoyer l'URL
+      window.history.replaceState(null, '', '/deposit');
+      
+      toast.success('Paiement effectué avec succès !', {
+        description: 'Votre solde a été mis à jour.',
+        duration: 5000,
+      });
+    }
+  }, [queryClient]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
@@ -43,7 +71,7 @@ const Deposit = () => {
         body: {
           amount: amount,
           userId: user.id,
-          returnUrl: window.location.origin + '/dashboard'
+          returnUrl: window.location.origin + '/deposit'
         },
       });
 
@@ -72,6 +100,14 @@ const Deposit = () => {
           <div className="container mx-auto px-4">
             <FadeIn direction="up">
               <h1 className="text-3xl font-bold mb-8 text-center">Déposez de l'argent sur votre compte</h1>
+              
+              {paymentSuccess && (
+                <Alert className="mb-8 max-w-4xl mx-auto bg-green-50 text-green-800 border-green-200">
+                  <AlertDescription>
+                    Paiement effectué avec succès ! Votre solde a été mis à jour.
+                  </AlertDescription>
+                </Alert>
+              )}
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 <div className="md:col-span-2">
