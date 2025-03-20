@@ -9,6 +9,10 @@ type User = {
   id: string;
   email: string;
   name?: string;
+  // Propriétés temporaires pour éviter les erreurs TypeScript
+  balance?: number;
+  transactions?: any[];
+  investments?: any[];
 }
 
 type AuthContextType = {
@@ -42,6 +46,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             id: newSession.user.id,
             email: newSession.user.email || '',
             name: newSession.user.user_metadata?.name,
+            // Ajouter des valeurs par défaut pour les propriétés manquantes
+            balance: 1000, // Valeur temporaire
+            transactions: [],
+            investments: []
           };
           setUser(userData);
           setIsAuthenticated(true);
@@ -64,6 +72,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: currentSession.user.id,
           email: currentSession.user.email || '',
           name: currentSession.user.user_metadata?.name,
+          // Ajouter des valeurs par défaut pour les propriétés manquantes
+          balance: 1000, // Valeur temporaire
+          transactions: [],
+          investments: []
         };
         setUser(userData);
         setIsAuthenticated(true);
@@ -82,11 +94,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Attempting login with:', email);
       setIsLoading(true);
       
-      // Vérifier d'abord si nous avons une configuration valide
-      console.log('Current Supabase config:', {
-        url: supabase.supabaseUrl,
-        hasKey: !!supabase.supabaseKey
-      });
+      // Vérifier la configuration sans accéder aux propriétés protégées
+      console.log('Attempting to login with Supabase');
       
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
