@@ -19,20 +19,20 @@ const Dashboard = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   
-  // Mocked chart data
+  // Updated chart data with all values set to 0
   const performanceData = [
     { month: 'Jan', value: 0 },
-    { month: 'Fév', value: 200 },
-    { month: 'Mar', value: 400 },
-    { month: 'Avr', value: 300 },
-    { month: 'Mai', value: 500 },
-    { month: 'Juin', value: 700 },
-    { month: 'Juil', value: 600 },
-    { month: 'Août', value: 900 },
-    { month: 'Sep', value: 1200 },
-    { month: 'Oct', value: 1400 },
-    { month: 'Nov', value: 1600 },
-    { month: 'Déc', value: 1800 },
+    { month: 'Fév', value: 0 },
+    { month: 'Mar', value: 0 },
+    { month: 'Avr', value: 0 },
+    { month: 'Mai', value: 0 },
+    { month: 'Juin', value: 0 },
+    { month: 'Juil', value: 0 },
+    { month: 'Août', value: 0 },
+    { month: 'Sep', value: 0 },
+    { month: 'Oct', value: 0 },
+    { month: 'Nov', value: 0 },
+    { month: 'Déc', value: 0 },
   ];
   
   const portfolioData = [
