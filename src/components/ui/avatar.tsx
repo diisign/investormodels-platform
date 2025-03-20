@@ -48,15 +48,27 @@ AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
 interface AvatarUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   onImageSelected?: (file: File) => void;
+  onSaveImage?: () => void;
   loading?: boolean;
   currentImageUrl?: string | null;
+  selectedFile?: File | null;
 }
 
 const AvatarUpload = React.forwardRef<
   HTMLDivElement, 
   AvatarUploadProps
->(({ className, onImageSelected, loading = false, currentImageUrl, ...props }, ref) => {
+>(({ className, onImageSelected, onSaveImage, loading = false, currentImageUrl, selectedFile, ...props }, ref) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
+  
+  React.useEffect(() => {
+    // Clear preview when component unmounts
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
   
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -64,16 +76,24 @@ const AvatarUpload = React.forwardRef<
   
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && onImageSelected) {
-      onImageSelected(file);
+    if (file) {
+      // Create preview URL
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+      const newPreviewUrl = URL.createObjectURL(file);
+      setPreviewUrl(newPreviewUrl);
+      
+      if (onImageSelected) {
+        onImageSelected(file);
+      }
     }
   };
   
   return (
     <div 
       ref={ref} 
-      className={cn("relative group cursor-pointer", className)}
-      onClick={handleClick}
+      className={cn("relative group", className)}
       {...props}
     >
       <input 
@@ -86,8 +106,8 @@ const AvatarUpload = React.forwardRef<
       />
       
       <Avatar className="h-full w-full">
-        {currentImageUrl ? (
-          <AvatarImage src={currentImageUrl} alt="Profile picture" />
+        {(previewUrl || currentImageUrl) ? (
+          <AvatarImage src={previewUrl || currentImageUrl || ''} alt="Profile picture" />
         ) : (
           <AvatarFallback>
             <span className="sr-only">Profile picture</span>
@@ -96,7 +116,11 @@ const AvatarUpload = React.forwardRef<
       </Avatar>
       
       <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="text-white text-xs font-medium">
+        <button 
+          className="text-white text-xs font-medium cursor-pointer"
+          onClick={handleClick}
+          type="button"
+        >
           {loading ? (
             <div className="animate-spin h-5 w-5 border-2 border-white/60 border-t-white rounded-full" />
           ) : (
@@ -105,7 +129,7 @@ const AvatarUpload = React.forwardRef<
               <circle cx="12" cy="13" r="3"/>
             </svg>
           )}
-        </div>
+        </button>
       </div>
     </div>
   );

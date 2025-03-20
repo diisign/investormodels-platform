@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from "react-hook-form";
@@ -20,7 +19,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import UserBalance from "@/components/UserBalance";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 
-// Schema for form validation
 const profileFormSchema = z.object({
   name: z.string().min(2, {
     message: "Le nom doit comporter au moins 2 caractères.",
@@ -41,32 +39,28 @@ const Profile = () => {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Check if we should open the withdraw modal based on URL params
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     if (searchParams.get('action') === 'withdraw') {
       setShowWithdrawModal(true);
-      // Clear the URL parameter without refreshing
       window.history.replaceState({}, document.title, "/profile");
     }
   }, [location]);
 
-  // Fetch user avatar on component mount
   useEffect(() => {
     if (user) {
       fetchAvatar();
     }
   }, [user]);
 
-  // Fetch user avatar from Supabase Storage
   const fetchAvatar = async () => {
     try {
       if (!user?.id) return;
       
-      // First try to get from profiles table
       const { data: profileData } = await supabase
         .from('profiles')
         .select('avatar_url')
@@ -81,37 +75,36 @@ const Profile = () => {
     }
   };
 
-  // Handle profile image upload
-  const handleAvatarUpload = async (file: File) => {
-    if (!user?.id) {
-      toast.error("Vous devez être connecté pour modifier votre profil");
+  const handleAvatarFileSelected = (file: File) => {
+    setSelectedFile(file);
+  };
+
+  const handleSaveAvatar = async () => {
+    if (!selectedFile || !user?.id) {
+      toast.error("Aucune image sélectionnée ou vous n'êtes pas connecté");
       return;
     }
 
     try {
       setUploadingAvatar(true);
       
-      // Create a unique file path
-      const fileExt = file.name.split('.').pop();
+      const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${user.id}-${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `${user.id}/${fileName}`;
       
-      // Upload image to Supabase Storage
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, {
+        .upload(filePath, selectedFile, {
           cacheControl: '3600',
           upsert: true
         });
       
       if (uploadError) throw uploadError;
       
-      // Get the public URL
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
       
-      // Update user profile
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: publicUrl })
@@ -119,8 +112,8 @@ const Profile = () => {
       
       if (updateError) throw updateError;
       
-      // Update local state
       setAvatarUrl(publicUrl);
+      setSelectedFile(null);
       setShowAvatarDialog(false);
       
       toast.success("Photo de profil mise à jour");
@@ -132,7 +125,6 @@ const Profile = () => {
     }
   };
 
-  // Set up form with default values from user
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -141,7 +133,6 @@ const Profile = () => {
     },
   });
 
-  // Update form values when user data changes
   useEffect(() => {
     if (user) {
       form.reset({
@@ -151,14 +142,12 @@ const Profile = () => {
     }
   }, [user, form]);
 
-  // Handle form submission
   async function onSubmit(values: ProfileFormValues) {
     if (!user) return;
     
     try {
       setLoadingSubmit(true);
       
-      // Only update name since email requires verification
       const { error } = await supabase
         .from('profiles')
         .update({ name: values.name })
@@ -166,7 +155,6 @@ const Profile = () => {
       
       if (error) throw error;
       
-      // Update the user metadata
       const { error: updateError } = await supabase.auth.updateUser({
         data: { name: values.name }
       });
@@ -184,7 +172,6 @@ const Profile = () => {
   }
 
   const handleStripeRedirect = () => {
-    // Rediriger vers le lien de paiement Stripe préexistant
     window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
   };
 
@@ -192,7 +179,6 @@ const Profile = () => {
     e.preventDefault();
     setShowWithdrawModal(false);
     
-    // Simuler un retrait pour l'instant
     toast.success(`Demande de retrait de ${withdrawAmount}€ envoyée`, {
       description: "Votre demande sera traitée dans les 48 heures.",
     });
@@ -209,7 +195,6 @@ const Profile = () => {
 
   return (
     <div className="relative container max-w-6xl mx-auto px-4 py-10 md:py-16">
-      {/* Back button */}
       <Button 
         variant="ghost" 
         className="absolute left-4 top-4 p-2 rounded-full hover:bg-primary/10 transition-all duration-300"
@@ -218,7 +203,6 @@ const Profile = () => {
         <ArrowLeft className="h-6 w-6" />
       </Button>
       
-      {/* Breadcrumb */}
       <Breadcrumb className="mb-8 ml-16 md:ml-0">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -247,7 +231,6 @@ const Profile = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Profile Info Card */}
           <Card className="md:col-span-2 glass-card hover:shadow-lg transition-all duration-300 overflow-hidden">
             <div className="h-12 bg-gradient-to-r from-primary to-primary/60"></div>
             <CardHeader className="flex flex-row items-center gap-4 pt-6">
@@ -277,19 +260,32 @@ const Profile = () => {
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                     <AvatarUpload 
-                      className="h-40 w-40 mx-auto"
-                      onImageSelected={handleAvatarUpload}
+                      className="h-40 w-40 mx-auto cursor-pointer"
+                      onImageSelected={handleAvatarFileSelected}
                       loading={uploadingAvatar}
                       currentImageUrl={avatarUrl}
+                      selectedFile={selectedFile}
                     />
                     <p className="text-center text-sm text-muted-foreground">
-                      Cliquez sur l'image pour télécharger une nouvelle photo
+                      Cliquez sur l'image pour sélectionner une nouvelle photo
                     </p>
                   </div>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={() => setShowAvatarDialog(false)}>
-                      Fermer
+                  <DialogFooter className="flex flex-col sm:flex-row gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setSelectedFile(null);
+                        setShowAvatarDialog(false);
+                      }}
+                    >
+                      Annuler
                     </Button>
+                    <GradientButton
+                      onClick={handleSaveAvatar}
+                      disabled={!selectedFile || uploadingAvatar}
+                    >
+                      {uploadingAvatar ? 'Enregistrement...' : 'Enregistrer la photo'}
+                    </GradientButton>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -386,7 +382,6 @@ const Profile = () => {
             </CardContent>
           </Card>
 
-          {/* Account Settings Card */}
           <Card className="glass-card hover:shadow-lg transition-all duration-300 overflow-hidden">
             <div className="h-3 bg-gradient-to-r from-primary/60 to-primary/30"></div>
             <CardHeader>
@@ -474,7 +469,6 @@ const Profile = () => {
         </div>
       </div>
       
-      {/* Withdraw Modal */}
       {showWithdrawModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-card dark:bg-card rounded-xl shadow-xl max-w-md w-full p-6 border border-border dark:border-border">
