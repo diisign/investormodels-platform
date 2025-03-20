@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,7 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Creators from "./pages/Creators";
 import CreatorDetails from "./pages/CreatorDetails";
 import NotFound from "./pages/NotFound";
-import { RequireAuth } from "./utils/auth";
+import { RequireAuth } from "./utils/auth"; // This line was updated (no file extension change needed in imports)
 
 const queryClient = new QueryClient();
 

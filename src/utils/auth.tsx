@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 import { login as mockLogin, register as mockRegister, logout as mockLogout, getCurrentUser, User, isAuthenticated as mockIsAuthenticated } from './mockData';
@@ -93,7 +92,7 @@ export const useAuth = () => {
 };
 
 // Route protection
-export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
+export const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
