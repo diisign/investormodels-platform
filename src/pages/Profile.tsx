@@ -61,11 +61,16 @@ const Profile = () => {
     try {
       if (!user?.id) return;
       
-      const { data: profileData } = await supabase
+      const { data: profileData, error } = await supabase
         .from('profiles')
         .select('avatar_url')
         .eq('id', user.id)
         .single();
+        
+      if (error) {
+        console.error('Error fetching avatar:', error);
+        return;
+      }
         
       if (profileData?.avatar_url) {
         setAvatarUrl(profileData.avatar_url);

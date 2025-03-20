@@ -62,13 +62,18 @@ const AvatarUpload = React.forwardRef<
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   
   React.useEffect(() => {
+    // Set initial preview if we have a currentImageUrl
+    if (currentImageUrl && !previewUrl) {
+      setPreviewUrl(currentImageUrl);
+    }
+    
     // Clear preview when component unmounts
     return () => {
-      if (previewUrl) {
+      if (previewUrl && previewUrl !== currentImageUrl) {
         URL.revokeObjectURL(previewUrl);
       }
     };
-  }, [previewUrl]);
+  }, [currentImageUrl, previewUrl]);
   
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -78,7 +83,7 @@ const AvatarUpload = React.forwardRef<
     const file = e.target.files?.[0];
     if (file) {
       // Create preview URL
-      if (previewUrl) {
+      if (previewUrl && previewUrl !== currentImageUrl) {
         URL.revokeObjectURL(previewUrl);
       }
       const newPreviewUrl = URL.createObjectURL(file);
@@ -106,8 +111,8 @@ const AvatarUpload = React.forwardRef<
       />
       
       <Avatar className="h-full w-full">
-        {(previewUrl || currentImageUrl) ? (
-          <AvatarImage src={previewUrl || currentImageUrl || ''} alt="Profile picture" />
+        {(previewUrl) ? (
+          <AvatarImage src={previewUrl} alt="Profile picture" />
         ) : (
           <AvatarFallback>
             <span className="sr-only">Profile picture</span>
