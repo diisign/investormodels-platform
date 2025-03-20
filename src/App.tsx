@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,7 +11,8 @@ import Dashboard from "./pages/Dashboard";
 import Creators from "./pages/Creators";
 import CreatorDetails from "./pages/CreatorDetails";
 import NotFound from "./pages/NotFound";
-import { RequireAuth } from "./utils/auth"; // This line was updated (no file extension change needed in imports)
+import { AuthProvider, RequireAuth } from "./utils/auth";
+import Deposit from "./pages/Deposit";
 
 const queryClient = new QueryClient();
 
@@ -20,25 +22,33 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          
-          {/* Protected routes */}
-          <Route path="/dashboard" element={
-            <RequireAuth>
-              <Dashboard />
-            </RequireAuth>
-          } />
-          
-          {/* Creator routes */}
-          <Route path="/creators" element={<Creators />} />
-          <Route path="/creator/:creatorId" element={<CreatorDetails />} />
-          
-          {/* Catch-all route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            
+            {/* Routes protégées */}
+            <Route path="/dashboard" element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            } />
+            
+            <Route path="/deposit" element={
+              <RequireAuth>
+                <Deposit />
+              </RequireAuth>
+            } />
+            
+            {/* Routes des créateurs */}
+            <Route path="/creators" element={<Creators />} />
+            <Route path="/creator/:creatorId" element={<CreatorDetails />} />
+            
+            {/* Route par défaut */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
