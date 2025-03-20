@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -67,18 +66,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors - updated with pink/violet theme
+				// Custom colors - updated with blue theme
 				creator: {
-					50: '#fcf4ff',
-					100: '#f9e8ff',
-					200: '#f3d1ff',
-					300: '#eeaaff',
-					400: '#e275ff',
-					500: '#d946ef', // Main pink/violet color
-					600: '#bf28d9',
-					700: '#a31db5',
-					800: '#871a94',
-					900: '#701b77',
+					50: '#f0f5ff',
+					100: '#e0ebff',
+					200: '#c2d7ff',
+					300: '#9dbdff',
+					400: '#7599ff',
+					500: '#4169e1', // Main royal blue color
+					600: '#3a5fcc',
+					700: '#3354b3',
+					800: '#2c4999',
+					900: '#243c7d',
 				},
 				investment: {
 					50: '#f0f9ff',
@@ -86,11 +85,11 @@ export default {
 					200: '#bae6fd',
 					300: '#7dd3fc',
 					400: '#38bdf8',
-					500: '#8B5CF6', // Changed to violet
-					600: '#7E69AB', // Secondary purple
-					700: '#6E59A5', // Darker purple
-					800: '#6b21a8', // Deep violet
-					900: '#581c87', // Very dark violet
+					500: '#0284c7', // Changed to azure blue
+					600: '#0369a1', // Secondary blue
+					700: '#075985', // Darker blue
+					800: '#0c4a6e', // Deep blue
+					900: '#0c3256', // Very dark blue
 				}
 			},
 			borderRadius: {

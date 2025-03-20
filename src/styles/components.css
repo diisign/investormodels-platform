@@ -41,10 +41,10 @@
   }
   
   .muted-text {
-    @apply text-gray-400 dark:text-gray-300;
+    @apply text-gray-600 dark:text-gray-300;
   }
   
   .highlight-text {
-    @apply text-creator-300 dark:text-creator-400;
+    @apply text-creator-500 dark:text-creator-400;
   }
 }
