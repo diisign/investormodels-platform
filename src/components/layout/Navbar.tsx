@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
@@ -61,7 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             onClick={handleLogoClick}
             className="text-2xl font-bold text-gradient"
           >
-            InvestorModels
+            CréatorInvest
           </button>
 
           <div className="hidden md:flex items-center space-x-8">
