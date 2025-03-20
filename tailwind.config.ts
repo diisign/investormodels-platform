@@ -67,18 +67,30 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors
+				// Custom colors - updated with pink/violet theme
+				creator: {
+					50: '#fcf4ff',
+					100: '#f9e8ff',
+					200: '#f3d1ff',
+					300: '#eeaaff',
+					400: '#e275ff',
+					500: '#d946ef', // Main pink/violet color
+					600: '#bf28d9',
+					700: '#a31db5',
+					800: '#871a94',
+					900: '#701b77',
+				},
 				investment: {
 					50: '#f0f9ff',
 					100: '#e0f2fe',
 					200: '#bae6fd',
 					300: '#7dd3fc',
 					400: '#38bdf8',
-					500: '#0ea5e9',
-					600: '#0284c7',
-					700: '#0369a1',
-					800: '#075985',
-					900: '#0c4a6e',
+					500: '#8B5CF6', // Changed to violet
+					600: '#7E69AB', // Secondary purple
+					700: '#6E59A5', // Darker purple
+					800: '#6b21a8', // Deep violet
+					900: '#581c87', // Very dark violet
 				}
 			},
 			borderRadius: {

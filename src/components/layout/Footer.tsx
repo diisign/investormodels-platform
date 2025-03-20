@@ -6,42 +6,42 @@ import { cn } from '@/lib/utils';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 pt-16 pb-8">
+    <footer className="bg-secondary dark:bg-secondary border-t border-border dark:border-border pt-16 pb-8">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand & About */}
           <div className="space-y-4">
             <Link to="/" className="text-2xl font-bold text-gradient inline-block">
-              InvestorModels
+              CréatorInvest
             </Link>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              La première plateforme qui vous permet d'investir dans les créateurs de contenu et de partager leur succès.
+            <p className="text-muted-foreground dark:text-muted-foreground mt-2">
+              La première plateforme qui vous permet d'investir dans les créatrices de contenu et de partager leur succès.
             </p>
             <div className="flex space-x-4 mt-4">
               <a 
                 href="#" 
-                className="text-gray-400 hover:text-investment-500 transition-colors duration-300"
+                className="text-muted-foreground hover:text-creator-500 transition-colors duration-300"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-gray-400 hover:text-investment-500 transition-colors duration-300"
+                className="text-muted-foreground hover:text-creator-500 transition-colors duration-300"
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-gray-400 hover:text-investment-500 transition-colors duration-300"
+                className="text-muted-foreground hover:text-creator-500 transition-colors duration-300"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-gray-400 hover:text-investment-500 transition-colors duration-300"
+                className="text-muted-foreground hover:text-creator-500 transition-colors duration-300"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={20} />
@@ -51,12 +51,12 @@ const Footer: React.FC = () => {
 
           {/* Navigation */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
+            <h3 className="font-semibold text-foreground dark:text-foreground mb-4">Navigation</h3>
             <ul className="space-y-3">
               <li>
                 <Link 
                   to="/" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   Accueil
                 </Link>
@@ -64,15 +64,15 @@ const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/creators" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
-                  Créateurs
+                  Créatrices
                 </Link>
               </li>
               <li>
                 <Link 
                   to="/how-it-works" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   Comment ça marche
                 </Link>
@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/about" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   À propos
                 </Link>
@@ -90,12 +90,12 @@ const Footer: React.FC = () => {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Informations légales</h3>
+            <h3 className="font-semibold text-foreground dark:text-foreground mb-4">Informations légales</h3>
             <ul className="space-y-3">
               <li>
                 <Link 
                   to="/terms" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   Conditions générales
                 </Link>
@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/privacy" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   Politique de confidentialité
                 </Link>
@@ -111,7 +111,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/cookies" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   Gestion des cookies
                 </Link>
@@ -119,7 +119,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/legal" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   Mentions légales
                 </Link>
@@ -129,21 +129,21 @@ const Footer: React.FC = () => {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Contact</h3>
+            <h3 className="font-semibold text-foreground dark:text-foreground mb-4">Contact</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <Mail className="h-5 w-5 text-investment-500 mr-2 mt-0.5" />
+                <Mail className="h-5 w-5 text-creator-500 mr-2 mt-0.5" />
                 <a 
-                  href="mailto:contact@investormodels.com" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  href="mailto:contact@creatorinvest.com" 
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
-                  contact@investormodels.com
+                  contact@creatorinvest.com
                 </a>
               </li>
               <li>
                 <Link 
                   to="/contact" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300 flex items-center"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300 flex items-center"
                 >
                   <span>Formulaire de contact</span>
                   <ExternalLink className="h-3.5 w-3.5 ml-1" />
@@ -152,7 +152,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/faq" 
-                  className="text-gray-600 dark:text-gray-400 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   FAQ
                 </Link>
@@ -162,12 +162,12 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 mt-8 border-t border-gray-200 dark:border-gray-800 text-center sm:text-left sm:flex sm:justify-between sm:items-center">
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
-            &copy; {new Date().getFullYear()} InvestorModels. Tous droits réservés.
+        <div className="pt-8 mt-8 border-t border-border dark:border-border text-center sm:text-left sm:flex sm:justify-between sm:items-center">
+          <p className="text-muted-foreground dark:text-muted-foreground text-sm">
+            &copy; {new Date().getFullYear()} CréatorInvest. Tous droits réservés.
           </p>
           <div className="mt-4 sm:mt-0">
-            <p className="text-gray-500 dark:text-gray-400 text-sm">
+            <p className="text-muted-foreground dark:text-muted-foreground text-sm">
               Ce site est une démonstration et ne permet pas de réels investissements.
             </p>
           </div>
