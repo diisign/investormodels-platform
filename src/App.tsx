@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Creators from "./pages/Creators";
 import CreatorDetails from "./pages/CreatorDetails";
 import About from "./pages/About";
+import HowItWorks from "./pages/HowItWorks";
 import NotFound from "./pages/NotFound";
 import { AuthProvider, RequireAuth } from "./utils/auth";
 import Deposit from "./pages/Deposit";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
             
             {/* Routes protégées */}
             <Route path="/dashboard" element={
