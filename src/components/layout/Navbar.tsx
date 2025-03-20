@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          {/* Logo - Now conditionally routes to dashboard when logged in */}
+          {/* Logo */}
           <Link 
             to="/" 
             className="text-2xl font-bold text-gradient"
