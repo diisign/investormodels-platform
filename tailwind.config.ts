@@ -66,30 +66,30 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors - updated with blue theme
+				// Custom colors - updated with vibrant theme
 				creator: {
-					50: '#f0f5ff',
-					100: '#e0ebff',
-					200: '#c2d7ff',
-					300: '#9dbdff',
-					400: '#7599ff',
-					500: '#4169e1', // Main royal blue color
-					600: '#3a5fcc',
-					700: '#3354b3',
-					800: '#2c4999',
-					900: '#243c7d',
+					50: '#f5f3ff',
+					100: '#ede9fe',
+					200: '#ddd6fe',
+					300: '#c4b5fd',
+					400: '#a78bfa',
+					500: '#8B5CF6', // Main purple color
+					600: '#7c3aed',
+					700: '#6d28d9',
+					800: '#5b21b6',
+					900: '#4c1d95',
 				},
 				investment: {
-					50: '#f0f9ff',
-					100: '#e0f2fe',
-					200: '#bae6fd',
-					300: '#7dd3fc',
-					400: '#38bdf8',
-					500: '#0284c7', // Changed to azure blue
-					600: '#0369a1', // Secondary blue
-					700: '#075985', // Darker blue
-					800: '#0c4a6e', // Deep blue
-					900: '#0c3256', // Very dark blue
+					50: '#ecfdf5',
+					100: '#d1fae5',
+					200: '#a7f3d0',
+					300: '#6ee7b7',
+					400: '#34d399',
+					500: '#10b981', // Vibrant teal
+					600: '#059669', // Secondary teal
+					700: '#047857', // Darker teal
+					800: '#065f46', // Deep teal
+					900: '#064e3b', // Very dark teal
 				}
 			},
 			borderRadius: {
