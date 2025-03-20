@@ -33,18 +33,17 @@ const UserBalance = () => {
         }
         
         // Sinon, calculer le solde total à partir des transactions
-        // Use a raw query to avoid TypeScript errors with table types
+        // Using type assertion to avoid TypeScript errors with table types
         const { data, error } = await supabase
-          .rpc('get_user_transactions', { user_id_param: user.id })
-          .then(response => ({
-            data: response.data as Transaction[] || [],
-            error: response.error
-          }));
+          .from('transactions' as any)
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('status', 'completed');
           
         if (error) throw error;
         
         // Calculer le solde total
-        const total = data.reduce((sum, transaction) => sum + Number(transaction.amount || 0), 0);
+        const total = data ? data.reduce((sum: number, transaction: any) => sum + Number(transaction.amount || 0), 0) : 0;
         setBalance(total);
       } catch (error) {
         console.error('Erreur lors de la récupération du solde:', error);

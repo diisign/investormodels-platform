@@ -12,6 +12,9 @@ type Transaction = {
   amount: number;
   status: string;
   created_at: string;
+  type?: string;
+  description?: string;
+  date?: string;
 };
 
 type User = {
@@ -46,18 +49,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserData = async (userId: string) => {
     try {
       // Récupérer les transactions de l'utilisateur
-      // Use a raw query to avoid TypeScript errors with table types
+      // Using type assertion to avoid TypeScript errors with table types
       const { data: transactionsData, error: transactionsError } = await supabase
-        .rpc('get_user_transactions', { user_id_param: userId })
-        .then(response => ({
-          data: response.data as Transaction[] || [],
-          error: response.error
-        }));
+        .from('transactions' as any)
+        .select('*')
+        .eq('user_id', userId);
       
       if (transactionsError) throw transactionsError;
       
       // Calculer le solde total
-      const balance = transactionsData.reduce((sum, transaction) => sum + Number(transaction.amount || 0), 0);
+      const balance = transactionsData ? transactionsData.reduce((sum: number, transaction: any) => sum + Number(transaction.amount || 0), 0) : 0;
       
       // Pour l'instant, on utilise des tableaux vides pour les investissements
       // Dans une implémentation réelle, vous récupéreriez ces données depuis Supabase
@@ -66,7 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return {
         balance,
         investments,
-        transactions: transactionsData
+        transactions: transactionsData as Transaction[]
       };
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
