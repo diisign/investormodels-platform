@@ -1,0 +1,50 @@
+
+@layer components {
+  .glass-panel {
+    @apply bg-black/40 dark:bg-black/40 backdrop-blur-lg border border-white/10 dark:border-white/5 shadow-lg;
+  }
+  
+  .glass-card {
+    @apply bg-card/90 dark:bg-card/90 backdrop-blur-md shadow-md border border-border dark:border-border rounded-2xl transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .btn-primary {
+    @apply bg-creator-500 hover:bg-creator-600 text-white rounded-lg px-6 py-2.5 font-medium transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-creator-500 focus:ring-opacity-50 shadow-md hover:shadow-lg active:shadow-sm;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-lg px-6 py-2.5 font-medium transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none border border-border focus:ring-2 focus:ring-border focus:ring-opacity-50 shadow-sm hover:shadow-md active:shadow-sm;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-creator-600 to-creator-400;
+  }
+  
+  .section {
+    @apply py-16 md:py-24 px-4;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg border border-border focus:border-creator-400 focus:ring focus:ring-creator-300 focus:ring-opacity-30 transition-all duration-300 bg-muted text-foreground dark:bg-muted dark:text-foreground dark:border-border;
+  }
+  
+  .card-content {
+    @apply text-card-foreground;
+  }
+  
+  .dark-bg-text {
+    @apply text-gray-100;
+  }
+  
+  .light-bg-text {
+    @apply text-gray-800;
+  }
+  
+  .muted-text {
+    @apply text-gray-400 dark:text-gray-300;
+  }
+  
+  .highlight-text {
+    @apply text-creator-300 dark:text-creator-400;
+  }
+}
