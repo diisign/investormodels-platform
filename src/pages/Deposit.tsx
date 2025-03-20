@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -14,22 +14,21 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import UserBalance from '@/components/UserBalance';
 import FadeIn from '@/components/animations/FadeIn';
 import { useQueryClient } from '@tanstack/react-query';
+import { ExternalLink } from 'lucide-react';
 
 const Deposit = () => {
   const { user, isAuthenticated } = useAuth();
-  const [amount, setAmount] = useState<number>(50);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
   // Vérifier si l'utilisateur revient d'une session de paiement
-  React.useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const success = params.get('success');
-    const sessionId = params.get('session_id');
     
-    if (success === 'true' && sessionId) {
+    if (success === 'true') {
       setPaymentSuccess(true);
       
       // Invalider le cache pour forcer la mise à jour du solde
@@ -47,48 +46,9 @@ const Deposit = () => {
     }
   }, [queryClient]);
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
-    setAmount(isNaN(value) ? 0 : value);
-  };
-
-  const handleDeposit = async () => {
-    if (amount <= 0) {
-      toast.error("Veuillez entrer un montant valide");
-      return;
-    }
-
-    if (!user) {
-      toast.error("Vous devez être connecté pour effectuer un dépôt");
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-
-      // Appel à la fonction Edge pour créer une session de paiement Stripe
-      const { data, error } = await supabase.functions.invoke('create-payment', {
-        body: {
-          amount: amount,
-          userId: user.id,
-          returnUrl: window.location.origin + '/deposit'
-        },
-      });
-
-      if (error) throw new Error(error.message);
-      
-      if (data.url) {
-        // Rediriger l'utilisateur vers la page de paiement Stripe
-        window.location.href = data.url;
-      } else {
-        throw new Error("URL de paiement non reçue");
-      }
-    } catch (error) {
-      console.error('Erreur lors de la création du paiement:', error);
-      toast.error("Impossible de créer la session de paiement");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleStripeRedirect = () => {
+    // Rediriger vers le lien de paiement Stripe préexistant
+    window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
   };
 
   return (
@@ -115,43 +75,22 @@ const Deposit = () => {
                     <CardHeader>
                       <CardTitle>Dépôt</CardTitle>
                       <CardDescription>
-                        Choisissez le montant que vous souhaitez déposer sur votre compte.
+                        Cliquez sur le bouton ci-dessous pour effectuer un dépôt sur votre compte.
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="amount">Montant (€)</Label>
-                        <Input
-                          id="amount"
-                          type="number"
-                          min="1"
-                          step="1"
-                          value={amount}
-                          onChange={handleAmountChange}
-                        />
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-2">
-                        {[20, 50, 100, 200, 500].map((value) => (
-                          <Button
-                            key={value}
-                            type="button"
-                            variant="outline"
-                            onClick={() => setAmount(value)}
-                            className={`${amount === value ? 'bg-investment-100 border-investment-500 dark:bg-investment-900 dark:border-investment-500' : ''}`}
-                          >
-                            {value} €
-                          </Button>
-                        ))}
-                      </div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Vous allez être redirigé vers la page de paiement sécurisée de Stripe pour compléter votre transaction.
+                      </p>
                     </CardContent>
                     <CardFooter>
                       <Button 
-                        onClick={handleDeposit} 
-                        disabled={isLoading || amount <= 0}
-                        className="w-full bg-investment-600 hover:bg-investment-700"
+                        onClick={handleStripeRedirect} 
+                        disabled={isLoading}
+                        className="w-full bg-investment-600 hover:bg-investment-700 flex items-center justify-center gap-2"
                       >
-                        {isLoading ? "Traitement en cours..." : "Procéder au paiement"}
+                        <span>Effectuer un dépôt</span>
+                        <ExternalLink size={16} />
                       </Button>
                     </CardFooter>
                   </Card>
