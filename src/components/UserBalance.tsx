@@ -33,12 +33,12 @@ const UserBalance = () => {
         }
         
         // Sinon, calculer le solde total à partir des transactions
-        // Using type assertion to avoid TypeScript errors with table types
+        // Use a direct query with type casting to avoid TypeScript errors
         const { data, error } = await supabase
-          .from('transactions' as any)
+          .from('transactions')
           .select('*')
           .eq('user_id', user.id)
-          .eq('status', 'completed');
+          .eq('status', 'completed') as any;
           
         if (error) throw error;
         
