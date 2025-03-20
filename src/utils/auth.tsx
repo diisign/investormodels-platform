@@ -116,7 +116,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       console.log('Login successful:', data);
       toast.success("Connexion réussie");
-      navigate('/dashboard');
+      
+      // Important: Use a slight delay to ensure auth state is properly updated before redirect
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 100);
+      
       return true;
     } catch (error) {
       console.error('Erreur de connexion:', error);

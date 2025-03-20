@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
@@ -21,6 +21,7 @@ const Login = () => {
   });
   
   const { login, isLoading } = useAuth();
+  const navigate = useNavigate();
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -64,6 +65,9 @@ const Login = () => {
             ...errors,
             general: 'Identifiants incorrects'
           });
+        } else {
+          // Let auth context handle the redirect
+          // The navigation happens in the auth.tsx login function
         }
       } catch (error) {
         console.error('Login submission error:', error);

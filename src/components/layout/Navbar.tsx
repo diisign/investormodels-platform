@@ -29,9 +29,9 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
     setIsUserMenuOpen(false);
   };
 
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleLogoClick = () => {
     closeMenu();
+    // Simply navigate to home without any additional action
     navigate('/');
   };
 
