@@ -4,6 +4,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/utils/auth';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
+// Define a Transaction type to use with type assertions
+type Transaction = {
+  id: string;
+  user_id: string;
+  amount: number;
+  status: string;
+  created_at: string;
+};
+
 const UserBalance = () => {
   const { user } = useAuth();
   const [balance, setBalance] = useState(0);
@@ -24,18 +33,18 @@ const UserBalance = () => {
         }
         
         // Sinon, calculer le solde total à partir des transactions
-        // Using a type assertion to avoid TypeScript errors with the transactions table
+        // Use a raw query to avoid TypeScript errors with table types
         const { data, error } = await supabase
-          .from('transactions')
-          .select('*') // Select all columns
-          .eq('user_id', user.id)
-          .eq('status', 'completed');
+          .rpc('get_user_transactions', { user_id_param: user.id })
+          .then(response => ({
+            data: response.data as Transaction[] || [],
+            error: response.error
+          }));
           
         if (error) throw error;
         
         // Calculer le solde total
-        // Use optional chaining and type assertion to avoid TypeScript errors
-        const total = data ? data.reduce((sum: number, transaction: any) => sum + Number(transaction.amount || 0), 0) : 0;
+        const total = data.reduce((sum, transaction) => sum + Number(transaction.amount || 0), 0);
         setBalance(total);
       } catch (error) {
         console.error('Erreur lors de la récupération du solde:', error);
