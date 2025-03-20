@@ -23,10 +23,10 @@ const UserBalance = () => {
           return;
         }
         
-        // Sinon, récupérer toutes les transactions de l'utilisateur
-        const { data, error } = await supabase
+        // Sinon, calculer le solde total à partir des transactions
+        let { data, error } = await supabase
           .from('transactions')
-          .select('amount')
+          .select('*')
           .eq('user_id', user.id)
           .eq('status', 'completed');
           

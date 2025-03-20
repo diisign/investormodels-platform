@@ -36,10 +36,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Fonction pour récupérer les données utilisateur complètes
   const fetchUserData = async (userId: string) => {
     try {
-      // Récupérer le solde de l'utilisateur
+      // Récupérer les transactions de l'utilisateur
       const { data: transactionsData, error: transactionsError } = await supabase
         .from('transactions')
-        .select('amount')
+        .select('*')
         .eq('user_id', userId)
         .eq('status', 'completed');
       
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return {
         balance,
         investments,
-        transactions: transactionsData
+        transactions: transactionsData || []
       };
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
