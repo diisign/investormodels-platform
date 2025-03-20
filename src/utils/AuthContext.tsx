@@ -20,6 +20,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Configurer l'écouteur de changement d'état d'authentification
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth state changed:", event, session);
         setSession(session);
         
         if (session?.user) {
@@ -50,6 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Vérifier la session existante
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      console.log("Existing session:", session);
       setSession(session);
       
       if (session?.user) {
@@ -81,14 +83,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
+      console.log("Login attempt with:", email, password);
       setIsLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Login error:", error);
+        toast.error(error.message || "Échec de la connexion");
+        return false;
+      }
 
+      console.log("Login successful:", data);
       toast.success("Connexion réussie");
       navigate('/dashboard');
       return true;
