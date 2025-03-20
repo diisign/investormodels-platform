@@ -1,20 +1,22 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { User, UserRoundCog, AtSign, Mail, Edit2, Check, X, Plus, Minus, ExternalLink, ArrowLeft, Wallet, LogOut, LayoutDashboard } from 'lucide-react';
+import { User, UserRoundCog, AtSign, Mail, Edit2, Check, X, Plus, Minus, ExternalLink, ArrowLeft, Wallet, LogOut, LayoutDashboard, Camera } from 'lucide-react';
 import { toast } from "sonner";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/utils/auth';
 import { cn } from '@/lib/utils';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage, AvatarUpload } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import GradientButton from "@/components/ui/GradientButton";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import UserBalance from "@/components/UserBalance";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 
@@ -36,6 +38,9 @@ const Profile = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,6 +53,84 @@ const Profile = () => {
       window.history.replaceState({}, document.title, "/profile");
     }
   }, [location]);
+
+  // Fetch user avatar on component mount
+  useEffect(() => {
+    if (user) {
+      fetchAvatar();
+    }
+  }, [user]);
+
+  // Fetch user avatar from Supabase Storage
+  const fetchAvatar = async () => {
+    try {
+      if (!user?.id) return;
+      
+      // First try to get from profiles table
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('avatar_url')
+        .eq('id', user.id)
+        .single();
+        
+      if (profileData?.avatar_url) {
+        setAvatarUrl(profileData.avatar_url);
+      }
+    } catch (error) {
+      console.error('Error fetching avatar:', error);
+    }
+  };
+
+  // Handle profile image upload
+  const handleAvatarUpload = async (file: File) => {
+    if (!user?.id) {
+      toast.error("Vous devez être connecté pour modifier votre profil");
+      return;
+    }
+
+    try {
+      setUploadingAvatar(true);
+      
+      // Create a unique file path
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `${user.id}/${fileName}`;
+      
+      // Upload image to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+      
+      if (uploadError) throw uploadError;
+      
+      // Get the public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+      
+      // Update user profile
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', user.id);
+      
+      if (updateError) throw updateError;
+      
+      // Update local state
+      setAvatarUrl(publicUrl);
+      setShowAvatarDialog(false);
+      
+      toast.success("Photo de profil mise à jour");
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      toast.error("Erreur lors de l'upload de l'image");
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   // Set up form with default values from user
   const form = useForm<ProfileFormValues>({
@@ -168,12 +251,48 @@ const Profile = () => {
           <Card className="md:col-span-2 glass-card hover:shadow-lg transition-all duration-300 overflow-hidden">
             <div className="h-12 bg-gradient-to-r from-primary to-primary/60"></div>
             <CardHeader className="flex flex-row items-center gap-4 pt-6">
-              <Avatar className="h-20 w-20 border-4 border-background shadow-md -mt-14">
-                <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user?.name || user?.email}`} />
-                <AvatarFallback className="bg-primary/80 text-white text-xl font-bold">
-                  {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
-                </AvatarFallback>
-              </Avatar>
+              <Dialog open={showAvatarDialog} onOpenChange={setShowAvatarDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="image" className="h-20 w-20 border-4 border-background shadow-md -mt-14 p-0 overflow-hidden">
+                    <Avatar className="h-full w-full">
+                      {avatarUrl ? (
+                        <AvatarImage src={avatarUrl} alt={user?.name || 'Profile'} />
+                      ) : (
+                        <AvatarFallback className="bg-primary/80 text-white text-xl font-bold">
+                          {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      )}
+                      <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <Camera className="h-6 w-6 text-white" />
+                      </div>
+                    </Avatar>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Modifier votre photo de profil</DialogTitle>
+                    <DialogDescription>
+                      Choisissez une nouvelle photo pour votre profil.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <AvatarUpload 
+                      className="h-40 w-40 mx-auto"
+                      onImageSelected={handleAvatarUpload}
+                      loading={uploadingAvatar}
+                      currentImageUrl={avatarUrl}
+                    />
+                    <p className="text-center text-sm text-muted-foreground">
+                      Cliquez sur l'image pour télécharger une nouvelle photo
+                    </p>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setShowAvatarDialog(false)}>
+                      Fermer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
               <div>
                 <CardTitle className="text-2xl text-gradient">{user?.name || 'Utilisateur'}</CardTitle>
                 <CardDescription className="flex items-center gap-1 mt-1">
