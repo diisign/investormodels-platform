@@ -9,6 +9,9 @@ type User = {
   id: string;
   email: string;
   name?: string;
+  balance?: number;
+  investments?: any[];
+  transactions?: any[];
 }
 
 type AuthContextType = {
@@ -30,10 +33,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
+  // Fonction pour récupérer les données utilisateur complètes
+  const fetchUserData = async (userId: string) => {
+    try {
+      // Récupérer le solde de l'utilisateur
+      const { data: transactionsData, error: transactionsError } = await supabase
+        .from('transactions')
+        .select('amount')
+        .eq('user_id', userId)
+        .eq('status', 'completed');
+      
+      if (transactionsError) throw transactionsError;
+      
+      // Calculer le solde total
+      const balance = transactionsData?.reduce((sum, transaction) => sum + Number(transaction.amount), 0) || 0;
+      
+      // Pour l'instant, on utilise des tableaux vides pour les investissements
+      // Dans une implémentation réelle, vous récupéreriez ces données depuis Supabase
+      const investments: any[] = [];
+      
+      return {
+        balance,
+        investments,
+        transactions: transactionsData
+      };
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+      return {
+        balance: 0,
+        investments: [],
+        transactions: []
+      };
+    }
+  };
+
   useEffect(() => {
     // Configurer l'écouteur de changement d'état d'authentification
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
         
         if (session?.user) {
@@ -42,8 +79,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             email: session.user.email || '',
             name: session.user.user_metadata?.name,
           };
-          setUser(userData);
+          
+          // Récupérer les données supplémentaires de l'utilisateur
+          const additionalData = await fetchUserData(session.user.id);
+          setUser({ ...userData, ...additionalData });
           setIsAuthenticated(true);
+          
+          // Rediriger vers l'accueil/dashboard si sur la page de login
+          const currentPath = window.location.pathname;
+          if (currentPath === '/login' || currentPath === '/register') {
+            navigate('/dashboard');
+          }
         } else {
           setUser(null);
           setIsAuthenticated(false);
@@ -54,7 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // Vérifier la session existante
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       
       if (session?.user) {
@@ -63,8 +109,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           email: session.user.email || '',
           name: session.user.user_metadata?.name,
         };
-        setUser(userData);
+        
+        // Récupérer les données supplémentaires de l'utilisateur
+        const additionalData = await fetchUserData(session.user.id);
+        setUser({ ...userData, ...additionalData });
         setIsAuthenticated(true);
+        
+        // Rediriger vers l'accueil/dashboard si sur la page de login
+        const currentPath = window.location.pathname;
+        if (currentPath === '/login' || currentPath === '/register') {
+          navigate('/dashboard');
+        }
       }
       
       setIsLoading(false);
@@ -73,7 +128,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   const login = async (email: string, password: string) => {
     try {

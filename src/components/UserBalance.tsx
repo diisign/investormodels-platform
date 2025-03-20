@@ -16,7 +16,14 @@ const UserBalance = () => {
       try {
         setIsLoading(true);
         
-        // Récupérer toutes les transactions de l'utilisateur
+        // Si le solde est déjà disponible dans l'objet utilisateur, l'utiliser
+        if (user.balance !== undefined) {
+          setBalance(user.balance);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Sinon, récupérer toutes les transactions de l'utilisateur
         const { data, error } = await supabase
           .from('transactions')
           .select('amount')
@@ -26,7 +33,7 @@ const UserBalance = () => {
         if (error) throw error;
         
         // Calculer le solde total
-        const total = data.reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+        const total = data ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) : 0;
         setBalance(total);
       } catch (error) {
         console.error('Erreur lors de la récupération du solde:', error);
