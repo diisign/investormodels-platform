@@ -81,6 +81,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('Attempting login with:', email);
       setIsLoading(true);
+      
+      // Vérifier d'abord si nous avons une configuration valide
+      console.log('Current Supabase config:', {
+        url: supabase.supabaseUrl,
+        hasKey: !!supabase.supabaseKey
+      });
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -88,6 +95,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Login error:', error);
+        
+        // Check for specific error types
+        if (error.message.includes('Email logins are disabled')) {
+          toast.error("Les connexions par email sont désactivées. Veuillez activer l'authentification par email dans la console Supabase.");
+          return false;
+        }
+        
         throw error;
       }
 
@@ -120,6 +134,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Registration error:', error);
+        
+        // Check for specific error types
+        if (error.message.includes('Email signups are disabled')) {
+          toast.error("Les inscriptions par email sont désactivées. Veuillez activer l'authentification par email dans la console Supabase.");
+          return false;
+        }
+        
         throw error;
       }
 

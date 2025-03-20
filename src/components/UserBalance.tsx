@@ -16,18 +16,11 @@ const UserBalance = () => {
       try {
         setIsLoading(true);
         
-        // Récupérer toutes les transactions de l'utilisateur
-        const { data, error } = await supabase
-          .from('transactions')
-          .select('amount')
-          .eq('user_id', user.id)
-          .eq('status', 'completed');
-          
-        if (error) throw error;
+        // Pour l'instant, nous utilisons un solde fixe car la table transactions n'existe pas encore
+        // Nous pourrons implémenter cela correctement une fois la table créée
+        setBalance(1000); // Solde fictif temporaire
         
-        // Calculer le solde total
-        const total = data ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) : 0;
-        setBalance(total);
+        console.log('UserBalance: Utilisateur connecté, ID:', user.id);
       } catch (error) {
         console.error('Erreur lors de la récupération du solde:', error);
       } finally {
