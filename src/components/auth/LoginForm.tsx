@@ -48,11 +48,14 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted"); // Debugging log
     
     if (validateForm()) {
       try {
-        console.log("Tentative de connexion avec:", email, password);
+        console.log("Attempting login with:", email, password);
         const success = await login(email, password);
+        console.log("Login result:", success); // Debugging log
+        
         if (!success) {
           setErrors({
             ...errors,
@@ -61,7 +64,7 @@ const LoginForm = () => {
           toast.error("Échec de la connexion");
         }
       } catch (error) {
-        console.error("Erreur de connexion:", error);
+        console.error("Login error:", error);
         setErrors({
           ...errors,
           general: 'Identifiants incorrects'

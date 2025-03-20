@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -93,6 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) {
         console.error("Login error:", error);
         toast.error(error.message || "Échec de la connexion");
+        setIsLoading(false);
         return false;
       }
 
@@ -103,6 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error) {
       console.error('Erreur de connexion:', error);
       toast.error(error instanceof Error ? error.message : "Échec de la connexion");
+      setIsLoading(false);
       return false;
     } finally {
       setIsLoading(false);
