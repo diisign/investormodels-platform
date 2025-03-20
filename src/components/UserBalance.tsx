@@ -7,7 +7,6 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const UserBalance = () => {
   const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
 
   // Utiliser React Query pour récupérer et mettre en cache le solde
   const { data: balance = 0, isLoading: isBalanceLoading } = useQuery({
