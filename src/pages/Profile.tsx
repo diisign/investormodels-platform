@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { User, UserRoundCog, AtSign, Mail, Edit2, Check, X } from 'lucide-react';
+import { User, UserRoundCog, AtSign, Mail, Edit2, Check, X, Plus, Minus, ExternalLink } from 'lucide-react';
 import { toast } from "sonner";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/utils/auth';
@@ -34,6 +34,8 @@ const Profile = () => {
   const { user, isLoading, session } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState('');
   const navigate = useNavigate();
 
   // Set up form with default values from user
@@ -86,6 +88,22 @@ const Profile = () => {
       setLoadingSubmit(false);
     }
   }
+
+  const handleStripeRedirect = () => {
+    // Rediriger vers le lien de paiement Stripe préexistant
+    window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
+  };
+
+  const handleWithdrawSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowWithdrawModal(false);
+    
+    // Simuler un retrait pour l'instant
+    toast.success(`Demande de retrait de ${withdrawAmount}€ envoyée`, {
+      description: "Votre demande sera traitée dans les 48 heures.",
+    });
+    setWithdrawAmount('');
+  };
 
   if (isLoading) {
     return (
@@ -209,18 +227,27 @@ const Profile = () => {
             <CardContent className="space-y-6">
               <Button
                 variant="outline"
-                className="w-full justify-start text-left"
-                onClick={() => navigate('/deposit')}
+                className="w-full justify-start text-left bg-green-50 hover:bg-green-100 dark:bg-green-900/20 dark:hover:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800"
+                onClick={handleStripeRedirect}
               >
                 <span className="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-wallet">
-                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-                  </svg>
-                  Recharger mon compte
+                  <Plus className="h-4 w-4" />
+                  Déposer des fonds
+                  <ExternalLink className="h-3.5 w-3.5 ml-1" />
                 </span>
               </Button>
+              
+              <Button
+                variant="outline"
+                className="w-full justify-start text-left bg-orange-50 hover:bg-orange-100 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800"
+                onClick={() => setShowWithdrawModal(true)}
+              >
+                <span className="flex items-center gap-2">
+                  <Minus className="h-4 w-4" />
+                  Retirer des fonds
+                </span>
+              </Button>
+              
               <Button
                 variant="outline"
                 className="w-full justify-start text-left"
@@ -261,6 +288,72 @@ const Profile = () => {
           </Card>
         </div>
       </div>
+      
+      {/* Withdraw Modal */}
+      {showWithdrawModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
+            <h2 className="text-xl font-bold mb-4">Retirer des fonds</h2>
+            <form onSubmit={handleWithdrawSubmit}>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="withdraw-amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Montant (€)
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 6v6l4 2"></path>
+                      </svg>
+                    </div>
+                    <input
+                      type="number"
+                      id="withdraw-amount"
+                      value={withdrawAmount}
+                      onChange={(e) => setWithdrawAmount(e.target.value)}
+                      min="10"
+                      step="10"
+                      className="block w-full pl-10 pr-12 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-investment-500 focus:border-investment-500"
+                      placeholder="100"
+                      required
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <span className="text-gray-500">€</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="bank-details" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    IBAN
+                  </label>
+                  <input
+                    type="text"
+                    id="bank-details"
+                    className="block w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-investment-500 focus:border-investment-500"
+                    placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX"
+                    required
+                  />
+                </div>
+                
+                <div className="pt-4 flex justify-end space-x-3">
+                  <Button
+                    type="button"
+                    onClick={() => setShowWithdrawModal(false)}
+                    className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    Annuler
+                  </Button>
+                  <GradientButton type="submit">
+                    Demander un retrait
+                  </GradientButton>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
