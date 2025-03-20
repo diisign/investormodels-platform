@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { cn } from '@/lib/utils';
 
@@ -107,7 +107,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                 
                 {isUserMenuOpen && (
                   <div 
-                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-800 animate-scale-in origin-top-right"
+                    className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-800 animate-scale-in origin-top-right"
                   >
                     <Link 
                       to="/dashboard" 
@@ -125,6 +125,25 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                       <User className="h-4 w-4 mr-2" />
                       <span>Mon profil</span>
                     </Link>
+                    <Link 
+                      to="/deposit" 
+                      className="flex items-center px-4 py-3 text-sm text-green-600 dark:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      <span>Déposer des fonds</span>
+                    </Link>
+                    <button 
+                      className="flex items-center w-full px-4 py-3 text-sm text-orange-600 dark:text-orange-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={() => {
+                        setIsUserMenuOpen(false);
+                        // This assumes we'll use a modal in Profile.tsx, so we navigate there first
+                        window.location.href = '/profile?action=withdraw';
+                      }}
+                    >
+                      <Minus className="h-4 w-4 mr-2" />
+                      <span>Retirer des fonds</span>
+                    </button>
                     <button 
                       className="flex items-center w-full px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                       onClick={handleLogout}
@@ -231,6 +250,20 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                     onClick={closeMenu}
                   >
                     Mon profil
+                  </Link>
+                  <Link 
+                    to="/deposit" 
+                    className="block py-2 font-medium text-green-600 dark:text-green-400"
+                    onClick={closeMenu}
+                  >
+                    Déposer des fonds
+                  </Link>
+                  <Link 
+                    to="/profile?action=withdraw" 
+                    className="block py-2 font-medium text-orange-600 dark:text-orange-400"
+                    onClick={closeMenu}
+                  >
+                    Retirer des fonds
                   </Link>
                   <button 
                     className="block w-full text-left py-2 font-medium text-red-600 dark:text-red-400"

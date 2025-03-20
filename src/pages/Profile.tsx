@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,6 +37,17 @@ const Profile = () => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if we should open the withdraw modal based on URL params
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('action') === 'withdraw') {
+      setShowWithdrawModal(true);
+      // Clear the URL parameter without refreshing
+      window.history.replaceState({}, document.title, "/profile");
+    }
+  }, [location]);
 
   // Set up form with default values from user
   const form = useForm<ProfileFormValues>({
