@@ -48,13 +48,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserData = async (userId: string) => {
     try {
       // Récupérer les transactions de l'utilisateur
-      const query = supabase
+      // Cast the entire supabase object to any to avoid TypeScript errors
+      const { data: transactionsData, error: transactionsError } = await (supabase as any)
         .from('transactions')
         .select('*')
         .eq('user_id', userId);
-      
-      // Apply type assertion to the entire query
-      const { data: transactionsData, error: transactionsError } = await (query as any);
       
       if (transactionsError) throw transactionsError;
       
