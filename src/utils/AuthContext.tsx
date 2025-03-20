@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Rediriger vers l'accueil/dashboard si sur la page de login
           const currentPath = window.location.pathname;
           if (currentPath === '/login' || currentPath === '/register') {
-            navigate('/dashboard');
+            navigate('/');
           }
         } else {
           setUser(null);
@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Rediriger vers l'accueil/dashboard si sur la page de login
         const currentPath = window.location.pathname;
         if (currentPath === '/login' || currentPath === '/register') {
-          navigate('/dashboard');
+          navigate('/');
         }
       }
       
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       console.log("Login successful:", data);
       toast.success("Connexion réussie");
-      navigate('/dashboard');
+      navigate('/');
       return true;
     } catch (error) {
       console.error('Erreur de connexion:', error);

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
@@ -35,13 +34,11 @@ const Login = () => {
       general: ''
     };
 
-    // Validate email
     if (!email.trim()) {
       newErrors.email = 'L\'email est requis';
       isValid = false;
     }
 
-    // Validate password
     if (!password) {
       newErrors.password = 'Le mot de passe est requis';
       isValid = false;
@@ -78,7 +75,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={false} />
       
       <main className="flex-grow pt-20">
@@ -101,7 +97,6 @@ const Login = () => {
                   )}
                   
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Email field */}
                     <div className="space-y-2">
                       <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Adresse email
@@ -125,7 +120,6 @@ const Login = () => {
                       {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                     </div>
                     
-                    {/* Password field */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -165,7 +159,6 @@ const Login = () => {
                       {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                     </div>
                     
-                    {/* Remember me checkbox */}
                     <div className="flex items-center">
                       <input
                         id="remember-me"
@@ -179,7 +172,6 @@ const Login = () => {
                       </label>
                     </div>
                     
-                    {/* Submit button */}
                     <div>
                       <GradientButton
                         type="submit"
@@ -206,7 +198,6 @@ const Login = () => {
                 </div>
               </FadeIn>
               
-              {/* Test account hint */}
               <div className="mt-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-100 dark:border-yellow-800">
                 <p className="text-sm text-yellow-800 dark:text-yellow-300">
                   <span className="font-semibold">Compte de démonstration:</span> Pour tester l'application, utilisez les identifiants suivants:
