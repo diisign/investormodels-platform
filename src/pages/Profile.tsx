@@ -53,9 +53,38 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      fetchAvatar();
+      ensureProfileExists();
     }
   }, [user]);
+
+  const ensureProfileExists = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const { data: existingProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('id, avatar_url')
+        .eq('id', user.id)
+        .maybeSingle();
+      
+      if (!existingProfile && user.id) {
+        await supabase
+          .from('profiles')
+          .upsert({ 
+            id: user.id,
+            name: user.name || null,
+          });
+        
+        console.log("Created profile for user:", user.id);
+      } else if (existingProfile?.avatar_url) {
+        setAvatarUrl(existingProfile.avatar_url);
+      }
+    } catch (error) {
+      console.error('Error ensuring profile exists:', error);
+    }
+    
+    fetchAvatar();
+  };
 
   const fetchAvatar = async () => {
     try {
@@ -65,9 +94,9 @@ const Profile = () => {
         .from('profiles')
         .select('avatar_url')
         .eq('id', user.id)
-        .single();
-        
-      if (error) {
+        .maybeSingle();
+      
+      if (error && error.code !== 'PGRST116') {
         console.error('Error fetching avatar:', error);
         return;
       }
@@ -112,8 +141,11 @@ const Profile = () => {
       
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('id', user.id);
+        .upsert({ 
+          id: user.id,
+          avatar_url: publicUrl,
+          name: user.name || null
+        });
       
       if (updateError) throw updateError;
       
@@ -155,8 +187,11 @@ const Profile = () => {
       
       const { error } = await supabase
         .from('profiles')
-        .update({ name: values.name })
-        .eq('id', user.id);
+        .upsert({ 
+          id: user.id,
+          name: values.name,
+          avatar_url: avatarUrl
+        });
       
       if (error) throw error;
       
