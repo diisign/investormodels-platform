@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -27,15 +28,15 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return `bg-gradient-${gradientDirection} from-violet-600 to-fuchsia-500 text-white hover:shadow-lg hover:shadow-violet-500/20 focus:ring-violet-500/50`;
+        return `bg-gradient-${gradientDirection} from-investment-500 to-investment-400 text-white hover:shadow-lg hover:shadow-investment-500/20 focus:ring-investment-500/50`;
       case 'secondary':
         return `bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 hover:shadow-md focus:ring-gray-400/50`;
       case 'outline':
-        return `bg-transparent border border-violet-500 text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:ring-violet-500/50`;
+        return `bg-transparent border border-investment-500 text-investment-500 hover:bg-investment-50 dark:hover:bg-investment-900/20 focus:ring-investment-500/50`;
       case 'ghost':
-        return `bg-transparent text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:ring-violet-500/50`;
+        return `bg-transparent text-investment-500 hover:bg-investment-50 dark:hover:bg-investment-900/20 focus:ring-investment-500/50`;
       default:
-        return `bg-gradient-${gradientDirection} from-violet-600 to-fuchsia-500 text-white hover:shadow-lg hover:shadow-violet-500/20 focus:ring-violet-500/50`;
+        return `bg-gradient-${gradientDirection} from-investment-500 to-investment-400 text-white hover:shadow-lg hover:shadow-investment-500/20 focus:ring-investment-500/50`;
     }
   };
 
