@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -49,6 +50,13 @@ const App = () => (
             <Route path="/profile" element={
               <RequireAuth>
                 <Profile />
+              </RequireAuth>
+            } />
+            
+            {/* Routes pour le débogage */}
+            <Route path="/webhook-debug" element={
+              <RequireAuth>
+                <WebhookDebug />
               </RequireAuth>
             } />
             
