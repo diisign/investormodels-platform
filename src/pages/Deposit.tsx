@@ -22,15 +22,18 @@ const Deposit = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [stripeAmount, setStripeAmount] = useState('2');
+  const [paymentError, setPaymentError] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const success = params.get('success');
+    const canceled = params.get('canceled');
     
     if (success === 'true') {
       setPaymentSuccess(true);
+      setPaymentError(null);
       queryClient.invalidateQueries({
         queryKey: ['userBalance'],
       });
@@ -38,6 +41,14 @@ const Deposit = () => {
       
       toast.success('Paiement effectué avec succès !', {
         description: 'Votre solde a été mis à jour.',
+        duration: 5000,
+      });
+    } else if (canceled === 'true') {
+      setPaymentError("Le paiement a été annulé.");
+      window.history.replaceState(null, '', '/deposit');
+      
+      toast.error('Paiement annulé', {
+        description: 'Aucun montant n\'a été débité de votre compte.',
         duration: 5000,
       });
     }
@@ -56,8 +67,15 @@ const Deposit = () => {
     }
     
     setIsLoading(true);
+    setPaymentError(null);
     
     try {
+      console.log("Invoking create-payment function with:", { 
+        userId: user.id, 
+        amount,
+        returnUrl: window.location.origin + '/deposit'
+      });
+      
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: { 
           userId: user.id,
@@ -66,17 +84,24 @@ const Deposit = () => {
         }
       });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Function invocation error:", error);
+        throw new Error(error.message || "Erreur lors de l'appel à la fonction de paiement");
+      }
+      
+      console.log("Payment function response:", data);
       
       if (data?.url) {
         window.location.href = data.url;
       } else {
-        throw new Error("URL de paiement manquante");
+        throw new Error("URL de paiement manquante dans la réponse");
       }
     } catch (error) {
-      console.error("Erreur lors du paiement:", error);
+      console.error("Error during payment:", error);
+      const errorMessage = error instanceof Error ? error.message : "Une erreur est survenue";
+      setPaymentError(errorMessage);
       toast.error("Erreur lors de la création du paiement", {
-        description: error instanceof Error ? error.message : "Une erreur est survenue",
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -104,6 +129,14 @@ const Deposit = () => {
                 <Alert className="mb-8 max-w-4xl mx-auto bg-green-50 text-green-800 border-green-200">
                   <AlertDescription>
                     Paiement effectué avec succès ! Votre solde a été mis à jour.
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              {paymentError && (
+                <Alert className="mb-8 max-w-4xl mx-auto bg-red-50 text-red-800 border-red-200">
+                  <AlertDescription>
+                    {paymentError}
                   </AlertDescription>
                 </Alert>
               )}

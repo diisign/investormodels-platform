@@ -17,7 +17,7 @@ serve(async (req) => {
   const stripeWebhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
   
   if (!stripeSecretKey || !stripeWebhookSecret) {
-    console.error("Configuration Stripe manquante");
+    console.error("Stripe configuration missing");
     return new Response(
       JSON.stringify({ error: "Configuration du service de paiement manquante" }),
       { 
@@ -47,8 +47,9 @@ serve(async (req) => {
     let event;
     try {
       event = stripe.webhooks.constructEvent(body, signature, stripeWebhookSecret);
+      console.log("Webhook event received:", event.type);
     } catch (err) {
-      console.error(`Signature webhook invalide: ${err.message}`);
+      console.error(`Invalid webhook signature: ${err.message}`);
       return new Response(
         JSON.stringify({ error: "Signature webhook invalide" }),
         { 
@@ -58,7 +59,7 @@ serve(async (req) => {
       );
     }
 
-    // Configuration Supabase
+    // Supabase configuration
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
@@ -72,13 +73,16 @@ serve(async (req) => {
       );
     }
 
+    console.log("Creating Supabase client");
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
     // Only process completed checkout sessions to avoid duplicate transactions
     if (event.type === 'checkout.session.completed') {
+      console.log("Processing checkout.session.completed event");
       const result = await handlePaymentEvent(event.data.object, supabase);
 
       if (!result.success) {
+        console.error("Error handling payment event:", result.error);
         return new Response(
           JSON.stringify({ error: result.error }),
           { 
@@ -87,6 +91,10 @@ serve(async (req) => {
           }
         );
       }
+      
+      console.log("Payment event processed successfully");
+    } else {
+      console.log(`Ignoring event type: ${event.type}`);
     }
 
     return new Response(
@@ -97,9 +105,9 @@ serve(async (req) => {
       }
     );
   } catch (error) {
-    console.error("Erreur webhook:", error);
+    console.error("Webhook error:", error);
     return new Response(
-      JSON.stringify({ error: "Erreur interne du serveur", details: error.message }),
+      JSON.stringify({ error: "Erreur interne du serveur", details: error instanceof Error ? error.message : "Erreur inconnue" }),
       { 
         status: 500, 
         headers: { ...corsHeaders, "Content-Type": "application/json" } 
@@ -108,11 +116,14 @@ serve(async (req) => {
   }
 });
 
-// Fonction pour traiter les événements de paiement
+// Function to process payment events
 async function handlePaymentEvent(paymentData, supabase) {
   try {
+    console.log("Handling payment event:", paymentData.id);
+    
     const userId = paymentData.metadata?.userId;
     if (!userId) {
+      console.error("Missing user ID in payment metadata");
       return { success: false, error: "ID utilisateur manquant" };
     }
 
@@ -122,9 +133,11 @@ async function handlePaymentEvent(paymentData, supabase) {
     } else if (paymentData.amount) {
       amount = paymentData.amount / 100;
     } else {
+      console.error("Invalid amount in payment data");
       return { success: false, error: "Montant invalide" };
     }
 
+    console.log(`Recording transaction: ${amount} EUR for user ${userId}`);
     const { error } = await supabase.from("transactions").insert({
       user_id: userId,
       amount: amount,
@@ -135,13 +148,14 @@ async function handlePaymentEvent(paymentData, supabase) {
     });
 
     if (error) {
-      console.error("Erreur d'enregistrement de la transaction:", error);
+      console.error("Error recording transaction:", error);
       return { success: false, error: "Erreur d'enregistrement de la transaction" };
     }
 
+    console.log("Transaction recorded successfully");
     return { success: true };
   } catch (error) {
-    console.error("Erreur de traitement du paiement:", error);
+    console.error("Error processing payment:", error);
     return { success: false, error: "Erreur de traitement du paiement" };
   }
 }

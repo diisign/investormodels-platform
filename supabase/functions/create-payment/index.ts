@@ -8,14 +8,35 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { amount, userId, returnUrl } = await req.json();
+    console.log("Starting payment creation process");
+    
+    // Parse the request body
+    let requestData;
+    try {
+      requestData = await req.json();
+    } catch (error) {
+      console.error("Error parsing request body:", error);
+      return new Response(
+        JSON.stringify({ error: "Invalid JSON in request body" }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+    
+    const { amount, userId, returnUrl } = requestData;
+    
+    console.log("Request data:", { amount, userId, returnUrl });
     
     if (!amount || !userId) {
+      console.error("Missing required fields:", { amount, userId });
       return new Response(
         JSON.stringify({ error: "Le montant et l'identifiant utilisateur sont requis" }),
         { 
@@ -28,7 +49,7 @@ serve(async (req) => {
     const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
     
     if (!stripeSecretKey) {
-      console.error("STRIPE_SECRET_KEY non configurée");
+      console.error("STRIPE_SECRET_KEY not configured");
       return new Response(
         JSON.stringify({ error: "Configuration du service de paiement manquante" }),
         { 
@@ -38,10 +59,12 @@ serve(async (req) => {
       );
     }
     
+    console.log("Creating Stripe instance");
     const stripe = new Stripe(stripeSecretKey, {
       apiVersion: "2024-07-31",
     });
 
+    console.log("Creating checkout session");
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -64,15 +87,16 @@ serve(async (req) => {
       },
     });
 
+    console.log("Checkout session created:", session.id);
     return new Response(
       JSON.stringify({ url: session.url }),
       { 
-        status: 201,
+        status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" } 
       }
     );
   } catch (error) {
-    console.error("Erreur paiement:", error);
+    console.error("Payment error:", error);
     
     if (error instanceof Stripe.errors.StripeError) {
       return new Response(
