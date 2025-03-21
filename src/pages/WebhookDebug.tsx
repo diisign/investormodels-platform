@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,12 +7,13 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import FadeIn from '@/components/animations/FadeIn';
-import { ArrowDown, RefreshCw, CheckCircle, AlertCircle, Loader2, Wand2 } from 'lucide-react';
+import { ArrowDown, RefreshCw, CheckCircle, AlertCircle, Loader2, Wand2, PlayCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 const WebhookDebug = () => {
   const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [isTestingWebhook, setIsTestingWebhook] = useState(false);
   const [realtimeEnabled, setRealtimeEnabled] = useState(true);
 
   // Récupérer les logs de la fonction webhook
@@ -132,6 +132,35 @@ const WebhookDebug = () => {
     }
   };
 
+  const testWebhook = async () => {
+    setIsTestingWebhook(true);
+    try {
+      // Appeler l'endpoint de test du webhook
+      const response = await fetch('https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook/test');
+      const data = await response.json();
+      
+      if (data.success) {
+        toast.success('Test du webhook réussi !', {
+          description: 'La fonction webhook est accessible et opérationnelle.',
+        });
+        
+        // Rafraîchir les logs et les transactions pour voir l'événement de test
+        await Promise.all([refetchLogs(), refetchTransactions()]);
+      } else {
+        toast.error('Échec du test du webhook', {
+          description: data.message || 'Une erreur s\'est produite lors du test.',
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors du test du webhook:', error);
+      toast.error('Erreur lors du test du webhook', {
+        description: 'Impossible de contacter la fonction webhook.',
+      });
+    } finally {
+      setIsTestingWebhook(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
@@ -143,6 +172,15 @@ const WebhookDebug = () => {
               <div className="flex items-center justify-between mb-8">
                 <h1 className="text-3xl font-bold text-center">Diagnostic Webhook Stripe</h1>
                 <div className="flex gap-2">
+                  <Button 
+                    onClick={testWebhook} 
+                    variant="secondary"
+                    disabled={isTestingWebhook}
+                    className="flex items-center gap-2"
+                  >
+                    {isTestingWebhook ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlayCircle className="h-4 w-4" />}
+                    Tester le webhook
+                  </Button>
                   <Button 
                     onClick={toggleRealtime} 
                     variant={realtimeEnabled ? "default" : "outline"}

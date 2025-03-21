@@ -16,6 +16,83 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Endpoint de test pour vérifier que la fonction webhook est accessible
+  const url = new URL(req.url);
+  if (url.pathname.endsWith('/test')) {
+    console.log("Endpoint de test appelé !");
+    
+    try {
+      // Enregistrer un événement de test dans la table webhook_events
+      const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
+      const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+      
+      if (!supabaseUrl || !supabaseServiceRoleKey) {
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            message: "Configuration Supabase manquante" 
+          }),
+          { 
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" } 
+          }
+        );
+      }
+      
+      const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+      
+      // Enregistrer un événement de test
+      const { data, error } = await supabase.from("webhook_events").insert({
+        event_type: "webhook_test",
+        event_data: { test: true, timestamp: new Date().toISOString() },
+        raw_payload: { source: "test_endpoint" },
+        processed: true
+      }).select();
+      
+      if (error) {
+        console.error("Erreur lors de l'enregistrement de l'événement de test:", error);
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            message: "Erreur lors de l'enregistrement de l'événement de test",
+            error: error.message
+          }),
+          { 
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" } 
+          }
+        );
+      }
+      
+      console.log("Événement de test enregistré avec succès:", data);
+      
+      return new Response(
+        JSON.stringify({ 
+          success: true, 
+          message: "Test réussi ! La fonction webhook est opérationnelle",
+          event_id: data[0]?.id
+        }),
+        { 
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    } catch (error) {
+      console.error("Erreur lors du test du webhook:", error);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: "Erreur lors du test du webhook",
+          error: error.message
+        }),
+        { 
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+  }
+
   try {
     // Récupérer les clés secrètes depuis les secrets de la fonction Edge
     const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
