@@ -76,25 +76,38 @@ serve(async (req) => {
         // Ajouter plus de détails sur l'événement
         if (event.event_data) {
           const eventDetails = typeof event.event_data === 'string' ? JSON.parse(event.event_data) : event.event_data;
-          if (eventDetails.id) {
-            recentLogs.push(`    - ID de l'objet: ${eventDetails.id}`);
-          }
-          if (eventDetails.status) {
-            recentLogs.push(`    - Statut: ${eventDetails.status}`);
-          }
-          if (eventDetails.amount) {
-            recentLogs.push(`    - Montant: ${eventDetails.amount / 100} ${eventDetails.currency || 'EUR'}`);
-          } else if (eventDetails.amount_total) {
-            recentLogs.push(`    - Montant total: ${eventDetails.amount_total / 100} ${eventDetails.currency || 'EUR'}`);
-          }
-          if (eventDetails.customer_details?.email || eventDetails.billing_details?.email) {
-            recentLogs.push(`    - Email: ${eventDetails.customer_details?.email || eventDetails.billing_details?.email}`);
-          }
-          if (eventDetails.payment_status) {
-            recentLogs.push(`    - Statut du paiement: ${eventDetails.payment_status}`);
-          }
-          if (eventDetails.metadata?.userId) {
-            recentLogs.push(`    - User ID: ${eventDetails.metadata.userId}`);
+          
+          // Afficher les informations importantes de la session checkout
+          if (event.event_type === "checkout.session.completed") {
+            if (eventDetails.id) {
+              recentLogs.push(`    - ID de la session: ${eventDetails.id}`);
+            }
+            if (eventDetails.payment_status) {
+              recentLogs.push(`    - Statut du paiement: ${eventDetails.payment_status}`);
+            }
+            if (eventDetails.amount_total) {
+              recentLogs.push(`    - Montant total: ${eventDetails.amount_total / 100} ${eventDetails.currency || 'EUR'}`);
+            }
+            if (eventDetails.customer_details?.email) {
+              recentLogs.push(`    - Email: ${eventDetails.customer_details.email}`);
+            }
+            if (eventDetails.metadata?.userId) {
+              recentLogs.push(`    - User ID: ${eventDetails.metadata.userId}`);
+            }
+            if (eventDetails.payment_intent) {
+              recentLogs.push(`    - ID du payment intent: ${eventDetails.payment_intent}`);
+            }
+          } else {
+            // Pour les autres types d'événements
+            if (eventDetails.id) {
+              recentLogs.push(`    - ID de l'objet: ${eventDetails.id}`);
+            }
+            if (eventDetails.status) {
+              recentLogs.push(`    - Statut: ${eventDetails.status}`);
+            }
+            if (eventDetails.amount) {
+              recentLogs.push(`    - Montant: ${eventDetails.amount / 100} ${eventDetails.currency || 'EUR'}`);
+            }
           }
         }
         
@@ -128,11 +141,10 @@ serve(async (req) => {
     }
     
     // Ajouter des instructions de débogage
-    recentLogs.push(`[${new Date().toISOString()}] Vérification de la configuration du webhook dans Stripe:`);
-    recentLogs.push(`[${new Date().toISOString()}] 1. Vérifiez que l'URL du webhook dans Stripe est: https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook`);
-    recentLogs.push(`[${new Date().toISOString()}] 2. Vérifiez que vous avez configuré les événements webhook à surveiller (checkout.session.completed, etc.)`);
-    recentLogs.push(`[${new Date().toISOString()}] 3. Vérifiez que le secret du webhook est correctement configuré dans les secrets de la fonction Edge`);
-    recentLogs.push(`[${new Date().toISOString()}] 4. Pour suivre les logs en temps réel, ouvrez Edge Function logs dans Supabase pour la fonction stripe-webhook`);
+    recentLogs.push(`[${new Date().toISOString()}] Configuration actuelle du webhook Stripe:`);
+    recentLogs.push(`[${new Date().toISOString()}] 1. URL du webhook: https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook`);
+    recentLogs.push(`[${new Date().toISOString()}] 2. Événement configuré: checkout.session.completed`);
+    recentLogs.push(`[${new Date().toISOString()}] 3. Secret du webhook: ${webhookSecret ? "Configuré" : "Non configuré"}`);
     
     return new Response(
       JSON.stringify({

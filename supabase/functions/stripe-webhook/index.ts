@@ -76,19 +76,25 @@ serve(async (req) => {
     let parsedBody;
     
     try {
-      // Tenter de parser le corps comme JSON pour les cas où c'est envoyé directement
+      // Tenter de parser le corps comme JSON
       parsedBody = JSON.parse(body);
       console.log("Événement JSON parsé avec succès");
       
-      // Si le corps contient un type, l'utiliser comme type d'événement
+      // Si le corps a un type, utiliser comme type d'événement
       if (parsedBody.type) {
         eventType = parsedBody.type;
-        eventData = parsedBody.data?.object || {};
         console.log(`Type d'événement depuis JSON: ${eventType}`);
+        
+        // Extraire les données d'événement selon la structure
+        if (parsedBody.data && parsedBody.data.object) {
+          eventData = parsedBody.data.object;
+        } else if (parsedBody.object && parsedBody.object.object === "checkout.session") {
+          // Structure où l'objet est directement dans "object"
+          eventData = parsedBody.object;
+        }
       }
     } catch (parseError) {
       console.log("Le corps n'est pas du JSON valide, tentative de construction d'événement avec signature");
-      // Ce n'est pas grave si ce n'est pas du JSON, on va essayer de construire l'événement
       parsedBody = { raw: body };
     }
     
@@ -101,25 +107,23 @@ serve(async (req) => {
         event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
         console.log("Événement Stripe vérifié avec succès:", event.type);
         eventType = event.type;
-        eventData = event.data.object;
+        
+        // Extraire les données selon la structure de l'événement vérifié
+        if (event.data && event.data.object) {
+          eventData = event.data.object;
+        }
+        
         signatureVerified = true;
       } catch (err) {
         console.error(`⚠️ Échec de la vérification de la signature webhook: ${err.message}`);
         
-        // Enregistrer l'erreur mais continuer le traitement
+        // Enregistrer l'erreur mais continuer le traitement avec les données parsées
         await supabase.from("webhook_events").insert({
           event_type: "signature_verification_failed",
           event_data: { error: err.message, signature },
           raw_payload: parsedBody,
           processed: false
         });
-        
-        // On continue avec les données parsées si possible
-        if (parsedBody.type) {
-          event = parsedBody;
-        } else if (parsedBody.data?.object) {
-          eventData = parsedBody.data.object;
-        }
       }
     } else {
       if (!webhookSecret) {
@@ -128,78 +132,53 @@ serve(async (req) => {
       if (!signature) {
         console.log("Aucune signature Stripe fournie");
       }
-      
-      // Utiliser les données parsées comme événement
-      event = parsedBody;
     }
     
-    // Si on n'a pas encore déterminé le type d'événement, essayer de le déduire des données
-    if (eventType === "unknown" && event?.object) {
-      if (event.object === "checkout.session" && event.payment_status === "paid") {
+    // Si les données d'événement sont vides mais que nous avons un objet parsé
+    if (Object.keys(eventData).length === 0) {
+      if (parsedBody.object && parsedBody.object.object === "checkout.session") {
+        eventData = parsedBody.object;
         eventType = "checkout.session.completed";
-        eventData = event;
-      } else if (event.object === "charge" && event.status === "succeeded") {
-        eventType = "charge.succeeded";
-        eventData = event;
-      } else if (event.object === "payment_intent" && event.status === "succeeded") {
-        eventType = "payment_intent.succeeded";
-        eventData = event;
+        console.log("Données extraites de parsedBody.object:", Object.keys(eventData).join(', '));
+      } else if (parsedBody.data && parsedBody.data.object) {
+        eventData = parsedBody.data.object;
+        console.log("Données extraites de parsedBody.data.object:", Object.keys(eventData).join(', '));
       }
-      console.log(`Type d'événement déduit: ${eventType}`);
     }
     
-    // Si nous avons un événement parsé avec data.object, l'utiliser comme données d'événement
-    if (!Object.keys(eventData).length && event?.data?.object) {
-      eventData = event.data.object;
-    }
-    
-    // En dernier recours, utiliser l'événement lui-même comme données
-    if (!Object.keys(eventData).length && Object.keys(event || {}).length > 0) {
-      eventData = event;
-    }
-    
-    console.log("Données d'événement extraites:", JSON.stringify(eventData).substring(0, 500));
+    console.log("Type d'événement final:", eventType);
+    console.log("Données d'événement extraites (clés):", Object.keys(eventData).join(', '));
     
     // Enregistrer l'événement reçu dans la table webhook_events pour référence
     const { data: eventRecord, error: eventError } = await supabase.from("webhook_events").insert({
       event_type: eventType,
       event_data: eventData,
-      raw_payload: parsedBody || { raw: body },
+      raw_payload: parsedBody,
       processed: false
     }).select();
     
     if (eventError) {
       console.error("Erreur lors de l'enregistrement de l'événement webhook:", eventError);
     } else {
-      console.log("Événement webhook enregistré:", eventRecord);
+      console.log("Événement webhook enregistré:", eventRecord[0]?.id);
     }
     
-    // Traiter l'événement selon son type
-    switch (eventType) {
-      case "checkout.session.completed":
-      case "checkout.session.async_payment_succeeded":
-      case "payment_intent.succeeded":
-      case "payment_intent.requires_action":
-      case "charge.succeeded":
-      case "charge.updated":
-        console.log(`Traitement de l'événement ${eventType}`);
-        await handlePaymentEvent(eventData, supabase);
-        break;
-      default:
-        console.log(`Événement ${eventType} non géré spécifiquement, tentative de traitement générique`);
-        // Tenter un traitement générique pour les événements non reconnus
-        await handleGenericPayload(eventData, supabase);
-    }
-    
-    // Mettre à jour l'événement comme traité (s'il existe)
-    if (eventRecord && eventRecord.length > 0) {
-      await supabase.from("webhook_events")
-        .update({ processed: true })
-        .eq("id", eventRecord[0].id);
+    // Si nous avons des données d'événement valides, traiter le paiement
+    if (Object.keys(eventData).length > 0) {
+      console.log("Traitement du paiement avec les données extraites");
+      await handlePaymentEvent(eventData, supabase);
+      
+      // Mettre à jour l'événement comme traité (s'il existe)
+      if (eventRecord && eventRecord.length > 0) {
+        await supabase.from("webhook_events")
+          .update({ processed: true })
+          .eq("id", eventRecord[0].id);
+      }
+    } else {
+      console.error("Aucune donnée d'événement valide extraite pour traitement");
     }
     
     // Toujours retourner un succès à Stripe, même si nous avons eu des problèmes
-    // Cela évite que Stripe ne continue à réessayer avec les mêmes données
     return new Response(
       JSON.stringify({ 
         received: true, 
@@ -230,16 +209,16 @@ serve(async (req) => {
   }
 });
 
-// Fonction unifiée pour traiter les événements de paiement
+// Fonction pour traiter les événements de paiement
 async function handlePaymentEvent(paymentData, supabase) {
   console.log("Traitement de l'événement de paiement:", JSON.stringify(paymentData).substring(0, 500) + "...");
   
   // 1. Identifier l'utilisateur
   let userId = null;
   
-  // Essayer de trouver l'ID utilisateur dans les métadonnées ou client_reference_id
-  if (paymentData.metadata?.userId || paymentData.client_reference_id) {
-    userId = paymentData.metadata?.userId || paymentData.client_reference_id;
+  // Essayer de trouver l'ID utilisateur dans les métadonnées
+  if (paymentData.metadata?.userId) {
+    userId = paymentData.metadata.userId;
     console.log(`Utilisateur identifié à partir des métadonnées: ${userId}`);
   } 
   // Sinon, essayer de le trouver via l'email
@@ -304,13 +283,16 @@ async function handlePaymentEvent(paymentData, supabase) {
   } else {
     // Montant par défaut si aucun montant n'est spécifié
     amount = 2.00;
+    console.log("Aucun montant trouvé, utilisation du montant par défaut:", amount);
   }
+  
+  console.log("Montant calculé:", amount);
   
   // 3. Identifier la devise
   const currency = paymentData.currency || "eur";
   
   // 4. Générer un ID de paiement unique
-  const paymentId = paymentData.id || `generated-${Date.now()}`;
+  const paymentId = paymentData.id || paymentData.payment_intent || `generated-${Date.now()}`;
   
   console.log(`Création d'une transaction pour l'utilisateur ${userId} avec un montant de ${amount} ${currency}, paymentId: ${paymentId}`);
   
@@ -342,25 +324,5 @@ async function handlePaymentEvent(paymentData, supabase) {
     return;
   }
   
-  console.log("Transaction enregistrée avec succès:", data);
-}
-
-// Fonction pour traiter les payloads génériques
-async function handleGenericPayload(data, supabase) {
-  console.log("Traitement d'un payload générique:", JSON.stringify(data).substring(0, 500) + "...");
-  
-  // Si c'est un objet avec des données de paiement, le traiter comme un événement de paiement
-  if (
-    data.amount_total || 
-    data.amount || 
-    data.total || 
-    (data.object && (data.object === "checkout.session" || data.object === "payment_intent" || data.object === "charge"))
-  ) {
-    await handlePaymentEvent(data, supabase);
-  } else if (data.data && data.data.object) {
-    // Si l'objet est imbriqué dans data.data.object
-    await handlePaymentEvent(data.data.object, supabase);
-  } else {
-    console.log("Payload non reconnu, aucune action entreprise");
-  }
+  console.log("Transaction enregistrée avec succès:", data[0]?.id);
 }
