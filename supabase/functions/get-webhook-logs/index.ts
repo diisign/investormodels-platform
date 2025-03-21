@@ -24,7 +24,18 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
-    // Récupérer les transactions récentes pour avoir une vision des événements traités
+    // Récupérer les événements webhook récents
+    const { data: webhookEvents, error: webhookError } = await supabase
+      .from("webhook_events")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(5);
+    
+    if (webhookError) {
+      console.error("Erreur lors de la récupération des événements webhook:", webhookError);
+    }
+    
+    // Récupérer les transactions récentes
     const { data: transactions, error: transactionsError } = await supabase
       .from("transactions")
       .select("*")
@@ -35,15 +46,24 @@ serve(async (req) => {
       console.error("Erreur lors de la récupération des transactions:", transactionsError);
     }
     
-    // Vérifier si la fonction stripe-webhook a été appelée récemment
-    // Normalement, il faudrait consulter les logs de la fonction, mais comme ce n'est pas facile d'y accéder
-    // directement, nous allons simuler des logs basés sur les transactions existantes
-    
+    // Créer des logs pour affichage
     const recentLogs = [];
     
     // Ajouter des informations système
     recentLogs.push(`[${new Date().toISOString()}] Vérification de la configuration du webhook Stripe...`);
     recentLogs.push(`[${new Date().toISOString()}] URL du webhook: https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook`);
+    
+    // Ajouter des informations sur les événements webhook
+    if (webhookEvents && webhookEvents.length > 0) {
+      recentLogs.push(`[${new Date().toISOString()}] ${webhookEvents.length} événements webhook trouvés dans la base de données`);
+      
+      for (const event of webhookEvents) {
+        const date = new Date(event.created_at).toISOString();
+        recentLogs.push(`[${date}] Webhook Event: ${event.event_type}, ID: ${event.id}, Traité: ${event.processed ? 'Oui' : 'Non'}`);
+      }
+    } else {
+      recentLogs.push(`[${new Date().toISOString()}] Aucun événement webhook trouvé dans la base de données`);
+    }
     
     // Ajouter des informations sur les transactions existantes
     if (transactions && transactions.length > 0) {
@@ -61,11 +81,12 @@ serve(async (req) => {
     
     // Ajouter des instructions de débogage
     recentLogs.push(`[${new Date().toISOString()}] Pour tester le webhook, vous pouvez créer une transaction de test:`);
-    recentLogs.push(`[${new Date().toISOString()}] curl -X POST "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-test-transaction" -H "Content-Type: application/json" -d '{"userId": "cf3bae5e-efd3-44f8-9842-9b1a8e26321e", "amount": 5.00}'`);
+    recentLogs.push(`[${new Date().toISOString()}] curl -X POST "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook" -H "Content-Type: application/json" -d '{"object":{"id":"cs_test_123","object":"checkout.session","amount_total":200,"currency":"eur","customer_details":{"email":"test@example.com"},"payment_status":"paid","status":"complete"}}'`);
     
     return new Response(
       JSON.stringify({
         logs: recentLogs,
+        webhookEvents: webhookEvents || [],
         transactions: transactions || [],
         message: "Logs et transactions récupérés avec succès"
       }),

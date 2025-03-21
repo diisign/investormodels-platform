@@ -31,7 +31,7 @@ serve(async (req) => {
     }
     
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2023-10-16", // Mise à jour de la version de l'API pour correspondre à celle utilisée par create-payment
+      apiVersion: "2023-10-16",
     });
     
     // Récupérer les données brutes du corps de la requête
@@ -68,7 +68,7 @@ serve(async (req) => {
         const data = JSON.parse(body);
         console.log("Données reçues:", JSON.stringify(data).substring(0, 500) + "...");
         
-        if (data.type === "checkout.session.completed" || data.object?.mode === "payment") {
+        if (data.type === "checkout.session.completed" || data.object?.mode === "payment" || data.object?.object === "checkout.session") {
           // Traiter comme un événement de session checkout
           console.log("Traitement d'un événement checkout.session.completed de test");
           const session = data.object || data.data?.object;
@@ -116,7 +116,12 @@ serve(async (req) => {
       } catch (err) {
         console.error(`⚠️ Échec de la vérification de la signature webhook: ${err.message}`);
         return new Response(
-          JSON.stringify({ error: "Échec de la vérification de la signature" }),
+          JSON.stringify({ 
+            error: "Échec de la vérification de la signature",
+            message: err.message,
+            received_signature: signature,
+            has_webhook_secret: !!webhookSecret
+          }),
           { 
             status: 400, 
             headers: { ...corsHeaders, "Content-Type": "application/json" } 
@@ -154,6 +159,20 @@ serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" } 
           }
       );
+    }
+    
+    // Enregistrer l'événement complet pour référence et débogage
+    try {
+      await supabase.from("webhook_events").insert({
+        event_type: event.type || "unknown",
+        event_data: eventData,
+        raw_payload: JSON.parse(body),
+        processed: false
+      });
+      console.log("Événement webhook enregistré pour débogage");
+    } catch (err) {
+      console.error("Erreur lors de l'enregistrement de l'événement webhook:", err);
+      // Continuer le traitement même si l'enregistrement échoue
     }
     
     // Traitement de l'événement selon son type
@@ -296,6 +315,15 @@ async function handlePaymentEvent(paymentData, supabase) {
   }
   
   console.log("Transaction enregistrée avec succès:", data);
+  
+  // 6. Mettre à jour l'événement webhook comme traité
+  try {
+    await supabase.from("webhook_events")
+      .update({ processed: true })
+      .eq("event_data->id", paymentId);
+  } catch (err) {
+    console.error("Erreur lors de la mise à jour du statut de l'événement webhook:", err);
+  }
 }
 
 // Fonction pour traiter les payloads génériques
