@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,7 +16,6 @@ const WebhookDebug = () => {
   const [isTestingWebhook, setIsTestingWebhook] = useState(false);
   const [realtimeEnabled, setRealtimeEnabled] = useState(true);
 
-  // Récupérer les logs de la fonction webhook
   const { data: logs, isLoading: isLogsLoading, refetch: refetchLogs } = useQuery({
     queryKey: ['webhookLogs'],
     queryFn: async () => {
@@ -33,10 +31,9 @@ const WebhookDebug = () => {
         return [];
       }
     },
-    refetchInterval: 10000, // Rafraîchir toutes les 10 secondes
+    refetchInterval: 10000,
   });
 
-  // Récupérer les transactions les plus récentes
   const { data: transactions, isLoading: isTransactionsLoading, refetch: refetchTransactions } = useQuery({
     queryKey: ['recentTransactions'],
     queryFn: async () => {
@@ -54,10 +51,9 @@ const WebhookDebug = () => {
         return [];
       }
     },
-    refetchInterval: 5000, // Rafraîchir toutes les 5 secondes
+    refetchInterval: 5000,
   });
 
-  // Configuration du canal de temps réel pour les événements webhook
   useEffect(() => {
     if (!realtimeEnabled) return;
 
@@ -88,7 +84,6 @@ const WebhookDebug = () => {
         }
       });
 
-    // Canal de temps réel pour les transactions
     const transactionsChannel = supabase
       .channel('transactions-changes')
       .on(
@@ -133,14 +128,14 @@ const WebhookDebug = () => {
     }
   };
 
-  const testWebhook = async () => {
+  const testWebhook = async (e) => {
+    if (e) e.preventDefault();
+    
     setIsTestingWebhook(true);
     try {
-      // Récupérer le token d'authentification actuel
       const { data: { session } } = await supabase.auth.getSession();
       const authToken = session?.access_token;
       
-      // Préparer les en-têtes avec le token d'authentification
       const headers = {
         'Content-Type': 'application/json',
       };
@@ -149,20 +144,21 @@ const WebhookDebug = () => {
         headers['Authorization'] = `Bearer ${authToken}`;
       }
       
-      // Appeler l'endpoint de test du webhook avec les en-têtes d'authentification
+      console.log("Calling webhook test endpoint with headers:", headers);
+      
       const response = await fetch('https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook/test', {
         method: 'POST',
         headers: headers
       });
       
       const data = await response.json();
+      console.log("Webhook test response:", data);
       
       if (data.success) {
         toast.success('Test du webhook réussi !', {
           description: 'La fonction webhook est accessible et opérationnelle.',
         });
         
-        // Rafraîchir les logs et les transactions pour voir l'événement de test
         await Promise.all([refetchLogs(), refetchTransactions()]);
       } else {
         toast.error('Échec du test du webhook', {
@@ -191,7 +187,7 @@ const WebhookDebug = () => {
                 <h1 className="text-3xl font-bold text-center">Diagnostic Webhook Stripe</h1>
                 <div className="flex gap-2">
                   <Button 
-                    onClick={testWebhook} 
+                    onClick={(e) => testWebhook(e)} 
                     variant="secondary"
                     disabled={isTestingWebhook}
                     className="flex items-center gap-2"
@@ -220,7 +216,6 @@ const WebhookDebug = () => {
               </div>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                {/* Carte des transactions récentes */}
                 <Card>
                   <CardHeader>
                     <CardTitle>Transactions récentes</CardTitle>
@@ -260,7 +255,6 @@ const WebhookDebug = () => {
                   </CardContent>
                 </Card>
                 
-                {/* Carte des logs du webhook */}
                 <Card>
                   <CardHeader>
                     <CardTitle>Logs du webhook Stripe</CardTitle>
