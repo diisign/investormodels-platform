@@ -4,6 +4,7 @@ import React, { Suspense, lazy } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './components/ui/sonner';
 import { Loader2 } from 'lucide-react';
+import { AuthProvider } from './utils/auth';
 
 const Index = lazy(() => import('./pages/Index'));
 const About = lazy(() => import('./pages/About'));
@@ -29,23 +30,25 @@ const LoadingSpinner = () => (
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/creators" element={<Creators />} />
-          <Route path="/creators/:id" element={<CreatorDetails />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/deposit" element={<Deposit />} />
-          <Route path="/webhook-debug" element={<WebhookDebug />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-      <Toaster />
+      <AuthProvider>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/creators" element={<Creators />} />
+            <Route path="/creators/:id" element={<CreatorDetails />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/deposit" element={<Deposit />} />
+            <Route path="/webhook-debug" element={<WebhookDebug />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
