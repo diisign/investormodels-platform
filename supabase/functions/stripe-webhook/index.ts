@@ -22,6 +22,7 @@ serve(async (req) => {
     const signature = req.headers.get("stripe-signature");
     
     if (!signature) {
+      console.error("Signature Stripe manquante");
       return new Response(
         JSON.stringify({ error: "Signature Stripe manquante" }),
         { 
@@ -56,6 +57,7 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
     console.log("Événement Stripe reçu:", event.type);
+    console.log("Données de l'événement:", JSON.stringify(event.data.object));
     
     // Traiter différents types d'événements
     switch (event.type) {
@@ -69,7 +71,7 @@ serve(async (req) => {
         await handlePaymentIntentSucceeded(event.data.object, supabase);
         break;
       case "charge.succeeded":
-        console.log("Charge réussie:", event.data.object);
+        await handleChargeSucceeded(event.data.object, supabase);
         break;
       case "charge.failed":
         console.log("Charge échouée:", event.data.object);
@@ -128,57 +130,204 @@ async function handleCheckoutSessionCompleted(session, supabase) {
   
   if (!userId) {
     console.error("ID utilisateur non trouvé dans les métadonnées ou client_reference_id");
+    
+    // Chercher l'email dans la session et essayer de trouver l'utilisateur
+    const customerEmail = session.customer_details?.email;
+    if (customerEmail) {
+      const { data: userData, error: userError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', customerEmail)
+        .maybeSingle();
+      
+      if (userData?.id) {
+        console.log(`Utilisateur trouvé via email: ${customerEmail}, ID: ${userData.id}`);
+        return await createTransaction(userData.id, session, supabase);
+      } else {
+        console.error(`Aucun utilisateur trouvé avec l'email: ${customerEmail}`);
+      }
+    }
+    
+    // Si aucun utilisateur n'est identifié, essayons avec le premier utilisateur dans la base (pour le développement)
+    const { data: users, error: usersError } = await supabase
+      .from('profiles')
+      .select('id')
+      .limit(1);
+    
+    if (users && users.length > 0) {
+      console.log(`Utilisation de l'utilisateur par défaut pour le développement: ${users[0].id}`);
+      return await createTransaction(users[0].id, session, supabase);
+    }
+    
+    console.error("Impossible de déterminer l'utilisateur pour la transaction");
     return;
   }
   
+  await createTransaction(userId, session, supabase);
+}
+
+async function createTransaction(userId, session, supabase) {
+  console.log(`Création d'une transaction pour l'utilisateur: ${userId}`);
+  
+  // Calculer le montant (conversion des centimes en euros ou utilisation directe selon le format)
+  const amount = session.amount_total ? session.amount_total / 100 : 
+                (session.amount ? session.amount / 100 : 0);
+  
+  console.log(`Montant de la transaction: ${amount} ${session.currency || "eur"}`);
+  
   // Enregistrer la transaction dans la base de données
-  const { error } = await supabase.from("transactions").insert({
+  const { data, error } = await supabase.from("transactions").insert({
     user_id: userId,
-    amount: session.amount_total / 100, // Conversion des centimes en euros
+    amount: amount,
     currency: session.currency || "eur",
     status: "completed",
     payment_id: session.id,
     payment_method: "stripe"
-  });
+  }).select();
   
   if (error) {
     console.error("Erreur lors de l'enregistrement de la transaction:", error);
     return;
   }
   
-  console.log("Transaction enregistrée avec succès");
+  console.log("Transaction enregistrée avec succès:", data);
 }
 
 async function handleAsyncPaymentSucceeded(paymentData, supabase) {
   console.log("Paiement asynchrone réussi:", paymentData);
-  await processPaymentData(paymentData, supabase);
+  await handleGenericPayment(paymentData, supabase);
 }
 
 async function handlePaymentIntentSucceeded(paymentData, supabase) {
   console.log("Intention de paiement réussie:", paymentData);
-  await processPaymentData(paymentData, supabase);
+  await handleGenericPayment(paymentData, supabase);
 }
 
-async function processPaymentData(paymentData, supabase) {
-  // Récupérer tous les utilisateurs (cette approche est simplifiée pour l'exemple)
-  const { data: users, error: usersError } = await supabase
-    .from('profiles')
-    .select('id');
+async function handleChargeSucceeded(chargeData, supabase) {
+  console.log("Charge réussie:", chargeData);
   
-  if (usersError) {
-    console.error("Erreur lors de la récupération des utilisateurs:", usersError);
-    return;
+  // Chercher l'email dans les données de la charge
+  const customerEmail = chargeData.billing_details?.email || 
+                        chargeData.receipt_email ||
+                        chargeData.customer_email;
+  
+  if (customerEmail) {
+    const { data: userData, error: userError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('email', customerEmail)
+      .maybeSingle();
+    
+    if (userData?.id) {
+      console.log(`Utilisateur trouvé via email: ${customerEmail}, ID: ${userData.id}`);
+      
+      // Calculer le montant (conversion des centimes en euros)
+      const amount = chargeData.amount ? chargeData.amount / 100 : 0;
+      
+      const { error } = await supabase.from("transactions").insert({
+        user_id: userData.id,
+        amount: amount,
+        currency: chargeData.currency || "eur",
+        status: "completed",
+        payment_id: chargeData.id,
+        payment_method: "stripe"
+      });
+      
+      if (error) {
+        console.error("Erreur lors de l'enregistrement de la transaction:", error);
+        return;
+      }
+      
+      console.log("Transaction enregistrée avec succès");
+      return;
+    }
   }
   
-  // Si aucun utilisateur n'est trouvé, utiliser le premier utilisateur
-  // (Ceci est une simplification - en production, vous devriez avoir une meilleure stratégie)
+  // Si l'email n'est pas trouvé, essayer avec le customer_id
+  if (chargeData.customer) {
+    // Pour le développement, utiliser le premier utilisateur disponible
+    const { data: users, error: usersError } = await supabase
+      .from('profiles')
+      .select('id')
+      .limit(1);
+    
+    if (users && users.length > 0) {
+      const userId = users[0].id;
+      const amount = chargeData.amount ? chargeData.amount / 100 : 0;
+      
+      const { error } = await supabase.from("transactions").insert({
+        user_id: userId,
+        amount: amount,
+        currency: chargeData.currency || "eur",
+        status: "completed",
+        payment_id: chargeData.id,
+        payment_method: "stripe"
+      });
+      
+      if (error) {
+        console.error("Erreur lors de l'enregistrement de la transaction:", error);
+        return;
+      }
+      
+      console.log(`Transaction enregistrée avec succès pour l'utilisateur par défaut: ${userId}`);
+    } else {
+      console.error("Aucun utilisateur trouvé pour associer le paiement");
+    }
+  }
+}
+
+async function handleGenericPayment(paymentData, supabase) {
+  // Essayer de trouver l'utilisateur associé au paiement
+  const customerEmail = paymentData.receipt_email || 
+                       (paymentData.customer_details?.email) || 
+                       (paymentData.billing_details?.email);
+  
+  if (customerEmail) {
+    const { data: userData, error: userError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('email', customerEmail)
+      .maybeSingle();
+    
+    if (userData?.id) {
+      console.log(`Utilisateur trouvé via email: ${customerEmail}, ID: ${userData.id}`);
+      
+      // Enregistrer la transaction dans la base de données
+      const amount = paymentData.amount_total ? paymentData.amount_total / 100 : 
+                    (paymentData.amount ? paymentData.amount / 100 : 0);
+                    
+      const { error } = await supabase.from("transactions").insert({
+        user_id: userData.id,
+        amount: amount,
+        currency: paymentData.currency || "eur",
+        status: "completed",
+        payment_id: paymentData.id,
+        payment_method: "stripe"
+      });
+      
+      if (error) {
+        console.error("Erreur lors de l'enregistrement de la transaction:", error);
+        return;
+      }
+      
+      console.log("Transaction enregistrée avec succès");
+      return;
+    }
+  }
+  
+  // Si aucun email n'est trouvé, utiliser le premier utilisateur disponible (pour le développement)
+  const { data: users, error: usersError } = await supabase
+    .from('profiles')
+    .select('id')
+    .limit(1);
+  
   if (users && users.length > 0) {
     const userId = users[0].id;
     
     // Enregistrer la transaction dans la base de données
     const amount = paymentData.amount_total ? paymentData.amount_total / 100 : 
-                   (paymentData.amount ? paymentData.amount / 100 : 0);
-                   
+                  (paymentData.amount ? paymentData.amount / 100 : 0);
+                  
     const { error } = await supabase.from("transactions").insert({
       user_id: userId,
       amount: amount,
@@ -193,7 +342,7 @@ async function processPaymentData(paymentData, supabase) {
       return;
     }
     
-    console.log("Transaction enregistrée avec succès pour le premier utilisateur");
+    console.log(`Transaction enregistrée avec succès pour l'utilisateur par défaut: ${userId}`);
   } else {
     console.error("Aucun utilisateur trouvé pour associer le paiement");
   }
