@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@12.7.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
@@ -12,9 +13,6 @@ const corsHeaders = {
 serve(async (req) => {
   console.log("Webhook endpoint appelé ! Méthode:", req.method);
   console.log("URL complète reçue:", req.url);
-  
-  // Logging des en-têtes pour le débogage
-  console.log("Tous les en-têtes reçus:", JSON.stringify([...req.headers.entries()]));
   
   // Gestion de la requête OPTIONS pour CORS
   if (req.method === "OPTIONS") {
