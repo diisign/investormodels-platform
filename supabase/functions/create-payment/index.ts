@@ -27,8 +27,23 @@ serve(async (req) => {
       );
     }
 
+    console.log(`Création d'une session de paiement: montant=${amount}€, userId=${userId}`);
+
     // Initialisation de Stripe avec la clé API
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
+    const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY") || "";
+    
+    if (!stripeSecretKey) {
+      console.error("STRIPE_SECRET_KEY non configurée dans les secrets de la fonction Edge");
+      return new Response(
+        JSON.stringify({ error: "Configuration Stripe manquante" }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+    
+    const stripe = new Stripe(stripeSecretKey, {
       apiVersion: "2023-10-16",
     });
 
@@ -54,6 +69,8 @@ serve(async (req) => {
         userId: userId,
       },
     });
+
+    console.log(`Session de paiement créée: ${session.id}, URL: ${session.url}`);
 
     return new Response(
       JSON.stringify({ success: true, url: session.url }),

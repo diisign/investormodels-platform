@@ -15,6 +15,7 @@ import UserBalance from '@/components/UserBalance';
 import FadeIn from '@/components/animations/FadeIn';
 import { useQueryClient } from '@tanstack/react-query';
 import { ExternalLink, RefreshCw, Loader2 } from 'lucide-react';
+import { STRIPE_PUBLIC_KEY } from '@/integrations/stripe/config';
 
 const Deposit = () => {
   const { user, isAuthenticated } = useAuth();
@@ -213,7 +214,6 @@ const Deposit = () => {
                     </CardFooter>
                   </Card>
                   
-                  {/* Carte pour dépôt de test (pour le développement) */}
                   <Card className="mt-6 border-dashed border-gray-300 bg-gray-50 dark:bg-gray-800/50">
                     <CardHeader>
                       <CardTitle className="text-gray-600 dark:text-gray-300">Dépôt de test</CardTitle>
@@ -287,6 +287,15 @@ const Deposit = () => {
                       </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         Paiement sécurisé par carte bancaire via Stripe. Aucune information de carte n'est stockée sur nos serveurs.
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Powered by <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline">Stripe</a> 
+                        {STRIPE_PUBLIC_KEY && STRIPE_PUBLIC_KEY.startsWith('pk_test') && 
+                          <span className="ml-1 text-amber-600">(Mode Test)</span>
+                        }
+                        {STRIPE_PUBLIC_KEY && STRIPE_PUBLIC_KEY.startsWith('pk_live') && 
+                          <span className="ml-1 text-green-600">(Mode Production)</span>
+                        }
                       </p>
                     </CardContent>
                   </Card>
