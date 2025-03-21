@@ -80,21 +80,39 @@ serve(async (req) => {
       parsedBody = JSON.parse(body);
       console.log("Événement JSON parsé avec succès");
       
-      // Si le corps a un type, utiliser comme type d'événement
+      // Structure principale de l'événement
       if (parsedBody.type) {
+        // Format standard d'événement Stripe
         eventType = parsedBody.type;
         console.log(`Type d'événement depuis JSON: ${eventType}`);
         
-        // Extraire les données d'événement selon la structure
         if (parsedBody.data && parsedBody.data.object) {
           eventData = parsedBody.data.object;
-        } else if (parsedBody.object && parsedBody.object.object === "checkout.session") {
-          // Structure où l'objet est directement dans "object"
-          eventData = parsedBody.object;
+        }
+      } else if (parsedBody.object && parsedBody.object.object === "checkout.session") {
+        // Format alternatif où l'objet est directement dans la propriété "object"
+        eventType = "checkout.session.completed";
+        eventData = parsedBody.object;
+      } else if (parsedBody.event_type && parsedBody.event_data) {
+        // Format alternatif possible
+        eventType = parsedBody.event_type;
+        eventData = parsedBody.event_data;
+      }
+      
+      // Si nous avons toujours des données vides mais une structure nested 
+      if (Object.keys(eventData).length === 0 && parsedBody.object) {
+        const nestedObject = parsedBody.object;
+        
+        if (typeof nestedObject === 'object') {
+          if (nestedObject.object === "checkout.session") {
+            eventType = "checkout.session.completed";
+            eventData = nestedObject;
+            console.log("Données extraites de structure nested:", Object.keys(eventData).join(', '));
+          }
         }
       }
     } catch (parseError) {
-      console.log("Le corps n'est pas du JSON valide, tentative de construction d'événement avec signature");
+      console.log("Le corps n'est pas du JSON valide, tentative de construction d'événement avec signature:", parseError.message);
       parsedBody = { raw: body };
     }
     
@@ -131,18 +149,6 @@ serve(async (req) => {
       }
       if (!signature) {
         console.log("Aucune signature Stripe fournie");
-      }
-    }
-    
-    // Si les données d'événement sont vides mais que nous avons un objet parsé
-    if (Object.keys(eventData).length === 0) {
-      if (parsedBody.object && parsedBody.object.object === "checkout.session") {
-        eventData = parsedBody.object;
-        eventType = "checkout.session.completed";
-        console.log("Données extraites de parsedBody.object:", Object.keys(eventData).join(', '));
-      } else if (parsedBody.data && parsedBody.data.object) {
-        eventData = parsedBody.data.object;
-        console.log("Données extraites de parsedBody.data.object:", Object.keys(eventData).join(', '));
       }
     }
     
@@ -213,116 +219,120 @@ serve(async (req) => {
 async function handlePaymentEvent(paymentData, supabase) {
   console.log("Traitement de l'événement de paiement:", JSON.stringify(paymentData).substring(0, 500) + "...");
   
-  // 1. Identifier l'utilisateur
-  let userId = null;
-  
-  // Essayer de trouver l'ID utilisateur dans les métadonnées
-  if (paymentData.metadata?.userId) {
-    userId = paymentData.metadata.userId;
-    console.log(`Utilisateur identifié à partir des métadonnées: ${userId}`);
-  } 
-  // Sinon, essayer de le trouver via l'email
-  else {
-    const customerEmail = 
-      paymentData.customer_details?.email || 
-      paymentData.billing_details?.email ||
-      paymentData.receipt_email;
+  try {
+    // 1. Identifier l'utilisateur
+    let userId = null;
     
-    if (customerEmail) {
-      console.log(`Recherche d'un utilisateur avec l'email: ${customerEmail}`);
+    // Essayer de trouver l'ID utilisateur dans les métadonnées
+    if (paymentData.metadata?.userId) {
+      userId = paymentData.metadata.userId;
+      console.log(`Utilisateur identifié à partir des métadonnées: ${userId}`);
+    } 
+    // Sinon, essayer de le trouver via l'email
+    else {
+      const customerEmail = 
+        paymentData.customer_details?.email || 
+        paymentData.billing_details?.email ||
+        paymentData.receipt_email;
       
-      // Rechercher dans les profils d'utilisateurs par email
-      const { data: users, error } = await supabase.auth.admin.listUsers();
-      
-      if (error) {
-        console.error("Erreur lors de la recherche des utilisateurs:", error);
-      } else if (users && users.users && users.users.length > 0) {
-        const matchingUser = users.users.find(user => 
-          user.email && user.email.toLowerCase() === customerEmail.toLowerCase()
-        );
+      if (customerEmail) {
+        console.log(`Recherche d'un utilisateur avec l'email: ${customerEmail}`);
         
-        if (matchingUser) {
-          userId = matchingUser.id;
-          console.log(`Utilisateur trouvé via email: ${customerEmail}, ID: ${userId}`);
-        } else {
-          console.log("Aucun utilisateur trouvé avec cet email");
+        // Rechercher dans les profils d'utilisateurs par email
+        const { data: users, error } = await supabase.auth.admin.listUsers();
+        
+        if (error) {
+          console.error("Erreur lors de la recherche des utilisateurs:", error);
+        } else if (users && users.users && users.users.length > 0) {
+          const matchingUser = users.users.find(user => 
+            user.email && user.email.toLowerCase() === customerEmail.toLowerCase()
+          );
+          
+          if (matchingUser) {
+            userId = matchingUser.id;
+            console.log(`Utilisateur trouvé via email: ${customerEmail}, ID: ${userId}`);
+          } else {
+            console.log("Aucun utilisateur trouvé avec cet email");
+          }
         }
       }
     }
-  }
-  
-  // Si aucun utilisateur n'est trouvé, utiliser le premier disponible (pour le développement)
-  if (!userId) {
-    console.log("Aucun utilisateur spécifique identifié, récupération du premier utilisateur");
     
-    const { data: users, error } = await supabase.auth.admin.listUsers();
+    // Si aucun utilisateur n'est trouvé, utiliser le premier disponible (pour le développement)
+    if (!userId) {
+      console.log("Aucun utilisateur spécifique identifié, récupération du premier utilisateur");
+      
+      const { data: users, error } = await supabase.auth.admin.listUsers();
+      
+      if (error) {
+        console.error("Erreur lors de la récupération des utilisateurs:", error);
+        return;
+      }
+      
+      if (users && users.users && users.users.length > 0) {
+        userId = users.users[0].id;
+        console.log(`Utilisation de l'utilisateur par défaut: ${userId}`);
+      } else {
+        console.error("Aucun utilisateur trouvé dans la base de données");
+        return;
+      }
+    }
+    
+    // 2. Calculer le montant
+    let amount = 0;
+    
+    if (paymentData.amount_total) {
+      amount = paymentData.amount_total / 100;
+    } else if (paymentData.amount) {
+      amount = paymentData.amount / 100;
+    } else if (typeof paymentData.total === 'number') {
+      amount = paymentData.total / 100;
+    } else {
+      // Montant par défaut si aucun montant n'est spécifié
+      amount = 2.00;
+      console.log("Aucun montant trouvé, utilisation du montant par défaut:", amount);
+    }
+    
+    console.log("Montant calculé:", amount);
+    
+    // 3. Identifier la devise
+    const currency = paymentData.currency || "eur";
+    
+    // 4. Générer un ID de paiement unique
+    const paymentId = paymentData.id || paymentData.payment_intent || `generated-${Date.now()}`;
+    
+    console.log(`Création d'une transaction pour l'utilisateur ${userId} avec un montant de ${amount} ${currency}, paymentId: ${paymentId}`);
+    
+    // Vérifier si cette transaction existe déjà
+    const { data: existingTransactions, error: checkError } = await supabase
+      .from("transactions")
+      .select("id")
+      .eq("payment_id", paymentId);
+    
+    if (checkError) {
+      console.error("Erreur lors de la vérification des transactions existantes:", checkError);
+    } else if (existingTransactions && existingTransactions.length > 0) {
+      console.log(`Transaction avec payment_id ${paymentId} existe déjà, ignorée pour éviter les doublons`);
+      return;
+    }
+    
+    // 5. Enregistrer la transaction
+    const { data, error } = await supabase.from("transactions").insert({
+      user_id: userId,
+      amount: amount,
+      currency: currency,
+      status: "completed",
+      payment_id: paymentId,
+      payment_method: "stripe"
+    }).select();
     
     if (error) {
-      console.error("Erreur lors de la récupération des utilisateurs:", error);
+      console.error("Erreur lors de l'enregistrement de la transaction:", error);
       return;
     }
     
-    if (users && users.users && users.users.length > 0) {
-      userId = users.users[0].id;
-      console.log(`Utilisation de l'utilisateur par défaut: ${userId}`);
-    } else {
-      console.error("Aucun utilisateur trouvé dans la base de données");
-      return;
-    }
+    console.log("Transaction enregistrée avec succès:", data[0]?.id);
+  } catch (error) {
+    console.error("Erreur lors du traitement de l'événement de paiement:", error);
   }
-  
-  // 2. Calculer le montant
-  let amount = 0;
-  
-  if (paymentData.amount_total) {
-    amount = paymentData.amount_total / 100;
-  } else if (paymentData.amount) {
-    amount = paymentData.amount / 100;
-  } else if (typeof paymentData.total === 'number') {
-    amount = paymentData.total / 100;
-  } else {
-    // Montant par défaut si aucun montant n'est spécifié
-    amount = 2.00;
-    console.log("Aucun montant trouvé, utilisation du montant par défaut:", amount);
-  }
-  
-  console.log("Montant calculé:", amount);
-  
-  // 3. Identifier la devise
-  const currency = paymentData.currency || "eur";
-  
-  // 4. Générer un ID de paiement unique
-  const paymentId = paymentData.id || paymentData.payment_intent || `generated-${Date.now()}`;
-  
-  console.log(`Création d'une transaction pour l'utilisateur ${userId} avec un montant de ${amount} ${currency}, paymentId: ${paymentId}`);
-  
-  // Vérifier si cette transaction existe déjà
-  const { data: existingTransactions, error: checkError } = await supabase
-    .from("transactions")
-    .select("id")
-    .eq("payment_id", paymentId);
-  
-  if (checkError) {
-    console.error("Erreur lors de la vérification des transactions existantes:", checkError);
-  } else if (existingTransactions && existingTransactions.length > 0) {
-    console.log(`Transaction avec payment_id ${paymentId} existe déjà, ignorée pour éviter les doublons`);
-    return;
-  }
-  
-  // 5. Enregistrer la transaction
-  const { data, error } = await supabase.from("transactions").insert({
-    user_id: userId,
-    amount: amount,
-    currency: currency,
-    status: "completed",
-    payment_id: paymentId,
-    payment_method: "stripe"
-  }).select();
-  
-  if (error) {
-    console.error("Erreur lors de l'enregistrement de la transaction:", error);
-    return;
-  }
-  
-  console.log("Transaction enregistrée avec succès:", data[0]?.id);
 }
