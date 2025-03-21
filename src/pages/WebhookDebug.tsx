@@ -8,11 +8,13 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import FadeIn from '@/components/animations/FadeIn';
-import { ArrowDown, RefreshCw, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { ArrowDown, RefreshCw, CheckCircle, AlertCircle, Loader2, Wand2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const WebhookDebug = () => {
   const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [realtimeEnabled, setRealtimeEnabled] = useState(true);
 
   // Récupérer les logs de la fonction webhook
   const { data: logs, isLoading: isLogsLoading, refetch: refetchLogs } = useQuery({
@@ -54,11 +56,80 @@ const WebhookDebug = () => {
     refetchInterval: 5000, // Rafraîchir toutes les 5 secondes
   });
 
+  // Configuration du canal de temps réel pour les événements webhook
+  useEffect(() => {
+    if (!realtimeEnabled) return;
+
+    console.log("Configuration du canal temps réel pour webhook_events");
+    
+    const channel = supabase
+      .channel('webhook-events-changes')
+      .on(
+        'postgres_changes',
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'webhook_events' 
+        },
+        (payload) => {
+          console.log('Nouvel événement webhook reçu:', payload);
+          toast.success('Nouvel événement webhook reçu!', {
+            description: `Type: ${payload.new.event_type}`,
+            duration: 5000,
+          });
+          refetchLogs();
+        }
+      )
+      .subscribe((status) => {
+        console.log(`Statut de la souscription temps réel: ${status}`);
+        if (status === 'SUBSCRIBED') {
+          console.log('Souscription aux événements webhook activée');
+        }
+      });
+
+    // Canal de temps réel pour les transactions
+    const transactionsChannel = supabase
+      .channel('transactions-changes')
+      .on(
+        'postgres_changes',
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'transactions' 
+        },
+        (payload) => {
+          console.log('Nouvelle transaction reçue:', payload);
+          toast.success('Nouvelle transaction détectée!', {
+            description: `Montant: ${payload.new.amount} ${payload.new.currency}`,
+            duration: 5000,
+          });
+          refetchTransactions();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log("Nettoyage des canaux temps réel");
+      supabase.removeChannel(channel);
+      supabase.removeChannel(transactionsChannel);
+    };
+  }, [refetchLogs, refetchTransactions, realtimeEnabled]);
+
   const handleRefresh = () => {
     setIsLoading(true);
     Promise.all([refetchLogs(), refetchTransactions()]).finally(() => {
       setIsLoading(false);
     });
+  };
+
+  const toggleRealtime = () => {
+    const newState = !realtimeEnabled;
+    setRealtimeEnabled(newState);
+    if (newState) {
+      toast.success('Notifications en temps réel activées');
+    } else {
+      toast.info('Notifications en temps réel désactivées');
+    }
   };
 
   return (
@@ -71,15 +142,25 @@ const WebhookDebug = () => {
             <FadeIn direction="up">
               <div className="flex items-center justify-between mb-8">
                 <h1 className="text-3xl font-bold text-center">Diagnostic Webhook Stripe</h1>
-                <Button 
-                  onClick={handleRefresh} 
-                  variant="outline" 
-                  disabled={isLoading}
-                  className="flex items-center gap-2"
-                >
-                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-                  Actualiser
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={toggleRealtime} 
+                    variant={realtimeEnabled ? "default" : "outline"}
+                    className="flex items-center gap-2"
+                  >
+                    <Wand2 className="h-4 w-4" />
+                    {realtimeEnabled ? 'Temps réel activé' : 'Temps réel désactivé'}
+                  </Button>
+                  <Button 
+                    onClick={handleRefresh} 
+                    variant="outline" 
+                    disabled={isLoading}
+                    className="flex items-center gap-2"
+                  >
+                    {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+                    Actualiser
+                  </Button>
+                </div>
               </div>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
