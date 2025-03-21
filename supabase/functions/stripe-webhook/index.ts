@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  console.log("Webhook endpoint appelé !");
+  console.log("Webhook endpoint appelé ! Méthode:", req.method);
   
   // Gestion de la requête OPTIONS pour CORS
   if (req.method === "OPTIONS") {
@@ -36,6 +36,8 @@ serve(async (req) => {
     
     // Récupérer les données brutes du corps de la requête
     const body = await req.text();
+    console.log("URL complète reçue:", req.url);
+    console.log("Headers reçus:", JSON.stringify([...req.headers.entries()]));
     console.log("Payload reçu:", body.substring(0, 500) + (body.length > 500 ? "..." : ""));
     
     // Établir une connexion à Supabase
