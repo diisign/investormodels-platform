@@ -292,7 +292,7 @@ const WebhookDebug = () => {
                         <div>
                           <h3 className="font-medium mb-1">En-têtes de requête</h3>
                           <p className="text-sm text-slate-600 dark:text-slate-300">
-                            Assurez-vous que Stripe envoie l'en-tête <span className="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">stripe-signature</span> avec chaque requête.
+                            Assurez-vous que Stripe envoie l'en-tête <span className="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded text-xs">stripe-signature</span> avec chaque requête.
                           </p>
                         </div>
                         
