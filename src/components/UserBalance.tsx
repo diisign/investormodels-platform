@@ -66,7 +66,7 @@ const UserBalance = () => {
       }
     },
     enabled: !!user,
-    refetchInterval: 3000, // Rafraîchir toutes les 3 secondes
+    refetchInterval: 2000, // Rafraîchir toutes les 2 secondes
     staleTime: 0, // Considérer les données comme obsolètes immédiatement
     refetchOnWindowFocus: true,
     refetchOnMount: true,
