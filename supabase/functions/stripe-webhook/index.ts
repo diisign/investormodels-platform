@@ -84,9 +84,17 @@ serve(async (req) => {
       // Essayer de parser le corps comme JSON
       parsedBody = JSON.parse(body);
       console.log("Événement JSON parsé avec succès");
+      console.log("Structure de l'événement:", JSON.stringify(parsedBody).substring(0, 1000) + "...");
       
-      // Logique améliorée pour extraire les données de l'événement
-      if (parsedBody.type) {
+      // NOUVEAU: Structure spécifique - checkout.session directement avec object et previous_attributes
+      if (parsedBody.object && typeof parsedBody.object === 'object' && parsedBody.object.object === 'checkout.session') {
+        console.log("Structure détectée: checkout.session avec objet parent et previous_attributes");
+        eventType = "checkout.session.completed";
+        eventData = parsedBody.object;
+        console.log("Traitement d'un checkout.session directement depuis la racine de l'événement");
+      }
+      // Logique existante pour d'autres formats
+      else if (parsedBody.type) {
         // Format standard d'événement Stripe (webhook direct)
         eventType = parsedBody.type;
         
@@ -199,13 +207,20 @@ serve(async (req) => {
     // Si nous avons des données d'événement valides, traiter le paiement
     if (Object.keys(eventData).length > 0) {
       console.log("Traitement du paiement avec les données extraites");
-      await handlePaymentEvent(eventData, supabase);
+      const result = await handlePaymentEvent(eventData, supabase);
+      console.log("Résultat du traitement du paiement:", result);
       
       // Mettre à jour l'événement comme traité (s'il existe)
       if (eventRecord && eventRecord.length > 0) {
-        await supabase.from("webhook_events")
+        const { error: updateError } = await supabase.from("webhook_events")
           .update({ processed: true })
           .eq("id", eventRecord[0].id);
+          
+        if (updateError) {
+          console.error("Erreur lors de la mise à jour de l'événement comme traité:", updateError);
+        } else {
+          console.log("Événement marqué comme traité");
+        }
       }
     } else {
       console.error("Aucune donnée d'événement valide extraite pour traitement");
@@ -293,7 +308,7 @@ async function handlePaymentEvent(paymentData, supabase) {
       
       if (error) {
         console.error("Erreur lors de la récupération des utilisateurs:", error);
-        return;
+        return { success: false, error: "Utilisateur non trouvé" };
       }
       
       if (users && users.users && users.users.length > 0) {
@@ -301,7 +316,7 @@ async function handlePaymentEvent(paymentData, supabase) {
         console.log(`Utilisation de l'utilisateur par défaut: ${userId}`);
       } else {
         console.error("Aucun utilisateur trouvé dans la base de données");
-        return;
+        return { success: false, error: "Aucun utilisateur disponible" };
       }
     }
     
@@ -310,24 +325,29 @@ async function handlePaymentEvent(paymentData, supabase) {
     
     if (paymentData.amount_total) {
       amount = paymentData.amount_total / 100;
+      console.log(`Montant calculé à partir de amount_total: ${amount}`);
     } else if (paymentData.amount) {
       amount = paymentData.amount / 100;
+      console.log(`Montant calculé à partir de amount: ${amount}`);
     } else if (typeof paymentData.total === 'number') {
       amount = paymentData.total / 100;
+      console.log(`Montant calculé à partir de total: ${amount}`);
     } else {
       // Montant par défaut si aucun montant n'est spécifié
       amount = 2.00;
       console.log("Aucun montant trouvé, utilisation du montant par défaut:", amount);
     }
     
-    console.log("Montant calculé:", amount);
+    console.log("Montant final calculé:", amount);
     
     // 3. Identifier la devise
     const currency = paymentData.currency || "eur";
+    console.log(`Devise identifiée: ${currency}`);
     
     // 4. Générer un ID de paiement unique
     // Priorité: payment_intent, puis id, puis génération
     const paymentId = paymentData.payment_intent || paymentData.id || `generated-${Date.now()}`;
+    console.log(`ID de paiement: ${paymentId}`);
     
     console.log(`Création d'une transaction pour l'utilisateur ${userId} avec un montant de ${amount} ${currency}, paymentId: ${paymentId}`);
     
@@ -339,9 +359,10 @@ async function handlePaymentEvent(paymentData, supabase) {
     
     if (checkError) {
       console.error("Erreur lors de la vérification des transactions existantes:", checkError);
+      return { success: false, error: checkError.message };
     } else if (existingTransactions && existingTransactions.length > 0) {
       console.log(`Transaction avec payment_id ${paymentId} existe déjà, ignorée pour éviter les doublons`);
-      return;
+      return { success: true, status: "skipped", reason: "duplicate" };
     }
     
     // 5. Enregistrer la transaction
@@ -356,11 +377,13 @@ async function handlePaymentEvent(paymentData, supabase) {
     
     if (error) {
       console.error("Erreur lors de l'enregistrement de la transaction:", error);
-      return;
+      return { success: false, error: error.message };
     }
     
     console.log("Transaction enregistrée avec succès:", data[0]?.id);
+    return { success: true, transactionId: data[0]?.id };
   } catch (error) {
     console.error("Erreur lors du traitement de l'événement de paiement:", error);
+    return { success: false, error: error.message };
   }
 }

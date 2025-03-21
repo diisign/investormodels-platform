@@ -144,6 +144,9 @@ serve(async (req) => {
             recentLogs.push(`    - Message d'erreur: ${event.event_data.error}`);
           }
         }
+        
+        // Ajouter des informations sur la charge utile brute pour le débogage
+        recentLogs.push(`    - Charge utile brute: ${JSON.stringify(event.raw_payload).substring(0, 150)}...`);
       }
     } else {
       recentLogs.push(`[${new Date().toISOString()}] Aucun événement webhook trouvé dans la base de données`);
