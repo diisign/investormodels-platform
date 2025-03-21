@@ -384,62 +384,62 @@ async function handlePaymentEvent(paymentData, supabase) {
   console.log("Traitement de l'événement de paiement:", JSON.stringify(paymentData).substring(0, 500) + "...");
   
   try {
-    // 1. Identifier l'utilisateur
+    // 1. Identifier l'utilisateur à partir de l'email
     let userId = null;
+    let customerEmail = null;
     
-    // Essayer de trouver l'ID utilisateur dans les métadonnées
-    if (paymentData.metadata?.userId) {
-      userId = paymentData.metadata.userId;
-      console.log(`Utilisateur identifié à partir des métadonnées: ${userId}`);
-    } 
-    // Sinon, essayer de le trouver via l'email
-    else {
-      const customerEmail = 
-        paymentData.customer_details?.email || 
-        paymentData.billing_details?.email ||
-        paymentData.receipt_email;
-      
-      if (customerEmail) {
-        console.log(`Recherche d'un utilisateur avec l'email: ${customerEmail}`);
-        
-        // Rechercher dans les profils d'utilisateurs par email
-        const { data: users, error } = await supabase.auth.admin.listUsers();
-        
-        if (error) {
-          console.error("Erreur lors de la recherche des utilisateurs:", error);
-        } else if (users && users.users && users.users.length > 0) {
-          const matchingUser = users.users.find(user => 
-            user.email && user.email.toLowerCase() === customerEmail.toLowerCase()
-          );
-          
-          if (matchingUser) {
-            userId = matchingUser.id;
-            console.log(`Utilisateur trouvé via email: ${customerEmail}, ID: ${userId}`);
-          } else {
-            console.log("Aucun utilisateur trouvé avec cet email");
-          }
-        }
-      }
-    }
+    // Extraction de l'email du client à partir des différentes structures possibles
+    customerEmail = 
+      paymentData.customer_details?.email || 
+      paymentData.customer_email ||
+      paymentData.billing_details?.email ||
+      paymentData.receipt_email ||
+      (paymentData.metadata && paymentData.metadata.email);
     
-    // Si aucun utilisateur n'est trouvé, utiliser le premier disponible (pour le développement)
-    if (!userId) {
-      console.log("Aucun utilisateur spécifique identifié, récupération du premier utilisateur");
+    if (customerEmail) {
+      console.log(`Email du client identifié: ${customerEmail}`);
       
+      // Rechercher l'utilisateur par email
       const { data: users, error } = await supabase.auth.admin.listUsers();
       
       if (error) {
-        console.error("Erreur lors de la récupération des utilisateurs:", error);
-        return { success: false, error: "Utilisateur non trouvé" };
+        console.error("Erreur lors de la recherche des utilisateurs:", error);
+      } else if (users && users.users && users.users.length > 0) {
+        const matchingUser = users.users.find(user => 
+          user.email && user.email.toLowerCase() === customerEmail.toLowerCase()
+        );
+        
+        if (matchingUser) {
+          userId = matchingUser.id;
+          console.log(`Utilisateur trouvé via email: ${customerEmail}, ID: ${userId}`);
+        } else {
+          console.log(`Aucun utilisateur trouvé avec l'email: ${customerEmail}`);
+        }
       }
+    } else {
+      console.log("Aucun email de client trouvé dans les données de paiement");
+    }
+    
+    // Si toujours pas d'utilisateur, essayer via les métadonnées
+    if (!userId && paymentData.metadata?.userId) {
+      userId = paymentData.metadata.userId;
+      console.log(`Utilisateur identifié à partir des métadonnées: ${userId}`);
+    }
+    
+    // Si aucun utilisateur n'est trouvé, enregistrer un événement et arrêter le traitement
+    if (!userId) {
+      console.error("Impossible d'identifier un utilisateur pour cette transaction");
+      await supabase.from("webhook_events").insert({
+        event_type: "payment_user_not_found",
+        event_data: { 
+          email: customerEmail,
+          payment_data: paymentData
+        },
+        raw_payload: { error: "user_not_found" },
+        processed: true
+      });
       
-      if (users && users.users && users.users.length > 0) {
-        userId = users.users[0].id;
-        console.log(`Utilisation de l'utilisateur par défaut: ${userId}`);
-      } else {
-        console.error("Aucun utilisateur trouvé dans la base de données");
-        return { success: false, error: "Aucun utilisateur disponible" };
-      }
+      return { success: false, error: "Utilisateur non trouvé" };
     }
     
     // 2. Calculer le montant
@@ -455,9 +455,9 @@ async function handlePaymentEvent(paymentData, supabase) {
       amount = paymentData.total / 100;
       console.log(`Montant calculé à partir de total: ${amount}`);
     } else {
-      // Montant par défaut si aucun montant n'est spécifié
-      amount = 2.00;
-      console.log("Aucun montant trouvé, utilisation du montant par défaut:", amount);
+      // Cas où aucun montant n'est spécifié
+      console.error("Aucun montant trouvé dans les données de paiement");
+      return { success: false, error: "Montant non trouvé" };
     }
     
     console.log("Montant final calculé:", amount);
