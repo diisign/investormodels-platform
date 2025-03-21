@@ -8,7 +8,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Gestion de la requête OPTIONS pour CORS
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -16,7 +15,6 @@ serve(async (req) => {
   try {
     const { amount, userId, returnUrl } = await req.json();
     
-    // Vérification des données reçues
     if (!amount || !userId) {
       return new Response(
         JSON.stringify({ error: "Le montant et l'identifiant utilisateur sont requis" }),
@@ -27,27 +25,23 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Création d'une session de paiement: montant=${amount}€, userId=${userId}`);
-
-    // Initialisation de Stripe avec la clé API
-    const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY") || "";
+    const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
     
     if (!stripeSecretKey) {
-      console.error("STRIPE_SECRET_KEY non configurée dans les secrets de la fonction Edge");
+      console.error("STRIPE_SECRET_KEY non configurée");
       return new Response(
-        JSON.stringify({ error: "Configuration Stripe manquante" }),
+        JSON.stringify({ error: "Configuration du service de paiement manquante" }),
         { 
-          status: 500, 
+          status: 503, 
           headers: { ...corsHeaders, "Content-Type": "application/json" } 
         }
       );
     }
     
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2024-07-31", // Version API plus récente
+      apiVersion: "2024-07-31",
     });
 
-    // Création d'une session de paiement Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -57,7 +51,7 @@ serve(async (req) => {
             product_data: {
               name: "Dépôt d'argent",
             },
-            unit_amount: Math.round(amount * 100), // Stripe utilise des centimes
+            unit_amount: Math.round(amount * 100),
           },
           quantity: 1,
         },
@@ -70,18 +64,34 @@ serve(async (req) => {
       },
     });
 
-    console.log(`Session de paiement créée: ${session.id}, URL: ${session.url}`);
-
     return new Response(
-      JSON.stringify({ success: true, url: session.url }),
+      JSON.stringify({ url: session.url }),
       { 
+        status: 201,
         headers: { ...corsHeaders, "Content-Type": "application/json" } 
       }
     );
   } catch (error) {
     console.error("Erreur paiement:", error);
+    
+    if (error instanceof Stripe.errors.StripeError) {
+      return new Response(
+        JSON.stringify({ 
+          error: "Erreur du service de paiement", 
+          details: error.message 
+        }),
+        { 
+          status: 402, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: "Erreur interne du serveur", 
+        details: error.message 
+      }),
       { 
         status: 500, 
         headers: { ...corsHeaders, "Content-Type": "application/json" } 

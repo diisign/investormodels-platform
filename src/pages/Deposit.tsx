@@ -20,27 +20,20 @@ import { STRIPE_PUBLIC_KEY } from '@/integrations/stripe/config';
 const Deposit = () => {
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [isTestLoading, setIsTestLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [testAmount, setTestAmount] = useState('2');
   const [stripeAmount, setStripeAmount] = useState('2');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
-  // Vérifier si l'utilisateur revient d'une session de paiement
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const success = params.get('success');
     
     if (success === 'true') {
       setPaymentSuccess(true);
-      
-      // Invalider le cache pour forcer la mise à jour du solde
       queryClient.invalidateQueries({
         queryKey: ['userBalance'],
       });
-      
-      // Nettoyer l'URL
       window.history.replaceState(null, '', '/deposit');
       
       toast.success('Paiement effectué avec succès !', {
@@ -65,7 +58,6 @@ const Deposit = () => {
     setIsLoading(true);
     
     try {
-      // Appeler la fonction Supabase Edge pour créer une session de paiement
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: { 
           userId: user.id,
@@ -74,72 +66,23 @@ const Deposit = () => {
         }
       });
       
-      if (error) {
-        console.error("Erreur lors de la création du paiement:", error);
-        toast.error("Erreur lors de la création du paiement", {
-          description: error.message,
-        });
-        return;
-      }
+      if (error) throw error;
       
-      // Rediriger vers l'URL de paiement Stripe
       if (data?.url) {
         window.location.href = data.url;
       } else {
-        toast.error("Erreur lors de la redirection vers Stripe");
+        throw new Error("URL de paiement manquante");
       }
-      
     } catch (error) {
       console.error("Erreur lors du paiement:", error);
-      toast.error("Erreur lors du paiement");
+      toast.error("Erreur lors de la création du paiement", {
+        description: error instanceof Error ? error.message : "Une erreur est survenue",
+      });
     } finally {
       setIsLoading(false);
     }
   };
-  
-  const handleTestDeposit = async () => {
-    if (!user) {
-      toast.error("Vous devez être connecté pour effectuer un dépôt de test");
-      return;
-    }
-    
-    setIsTestLoading(true);
-    
-    try {
-      // Appeler la fonction Supabase Edge pour créer une transaction de test
-      const { data, error } = await supabase.functions.invoke('create-test-transaction', {
-        body: { 
-          userId: user.id,
-          amount: parseFloat(testAmount) || 2.00
-        }
-      });
-      
-      if (error) {
-        console.error("Erreur lors du dépôt de test:", error);
-        toast.error("Erreur lors du dépôt de test", {
-          description: error.message,
-        });
-        return;
-      }
-      
-      // Invalider le cache pour forcer la mise à jour du solde
-      queryClient.invalidateQueries({
-        queryKey: ['userBalance'],
-      });
-      
-      toast.success('Dépôt de test effectué avec succès !', {
-        description: `${testAmount}€ ont été ajoutés à votre solde.`,
-      });
-      
-      console.log("Transaction de test créée:", data);
-    } catch (error) {
-      console.error("Erreur lors du dépôt de test:", error);
-      toast.error("Erreur lors du dépôt de test");
-    } finally {
-      setIsTestLoading(false);
-    }
-  };
-  
+
   const handleRefreshBalance = () => {
     queryClient.invalidateQueries({
       queryKey: ['userBalance'],
@@ -213,49 +156,6 @@ const Deposit = () => {
                       </Button>
                     </CardFooter>
                   </Card>
-                  
-                  <Card className="mt-6 border-dashed border-gray-300 bg-gray-50 dark:bg-gray-800/50">
-                    <CardHeader>
-                      <CardTitle className="text-gray-600 dark:text-gray-300">Dépôt de test</CardTitle>
-                      <CardDescription>
-                        Créez une transaction de test pour simuler un dépôt (pour le développement uniquement)
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex space-x-4">
-                        <div className="flex-1">
-                          <Label htmlFor="test-amount">Montant (€)</Label>
-                          <Input
-                            id="test-amount"
-                            type="number"
-                            min="1"
-                            step="0.01"
-                            placeholder="2.00"
-                            value={testAmount}
-                            onChange={(e) => setTestAmount(e.target.value)}
-                          />
-                        </div>
-                        <div className="flex items-end">
-                          <Button 
-                            onClick={handleTestDeposit}
-                            disabled={isTestLoading} 
-                            variant="outline"
-                            className="h-10"
-                          >
-                            {isTestLoading ? (
-                              <>
-                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                Traitement...
-                              </>
-                            ) : 'Créer un dépôt de test'}
-                          </Button>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Note: Cette fonction est uniquement pour le développement et les tests.
-                      </p>
-                    </CardContent>
-                  </Card>
                 </div>
                 
                 <div className="space-y-6">
@@ -289,12 +189,9 @@ const Deposit = () => {
                         Paiement sécurisé par carte bancaire via Stripe. Aucune information de carte n'est stockée sur nos serveurs.
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Powered by <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline">Stripe</a> 
-                        {STRIPE_PUBLIC_KEY && STRIPE_PUBLIC_KEY.startsWith('pk_test') && 
-                          <span className="ml-1 text-amber-600">(Mode Test)</span>
-                        }
+                        Powered by <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline">Stripe</a>
                         {STRIPE_PUBLIC_KEY && STRIPE_PUBLIC_KEY.startsWith('pk_live') && 
-                          <span className="ml-1 text-green-600">(Mode Production)</span>
+                          <span className="ml-1 text-green-600">(Production)</span>
                         }
                       </p>
                     </CardContent>
