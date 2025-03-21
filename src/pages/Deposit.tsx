@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/utils/auth";
-import { getAuthHeaders } from "@/integrations/stripe/config";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,15 +34,14 @@ const Deposit = () => {
     setIsLoading(true);
     
     try {
-      // Obtenez les en-têtes d'authentification (JWT)
-      const headers = await getAuthHeaders();
-      
-      // Appel à la fonction Edge Supabase avec le JWT
+      // Appel à la fonction Edge Supabase
       const response = await fetch(
         "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment",
         {
           method: "POST",
-          headers: headers,
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({
             amount: depositAmount,
             userId: user.id,
