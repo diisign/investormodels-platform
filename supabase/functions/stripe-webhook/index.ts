@@ -138,8 +138,9 @@ serve(async (req) => {
       );
     }
     
+    // IMPORTANT: Définir explicitement la version de l'API Stripe
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2023-10-16",
+      apiVersion: "2023-10-16", // Utiliser une version fixe et récente
     });
     
     // Récupérer les données brutes du corps de la requête
@@ -198,10 +199,14 @@ serve(async (req) => {
     let parsedBody;
     
     try {
+      // Log de la version de l'API utilisée
+      console.log("Version de l'API Stripe utilisée:", "2023-10-16");
+      
       // Essayer de parser le corps comme JSON
       parsedBody = JSON.parse(body);
       console.log("Événement JSON parsé avec succès");
       console.log("Structure de l'événement:", JSON.stringify(parsedBody).substring(0, 1000) + "...");
+      console.log("API Version dans l'événement:", parsedBody.api_version || "non spécifiée");
       
       // NOUVEAU: Structure spécifique - checkout.session directement avec object et previous_attributes
       if (parsedBody.object && typeof parsedBody.object === 'object' && parsedBody.object.object === 'checkout.session') {
@@ -355,7 +360,8 @@ serve(async (req) => {
         processed: true,
         event_type: eventType,
         verification_status: signatureVerified ? "verified" : "unverified",
-        event_id: eventRecord?.[0]?.id || "unknown"
+        event_id: eventRecord?.[0]?.id || "unknown",
+        api_version: "2023-10-16" // Indiquer la version d'API utilisée
       }),
       { 
         status: 200, 
