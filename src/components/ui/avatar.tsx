@@ -63,7 +63,7 @@ const AvatarUpload = React.forwardRef<
   
   React.useEffect(() => {
     // Set initial preview if we have a currentImageUrl
-    if (currentImageUrl && !previewUrl) {
+    if (currentImageUrl) {
       setPreviewUrl(currentImageUrl);
     }
     
@@ -73,7 +73,7 @@ const AvatarUpload = React.forwardRef<
         URL.revokeObjectURL(previewUrl);
       }
     };
-  }, [currentImageUrl, previewUrl]);
+  }, [currentImageUrl]);
   
   const handleClick = () => {
     fileInputRef.current?.click();
