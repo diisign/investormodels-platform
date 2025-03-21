@@ -73,16 +73,20 @@ serve(async (req) => {
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
-    const result = await handlePaymentEvent(event.data.object, supabase);
+    
+    // Only process completed checkout sessions to avoid duplicate transactions
+    if (event.type === 'checkout.session.completed') {
+      const result = await handlePaymentEvent(event.data.object, supabase);
 
-    if (!result.success) {
-      return new Response(
-        JSON.stringify({ error: result.error }),
-        { 
-          status: 422, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
-      );
+      if (!result.success) {
+        return new Response(
+          JSON.stringify({ error: result.error }),
+          { 
+            status: 422, 
+            headers: { ...corsHeaders, "Content-Type": "application/json" } 
+          }
+        );
+      }
     }
 
     return new Response(
@@ -95,7 +99,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Erreur webhook:", error);
     return new Response(
-      JSON.stringify({ error: "Erreur interne du serveur" }),
+      JSON.stringify({ error: "Erreur interne du serveur", details: error.message }),
       { 
         status: 500, 
         headers: { ...corsHeaders, "Content-Type": "application/json" } 
