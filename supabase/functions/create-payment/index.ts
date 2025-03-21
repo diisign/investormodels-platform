@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.217.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@16.8.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,6 +16,56 @@ serve(async (req) => {
 
   try {
     console.log("Starting payment creation process");
+    
+    // Verify JWT token in authorization header
+    const authHeader = req.headers.get('Authorization');
+    
+    if (!authHeader) {
+      console.error("Missing Authorization header");
+      return new Response(
+        JSON.stringify({ error: "Authentification requise" }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+    
+    // Get JWT token from header (remove 'Bearer ' prefix)
+    const token = authHeader.replace('Bearer ', '');
+    
+    // Validate the JWT token using Supabase
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error("Supabase configuration missing");
+      return new Response(
+        JSON.stringify({ error: "Configuration du service manquante" }),
+        { 
+          status: 503, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+    
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    
+    // Get user from JWT
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    
+    if (authError || !user) {
+      console.error("JWT validation failed:", authError);
+      return new Response(
+        JSON.stringify({ error: "Token d'authentification invalide" }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+    
+    console.log("User authenticated:", user.id);
     
     // Parse the request body
     let requestData;
@@ -34,6 +85,18 @@ serve(async (req) => {
     const { amount, userId, returnUrl } = requestData;
     
     console.log("Request data:", { amount, userId, returnUrl });
+    
+    // Verify the user ID in the request matches the authenticated user
+    if (userId !== user.id) {
+      console.error("User ID mismatch:", { requestUserId: userId, authenticatedUserId: user.id });
+      return new Response(
+        JSON.stringify({ error: "ID utilisateur non valide" }),
+        { 
+          status: 403, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
     
     if (!amount || !userId) {
       console.error("Missing required fields:", { amount, userId });
