@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@12.7.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
@@ -6,6 +5,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Max-Age": "86400",
 };
 
 serve(async (req) => {
@@ -13,7 +14,11 @@ serve(async (req) => {
   
   // Gestion de la requête OPTIONS pour CORS
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    console.log("Requête OPTIONS reçue, envoi des headers CORS");
+    return new Response(null, { 
+      status: 204, 
+      headers: corsHeaders 
+    });
   }
 
   // Endpoint de test pour vérifier que la fonction webhook est accessible
@@ -22,6 +27,18 @@ serve(async (req) => {
     console.log("Endpoint de test appelé !");
     
     try {
+      // Vérifier l'authentification pour l'endpoint de test
+      // Mais ne pas bloquer en environnement de développement
+      const isProduction = !req.headers.get("origin")?.includes("localhost");
+      const authHeader = req.headers.get("authorization");
+      
+      if (isProduction && !authHeader) {
+        console.warn("Requête de test reçue sans en-tête d'autorisation");
+        // Continuons quand même pour faciliter les tests en production
+      } else {
+        console.log("Autorisation reçue:", authHeader ? "Oui" : "Non");
+      }
+      
       // Enregistrer un événement de test dans la table webhook_events
       const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
       const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";

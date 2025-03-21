@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -146,10 +147,21 @@ const WebhookDebug = () => {
       
       console.log("Calling webhook test endpoint with headers:", headers);
       
-      const response = await fetch('https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook/test', {
+      // En production, assurez-vous d'utiliser la même URL exacte que celle définie dans les variables d'environnement
+      const webhookUrl = 'https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook/test';
+      console.log("URL de test:", webhookUrl);
+      
+      const response = await fetch(webhookUrl, {
         method: 'POST',
-        headers: headers
+        headers: headers,
+        mode: 'cors' // Forcer le mode CORS
       });
+      
+      console.log("Statut de la réponse:", response.status);
+      
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
       
       const data = await response.json();
       console.log("Webhook test response:", data);
@@ -168,7 +180,7 @@ const WebhookDebug = () => {
     } catch (error) {
       console.error('Erreur lors du test du webhook:', error);
       toast.error('Erreur lors du test du webhook', {
-        description: 'Impossible de contacter la fonction webhook.',
+        description: error.message || 'Impossible de contacter la fonction webhook.',
       });
     } finally {
       setIsTestingWebhook(false);
