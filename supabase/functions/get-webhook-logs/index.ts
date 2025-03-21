@@ -29,7 +29,7 @@ serve(async (req) => {
       .from("webhook_events")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(10);
+      .limit(20);
     
     if (webhookError) {
       console.error("Erreur lors de la récupération des événements webhook:", webhookError);
@@ -41,7 +41,7 @@ serve(async (req) => {
       .from("transactions")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(10);
+      .limit(15);
     
     if (transactionsError) {
       console.error("Erreur lors de la récupération des transactions:", transactionsError);
@@ -54,6 +54,15 @@ serve(async (req) => {
     // Ajouter des informations système
     recentLogs.push(`[${new Date().toISOString()}] Vérification de la configuration du webhook Stripe...`);
     recentLogs.push(`[${new Date().toISOString()}] URL du webhook: https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook`);
+    
+    // Vérifier le secret du webhook
+    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+    if (webhookSecret) {
+      recentLogs.push(`[${new Date().toISOString()}] Secret du webhook Stripe configuré: ${webhookSecret.substring(0, 4)}...${webhookSecret.substring(webhookSecret.length - 4)}`);
+    } else {
+      recentLogs.push(`[${new Date().toISOString()}] ⚠️ ATTENTION: Secret du webhook Stripe non configuré!`);
+      recentLogs.push(`[${new Date().toISOString()}] Ajoutez STRIPE_WEBHOOK_SECRET aux secrets de la fonction Edge`);
+    }
     
     // Ajouter des informations sur les événements webhook
     if (webhookEvents && webhookEvents.length > 0) {
@@ -77,6 +86,9 @@ serve(async (req) => {
           }
           if (eventDetails.customer_details?.email || eventDetails.billing_details?.email) {
             recentLogs.push(`    - Email: ${eventDetails.customer_details?.email || eventDetails.billing_details?.email}`);
+          }
+          if (eventDetails.payment_status) {
+            recentLogs.push(`    - Statut du paiement: ${eventDetails.payment_status}`);
           }
         }
       }
