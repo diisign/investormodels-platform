@@ -64,6 +64,15 @@ serve(async (req) => {
       recentLogs.push(`[${new Date().toISOString()}] Ajoutez STRIPE_WEBHOOK_SECRET aux secrets de la fonction Edge`);
       recentLogs.push(`[${new Date().toISOString()}] Les webhooks Stripe ne seront pas correctement vérifiés sans ce secret.`);
     }
+
+    // Vérifier la clé API Stripe
+    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+    if (stripeKey) {
+      recentLogs.push(`[${new Date().toISOString()}] Clé API Stripe configurée: ${stripeKey.substring(0, 4)}...${stripeKey.substring(stripeKey.length - 4)}`);
+    } else {
+      recentLogs.push(`[${new Date().toISOString()}] ⚠️ ATTENTION: Clé API Stripe non configurée!`);
+      recentLogs.push(`[${new Date().toISOString()}] Ajoutez STRIPE_SECRET_KEY aux secrets de la fonction Edge`);
+    }
     
     // Ajouter des informations sur les événements webhook
     if (webhookEvents && webhookEvents.length > 0) {
@@ -96,6 +105,22 @@ serve(async (req) => {
             }
             if (eventDetails.payment_intent) {
               recentLogs.push(`    - ID du payment intent: ${eventDetails.payment_intent}`);
+            }
+            if (eventDetails.payment_method_types) {
+              recentLogs.push(`    - Méthodes de paiement: ${eventDetails.payment_method_types.join(', ')}`);
+            }
+          } else if (event.event_type === "payment_intent.succeeded") {
+            if (eventDetails.id) {
+              recentLogs.push(`    - ID du payment intent: ${eventDetails.id}`);
+            }
+            if (eventDetails.amount) {
+              recentLogs.push(`    - Montant: ${eventDetails.amount / 100} ${eventDetails.currency || 'EUR'}`);
+            }
+            if (eventDetails.receipt_email) {
+              recentLogs.push(`    - Email: ${eventDetails.receipt_email}`);
+            }
+            if (eventDetails.metadata?.userId) {
+              recentLogs.push(`    - User ID: ${eventDetails.metadata.userId}`);
             }
           } else {
             // Pour les autres types d'événements
@@ -143,8 +168,9 @@ serve(async (req) => {
     // Ajouter des instructions de débogage
     recentLogs.push(`[${new Date().toISOString()}] Configuration actuelle du webhook Stripe:`);
     recentLogs.push(`[${new Date().toISOString()}] 1. URL du webhook: https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook`);
-    recentLogs.push(`[${new Date().toISOString()}] 2. Événement configuré: checkout.session.completed`);
+    recentLogs.push(`[${new Date().toISOString()}] 2. Événements recommandés: checkout.session.completed, payment_intent.succeeded`);
     recentLogs.push(`[${new Date().toISOString()}] 3. Secret du webhook: ${webhookSecret ? "Configuré" : "Non configuré"}`);
+    recentLogs.push(`[${new Date().toISOString()}] 4. Clé API Stripe: ${stripeKey ? "Configurée" : "Non configurée"}`);
     
     return new Response(
       JSON.stringify({

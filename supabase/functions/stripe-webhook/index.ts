@@ -17,10 +17,15 @@ serve(async (req) => {
   }
 
   try {
-    // Récupérer la clé Stripe depuis les variables d'environnement
+    // Récupérer les clés secrètes depuis les secrets de la fonction Edge
     const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
+    const stripeWebhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+    
+    console.log("STRIPE_SECRET_KEY existe:", !!stripeSecretKey);
+    console.log("STRIPE_WEBHOOK_SECRET existe:", !!stripeWebhookSecret);
+    
     if (!stripeSecretKey) {
-      console.error("STRIPE_SECRET_KEY non configurée");
+      console.error("STRIPE_SECRET_KEY non configurée dans les secrets de la fonction Edge");
       return new Response(
         JSON.stringify({ 
           received: true, 
@@ -60,7 +65,7 @@ serve(async (req) => {
           status: "error" 
         }),
         { 
-          status: 200, // Toujours renvoyer 200 à Stripe
+          status: 200, // Toujours retourner 200 à Stripe
           headers: { ...corsHeaders, "Content-Type": "application/json" } 
         }
       );
@@ -76,53 +81,72 @@ serve(async (req) => {
     let parsedBody;
     
     try {
-      // Tenter de parser le corps comme JSON
+      // Essayer de parser le corps comme JSON
       parsedBody = JSON.parse(body);
       console.log("Événement JSON parsé avec succès");
       
-      // Structure principale de l'événement
+      // Logique améliorée pour extraire les données de l'événement
       if (parsedBody.type) {
-        // Format standard d'événement Stripe
+        // Format standard d'événement Stripe (webhook direct)
         eventType = parsedBody.type;
-        console.log(`Type d'événement depuis JSON: ${eventType}`);
         
         if (parsedBody.data && parsedBody.data.object) {
           eventData = parsedBody.data.object;
+          console.log(`Événement standard Stripe détecté: ${eventType}`);
         }
-      } else if (parsedBody.object && parsedBody.object.object === "checkout.session") {
-        // Format alternatif où l'objet est directement dans la propriété "object"
-        eventType = "checkout.session.completed";
-        eventData = parsedBody.object;
-      } else if (parsedBody.event_type && parsedBody.event_data) {
-        // Format alternatif possible
-        eventType = parsedBody.event_type;
-        eventData = parsedBody.event_data;
-      }
-      
-      // Si nous avons toujours des données vides mais une structure nested 
-      if (Object.keys(eventData).length === 0 && parsedBody.object) {
+      } else if (parsedBody.object && parsedBody.object === "event") {
+        // Format alternatif d'événement Stripe
+        eventType = parsedBody.type || "unknown_event";
+        
+        if (parsedBody.data && parsedBody.data.object) {
+          eventData = parsedBody.data.object;
+          console.log(`Événement Stripe (format alternatif) détecté: ${eventType}`);
+        }
+      } else if (parsedBody.object && typeof parsedBody.object === 'object') {
+        // Format de test ou webhook direct avec l'objet directement dans la racine
         const nestedObject = parsedBody.object;
         
-        if (typeof nestedObject === 'object') {
-          if (nestedObject.object === "checkout.session") {
-            eventType = "checkout.session.completed";
-            eventData = nestedObject;
-            console.log("Données extraites de structure nested:", Object.keys(eventData).join(', '));
-          }
+        if (nestedObject.object === "checkout.session") {
+          eventType = "checkout.session.completed";
+          eventData = nestedObject;
+          console.log("Session de paiement Stripe détectée directement dans l'objet");
+        } else {
+          console.log("Structure d'objet non reconnue:", nestedObject.object);
+        }
+      } else if (parsedBody.event && parsedBody.event.type) {
+        // Format Event Portal
+        eventType = parsedBody.event.type;
+        
+        if (parsedBody.event.data && parsedBody.event.data.object) {
+          eventData = parsedBody.event.data.object;
+          console.log(`Événement Portal Stripe détecté: ${eventType}`);
         }
       }
+      
+      // Cas particulier: parfois l'objet de l'événement est directement à la racine
+      if (Object.keys(eventData).length === 0 && parsedBody.payment_status && parsedBody.amount_total) {
+        console.log("Détection de données de paiement directement dans la racine");
+        eventType = "checkout.session.completed";
+        eventData = parsedBody;
+      }
+      
+      // Cas particulier: checkout.session emballé sous un autre format
+      if (Object.keys(eventData).length === 0 && parsedBody.id && parsedBody.payment_status) {
+        console.log("Session de paiement détectée directement dans la racine");
+        eventType = "checkout.session.completed";
+        eventData = parsedBody;
+      }
+      
     } catch (parseError) {
       console.log("Le corps n'est pas du JSON valide, tentative de construction d'événement avec signature:", parseError.message);
       parsedBody = { raw: body };
     }
     
-    // IMPORTANT: Vérification de la signature si disponible
-    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
-    
-    if (signature && webhookSecret) {
+    // Vérification de la signature du webhook si disponible
+    if (signature && stripeWebhookSecret) {
       try {
         // Vérifier la signature du webhook
-        event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+        event = stripe.webhooks.constructEvent(body, signature, stripeWebhookSecret);
         console.log("Événement Stripe vérifié avec succès:", event.type);
         eventType = event.type;
         
@@ -144,8 +168,8 @@ serve(async (req) => {
         });
       }
     } else {
-      if (!webhookSecret) {
-        console.log("STRIPE_WEBHOOK_SECRET non configuré, traitement sans vérification");
+      if (!stripeWebhookSecret) {
+        console.log("STRIPE_WEBHOOK_SECRET non configuré dans les secrets de la fonction Edge, traitement sans vérification");
       }
       if (!signature) {
         console.log("Aucune signature Stripe fournie");
@@ -154,6 +178,9 @@ serve(async (req) => {
     
     console.log("Type d'événement final:", eventType);
     console.log("Données d'événement extraites (clés):", Object.keys(eventData).join(', '));
+    
+    // Logging complet des données pour débogage
+    console.log("Données d'événement complètes:", JSON.stringify(eventData).substring(0, 1000) + "...");
     
     // Enregistrer l'événement reçu dans la table webhook_events pour référence
     const { data: eventRecord, error: eventError } = await supabase.from("webhook_events").insert({
@@ -299,7 +326,8 @@ async function handlePaymentEvent(paymentData, supabase) {
     const currency = paymentData.currency || "eur";
     
     // 4. Générer un ID de paiement unique
-    const paymentId = paymentData.id || paymentData.payment_intent || `generated-${Date.now()}`;
+    // Priorité: payment_intent, puis id, puis génération
+    const paymentId = paymentData.payment_intent || paymentData.id || `generated-${Date.now()}`;
     
     console.log(`Création d'une transaction pour l'utilisateur ${userId} avec un montant de ${amount} ${currency}, paymentId: ${paymentId}`);
     
