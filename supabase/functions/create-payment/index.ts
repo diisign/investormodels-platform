@@ -61,7 +61,7 @@ serve(async (req) => {
     
     console.log("Creating Stripe instance");
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2024-07-31",
+      apiVersion: "2023-10-16", // Updated to a valid API version
     });
 
     console.log("Creating checkout session");
