@@ -1,202 +1,307 @@
 
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '../ui/button';
-import { Menu, X, ChevronDown, Home, Info, CreditCard, Users, HelpCircle, User, LogOut, LayoutDashboard, Gift, Bug } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
+import GradientButton from '@/components/ui/GradientButton';
+import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
-import { Badge } from '@/components/ui/badge';
 
 interface NavbarProps {
-  isLoggedIn?: boolean;
-  onLogout?: () => Promise<void> | void;
+  isLoggedIn: boolean;
+  onLogout?: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
-  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { logout, isAuthenticated } = useAuth();
 
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+  const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
+  
   const handleLogout = () => {
-    if (onLogout) {
-      return onLogout();
-    }
-    return logout();
+    if (onLogout) onLogout();
+    else if (logout) logout();
+    setIsUserMenuOpen(false);
   };
 
-  return (
-    <header className="fixed w-full bg-background/80 backdrop-blur-md z-50 border-b">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="flex items-center">
-          <span className="text-xl font-bold text-teal-500">CreatorFund</span>
-          <Badge variant="outline" className="ml-2">Beta</Badge>
-        </Link>
+  const handleLogoClick = () => {
+    closeMenu();
+    navigate('/', { replace: true });
+  };
 
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-        
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-1">
-          <NavLink to="/" active={location.pathname === '/'}>
-            <Home className="h-4 w-4 mr-1" />
-            Accueil
-          </NavLink>
-          <NavLink to="/creators" active={location.pathname.includes('/creators')}>
-            <Users className="h-4 w-4 mr-1" />
-            Créateurs
-          </NavLink>
-          <NavLink to="/how-it-works" active={location.pathname === '/how-it-works'}>
-            <HelpCircle className="h-4 w-4 mr-1" />
-            Comment ça marche
-          </NavLink>
-          <NavLink to="/about" active={location.pathname === '/about'}>
-            <Info className="h-4 w-4 mr-1" />
-            À propos
-          </NavLink>
-          
-          {isLoggedIn ? (
-            <div className="relative group">
-              <Button variant="ghost" className="flex items-center gap-1" asChild>
-                <span>
-                  <User className="h-4 w-4" />
-                  <span className="hidden lg:inline">Mon compte</span>
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                </span>
-              </Button>
-              
-              <div className="absolute right-0 mt-2 w-48 py-2 bg-background rounded-md shadow-xl border border-border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                <Link to="/dashboard" className="block px-4 py-2 text-sm hover:bg-accent flex items-center">
-                  <LayoutDashboard className="h-4 w-4 mr-2" />
-                  Tableau de bord
-                </Link>
-                <Link to="/profile" className="block px-4 py-2 text-sm hover:bg-accent flex items-center">
-                  <User className="h-4 w-4 mr-2" />
-                  Profil
-                </Link>
-                <Link to="/deposit" className="block px-4 py-2 text-sm hover:bg-accent flex items-center">
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Déposer des fonds
-                </Link>
-                <Link to="/webhook-debug" className="block px-4 py-2 text-sm hover:bg-accent flex items-center">
-                  <Bug className="h-4 w-4 mr-2" />
-                  Webhook Debug
-                </Link>
-                <button 
-                  onClick={() => handleLogout()} 
-                  className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-accent flex items-center"
-                >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Déconnexion
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex space-x-2">
-              <Button variant="outline" asChild>
-                <Link to="/login">Connexion</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/register">Inscription</Link>
-              </Button>
-            </div>
-          )}
-        </nav>
-      </div>
-      
-      {/* Mobile Nav */}
-      {isMenuOpen && (
-        <div className="md:hidden pt-2 pb-4 border-t">
-          <div className="container mx-auto px-4 space-y-2">
-            <MobileNavLink to="/" onClick={() => setIsMenuOpen(false)}>
-              <Home className="h-5 w-5 mr-2" />
-              Accueil
-            </MobileNavLink>
-            <MobileNavLink to="/creators" onClick={() => setIsMenuOpen(false)}>
-              <Users className="h-5 w-5 mr-2" />
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const userIsLoggedIn = isAuthenticated;
+
+  return (
+    <nav 
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4',
+        isScrolled ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md' : 'bg-transparent'
+      )}
+    >
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between">
+          <button 
+            onClick={handleLogoClick}
+            className="text-2xl font-bold text-gradient"
+          >
+            CréatorInvest
+          </button>
+
+          <div className="hidden md:flex items-center space-x-8">
+            <Link 
+              to="/creators" 
+              className={cn(
+                'font-medium transition-colors duration-300',
+                isActive('/creators') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
+              )}
+            >
               Créateurs
-            </MobileNavLink>
-            <MobileNavLink to="/how-it-works" onClick={() => setIsMenuOpen(false)}>
-              <HelpCircle className="h-5 w-5 mr-2" />
+            </Link>
+            <Link 
+              to="/how-it-works" 
+              className={cn(
+                'font-medium transition-colors duration-300',
+                isActive('/how-it-works') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
+              )}
+            >
               Comment ça marche
-            </MobileNavLink>
-            <MobileNavLink to="/about" onClick={() => setIsMenuOpen(false)}>
-              <Info className="h-5 w-5 mr-2" />
+            </Link>
+            <Link 
+              to="/about" 
+              className={cn(
+                'font-medium transition-colors duration-300',
+                isActive('/about') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
+              )}
+            >
               À propos
-            </MobileNavLink>
-            
-            {isLoggedIn ? (
-              <>
-                <div className="w-full h-px bg-border my-2"></div>
-                <MobileNavLink to="/dashboard" onClick={() => setIsMenuOpen(false)}>
-                  <LayoutDashboard className="h-5 w-5 mr-2" />
-                  Tableau de bord
-                </MobileNavLink>
-                <MobileNavLink to="/profile" onClick={() => setIsMenuOpen(false)}>
-                  <User className="h-5 w-5 mr-2" />
-                  Profil
-                </MobileNavLink>
-                <MobileNavLink to="/deposit" onClick={() => setIsMenuOpen(false)}>
-                  <Gift className="h-5 w-5 mr-2" />
-                  Déposer des fonds
-                </MobileNavLink>
-                <MobileNavLink to="/webhook-debug" onClick={() => setIsMenuOpen(false)}>
-                  <Bug className="h-5 w-5 mr-2" />
-                  Webhook Debug
-                </MobileNavLink>
+            </Link>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-4">
+            {userIsLoggedIn ? (
+              <div className="relative">
                 <button 
-                  onClick={() => {
-                    handleLogout();
-                    setIsMenuOpen(false);
-                  }} 
-                  className="w-full flex items-center text-left px-4 py-2 text-red-500 rounded-md hover:bg-accent"
+                  className="flex items-center space-x-2 font-medium text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
+                  onClick={toggleUserMenu}
                 >
-                  <LogOut className="h-5 w-5 mr-2" />
-                  Déconnexion
+                  <span>Mon compte</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
-              </>
-            ) : (
-              <div className="flex flex-col space-y-2 pt-2">
-                <Button variant="outline" asChild className="w-full justify-center">
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>Connexion</Link>
-                </Button>
-                <Button asChild className="w-full justify-center">
-                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>Inscription</Link>
-                </Button>
+                
+                {isUserMenuOpen && (
+                  <div 
+                    className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-800 animate-scale-in origin-top-right"
+                  >
+                    <Link 
+                      to="/dashboard" 
+                      className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      <span>Tableau de bord</span>
+                    </Link>
+                    <Link 
+                      to="/profile" 
+                      className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      <span>Mon profil</span>
+                    </Link>
+                    <Link 
+                      to="/deposit" 
+                      className="flex items-center px-4 py-3 text-sm text-green-600 dark:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      <span>Déposer des fonds</span>
+                    </Link>
+                    <button 
+                      className="flex items-center w-full px-4 py-3 text-sm text-orange-600 dark:text-orange-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={() => {
+                        setIsUserMenuOpen(false);
+                        window.location.href = '/profile?action=withdraw';
+                      }}
+                    >
+                      <Minus className="h-4 w-4 mr-2" />
+                      <span>Retirer des fonds</span>
+                    </button>
+                    <button 
+                      className="flex items-center w-full px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      <span>Déconnexion</span>
+                    </button>
+                  </div>
+                )}
               </div>
+            ) : (
+              <>
+                <Link to="/login">
+                  <GradientButton 
+                    variant="outline" 
+                    size="default"
+                    className="px-5"
+                  >
+                    Connexion
+                  </GradientButton>
+                </Link>
+                <Link to="/register">
+                  <GradientButton 
+                    variant="primary" 
+                    size="default"
+                    className="px-5"
+                  >
+                    Inscription
+                  </GradientButton>
+                </Link>
+              </>
             )}
           </div>
+
+          <button 
+            className="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
+            onClick={toggleMenu}
+          >
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
-      )}
-    </header>
+
+        <div 
+          className={cn(
+            'md:hidden absolute left-0 right-0 bg-white dark:bg-gray-900 shadow-lg border-t border-gray-100 dark:border-gray-800 transition-all duration-300 ease-out-expo',
+            isOpen 
+              ? 'top-full opacity-100 visible' 
+              : 'top-[-400px] opacity-0 invisible'
+          )}
+        >
+          <div className="container mx-auto px-4 py-4 space-y-4">
+            <Link 
+              to="/creators" 
+              className={cn(
+                'block py-2 font-medium',
+                isActive('/creators') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300'
+              )}
+              onClick={closeMenu}
+            >
+              Créateurs
+            </Link>
+            <Link 
+              to="/how-it-works" 
+              className={cn(
+                'block py-2 font-medium',
+                isActive('/how-it-works') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300'
+              )}
+              onClick={closeMenu}
+            >
+              Comment ça marche
+            </Link>
+            <Link 
+              to="/about" 
+              className={cn(
+                'block py-2 font-medium',
+                isActive('/about') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300'
+              )}
+              onClick={closeMenu}
+            >
+              À propos
+            </Link>
+            
+            <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
+              {userIsLoggedIn ? (
+                <>
+                  <Link 
+                    to="/dashboard" 
+                    className="block py-2 font-medium text-gray-700 dark:text-gray-300"
+                    onClick={closeMenu}
+                  >
+                    Tableau de bord
+                  </Link>
+                  <Link 
+                    to="/profile" 
+                    className="block py-2 font-medium text-gray-700 dark:text-gray-300"
+                    onClick={closeMenu}
+                  >
+                    Mon profil
+                  </Link>
+                  <Link 
+                    to="/deposit" 
+                    className="block py-2 font-medium text-green-600 dark:text-green-400"
+                    onClick={closeMenu}
+                  >
+                    Déposer des fonds
+                  </Link>
+                  <Link 
+                    to="/profile?action=withdraw" 
+                    className="block py-2 font-medium text-orange-600 dark:text-orange-400"
+                    onClick={closeMenu}
+                  >
+                    Retirer des fonds
+                  </Link>
+                  <button 
+                    className="block w-full text-left py-2 font-medium text-red-600 dark:text-red-400"
+                    onClick={handleLogout}
+                  >
+                    Déconnexion
+                  </button>
+                </>
+              ) : (
+                <div className="flex flex-col space-y-3">
+                  <Link to="/login" onClick={closeMenu}>
+                    <GradientButton
+                      variant="outline"
+                      fullWidth
+                    >
+                      Connexion
+                    </GradientButton>
+                  </Link>
+                  <Link to="/register" onClick={closeMenu}>
+                    <GradientButton
+                      variant="primary"
+                      fullWidth
+                    >
+                      Inscription
+                    </GradientButton>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };
-
-// Desktop NavLink component
-const NavLink = ({ to, active, children }) => (
-  <Link
-    to={to}
-    className={`px-3 py-2 rounded-md text-sm font-medium flex items-center hover:bg-accent transition-colors ${
-      active ? 'bg-accent' : ''
-    }`}
-  >
-    {children}
-  </Link>
-);
-
-// Mobile NavLink component 
-const MobileNavLink = ({ to, onClick, children }) => (
-  <Link
-    to={to}
-    className="flex items-center px-4 py-2 rounded-md hover:bg-accent"
-    onClick={onClick}
-  >
-    {children}
-  </Link>
-);
 
 export default Navbar;
