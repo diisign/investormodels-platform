@@ -29,10 +29,11 @@ serve(async (req) => {
       .from("webhook_events")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(5);
+      .limit(10);
     
     if (webhookError) {
       console.error("Erreur lors de la récupération des événements webhook:", webhookError);
+      throw webhookError;
     }
     
     // Récupérer les transactions récentes
@@ -44,6 +45,7 @@ serve(async (req) => {
     
     if (transactionsError) {
       console.error("Erreur lors de la récupération des transactions:", transactionsError);
+      throw transactionsError;
     }
     
     // Créer des logs pour affichage
@@ -59,7 +61,24 @@ serve(async (req) => {
       
       for (const event of webhookEvents) {
         const date = new Date(event.created_at).toISOString();
-        recentLogs.push(`[${date}] Webhook Event: ${event.event_type}, ID: ${event.id}, Traité: ${event.processed ? 'Oui' : 'Non'}`);
+        recentLogs.push(`[${date}] Webhook Event: ${event.event_type}, ID: ${event.id.substring(0, 8)}..., Traité: ${event.processed ? 'Oui' : 'Non'}`);
+        
+        // Ajouter plus de détails sur l'événement
+        if (event.event_data) {
+          const eventDetails = typeof event.event_data === 'string' ? JSON.parse(event.event_data) : event.event_data;
+          if (eventDetails.id) {
+            recentLogs.push(`    - ID de l'objet: ${eventDetails.id}`);
+          }
+          if (eventDetails.status) {
+            recentLogs.push(`    - Statut: ${eventDetails.status}`);
+          }
+          if (eventDetails.amount) {
+            recentLogs.push(`    - Montant: ${eventDetails.amount / 100} ${eventDetails.currency || 'EUR'}`);
+          }
+          if (eventDetails.customer_details?.email || eventDetails.billing_details?.email) {
+            recentLogs.push(`    - Email: ${eventDetails.customer_details?.email || eventDetails.billing_details?.email}`);
+          }
+        }
       }
     } else {
       recentLogs.push(`[${new Date().toISOString()}] Aucun événement webhook trouvé dans la base de données`);
@@ -71,7 +90,7 @@ serve(async (req) => {
       
       for (const tx of transactions) {
         const date = new Date(tx.created_at).toISOString();
-        recentLogs.push(`[${date}] Transaction ID: ${tx.id}, Montant: ${tx.amount} ${tx.currency}, Méthode: ${tx.payment_method}, Statut: ${tx.status}`);
+        recentLogs.push(`[${date}] Transaction ID: ${tx.id.substring(0, 8)}..., Montant: ${tx.amount} ${tx.currency}, Méthode: ${tx.payment_method}, Statut: ${tx.status}`);
       }
     } else {
       recentLogs.push(`[${new Date().toISOString()}] Aucune transaction trouvée dans la base de données`);
@@ -80,8 +99,9 @@ serve(async (req) => {
     }
     
     // Ajouter des instructions de débogage
-    recentLogs.push(`[${new Date().toISOString()}] Pour tester le webhook, vous pouvez créer une transaction de test:`);
-    recentLogs.push(`[${new Date().toISOString()}] curl -X POST "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook" -H "Content-Type: application/json" -d '{"object":{"id":"cs_test_123","object":"checkout.session","amount_total":200,"currency":"eur","customer_details":{"email":"test@example.com"},"payment_status":"paid","status":"complete"}}'`);
+    recentLogs.push(`[${new Date().toISOString()}] Pour vérifier les logs du webhook en temps réel:`);
+    recentLogs.push(`[${new Date().toISOString()}] - Ouvrez Edge Function logs dans Supabase pour la fonction stripe-webhook`);
+    recentLogs.push(`[${new Date().toISOString()}] - Visitez la page /webhook-debug dans votre application`);
     
     return new Response(
       JSON.stringify({
