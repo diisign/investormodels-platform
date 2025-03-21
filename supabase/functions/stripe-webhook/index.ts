@@ -22,9 +22,13 @@ serve(async (req) => {
     if (!stripeSecretKey) {
       console.error("STRIPE_SECRET_KEY non configurée");
       return new Response(
-        JSON.stringify({ error: "Configuration Stripe manquante" }),
+        JSON.stringify({ 
+          received: true, 
+          error: "Configuration Stripe manquante",
+          status: "error" 
+        }),
         { 
-          status: 500, 
+          status: 200, // Toujours renvoyer 200 à Stripe pour éviter les réessais
           headers: { ...corsHeaders, "Content-Type": "application/json" } 
         }
       );
@@ -36,8 +40,11 @@ serve(async (req) => {
     
     // Récupérer les données brutes du corps de la requête
     const body = await req.text();
+    const signature = req.headers.get("stripe-signature");
+    
     console.log("URL complète reçue:", req.url);
     console.log("Headers reçus:", JSON.stringify([...req.headers.entries()]));
+    console.log("Signature Stripe reçue:", signature);
     console.log("Payload reçu (tronqué):", body.substring(0, 500) + (body.length > 500 ? "..." : ""));
     
     // Établir une connexion à Supabase
@@ -47,9 +54,13 @@ serve(async (req) => {
     if (!supabaseUrl || !supabaseServiceRoleKey) {
       console.error("Variables d'environnement Supabase manquantes");
       return new Response(
-        JSON.stringify({ error: "Configuration Supabase manquante" }),
+        JSON.stringify({ 
+          received: true, 
+          error: "Configuration Supabase manquante",
+          status: "error" 
+        }),
         { 
-          status: 500, 
+          status: 200, // Toujours renvoyer 200 à Stripe
           headers: { ...corsHeaders, "Content-Type": "application/json" } 
         }
       );
@@ -57,140 +68,151 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
-    // Vérifier si c'est une requête de test ou une requête Stripe
-    const signature = req.headers.get("stripe-signature");
-    console.log("Signature Stripe reçue:", signature);
-    
+    // Variables pour conserver les informations de l'événement
     let event;
     let eventType = "unknown";
+    let eventData = {};
+    let signatureVerified = false;
+    let parsedBody;
     
     try {
-      // Tenter de parser le corps comme JSON
-      const parsedBody = JSON.parse(body);
+      // Tenter de parser le corps comme JSON pour les cas où c'est envoyé directement
+      parsedBody = JSON.parse(body);
+      console.log("Événement JSON parsé avec succès");
       
       // Si le corps contient un type, l'utiliser comme type d'événement
       if (parsedBody.type) {
         eventType = parsedBody.type;
-      } else if (parsedBody.object?.object === "charge" && parsedBody.object?.status === "succeeded") {
-        // Détecter les événements de charge réussie
-        eventType = "charge.succeeded";
-      } else if (parsedBody.object?.object === "checkout.session" && parsedBody.object?.payment_status === "paid") {
-        // Détecter les sessions checkout payées
-        eventType = "checkout.session.completed";
+        eventData = parsedBody.data?.object || {};
+        console.log(`Type d'événement depuis JSON: ${eventType}`);
       }
-      
-      console.log("Type d'événement détecté:", eventType);
-      
-      // IMPORTANT: Ne pas retourner d'erreur 401 même si la signature ne correspond pas
-      // Nous allons enregistrer l'événement de toute façon et essayer de le traiter
-      const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
-      let signatureVerified = false;
-      
-      if (signature && webhookSecret) {
-        try {
-          // Vérifier la signature du webhook
-          event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-          console.log("Événement Stripe vérifié avec succès:", event.type);
-          eventType = event.type;
-          signatureVerified = true;
-        } catch (err) {
-          console.error(`⚠️ Échec de la vérification de la signature webhook: ${err.message}`);
-          
-          // Continuer malgré l'erreur de signature - enregistrer l'erreur
-          await supabase.from("webhook_events").insert({
-            event_type: "signature_verification_failed",
-            event_data: { error: err.message, signature },
-            raw_payload: parsedBody,
-            processed: false
-          });
-          
-          // Ne PAS retourner d'erreur 401, continuer le traitement
-          event = parsedBody;
-        }
-      } else {
-        if (!webhookSecret) {
-          console.log("STRIPE_WEBHOOK_SECRET non configuré, traitement sans vérification");
-        }
-        if (!signature) {
-          console.log("Aucune signature Stripe fournie");
-        }
-        event = parsedBody;
-      }
-      
-      // Extraire les données pertinentes de l'événement
-      const eventData = event.data?.object || event.object || {};
-      const rawPayload = event;
-      
-      console.log("Données d'événement extraites:", JSON.stringify(eventData).substring(0, 500));
-      
-      // Enregistrer l'événement reçu dans la table webhook_events pour référence
-      const { data: eventRecord, error: eventError } = await supabase.from("webhook_events").insert({
-        event_type: eventType,
-        event_data: eventData,
-        raw_payload: rawPayload,
-        processed: false
-      }).select();
-      
-      if (eventError) {
-        console.error("Erreur lors de l'enregistrement de l'événement webhook:", eventError);
-      } else {
-        console.log("Événement webhook enregistré:", eventRecord);
-      }
-      
-      // Traiter l'événement selon son type
-      switch (eventType) {
-        case "checkout.session.completed":
-        case "checkout.session.async_payment_succeeded":
-        case "payment_intent.succeeded":
-        case "payment_intent.requires_action":
-        case "charge.succeeded":
-        case "charge.updated":
-          console.log(`Traitement de l'événement ${eventType}`);
-          await handlePaymentEvent(eventData, supabase);
-          break;
-        default:
-          console.log(`Événement ${eventType} non géré spécifiquement, tentative de traitement générique`);
-          // Tenter un traitement générique pour les événements non reconnus
-          await handleGenericPayload(eventData, supabase);
-      }
-      
-      // Mettre à jour l'événement comme traité (s'il existe)
-      if (eventRecord && eventRecord.length > 0) {
-        await supabase.from("webhook_events")
-          .update({ processed: true })
-          .eq("id", eventRecord[0].id);
-      }
-      
-      // Toujours retourner un succès à Stripe, même si nous avons eu des problèmes
-      // Cela évite que Stripe ne continue à réessayer avec les mêmes données
-      return new Response(
-        JSON.stringify({ 
-          received: true, 
-          processed: true,
-          event_type: eventType,
-          verification_status: signatureVerified ? "verified" : "unverified",
-          event_id: eventRecord?.[0]?.id || "unknown"
-        }),
-        { 
-          status: 200, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
-      );
-      
     } catch (parseError) {
-      console.error("Erreur lors de l'analyse du payload JSON:", parseError);
-      return new Response(
-        JSON.stringify({ 
-          received: true, 
-          error: "Format de payload invalide", 
-          details: parseError.message 
-        }),
-        { 
-          status: 200, // Toujours retourner 200 à Stripe
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
-      );
+      console.log("Le corps n'est pas du JSON valide, tentative de construction d'événement avec signature");
+      // Ce n'est pas grave si ce n'est pas du JSON, on va essayer de construire l'événement
+      parsedBody = { raw: body };
     }
+    
+    // IMPORTANT: Vérification de la signature si disponible
+    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+    
+    if (signature && webhookSecret) {
+      try {
+        // Vérifier la signature du webhook
+        event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+        console.log("Événement Stripe vérifié avec succès:", event.type);
+        eventType = event.type;
+        eventData = event.data.object;
+        signatureVerified = true;
+      } catch (err) {
+        console.error(`⚠️ Échec de la vérification de la signature webhook: ${err.message}`);
+        
+        // Enregistrer l'erreur mais continuer le traitement
+        await supabase.from("webhook_events").insert({
+          event_type: "signature_verification_failed",
+          event_data: { error: err.message, signature },
+          raw_payload: parsedBody,
+          processed: false
+        });
+        
+        // On continue avec les données parsées si possible
+        if (parsedBody.type) {
+          event = parsedBody;
+        } else if (parsedBody.data?.object) {
+          eventData = parsedBody.data.object;
+        }
+      }
+    } else {
+      if (!webhookSecret) {
+        console.log("STRIPE_WEBHOOK_SECRET non configuré, traitement sans vérification");
+      }
+      if (!signature) {
+        console.log("Aucune signature Stripe fournie");
+      }
+      
+      // Utiliser les données parsées comme événement
+      event = parsedBody;
+    }
+    
+    // Si on n'a pas encore déterminé le type d'événement, essayer de le déduire des données
+    if (eventType === "unknown" && event?.object) {
+      if (event.object === "checkout.session" && event.payment_status === "paid") {
+        eventType = "checkout.session.completed";
+        eventData = event;
+      } else if (event.object === "charge" && event.status === "succeeded") {
+        eventType = "charge.succeeded";
+        eventData = event;
+      } else if (event.object === "payment_intent" && event.status === "succeeded") {
+        eventType = "payment_intent.succeeded";
+        eventData = event;
+      }
+      console.log(`Type d'événement déduit: ${eventType}`);
+    }
+    
+    // Si nous avons un événement parsé avec data.object, l'utiliser comme données d'événement
+    if (!Object.keys(eventData).length && event?.data?.object) {
+      eventData = event.data.object;
+    }
+    
+    // En dernier recours, utiliser l'événement lui-même comme données
+    if (!Object.keys(eventData).length && Object.keys(event || {}).length > 0) {
+      eventData = event;
+    }
+    
+    console.log("Données d'événement extraites:", JSON.stringify(eventData).substring(0, 500));
+    
+    // Enregistrer l'événement reçu dans la table webhook_events pour référence
+    const { data: eventRecord, error: eventError } = await supabase.from("webhook_events").insert({
+      event_type: eventType,
+      event_data: eventData,
+      raw_payload: parsedBody || { raw: body },
+      processed: false
+    }).select();
+    
+    if (eventError) {
+      console.error("Erreur lors de l'enregistrement de l'événement webhook:", eventError);
+    } else {
+      console.log("Événement webhook enregistré:", eventRecord);
+    }
+    
+    // Traiter l'événement selon son type
+    switch (eventType) {
+      case "checkout.session.completed":
+      case "checkout.session.async_payment_succeeded":
+      case "payment_intent.succeeded":
+      case "payment_intent.requires_action":
+      case "charge.succeeded":
+      case "charge.updated":
+        console.log(`Traitement de l'événement ${eventType}`);
+        await handlePaymentEvent(eventData, supabase);
+        break;
+      default:
+        console.log(`Événement ${eventType} non géré spécifiquement, tentative de traitement générique`);
+        // Tenter un traitement générique pour les événements non reconnus
+        await handleGenericPayload(eventData, supabase);
+    }
+    
+    // Mettre à jour l'événement comme traité (s'il existe)
+    if (eventRecord && eventRecord.length > 0) {
+      await supabase.from("webhook_events")
+        .update({ processed: true })
+        .eq("id", eventRecord[0].id);
+    }
+    
+    // Toujours retourner un succès à Stripe, même si nous avons eu des problèmes
+    // Cela évite que Stripe ne continue à réessayer avec les mêmes données
+    return new Response(
+      JSON.stringify({ 
+        received: true, 
+        processed: true,
+        event_type: eventType,
+        verification_status: signatureVerified ? "verified" : "unverified",
+        event_id: eventRecord?.[0]?.id || "unknown"
+      }),
+      { 
+        status: 200, 
+        headers: { ...corsHeaders, "Content-Type": "application/json" } 
+      }
+    );
     
   } catch (error) {
     console.error("Erreur webhook globale:", error);

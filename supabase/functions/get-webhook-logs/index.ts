@@ -29,7 +29,7 @@ serve(async (req) => {
       .from("webhook_events")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(20);
+      .limit(30);
     
     if (webhookError) {
       console.error("Erreur lors de la récupération des événements webhook:", webhookError);
@@ -62,6 +62,7 @@ serve(async (req) => {
     } else {
       recentLogs.push(`[${new Date().toISOString()}] ⚠️ ATTENTION: Secret du webhook Stripe non configuré!`);
       recentLogs.push(`[${new Date().toISOString()}] Ajoutez STRIPE_WEBHOOK_SECRET aux secrets de la fonction Edge`);
+      recentLogs.push(`[${new Date().toISOString()}] Les webhooks Stripe ne seront pas correctement vérifiés sans ce secret.`);
     }
     
     // Ajouter des informations sur les événements webhook
@@ -83,12 +84,26 @@ serve(async (req) => {
           }
           if (eventDetails.amount) {
             recentLogs.push(`    - Montant: ${eventDetails.amount / 100} ${eventDetails.currency || 'EUR'}`);
+          } else if (eventDetails.amount_total) {
+            recentLogs.push(`    - Montant total: ${eventDetails.amount_total / 100} ${eventDetails.currency || 'EUR'}`);
           }
           if (eventDetails.customer_details?.email || eventDetails.billing_details?.email) {
             recentLogs.push(`    - Email: ${eventDetails.customer_details?.email || eventDetails.billing_details?.email}`);
           }
           if (eventDetails.payment_status) {
             recentLogs.push(`    - Statut du paiement: ${eventDetails.payment_status}`);
+          }
+          if (eventDetails.metadata?.userId) {
+            recentLogs.push(`    - User ID: ${eventDetails.metadata.userId}`);
+          }
+        }
+        
+        // Si c'est une erreur de vérification de signature, afficher des informations supplémentaires
+        if (event.event_type === "signature_verification_failed") {
+          recentLogs.push(`    ⚠️ ERREUR: Échec de la vérification de la signature`);
+          recentLogs.push(`    - Veuillez vérifier que STRIPE_WEBHOOK_SECRET est correctement configuré`);
+          if (event.event_data && event.event_data.error) {
+            recentLogs.push(`    - Message d'erreur: ${event.event_data.error}`);
           }
         }
       }
@@ -103,6 +118,8 @@ serve(async (req) => {
       for (const tx of transactions) {
         const date = new Date(tx.created_at).toISOString();
         recentLogs.push(`[${date}] Transaction ID: ${tx.id.substring(0, 8)}..., Montant: ${tx.amount} ${tx.currency}, Méthode: ${tx.payment_method}, Statut: ${tx.status}`);
+        recentLogs.push(`    - User ID: ${tx.user_id}`);
+        recentLogs.push(`    - Payment ID: ${tx.payment_id}`);
       }
     } else {
       recentLogs.push(`[${new Date().toISOString()}] Aucune transaction trouvée dans la base de données`);
@@ -111,9 +128,11 @@ serve(async (req) => {
     }
     
     // Ajouter des instructions de débogage
-    recentLogs.push(`[${new Date().toISOString()}] Pour vérifier les logs du webhook en temps réel:`);
-    recentLogs.push(`[${new Date().toISOString()}] - Ouvrez Edge Function logs dans Supabase pour la fonction stripe-webhook`);
-    recentLogs.push(`[${new Date().toISOString()}] - Visitez la page /webhook-debug dans votre application`);
+    recentLogs.push(`[${new Date().toISOString()}] Vérification de la configuration du webhook dans Stripe:`);
+    recentLogs.push(`[${new Date().toISOString()}] 1. Vérifiez que l'URL du webhook dans Stripe est: https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook`);
+    recentLogs.push(`[${new Date().toISOString()}] 2. Vérifiez que vous avez configuré les événements webhook à surveiller (checkout.session.completed, etc.)`);
+    recentLogs.push(`[${new Date().toISOString()}] 3. Vérifiez que le secret du webhook est correctement configuré dans les secrets de la fonction Edge`);
+    recentLogs.push(`[${new Date().toISOString()}] 4. Pour suivre les logs en temps réel, ouvrez Edge Function logs dans Supabase pour la fonction stripe-webhook`);
     
     return new Response(
       JSON.stringify({
