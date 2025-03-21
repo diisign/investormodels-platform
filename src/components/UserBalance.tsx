@@ -66,8 +66,11 @@ const UserBalance = () => {
       }
     },
     enabled: !!user,
-    refetchInterval: 5000, // Rafraîchir toutes les 5 secondes (au lieu de 10)
+    refetchInterval: 3000, // Rafraîchir toutes les 3 secondes
     staleTime: 0, // Considérer les données comme obsolètes immédiatement
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
   
   return (
