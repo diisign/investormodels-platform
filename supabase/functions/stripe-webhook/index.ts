@@ -1,7 +1,7 @@
 
-import { serve } from "https://deno.land/std@0.212.0/http/server.ts";
-import Stripe from "https://esm.sh/stripe@14.5.0";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
+import { serve } from "https://deno.land/std@0.217.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@16.8.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -137,7 +137,7 @@ serve(async (req) => {
     
     // IMPORTANT: Définir explicitement la version de l'API Stripe
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2025-02-24.acacia", // Utiliser la version Acacia récente
+      apiVersion: "2024-07-31", // Version API plus récente
     });
     
     // Récupérer les données brutes du corps de la requête
@@ -197,7 +197,7 @@ serve(async (req) => {
     
     try {
       // Log de la version de l'API utilisée
-      console.log("Version de l'API Stripe utilisée:", "2025-02-24.acacia");
+      console.log("Version de l'API Stripe utilisée:", "2024-07-31");
       
       // Essayer de parser le corps comme JSON
       parsedBody = JSON.parse(body);
@@ -358,7 +358,7 @@ serve(async (req) => {
         event_type: eventType,
         verification_status: signatureVerified ? "verified" : "unverified",
         event_id: eventRecord?.[0]?.id || "unknown",
-        api_version: "2025-02-24.acacia" // Indiquer la version d'API utilisée
+        api_version: "2024-07-31" // Indiquer la version d'API utilisée
       }),
       { 
         status: 200, 

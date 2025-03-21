@@ -1,6 +1,6 @@
 
-import { serve } from "https://deno.land/std@0.212.0/http/server.ts";
-import Stripe from "https://esm.sh/stripe@14.5.0";
+import { serve } from "https://deno.land/std@0.217.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@16.8.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -44,7 +44,7 @@ serve(async (req) => {
     }
     
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2025-02-24.acacia",
+      apiVersion: "2024-07-31", // Version API plus récente
     });
 
     // Création d'une session de paiement Stripe
