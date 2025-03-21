@@ -1,16 +1,21 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@12.7.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, stripe-signature",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Max-Age": "86400",
 };
 
 serve(async (req) => {
   console.log("Webhook endpoint appelé ! Méthode:", req.method);
+  console.log("URL complète reçue:", req.url);
+  
+  // Logging des en-têtes pour le débogage
+  console.log("Tous les en-têtes reçus:", JSON.stringify([...req.headers.entries()]));
   
   // Gestion de la requête OPTIONS pour CORS
   if (req.method === "OPTIONS") {
@@ -167,6 +172,24 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
+    // Toujours enregistrer les données brutes pour analyse ultérieure
+    const { data: rawData, error: rawError } = await supabase.from("webhook_events").insert({
+      event_type: "raw_webhook_received",
+      event_data: { 
+        headers: Object.fromEntries([...req.headers.entries()]),
+        url: req.url,
+        method: req.method
+      },
+      raw_payload: { raw: body },
+      processed: false
+    }).select();
+    
+    if (rawError) {
+      console.error("Erreur lors de l'enregistrement des données brutes:", rawError);
+    } else {
+      console.log("Données brutes enregistrées avec ID:", rawData[0]?.id);
+    }
+    
     // Variables pour conserver les informations de l'événement
     let event;
     let eventType = "unknown";
@@ -264,7 +287,12 @@ serve(async (req) => {
         // Enregistrer l'erreur mais continuer le traitement avec les données parsées
         await supabase.from("webhook_events").insert({
           event_type: "signature_verification_failed",
-          event_data: { error: err.message, signature },
+          event_data: { 
+            error: err.message, 
+            signature,
+            secret_length: stripeWebhookSecret?.length || 0,
+            secret_prefix: stripeWebhookSecret ? stripeWebhookSecret.substring(0, 4) : 'none'
+          },
           raw_payload: parsedBody,
           processed: false
         });
@@ -274,7 +302,7 @@ serve(async (req) => {
         console.log("STRIPE_WEBHOOK_SECRET non configuré dans les secrets de la fonction Edge, traitement sans vérification");
       }
       if (!signature) {
-        console.log("Aucune signature Stripe fournie");
+        console.log("Aucune signature Stripe fournie, cela pourrait indiquer que le webhook n'est pas correctement configuré");
       }
     }
     

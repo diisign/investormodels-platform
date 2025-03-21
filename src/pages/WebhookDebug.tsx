@@ -8,7 +8,7 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import FadeIn from '@/components/animations/FadeIn';
-import { ArrowDown, RefreshCw, CheckCircle, AlertCircle, Loader2, Wand2, PlayCircle } from 'lucide-react';
+import { ArrowDown, RefreshCw, CheckCircle, AlertCircle, Loader2, Wand2, PlayCircle, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
 
 const WebhookDebug = () => {
@@ -16,6 +16,7 @@ const WebhookDebug = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTestingWebhook, setIsTestingWebhook] = useState(false);
   const [realtimeEnabled, setRealtimeEnabled] = useState(true);
+  const [stripeWebhookConfigExpanded, setStripeWebhookConfigExpanded] = useState(false);
 
   const { data: logs, isLoading: isLogsLoading, refetch: refetchLogs } = useQuery({
     queryKey: ['webhookLogs'],
@@ -187,6 +188,14 @@ const WebhookDebug = () => {
     }
   };
 
+  const openStripeWebhooks = () => {
+    window.open('https://dashboard.stripe.com/webhooks', '_blank');
+  };
+
+  const toggleStripeWebhookConfig = () => {
+    setStripeWebhookConfigExpanded(!stripeWebhookConfigExpanded);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
@@ -226,6 +235,99 @@ const WebhookDebug = () => {
                   </Button>
                 </div>
               </div>
+              
+              <Card className="mb-6">
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Configuration du Webhook Stripe</span>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={openStripeWebhooks}
+                      className="flex items-center gap-2"
+                    >
+                      <span>Dashboard Stripe</span>
+                      <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  </CardTitle>
+                  <CardDescription>
+                    Vérifiez que votre webhook est correctement configuré dans Stripe
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium text-md">URL du webhook</h3>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={toggleStripeWebhookConfig}
+                          className="text-xs"
+                        >
+                          {stripeWebhookConfigExpanded ? "Réduire" : "Étendre"}
+                        </Button>
+                      </div>
+                      <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded text-sm font-mono break-all">
+                        https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook
+                      </div>
+                    </div>
+                    
+                    {stripeWebhookConfigExpanded && (
+                      <div className="space-y-4 border-t pt-4 mt-2">
+                        <div>
+                          <h3 className="font-medium mb-1">Événements à surveiller</h3>
+                          <ul className="space-y-1 text-sm">
+                            <li className="flex items-center">
+                              <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                              checkout.session.completed
+                            </li>
+                            <li className="flex items-center">
+                              <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                              payment_intent.succeeded
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div>
+                          <h3 className="font-medium mb-1">En-têtes de requête</h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-300">
+                            Assurez-vous que Stripe envoie l'en-tête <span className="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">stripe-signature</span> avec chaque requête.
+                          </p>
+                        </div>
+                        
+                        <div>
+                          <h3 className="font-medium mb-1">Secret du webhook</h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-300">
+                            Configurez le secret du webhook dans les secrets de la fonction Edge Supabase:
+                          </p>
+                          <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded text-sm font-mono mt-1">
+                            STRIPE_WEBHOOK_SECRET=whsec_...
+                          </div>
+                        </div>
+                        
+                        <div className="pt-2">
+                          <h3 className="font-medium mb-1">Validation dans Stripe</h3>
+                          <div className="flex items-center gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={openStripeWebhooks}
+                              className="flex items-center gap-2"
+                            >
+                              <span>Tester dans Stripe</span>
+                              <ExternalLink className="h-3 w-3" />
+                            </Button>
+                            <p className="text-sm text-slate-600 dark:text-slate-300">
+                              Utilisez le dashboard Stripe pour envoyer des événements de test
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <Card>
@@ -336,6 +438,16 @@ const WebhookDebug = () => {
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 ml-8">
                       Dans le tableau de bord Stripe, obtenez le clé secrète du webhook (signing secret) et configurez-la dans les secrets de Supabase Edge Functions avec le nom <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">STRIPE_WEBHOOK_SECRET</code>.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="font-semibold flex items-center gap-2">
+                      <span className="inline-block h-6 w-6 rounded-full bg-blue-600 text-white text-center leading-6">4</span>
+                      Vérifier les journaux Supabase Edge Functions
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300 ml-8">
+                      Consultez les journaux des fonctions Edge dans la console Supabase pour voir les éventuelles erreurs ou messages de débogage qui pourraient indiquer pourquoi les webhooks Stripe ne sont pas traités correctement.
                     </p>
                   </div>
                 </CardContent>
