@@ -8,12 +8,20 @@ import { Badge } from '@/components/ui/badge';
 
 interface NavbarProps {
   isLoggedIn?: boolean;
+  onLogout?: () => Promise<void> | void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
+const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { logout } = useAuth();
+
+  const handleLogout = () => {
+    if (onLogout) {
+      return onLogout();
+    }
+    return logout();
+  };
 
   return (
     <header className="fixed w-full bg-background/80 backdrop-blur-md z-50 border-b">
@@ -79,7 +87,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
                   Webhook Debug
                 </Link>
                 <button 
-                  onClick={() => logout()} 
+                  onClick={() => handleLogout()} 
                   className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-accent flex items-center"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
@@ -142,7 +150,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
                 </MobileNavLink>
                 <button 
                   onClick={() => {
-                    logout();
+                    handleLogout();
                     setIsMenuOpen(false);
                   }} 
                   className="w-full flex items-center text-left px-4 py-2 text-red-500 rounded-md hover:bg-accent"
