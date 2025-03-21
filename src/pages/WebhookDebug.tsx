@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -135,8 +136,25 @@ const WebhookDebug = () => {
   const testWebhook = async () => {
     setIsTestingWebhook(true);
     try {
-      // Appeler l'endpoint de test du webhook
-      const response = await fetch('https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook/test');
+      // Récupérer le token d'authentification actuel
+      const { data: { session } } = await supabase.auth.getSession();
+      const authToken = session?.access_token;
+      
+      // Préparer les en-têtes avec le token d'authentification
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+      
+      // Appeler l'endpoint de test du webhook avec les en-têtes d'authentification
+      const response = await fetch('https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook/test', {
+        method: 'POST',
+        headers: headers
+      });
+      
       const data = await response.json();
       
       if (data.success) {
