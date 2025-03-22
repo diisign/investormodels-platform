@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 import { supabase } from '../integrations/supabase/client';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
@@ -32,58 +32,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  // Use try-catch to handle the case where the component is not in a Router context
-  let navigate;
-  try {
-    navigate = useNavigate();
-  } catch (error) {
-    console.warn('AuthProvider: useNavigate not available. Navigation functions will be limited.');
-    navigate = (path: string) => {
-      console.warn(`Navigation to ${path} attempted but not available in this context.`);
-      window.location.href = path; // Fallback for navigation
-    };
-  }
+  const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      // Set up auth state listener FIRST with more verbose logging
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        (event, newSession) => {
-          console.log('Auth state changed:', event, newSession);
-          setSession(newSession);
-          
-          if (newSession?.user) {
-            const userData: User = {
-              id: newSession.user.id,
-              email: newSession.user.email || '',
-              name: newSession.user.user_metadata?.name,
-              // Ajouter des valeurs par défaut pour les propriétés manquantes
-              balance: 1000, // Valeur temporaire
-              transactions: [],
-              investments: []
-            };
-            setUser(userData);
-            setIsAuthenticated(true);
-          } else {
-            setUser(null);
-            setIsAuthenticated(false);
-          }
-          
-          setIsLoading(false);
-        }
-      );
-
-      // THEN check for existing session with more verbose logging
-      supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-        console.log('Got existing session:', currentSession);
-        setSession(currentSession);
+    // Set up auth state listener FIRST with more verbose logging
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, newSession) => {
+        console.log('Auth state changed:', event, newSession);
+        setSession(newSession);
         
-        if (currentSession?.user) {
+        if (newSession?.user) {
           const userData: User = {
-            id: currentSession.user.id,
-            email: currentSession.user.email || '',
-            name: currentSession.user.user_metadata?.name,
+            id: newSession.user.id,
+            email: newSession.user.email || '',
+            name: newSession.user.user_metadata?.name,
             // Ajouter des valeurs par défaut pour les propriétés manquantes
             balance: 1000, // Valeur temporaire
             transactions: [],
@@ -91,18 +53,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
           setUser(userData);
           setIsAuthenticated(true);
+        } else {
+          setUser(null);
+          setIsAuthenticated(false);
         }
         
         setIsLoading(false);
-      });
+      }
+    );
 
-      return () => {
-        subscription.unsubscribe();
-      };
-    } catch (error) {
-      console.error('Error in AuthProvider setup:', error);
+    // THEN check for existing session with more verbose logging
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      console.log('Got existing session:', currentSession);
+      setSession(currentSession);
+      
+      if (currentSession?.user) {
+        const userData: User = {
+          id: currentSession.user.id,
+          email: currentSession.user.email || '',
+          name: currentSession.user.user_metadata?.name,
+          // Ajouter des valeurs par défaut pour les propriétés manquantes
+          balance: 1000, // Valeur temporaire
+          transactions: [],
+          investments: []
+        };
+        setUser(userData);
+        setIsAuthenticated(true);
+      }
+      
       setIsLoading(false);
-    }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
