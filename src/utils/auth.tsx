@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 import { supabase } from '../integrations/supabase/client';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
@@ -27,30 +27,12 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Function to handle navigation without relying on useNavigate hook directly
-const safeNavigate = (path: string) => {
-  // This is a workaround for when we're not inside a Router context
-  if (window) {
-    window.location.href = path;
-  }
-};
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  // Create a navigate function that works both inside and outside Router context
-  let navigate: ((path: string, options?: { replace?: boolean }) => void);
-  
-  try {
-    // Try to use the react-router's navigate
-    navigate = useNavigate();
-  } catch (e) {
-    // If not in router context, create a fallback
-    navigate = (path: string) => safeNavigate(path);
-  }
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Set up auth state listener FIRST with more verbose logging
