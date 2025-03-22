@@ -8,6 +8,8 @@ import Dashboard from "./pages/Dashboard";
 import Deposit from "./pages/Deposit";
 import WebhookDebug from "./pages/WebhookDebug";
 import StripeData from "./pages/StripeData";
+import Creators from "./pages/Creators";
+import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./utils/auth";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -63,6 +65,14 @@ const router = createBrowserRouter([
     path: "/stripe-data",
     element: <AppRoot><StripeData /></AppRoot>,
   },
+  {
+    path: "/creators",
+    element: <AppRoot><Creators /></AppRoot>,
+  },
+  {
+    path: "*",
+    element: <AppRoot><NotFound /></AppRoot>,
+  }
 ]);
 
 function App() {
