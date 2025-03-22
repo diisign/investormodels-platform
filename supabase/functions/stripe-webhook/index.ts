@@ -53,9 +53,9 @@ serve(async (req) => {
     const body = await req.text();
     console.log("Received webhook body length:", body.length);
     
-    // Create Stripe instance
+    // Create Stripe instance with updated API version
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2023-10-16",
+      apiVersion: "2025-02-24.acacia",
     });
 
     let event;

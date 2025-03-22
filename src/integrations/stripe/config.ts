@@ -13,4 +13,4 @@ export const STRIPE_WEBHOOK_URL = 'https://pzqsgvyprttfcpyofgnt.supabase.co/func
 export const DEFAULT_CURRENCY = 'eur';
 
 // Version de l'API Stripe à utiliser (mise à jour vers une version valide)
-export const STRIPE_API_VERSION = '2023-10-16';
+export const STRIPE_API_VERSION = '2025-02-24.acacia';
