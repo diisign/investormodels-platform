@@ -1,2 +1,13 @@
 
 project_id = "pzqsgvyprttfcpyofgnt"
+
+[global.env]
+SUPABASE_DB_URL = "env(SUPABASE_DB_URL)"
+STRIPE_SECRET_KEY = "env(STRIPE_SECRET_KEY)"
+SUPABASE_URL = "env(SUPABASE_URL)"
+SUPABASE_SERVICE_ROLE_KEY = "env(SUPABASE_SERVICE_ROLE_KEY)"
+STRIPE_WEBHOOK_SECRET = "env(STRIPE_WEBHOOK_SECRET)"
+
+[[function]]
+name = "stripe-webhook"
+verify_jwt = false
