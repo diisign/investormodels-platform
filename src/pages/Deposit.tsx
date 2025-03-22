@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import UserBalance from "@/components/UserBalance";
 import { supabase } from "@/integrations/supabase/client";
+import { STRIPE_PUBLIC_KEY } from "@/integrations/stripe/config";
 
 const Deposit = () => {
   const [amount, setAmount] = useState("");
@@ -72,8 +73,8 @@ const Deposit = () => {
         throw new Error(data.error || "Une erreur est survenue lors de la création du paiement");
       }
       
-      // En cas d'urgence, si Stripe ne fonctionne pas, utilisez l'URL fixe
-      const paymentUrl = data.url || "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
+      // Rediriger vers la page de paiement Stripe
+      const paymentUrl = data.url;
       
       console.log("Redirection vers:", paymentUrl);
       toast.success("Redirection vers la page de paiement...");

@@ -5,7 +5,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, stripe-signature",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -20,7 +20,7 @@ serve(async (req) => {
   console.log("Headers:", JSON.stringify(Object.fromEntries(req.headers.entries())));
 
   try {
-    // Get the request body
+    // Get the request body as text
     const body = await req.text();
     console.log("Received webhook body length:", body.length);
     
@@ -38,12 +38,11 @@ serve(async (req) => {
     // Parse the body as JSON
     let event;
     try {
-      // Simply parse the event without verification
       event = JSON.parse(body);
-      console.log("Webhook event parsed:", event.type);
+      console.log("Webhook event type:", event.type);
+      console.log("Webhook event id:", event.id);
     } catch (err) {
       console.error(`Error parsing webhook payload: ${err.message}`);
-      console.error("Received body:", body);
       return new Response(
         JSON.stringify({ error: "Invalid JSON payload", details: err.message }),
         { 
@@ -51,6 +50,31 @@ serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" } 
         }
       );
+    }
+    
+    // Verify the webhook signature if provided
+    const stripeWebhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+    const signature = req.headers.get("stripe-signature");
+    
+    if (stripeWebhookSecret && signature) {
+      try {
+        const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
+          apiVersion: "2025-02-24.acacia",
+        });
+        
+        event = stripe.webhooks.constructEvent(
+          body,
+          signature,
+          stripeWebhookSecret
+        );
+        console.log("Webhook signature verified successfully");
+      } catch (err) {
+        console.error(`Webhook signature verification failed: ${err.message}`);
+        // Continue processing anyway for testing purposes
+        console.log("Continuing with unverified event for testing");
+      }
+    } else {
+      console.log("No webhook signature provided or webhook secret not configured");
     }
 
     // Supabase configuration

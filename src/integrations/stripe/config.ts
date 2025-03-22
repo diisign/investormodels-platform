@@ -4,7 +4,7 @@
  */
 
 // Clé publique Stripe (utilisable dans le frontend)
-export const STRIPE_PUBLIC_KEY = 'pk_live_4Xti4Wg0H9NQUYr6emhLstEJ';
+export const STRIPE_PUBLIC_KEY = 'pk_live_51CsAgBGybbM36faDKS1M2kzzPYDtLeAw1w5YQPzdvji7HQRh7YPAl8AkDTA4d99rgggyELrIF3aRSCVi1Geds7SR0076K9rWBb';
 
 // URL du webhook Stripe
 export const STRIPE_WEBHOOK_URL = 'https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/stripe-webhook';
