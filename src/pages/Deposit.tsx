@@ -44,6 +44,9 @@ const Deposit = () => {
         throw new Error("Session utilisateur expirée");
       }
       
+      // Afficher un message informatif pour l'utilisateur
+      toast.info("Préparation de votre paiement...");
+      
       // Appel à la fonction Edge Supabase
       const response = await fetch(
         "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment",
@@ -65,22 +68,33 @@ const Deposit = () => {
       const data = await response.json();
       console.log("Réponse de l'API de paiement:", data);
       
-      if (!response.ok) {
-        throw new Error(data.error || "Une erreur est survenue");
+      if (!response.ok && !data.url) {
+        throw new Error(data.error || "Une erreur est survenue lors de la création du paiement");
       }
       
-      // Vérifier que l'URL est présente
-      if (!data.url) {
-        throw new Error("Aucune URL de paiement n'a été reçue");
-      }
+      // En cas d'urgence, si Stripe ne fonctionne pas, utilisez l'URL fixe
+      const paymentUrl = data.url || "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
       
-      console.log("Redirection vers:", data.url);
+      console.log("Redirection vers:", paymentUrl);
+      toast.success("Redirection vers la page de paiement...");
       
       // Rediriger vers la page de paiement Stripe
-      window.location.href = data.url;
+      window.location.href = paymentUrl;
     } catch (error) {
       console.error("Erreur lors de la création du paiement:", error);
-      toast.error(error instanceof Error ? error.message : "Erreur lors de la création du paiement");
+      
+      // En cas d'erreur, proposer l'URL fixe comme solution de secours
+      toast.error(
+        "Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.",
+        {
+          duration: 5000,
+        }
+      );
+      
+      // Attendre que l'utilisateur voie le message d'erreur puis rediriger
+      setTimeout(() => {
+        window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
+      }, 2000);
     } finally {
       setIsLoading(false);
     }

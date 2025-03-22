@@ -73,40 +73,54 @@ serve(async (req) => {
     });
 
     console.log("Creating checkout session with amount:", amount, "EUR");
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "eur",
-            product_data: {
-              name: "Dépôt d'argent",
+    try {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "eur",
+              product_data: {
+                name: "Dépôt d'argent",
+              },
+              unit_amount: Math.round(amount * 100),
             },
-            unit_amount: Math.round(amount * 100),
+            quantity: 1,
           },
-          quantity: 1,
+        ],
+        mode: "payment",
+        success_url: `${returnUrl}?success=true&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${returnUrl}?canceled=true`,
+        metadata: {
+          userId: userId,
         },
-      ],
-      mode: "payment",
-      success_url: `${returnUrl}?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${returnUrl}?canceled=true`,
-      metadata: {
-        userId: userId,
-      },
-    });
+      });
 
-    console.log("Checkout session created successfully:", {
-      sessionId: session.id,
-      url: session.url,
-    });
-    
-    return new Response(
-      JSON.stringify({ url: session.url }),
-      { 
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      }
-    );
+      console.log("Checkout session created successfully:", {
+        sessionId: session.id,
+        url: session.url,
+      });
+      
+      return new Response(
+        JSON.stringify({ url: session.url }),
+        { 
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    } catch (stripeError) {
+      console.error("Stripe checkout session creation error:", stripeError);
+      
+      // Si la création de session échoue, utiliser l'URL fixe
+      console.log("Falling back to static Stripe payment URL");
+      return new Response(
+        JSON.stringify({ url: "https://buy.stripe.com/bIY28x2vDcyR97G5kl" }),
+        { 
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
   } catch (error) {
     console.error("Payment error:", error);
     
