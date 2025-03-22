@@ -25,18 +25,30 @@ serve(async (req: Request) => {
     const event = JSON.parse(body);
     console.log("Type d'événement:", event.type);
     
-    // Traitement uniquement des événements de paiement réussi
+    // Pour les événements de paiement réussi, lancer le traitement en arrière-plan
     if (event.type === 'checkout.session.completed' || 
         event.type === 'charge.succeeded' || 
         event.type === 'payment_intent.succeeded') {
       
       const paymentData = event.data.object;
-      console.log("Données de paiement:", JSON.stringify(paymentData));
+      console.log("Données de paiement reçues:", JSON.stringify(paymentData));
       
-      await processPayment(paymentData);
+      // Lancer le traitement en arrière-plan sans attendre sa complétion
+      // pour répondre rapidement à Stripe
+      EdgeRuntime.waitUntil(
+        (async () => {
+          try {
+            console.log("Début du traitement de paiement en arrière-plan");
+            await processPayment(paymentData);
+            console.log("Traitement de paiement terminé avec succès");
+          } catch (error) {
+            console.error("Erreur lors du traitement en arrière-plan:", error);
+          }
+        })()
+      );
     }
     
-    // Réponse de succès à Stripe
+    // Réponse immédiate de succès à Stripe
     return new Response(
       JSON.stringify({ received: true }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
