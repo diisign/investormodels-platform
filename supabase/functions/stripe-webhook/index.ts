@@ -11,6 +11,7 @@ const corsHeaders = {
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
+    console.log("Handling CORS preflight request");
     return new Response(null, { headers: corsHeaders });
   }
 
@@ -112,12 +113,10 @@ serve(async (req) => {
       }
       
       console.log("Payment event processed successfully");
-      
-      // Log the event in the webhook_events table for debugging
-      await logWebhookEvent(supabase, event);
-    } else {
-      console.log(`Ignoring event type: ${event.type}`);
     }
+    
+    // Log the event in the webhook_events table for debugging
+    await logWebhookEvent(supabase, event);
 
     // Return a success response to Stripe
     return new Response(
@@ -189,7 +188,7 @@ async function handlePaymentEvent(paymentData, supabase) {
 // Function to log webhook events for debugging
 async function logWebhookEvent(supabase, event) {
   try {
-    // Check if webhook_events table exists, if not, we'll skip logging
+    console.log(`Logging webhook event: ${event.type}`);
     const { error } = await supabase.from("webhook_events").insert({
       event_type: event.type,
       event_data: event.data.object,
@@ -204,31 +203,5 @@ async function logWebhookEvent(supabase, event) {
     }
   } catch (err) {
     console.warn("Error logging webhook event:", err.message);
-  }
-}
-
-// Function to handle test requests to the webhook for debugging
-async function handleTestRequest(supabase) {
-  try {
-    const testEvent = {
-      id: crypto.randomUUID(),
-      event_type: "webhook_test",
-      event_data: { test: true, timestamp: new Date().toISOString() },
-      raw_payload: { source: "test_endpoint" },
-      processed: true
-    };
-    
-    const { data, error } = await supabase.from("webhook_events").insert(testEvent).select();
-    
-    if (error) {
-      console.error("Error creating test event:", error);
-      return { success: false, message: "Erreur lors de la création de l'événement de test" };
-    }
-    
-    console.log("Événement de test enregistré avec succès:", data);
-    return { success: true, message: "Test du webhook réussi", data };
-  } catch (error) {
-    console.error("Error in test handler:", error);
-    return { success: false, message: "Erreur interne lors du test" };
   }
 }
