@@ -53,9 +53,16 @@ serve(async (req) => {
     const body = await req.text();
     console.log("Received webhook body length:", body.length);
     
-    // Create Stripe instance with updated API version
+    // Create Stripe instance with updated API version and explicit Authorization header
     const stripe = new Stripe(stripeSecretKey, {
       apiVersion: "2025-02-24.acacia",
+      httpClient: Stripe.createFetchHttpClient({
+        fetchApi: fetch,
+        headers: {
+          Authorization: `Bearer ${stripeSecretKey}`,
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
     });
 
     let event;
