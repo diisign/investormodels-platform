@@ -81,7 +81,7 @@ serve(async (req) => {
     
     // If we have payment data, process it
     if (paymentData) {
-      console.log("Payment data found:", JSON.stringify(paymentData, null, 2));
+      console.log("Payment data found:", JSON.stringify(paymentData));
       
       // Extract customer email
       let email = null;
