@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import UserBalance from "@/components/UserBalance";
+import { supabase } from "@/integrations/supabase/client";
 
 const Deposit = () => {
   const [amount, setAmount] = useState("");
@@ -36,13 +37,22 @@ const Deposit = () => {
     try {
       console.log("Début de la création du paiement...");
       
+      // Obtenir la session et le token
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error("Session utilisateur expirée");
+      }
+      
       // Appel à la fonction Edge Supabase
       const response = await fetch(
         "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment",
         {
           method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || ''
           },
           body: JSON.stringify({
             amount: depositAmount,
