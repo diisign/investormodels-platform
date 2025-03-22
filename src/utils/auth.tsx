@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from "sonner";
 import { supabase } from '../integrations/supabase/client';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
@@ -32,7 +32,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
+  
+  // Use try-catch to handle the case where the component is not in a Router context
+  let navigate;
+  try {
+    navigate = useNavigate();
+  } catch (error) {
+    console.warn('AuthProvider: useNavigate not available. Navigation functions will be limited.');
+    navigate = (path: string) => {
+      console.warn(`Navigation to ${path} attempted but not available in this context.`);
+      window.location.href = path; // Fallback for navigation
+    };
+  }
 
   useEffect(() => {
     try {

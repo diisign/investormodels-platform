@@ -1,7 +1,7 @@
 
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Index from "./pages/Index"; // Correction de l'import pour utiliser l'export par défaut
+import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -11,55 +11,62 @@ import StripeData from "./pages/StripeData";
 import { AuthProvider } from "./utils/auth";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// Create a Root component that wraps routes with AuthProvider
+const AppRoot = ({ children }: { children: React.ReactNode }) => {
+  return <AuthProvider>{children}</AuthProvider>;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Index />,
+    element: <AppRoot><Index /></AppRoot>,
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <AppRoot><Login /></AppRoot>,
   },
   {
     path: "/register",
-    element: <Register />,
+    element: <AppRoot><Register /></AppRoot>,
   },
   {
     path: "/dashboard",
     element: (
-      <ProtectedRoute>
-        <Dashboard />
-      </ProtectedRoute>
+      <AppRoot>
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      </AppRoot>
     ),
   },
   {
     path: "/deposit",
     element: (
-      <ProtectedRoute>
-        <Deposit />
-      </ProtectedRoute>
+      <AppRoot>
+        <ProtectedRoute>
+          <Deposit />
+        </ProtectedRoute>
+      </AppRoot>
     ),
   },
   {
     path: "/webhook-debug",
     element: (
-      <ProtectedRoute>
-        <WebhookDebug />
-      </ProtectedRoute>
+      <AppRoot>
+        <ProtectedRoute>
+          <WebhookDebug />
+        </ProtectedRoute>
+      </AppRoot>
     ),
   },
   {
     path: "/stripe-data",
-    element: <StripeData />,
+    element: <AppRoot><StripeData /></AppRoot>,
   },
 ]);
 
 function App() {
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
