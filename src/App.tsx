@@ -1,7 +1,7 @@
+
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home";
-import Pricing from "./pages/Pricing";
+import { Index as Home } from "./pages/Index"; // Renommé pour utiliser le composant existant
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -9,16 +9,12 @@ import Deposit from "./pages/Deposit";
 import WebhookDebug from "./pages/WebhookDebug";
 import StripeData from "./pages/StripeData";
 import { AuthProvider } from "./utils/auth";
-import { ProtectedRoute } from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute"; // Nous allons créer ce composant
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/pricing",
-    element: <Pricing />,
   },
   {
     path: "/login",
