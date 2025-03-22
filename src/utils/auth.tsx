@@ -35,17 +35,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Set up auth state listener FIRST with more verbose logging
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, newSession) => {
-        console.log('Auth state changed:', event, newSession);
-        setSession(newSession);
+    try {
+      // Set up auth state listener FIRST with more verbose logging
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (event, newSession) => {
+          console.log('Auth state changed:', event, newSession);
+          setSession(newSession);
+          
+          if (newSession?.user) {
+            const userData: User = {
+              id: newSession.user.id,
+              email: newSession.user.email || '',
+              name: newSession.user.user_metadata?.name,
+              // Ajouter des valeurs par défaut pour les propriétés manquantes
+              balance: 1000, // Valeur temporaire
+              transactions: [],
+              investments: []
+            };
+            setUser(userData);
+            setIsAuthenticated(true);
+          } else {
+            setUser(null);
+            setIsAuthenticated(false);
+          }
+          
+          setIsLoading(false);
+        }
+      );
+
+      // THEN check for existing session with more verbose logging
+      supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+        console.log('Got existing session:', currentSession);
+        setSession(currentSession);
         
-        if (newSession?.user) {
+        if (currentSession?.user) {
           const userData: User = {
-            id: newSession.user.id,
-            email: newSession.user.email || '',
-            name: newSession.user.user_metadata?.name,
+            id: currentSession.user.id,
+            email: currentSession.user.email || '',
+            name: currentSession.user.user_metadata?.name,
             // Ajouter des valeurs par défaut pour les propriétés manquantes
             balance: 1000, // Valeur temporaire
             transactions: [],
@@ -53,40 +80,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
           setUser(userData);
           setIsAuthenticated(true);
-        } else {
-          setUser(null);
-          setIsAuthenticated(false);
         }
         
         setIsLoading(false);
-      }
-    );
+      });
 
-    // THEN check for existing session with more verbose logging
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      console.log('Got existing session:', currentSession);
-      setSession(currentSession);
-      
-      if (currentSession?.user) {
-        const userData: User = {
-          id: currentSession.user.id,
-          email: currentSession.user.email || '',
-          name: currentSession.user.user_metadata?.name,
-          // Ajouter des valeurs par défaut pour les propriétés manquantes
-          balance: 1000, // Valeur temporaire
-          transactions: [],
-          investments: []
-        };
-        setUser(userData);
-        setIsAuthenticated(true);
-      }
-      
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch (error) {
+      console.error('Error in AuthProvider setup:', error);
       setIsLoading(false);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    }
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
