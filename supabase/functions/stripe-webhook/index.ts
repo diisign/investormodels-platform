@@ -25,7 +25,7 @@ serve(async (req: Request) => {
     const event = JSON.parse(body);
     console.log("Type d'événement:", event.type);
     
-    // Traitement des événements de paiement réussi
+    // Traitement uniquement des événements de paiement réussi
     if (event.type === 'checkout.session.completed' || 
         event.type === 'charge.succeeded' || 
         event.type === 'payment_intent.succeeded') {
