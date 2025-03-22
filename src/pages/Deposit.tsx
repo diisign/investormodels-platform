@@ -34,6 +34,8 @@ const Deposit = () => {
     setIsLoading(true);
     
     try {
+      console.log("Début de la création du paiement...");
+      
       // Appel à la fonction Edge Supabase
       const response = await fetch(
         "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment",
@@ -51,10 +53,18 @@ const Deposit = () => {
       );
       
       const data = await response.json();
+      console.log("Réponse de l'API de paiement:", data);
       
       if (!response.ok) {
         throw new Error(data.error || "Une erreur est survenue");
       }
+      
+      // Vérifier que l'URL est présente
+      if (!data.url) {
+        throw new Error("Aucune URL de paiement n'a été reçue");
+      }
+      
+      console.log("Redirection vers:", data.url);
       
       // Rediriger vers la page de paiement Stripe
       window.location.href = data.url;

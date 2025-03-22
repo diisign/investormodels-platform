@@ -60,12 +60,12 @@ serve(async (req) => {
       );
     }
     
-    console.log("Creating Stripe instance");
+    console.log("Creating Stripe instance with API version 2023-10-16");
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2023-10-16", // Updated to a valid API version
+      apiVersion: "2023-10-16",
     });
 
-    console.log("Creating checkout session");
+    console.log("Creating checkout session with amount:", amount, "EUR");
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -88,7 +88,11 @@ serve(async (req) => {
       },
     });
 
-    console.log("Checkout session created:", session.id);
+    console.log("Checkout session created successfully:", {
+      sessionId: session.id,
+      url: session.url,
+    });
+    
     return new Response(
       JSON.stringify({ url: session.url }),
       { 
