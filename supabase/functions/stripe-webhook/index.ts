@@ -5,7 +5,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, stripe-signature",
+  "Access-Control-Allow-Headers": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 serve(async (req) => {
@@ -15,12 +16,24 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  console.log(`Webhook received from Stripe via ${req.method} request`);
+  console.log("Headers:", JSON.stringify(Object.fromEntries(req.headers.entries())));
+
   try {
-    console.log("Webhook received from Stripe");
-    
     // Get the request body
     const body = await req.text();
     console.log("Received webhook body length:", body.length);
+    
+    if (body.length === 0) {
+      console.error("Empty request body received");
+      return new Response(
+        JSON.stringify({ error: "Empty request body" }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
     
     // Parse the body as JSON
     let event;
@@ -30,6 +43,7 @@ serve(async (req) => {
       console.log("Webhook event parsed:", event.type);
     } catch (err) {
       console.error(`Error parsing webhook payload: ${err.message}`);
+      console.error("Received body:", body);
       return new Response(
         JSON.stringify({ error: "Invalid JSON payload", details: err.message }),
         { 
@@ -57,11 +71,12 @@ serve(async (req) => {
     console.log("Creating Supabase client with service role key");
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
+    // Always log the webhook event first, regardless of type
+    await logWebhookEvent(supabase, event);
+    console.log("Webhook event logged to database successfully");
+    
     // Process various payment-related events
     let paymentData = null;
-    
-    // Log the event in the webhook_events table for debugging
-    await logWebhookEvent(supabase, event);
     
     // Process checkout session completion
     if (event.type === 'checkout.session.completed') {
@@ -87,31 +102,31 @@ serve(async (req) => {
       let email = null;
       if (paymentData.customer_details && paymentData.customer_details.email) {
         email = paymentData.customer_details.email;
+        console.log("Found email from customer_details:", email);
       } else if (paymentData.receipt_email) {
         email = paymentData.receipt_email;
+        console.log("Found email from receipt_email:", email);
       } else if (paymentData.billing_details && paymentData.billing_details.email) {
         email = paymentData.billing_details.email;
+        console.log("Found email from billing_details:", email);
       }
-      
-      console.log("Customer email:", email);
       
       // Extract amount
       let amount = 0;
       if (paymentData.amount_total) {
         amount = paymentData.amount_total / 100;
+        console.log("Amount from amount_total:", amount);
       } else if (paymentData.amount) {
         amount = paymentData.amount / 100;
+        console.log("Amount from amount:", amount);
       }
-      
-      console.log("Payment amount:", amount);
       
       // Get user ID from metadata if available
       let userId = null;
       if (paymentData.metadata && paymentData.metadata.userId) {
         userId = paymentData.metadata.userId;
+        console.log("User ID from metadata:", userId);
       }
-      
-      console.log("User ID from metadata:", userId);
       
       // If we have an email but no user ID, try to find the user by email
       if (email && !userId) {
@@ -123,6 +138,8 @@ serve(async (req) => {
           if (matchingUser) {
             userId = matchingUser.id;
             console.log("Found user ID by email:", userId);
+          } else {
+            console.log("No matching user found for email:", email);
           }
         } else {
           console.error("Error finding user by email:", error);
@@ -139,19 +156,21 @@ serve(async (req) => {
       // Record the transaction
       if (amount > 0) {
         console.log(`Recording transaction: ${amount} EUR for user ${userId}`);
-        const { error } = await supabase.from("transactions").insert({
+        
+        // Create a transaction record
+        const { data: transactionData, error: transactionError } = await supabase.from("transactions").insert({
           user_id: userId,
           amount: amount,
           currency: paymentData.currency || "eur",
           status: "completed",
           payment_id: paymentData.payment_intent || paymentData.id,
           payment_method: "stripe"
-        });
+        }).select();
 
-        if (error) {
-          console.error("Error recording transaction:", error);
+        if (transactionError) {
+          console.error("Error recording transaction:", transactionError);
           return new Response(
-            JSON.stringify({ error: "Erreur d'enregistrement de la transaction", details: error.message }),
+            JSON.stringify({ error: "Erreur d'enregistrement de la transaction", details: transactionError.message }),
             { 
               status: 500, 
               headers: { ...corsHeaders, "Content-Type": "application/json" } 
@@ -159,7 +178,7 @@ serve(async (req) => {
           );
         }
         
-        console.log("Transaction recorded successfully");
+        console.log("Transaction recorded successfully:", transactionData);
       } else {
         console.warn("Invalid amount, transaction not recorded");
       }
@@ -194,19 +213,21 @@ serve(async (req) => {
 async function logWebhookEvent(supabase, event) {
   try {
     console.log(`Logging webhook event: ${event.type}`);
-    const { error } = await supabase.from("webhook_events").insert({
+    const { data, error } = await supabase.from("webhook_events").insert({
       event_type: event.type,
-      event_data: event.data.object,
+      event_data: event.data?.object || {},
       raw_payload: event,
       processed: true
-    });
+    }).select();
     
     if (error) {
-      console.warn("Could not log webhook event:", error.message);
+      console.error("Could not log webhook event:", error.message);
     } else {
-      console.log("Webhook event logged successfully");
+      console.log("Webhook event logged successfully:", data);
     }
+    return data;
   } catch (err) {
-    console.warn("Error logging webhook event:", err.message);
+    console.error("Error logging webhook event:", err.message);
+    return null;
   }
 }
