@@ -40,6 +40,26 @@ export async function processPayment(paymentData: any) {
       console.log("Utilisation d'un ID anonyme pour la transaction");
     }
     
+    // Vérification si une transaction avec ce payment_id existe déjà
+    const paymentId = paymentData.payment_intent || paymentData.id;
+    
+    if (paymentId) {
+      console.log("Vérification si le paiement existe déjà avec ID:", paymentId);
+      
+      const { data: existingTransaction, error: checkError } = await supabase
+        .from("transactions")
+        .select("id")
+        .eq("payment_id", paymentId)
+        .maybeSingle();
+      
+      if (checkError) {
+        console.error("Erreur lors de la vérification de transaction existante:", checkError);
+      } else if (existingTransaction) {
+        console.log("Transaction déjà enregistrée avec payment_id:", paymentId);
+        return { success: true, message: "Transaction déjà enregistrée", data: existingTransaction };
+      }
+    }
+    
     // Enregistrement de la transaction si le montant est valide
     if (amount > 0) {
       console.log(`Enregistrement de la transaction: ${amount} EUR pour l'utilisateur ${userId}`);
@@ -49,7 +69,7 @@ export async function processPayment(paymentData: any) {
         amount: amount,
         currency: paymentData.currency || "eur",
         status: "completed",
-        payment_id: paymentData.payment_intent || paymentData.id,
+        payment_id: paymentId,
         payment_method: "stripe"
       }).select();
 
