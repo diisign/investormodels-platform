@@ -1,9 +1,15 @@
 
 import { serve } from "https://deno.land/std@0.217.0/http/server.ts";
-import { corsHeaders } from "./utils.ts";
-import { processPayment } from "./paymentHandler.ts";
-import { initSupabaseClient } from "./utils.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.2";
 
+// Headers CORS pour permettre les requêtes depuis n'importe quelle origine
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, stripe-signature",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
+// Point d'entrée principal de la fonction
 serve(async (req: Request) => {
   // Gestion des requêtes OPTIONS (CORS)
   if (req.method === "OPTIONS") {
@@ -13,160 +19,190 @@ serve(async (req: Request) => {
   try {
     // Vérification de la méthode de requête
     if (req.method !== "POST") {
-      console.error(`Méthode non autorisée: ${req.method}`);
       return new Response(
         JSON.stringify({ error: `Méthode ${req.method} non autorisée` }),
         { status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Vérification du content-type
-    const contentType = req.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      console.error(`Content-Type invalide: ${contentType}`);
-      return new Response(
-        JSON.stringify({ error: "Le Content-Type doit être application/json" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Récupération de la signature Stripe pour validation
-    const stripeSignature = req.headers.get("stripe-signature");
-    if (!stripeSignature) {
-      console.warn("Pas d'en-tête stripe-signature trouvé");
-      // On continue sans validation pour plus de flexibilité lors des tests
-    } else {
-      console.log("En-tête stripe-signature trouvé:", stripeSignature.substring(0, 50) + "...");
-      // Note: La validation de signature serait implémentée ici avec la bibliothèque Stripe
-    }
-
     // Récupération du corps de la requête
     const body = await req.text();
-    
-    // Vérification du contenu de la requête
-    if (!body || body.length === 0) {
-      console.error("Corps de la requête vide");
+    if (!body) {
       return new Response(
         JSON.stringify({ error: "Corps de la requête vide" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
     
-    // Log des données reçues pour le débogage (version tronquée pour éviter de surcharger les logs)
-    console.log(`Webhook reçu: ${body.substring(0, 200)}...`);
+    // Parsing du corps en JSON
+    const event = JSON.parse(body);
+    console.log(`Webhook reçu: ${event.type}`);
     
-    try {
-      // Parsing du corps en JSON
-      const event = JSON.parse(body);
+    // Initialisation du client Supabase
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error("Configuration Supabase manquante");
+    }
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Enregistrer tous les événements pour traçabilité
+    const { data: eventRecord, error: eventError } = await supabase
+      .from("webhook_events")
+      .insert({
+        event_type: event.type,
+        event_data: event.data.object,
+        raw_payload: event,
+        processed: false
+      })
+      .select()
+      .single();
+    
+    if (eventError) {
+      console.error("Erreur d'enregistrement de l'événement:", eventError);
+    }
+
+    // Vérifier si c'est un événement de paiement
+    if (event.type === 'checkout.session.completed' || 
+        event.type === 'charge.succeeded' || 
+        event.type === 'payment_intent.succeeded') {
       
-      // Vérification des champs requis
-      if (!event.type || !event.data || !event.data.object) {
-        console.error("Structure d'événement Stripe invalide:", JSON.stringify(event).substring(0, 200));
-        return new Response(
-          JSON.stringify({ error: "Structure d'événement Stripe invalide" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+      // Vérifier si cet événement a déjà été traité (déduplication)
+      if (event.id) {
+        const { data: existingEvent } = await supabase
+          .from("webhook_events")
+          .select("id")
+          .eq("event_data->id", event.id)
+          .eq("processed", true)
+          .maybeSingle();
+        
+        if (existingEvent) {
+          console.log("Événement déjà traité, ID:", event.id);
+          return new Response(
+            JSON.stringify({ received: true, status: "already_processed" }),
+            { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
       }
       
-      console.log("Type d'événement:", event.type);
+      const paymentData = event.data.object;
       
-      // Initialiser Supabase pour enregistrer l'événement
-      const supabase = initSupabaseClient();
-      
-      // Enregistrer l'événement dans la table webhook_events
-      const { data: eventRecord, error: eventError } = await supabase
-        .from("webhook_events")
-        .insert({
-          event_type: event.type,
-          event_data: event.data.object,
-          raw_payload: event,
-          processed: false
-        })
-        .select()
-        .single();
-      
-      if (eventError) {
-        console.error("Erreur lors de l'enregistrement de l'événement:", eventError);
-      } else {
-        console.log("Événement enregistré avec succès, ID:", eventRecord.id);
-      }
-      
-      // Pour les événements de paiement réussi, lancer le traitement en arrière-plan
-      if (event.type === 'checkout.session.completed' || 
-          event.type === 'charge.succeeded' || 
-          event.type === 'payment_intent.succeeded') {
+      try {
+        // Extraire les informations essentielles du paiement
+        let amount = 0;
+        if (paymentData.amount_total) {
+          amount = paymentData.amount_total / 100;
+        } else if (paymentData.amount) {
+          amount = paymentData.amount / 100;
+        }
         
-        const paymentData = event.data.object;
-        console.log("Données de paiement reçues:", JSON.stringify(paymentData).substring(0, 500));
+        // Extraire l'ID utilisateur ou l'email
+        let userId = null;
+        let email = null;
         
-        // Vérifier si l'événement a déjà été traité (déduplication)
-        const eventId = event.id;
-        if (eventId) {
-          console.log("Vérification si l'événement a déjà été traité, ID:", eventId);
+        // Chercher l'ID utilisateur dans les métadonnées
+        if (paymentData.metadata && paymentData.metadata.userId) {
+          userId = paymentData.metadata.userId;
+        }
+        
+        // Chercher l'email
+        if (paymentData.customer_details && paymentData.customer_details.email) {
+          email = paymentData.customer_details.email;
+        } else if (paymentData.receipt_email) {
+          email = paymentData.receipt_email;
+        } else if (paymentData.billing_details && paymentData.billing_details.email) {
+          email = paymentData.billing_details.email;
+        }
+        
+        // Si on a un email mais pas d'ID utilisateur, chercher l'utilisateur par email
+        if (email && !userId) {
+          const { data: users } = await supabase.auth.admin.listUsers();
           
-          const { data: processedEvents, error: checkError } = await supabase
-            .from("webhook_events")
+          if (users) {
+            const matchingUser = users.users.find(user => user.email === email);
+            if (matchingUser) {
+              userId = matchingUser.id;
+            }
+          }
+        }
+        
+        // Si toujours pas d'utilisateur, utiliser un ID anonyme
+        if (!userId) {
+          userId = "00000000-0000-0000-0000-000000000000";
+        }
+        
+        // Vérifier si une transaction avec ce payment_id existe déjà
+        const paymentId = paymentData.payment_intent || paymentData.id;
+        
+        if (paymentId) {
+          const { data: existingTransaction } = await supabase
+            .from("transactions")
             .select("id")
-            .eq("event_data->id", eventId)
-            .eq("processed", true)
+            .eq("payment_id", paymentId)
             .maybeSingle();
           
-          if (checkError) {
-            console.error("Erreur lors de la vérification d'événements traités:", checkError);
-          } else if (processedEvents) {
-            console.log("Événement déjà traité, ID:", eventId);
+          if (existingTransaction) {
+            console.log("Transaction déjà enregistrée avec payment_id:", paymentId);
+            
+            // Marquer l'événement comme traité
+            if (eventRecord) {
+              await supabase
+                .from("webhook_events")
+                .update({ processed: true })
+                .eq("id", eventRecord.id);
+            }
+            
             return new Response(
-              JSON.stringify({ received: true, status: "already_processed" }),
+              JSON.stringify({ received: true, status: "transaction_exists" }),
               { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
         }
         
-        // Lancer le traitement en arrière-plan sans attendre sa complétion
-        // pour répondre rapidement à Stripe
-        EdgeRuntime.waitUntil(
-          (async () => {
-            try {
-              console.log("Début du traitement de paiement en arrière-plan");
-              await processPayment(paymentData);
-              
-              // Marquer l'événement comme traité
-              if (eventRecord) {
-                const { error: updateError } = await supabase
-                  .from("webhook_events")
-                  .update({ processed: true })
-                  .eq("id", eventRecord.id);
-                
-                if (updateError) {
-                  console.error("Erreur lors de la mise à jour du statut de traitement:", updateError);
-                } else {
-                  console.log("Événement marqué comme traité, ID:", eventRecord.id);
-                }
-              }
-              
-              console.log("Traitement de paiement terminé avec succès");
-            } catch (error) {
-              console.error("Erreur lors du traitement en arrière-plan:", error);
-            }
-          })()
-        );
-      } else {
-        console.log(`Type d'événement ignoré: ${event.type}`);
+        // Enregistrer la transaction si le montant est valide
+        if (amount > 0) {
+          console.log(`Enregistrement de la transaction: ${amount} EUR pour l'utilisateur ${userId}`);
+          
+          const { data: transaction, error: transactionError } = await supabase
+            .from("transactions")
+            .insert({
+              user_id: userId,
+              amount: amount,
+              currency: paymentData.currency || "eur",
+              status: "completed",
+              payment_id: paymentId,
+              payment_method: "stripe"
+            })
+            .select();
+          
+          if (transactionError) {
+            throw new Error(`Erreur d'enregistrement: ${transactionError.message}`);
+          }
+          
+          console.log("Transaction enregistrée avec succès:", transaction);
+        }
+        
+        // Marquer l'événement comme traité
+        if (eventRecord) {
+          await supabase
+            .from("webhook_events")
+            .update({ processed: true })
+            .eq("id", eventRecord.id);
+        }
+        
+      } catch (error) {
+        console.error("Erreur de traitement du paiement:", error);
       }
-    } catch (parseError) {
-      console.error("Erreur de parsing JSON:", parseError);
-      return new Response(
-        JSON.stringify({ error: "Corps de la requête n'est pas un JSON valide" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
     }
     
-    // Réponse immédiate de succès à Stripe (indépendamment du type d'événement)
-    // Stripe attend une réponse 200 rapide
+    // Réponse immédiate de succès à Stripe
     return new Response(
       JSON.stringify({ received: true }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
+    
   } catch (error) {
     console.error("Erreur webhook:", error);
     return new Response(
