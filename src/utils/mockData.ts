@@ -1,4 +1,3 @@
-
 export interface Creator {
   id: string;
   name: string;
@@ -62,8 +61,8 @@ export interface Transaction {
 export const creators: Creator[] = [
   {
     id: 'creator1',
-    name: 'Sophia Martinez',
-    imageUrl: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1964&auto=format&fit=crop',
+    name: 'Emma *Asian #1*',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/k/ke/kei/keiep1nsav9m2m3e7l0ynbcttg9cfoez1657600220/186389633/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop',
     category: 'Fitness',
     returnRate: 12.5,
@@ -117,8 +116,8 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator2',
-    name: 'Alex Johnson',
-    imageUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop',
+    name: 'Maria *Gymnastics Girl 🤸🏻‍*',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1505236273555-17add303d4fb?q=80&w=2069&auto=format&fit=crop',
     category: 'Photographie',
     returnRate: 10.8,
@@ -172,8 +171,8 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator3',
-    name: 'Emma Wilson',
-    imageUrl: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=2070&auto=format&fit=crop',
+    name: 'Kayla',
+    imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp',
     coverImageUrl: 'https://images.unsplash.com/photo-1602017322281-85b2e82e3dec?q=80&w=2070&auto=format&fit=crop',
     category: 'Lifestyle',
     returnRate: 11.2,
@@ -227,8 +226,8 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator4',
-    name: 'Thomas Dupont',
-    imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop',
+    name: 'Lala Avi ♡',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1487528278747-ba99ed528ebc?q=80&w=2070&auto=format&fit=crop',
     category: 'Cuisine',
     returnRate: 9.8,
@@ -282,8 +281,8 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator5',
-    name: 'Olivia Chen',
-    imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop',
+    name: 'Antonella ❤',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/6/6f/6ff/6ffsabyn44okaxnazykunwo0x5zw1kmd1739911134/355023516/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1598927429372-a7ed4f4a9c27?q=80&w=2070&auto=format&fit=crop',
     category: 'Mode',
     returnRate: 13.2,
@@ -337,8 +336,8 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator6',
-    name: 'Lucas Bernard',
-    imageUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=2048&auto=format&fit=crop',
+    name: "Bryce's Flix 🎥",
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
     category: 'Tech',
     returnRate: 14.5,
@@ -389,96 +388,503 @@ export const creators: Creator[] = [
         popularity: 'low'
       }
     ]
+  },
+  {
+    id: 'creator7',
+    name: 'Daisy 💞',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1487528278747-ba99ed528ebc?q=80&w=2070&auto=format&fit=crop',
+    category: 'Lifestyle',
+    returnRate: 11.5,
+    investorsCount: 245,
+    totalInvested: 42000,
+    monthlyRevenue: 16000,
+    followers: 320000,
+    creationDate: '2021-01-15',
+    description: "Créatrice de contenu lifestyle. Mes revenus proviennent principalement de mes collaborations avec des marques et de mon contenu exclusif.",
+    plans: [
+      {
+        id: 'plan7-1',
+        name: 'Basique',
+        returnRate: 8.2,
+        minInvestment: 150,
+        duration: 3,
+        benefits: [
+          'Rapport mensuel',
+          'Accès aux statistiques de base'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan7-2',
+        name: 'Premium',
+        returnRate: 11.5,
+        minInvestment: 600,
+        duration: 6,
+        benefits: [
+          'Rapports détaillés',
+          'Accès à tout le contenu',
+          'Mentions spéciales'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan7-3',
+        name: 'VIP',
+        returnRate: 15.0,
+        minInvestment: 1200,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Contenu exclusif',
+          'Appel mensuel',
+          'Produits gratuits'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator8',
+    name: 'Bianca 🍎 *Domincan 🇩🇴*',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/w/ww/www/wwwm2nbmdojruuvvmskbb0rfiqur4w8w1738821490/424984894/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1505236273555-17add303d4fb?q=80&w=2069&auto=format&fit=crop',
+    category: 'Mode',
+    returnRate: 12.8,
+    investorsCount: 310,
+    totalInvested: 56000,
+    monthlyRevenue: 19000,
+    followers: 410000,
+    creationDate: '2020-11-20',
+    description: "Créatrice de contenu mode. Mes revenus proviennent de ma boutique en ligne et de mes collaborations avec des marques de mode internationales.",
+    plans: [
+      {
+        id: 'plan8-1',
+        name: 'Mode',
+        returnRate: 9.0,
+        minInvestment: 200,
+        duration: 3,
+        benefits: [
+          'Rapport trimestriel',
+          'Lookbook exclusif'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan8-2',
+        name: 'Styliste',
+        returnRate: 12.8,
+        minInvestment: 750,
+        duration: 6,
+        benefits: [
+          'Rapport mensuel',
+          'Remises sur la boutique',
+          'Conseils mode personnalisés'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan8-3',
+        name: 'Designer',
+        returnRate: 16.5,
+        minInvestment: 1500,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation complète',
+          'Pièces exclusives',
+          'Accès aux événements'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator9',
+    name: 'Ariana 💄 Petite colombian 🌶',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/r/rn/rnj/rnj2ki36l6ih5ay5ecbbplaearzyhqpd1725115071/440793308/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1602017322281-85b2e82e3dec?q=80&w=2070&auto=format&fit=crop',
+    category: 'Fitness',
+    returnRate: 13.2,
+    investorsCount: 385,
+    totalInvested: 72000,
+    monthlyRevenue: 24000,
+    followers: 490000,
+    creationDate: '2020-08-14',
+    description: "Coach fitness spécialisée dans les programmes de remise en forme. Mes revenus proviennent de mes programmes personnalisés et de mes partenariats avec des marques de sport.",
+    plans: [
+      {
+        id: 'plan9-1',
+        name: 'Débutant',
+        returnRate: 8.8,
+        minInvestment: 150,
+        duration: 3,
+        benefits: [
+          'Rapport mensuel',
+          'Accès aux statistiques de base'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan9-2',
+        name: 'Athlète',
+        returnRate: 13.2,
+        minInvestment: 600,
+        duration: 6,
+        benefits: [
+          'Rapport détaillé',
+          'Programme personnalisé',
+          'Session coaching mensuelle'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan9-3',
+        name: 'Champion',
+        returnRate: 16.8,
+        minInvestment: 1200,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Programme complet',
+          'Coaching hebdomadaire',
+          'Produits exclusifs'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator10',
+    name: '🐈‍ Elizabeth',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/le/lec/lecj3pxbtb4ymxfen8yurh1aqum6xooq1736534589/124057483/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1598927429372-a7ed4f4a9c27?q=80&w=2070&auto=format&fit=crop',
+    category: 'Photographie',
+    returnRate: 10.5,
+    investorsCount: 230,
+    totalInvested: 45000,
+    monthlyRevenue: 16000,
+    followers: 340000,
+    creationDate: '2021-02-22',
+    description: "Photographe professionnelle spécialisée dans les portraits. Mes revenus proviennent de la vente de mes formations en ligne et de mes séances photo exclusives.",
+    plans: [
+      {
+        id: 'plan10-1',
+        name: 'Cliché',
+        returnRate: 7.8,
+        minInvestment: 180,
+        duration: 3,
+        benefits: [
+          'Rapport trimestriel',
+          'Accès aux collections'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan10-2',
+        name: 'Portfolio',
+        returnRate: 10.5,
+        minInvestment: 550,
+        duration: 6,
+        benefits: [
+          'Rapport mensuel',
+          'Téléchargements gratuits',
+          'Critique photo personnelle'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan10-3',
+        name: 'Exposition',
+        returnRate: 14.8,
+        minInvestment: 1100,
+        duration: 12,
+        benefits: [
+          'Rapports détaillés',
+          'Tous les presets',
+          'Session photo privée',
+          'Cours en ligne gratuits'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator11',
+    name: 'Isabella Santos 🇺🇸🇧🇷',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/g/gc/gcl/gclytoh6ibqn1khp1cf2i6ymelztqmgl1714404792/412109090/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
+    category: 'Lifestyle',
+    returnRate: 11.8,
+    investorsCount: 295,
+    totalInvested: 58000,
+    monthlyRevenue: 20000,
+    followers: 420000,
+    creationDate: '2020-07-15',
+    description: "Créatrice de contenu lifestyle. Mes revenus proviennent de mes partenariats avec des marques internationales et de mon contenu exclusif.",
+    plans: [
+      {
+        id: 'plan11-1',
+        name: 'Découverte',
+        returnRate: 8.4,
+        minInvestment: 200,
+        duration: 3,
+        benefits: [
+          'Rapport mensuel',
+          'Newsletter exclusive'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan11-2',
+        name: 'Explorer',
+        returnRate: 11.8,
+        minInvestment: 650,
+        duration: 6,
+        benefits: [
+          'Rapport détaillé',
+          'Remises exclusives',
+          'Contenu premium'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan11-3',
+        name: 'Globetrotter',
+        returnRate: 15.6,
+        minInvestment: 1300,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation personnelle',
+          'Produits exclusifs',
+          'Appels privés'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator12',
+    name: '🎀 Autumn ren',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/po/poq/poqsgzzsem9nmffr5e3dmnis3gdfkdjt1739306610/161871329/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop',
+    category: 'Mode',
+    returnRate: 12.6,
+    investorsCount: 320,
+    totalInvested: 62000,
+    monthlyRevenue: 21000,
+    followers: 405000,
+    creationDate: '2020-10-08',
+    description: "Créatrice de mode et styliste. Mes revenus proviennent de ma boutique en ligne, de mes collaborations avec des marques et de mon contenu exclusif.",
+    plans: [
+      {
+        id: 'plan12-1',
+        name: 'Tendance',
+        returnRate: 9.2,
+        minInvestment: 180,
+        duration: 3,
+        benefits: [
+          'Rapport trimestriel',
+          'Lookbook saisonnier'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan12-2',
+        name: 'Fashion',
+        returnRate: 12.6,
+        minInvestment: 680,
+        duration: 6,
+        benefits: [
+          'Rapport mensuel',
+          'Remises boutique',
+          'Conseils personnalisés'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan12-3',
+ name: 'Couture',
+        returnRate: 16.2,
+        minInvestment: 1400,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation complète',
+          'Articles exclusifs',
+          'Invitations VIP'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator13',
+    name: 'Charlotte 🤍',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/c/cq/cqy/cqydatlsrhxwwop9ybh9xkh4kmtmoaj41705156342/277839437/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1505236273555-17add303d4fb?q=80&w=2069&auto=format&fit=crop',
+    category: 'Lifestyle',
+    returnRate: 11.4,
+    investorsCount: 260,
+    totalInvested: 50000,
+    monthlyRevenue: 18000,
+    followers: 365000,
+    creationDate: '2021-03-05',
+    description: "Créatrice lifestyle et coach bien-être. Mes revenus proviennent de mes programmes personnalisés et de mes collaborations avec des marques de bien-être.",
+    plans: [
+      {
+        id: 'plan13-1',
+        name: 'Bien-être',
+        returnRate: 8.0,
+        minInvestment: 170,
+        duration: 3,
+        benefits: [
+          'Rapport mensuel',
+          'Newsletter bien-être'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan13-2',
+        name: 'Équilibre',
+        returnRate: 11.4,
+        minInvestment: 620,
+        duration: 6,
+        benefits: [
+          'Rapport détaillé',
+          'Programme personnalisé',
+          'Conseils exclusifs'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan13-3',
+        name: 'Harmonie',
+        returnRate: 15.2,
+        minInvestment: 1250,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Programme complet',
+          'Coaching privé',
+          'Produits bien-être'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator14',
+    name: 'Audrey Shanice 🔞🔥',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tr/tre/treu426uagi2nu0ppnuhscgqhz1vajrb1614919839/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1602017322281-85b2e82e3dec?q=80&w=2070&auto=format&fit=crop',
+    category: 'Fitness',
+    returnRate: 13.0,
+    investorsCount: 340,
+    totalInvested: 67000,
+    monthlyRevenue: 23000,
+    followers: 450000,
+    creationDate: '2020-06-18',
+    description: "Coach fitness et nutrition. Mes revenus proviennent de mes programmes d'entraînement, de mes conseils nutritionnels et de mes partenariats avec des marques de fitness.",
+    plans: [
+      {
+        id: 'plan14-1',
+        name: 'Débutant',
+        returnRate: 8.6,
+        minInvestment: 160,
+        duration: 3,
+        benefits: [
+          'Rapport mensuel',
+          'Programme de base'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan14-2',
+        name: 'Sportif',
+        returnRate: 13.0,
+        minInvestment: 580,
+        duration: 6,
+        benefits: [
+          'Rapport détaillé',
+          'Programme complet',
+          'Consultation nutrition'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan14-3',
+        name: 'Athlète',
+        returnRate: 16.5,
+        minInvestment: 1150,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Programme personnalisé',
+          'Coaching privé',
+          'Suppléments exclusifs'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator15',
+    name: 'Brooke Mills🍒',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1598927429372-a7ed4f4a9c27?q=80&w=2070&auto=format&fit=crop',
+    category: 'Mode',
+    returnRate: 12.2,
+    investorsCount: 305,
+    totalInvested: 60000,
+    monthlyRevenue: 20000,
+    followers: 395000,
+    creationDate: '2020-12-10',
+    description: "Créatrice de mode et influenceuse. Mes revenus proviennent de mes collaborations avec des marques de luxe et de mon contenu exclusif pour mes abonnés.",
+    plans: [
+      {
+        id: 'plan15-1',
+        name: 'Style',
+        returnRate: 8.8,
+        minInvestment: 190,
+        duration: 3,
+        benefits: [
+          'Rapport trimestriel',
+          'Accès collections'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan15-2',
+        name: 'Glamour',
+        returnRate: 12.2,
+        minInvestment: 700,
+        duration: 6,
+        benefits: [
+          'Rapport mensuel',
+          'Remises exclusives',
+          'Conseils personnalisés'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan15-3',
+        name: 'Prestige',
+        returnRate: 16.0,
+        minInvestment: 1450,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation complète',
+          'Produits exclusifs',
+          'Invitations événements'
+        ],
+        popularity: 'low'
+      }
+    ]
   }
 ];
-
-// Mock user data
-export const mockUser: User = {
-  id: 'user1',
-  email: 'user@example.com',
-  name: 'Jean Dupont',
-  balance: 2500,
-  investments: [
-    {
-      id: 'inv1',
-      creatorId: 'creator1',
-      creatorName: 'Sophia Martinez',
-      creatorImage: creators[0].imageUrl,
-      planId: 'plan1-2',
-      planName: 'Growth',
-      amount: 500,
-      returnRate: 12.5,
-      startDate: '2023-12-15',
-      endDate: '2024-06-15',
-      status: 'active',
-      earnings: 31.25
-    },
-    {
-      id: 'inv2',
-      creatorId: 'creator3',
-      creatorName: 'Emma Wilson',
-      creatorImage: creators[2].imageUrl,
-      planId: 'plan3-2',
-      planName: 'Confort',
-      amount: 700,
-      returnRate: 11.2,
-      startDate: '2024-01-10',
-      endDate: '2024-07-10',
-      status: 'active',
-      earnings: 39.2
-    }
-  ],
-  transactions: [
-    {
-      id: 'trans1',
-      type: 'deposit',
-      amount: 1000,
-      date: '2023-12-01',
-      status: 'completed',
-      description: 'Dépôt initial'
-    },
-    {
-      id: 'trans2',
-      type: 'deposit',
-      amount: 2000,
-      date: '2023-12-10',
-      status: 'completed',
-      description: 'Ajout de fonds'
-    },
-    {
-      id: 'trans3',
-      type: 'investment',
-      amount: -500,
-      date: '2023-12-15',
-      status: 'completed',
-      description: 'Investissement - Sophia Martinez (Growth)'
-    },
-    {
-      id: 'trans4',
-      type: 'investment',
-      amount: -700,
-      date: '2024-01-10',
-      status: 'completed',
-      description: 'Investissement - Emma Wilson (Confort)'
-    },
-    {
-      id: 'trans5',
-      type: 'earning',
-      amount: 31.25,
-      date: '2024-01-15',
-      status: 'completed',
-      description: 'Gains - Sophia Martinez (Growth)'
-    },
-    {
-      id: 'trans6',
-      type: 'earning',
-      amount: 39.2,
-      date: '2024-02-10',
-      status: 'completed',
-      description: 'Gains - Emma Wilson (Confort)'
-    }
-  ]
-};
 
 // Function to simulate authentication
 export let isAuthenticated = false;
@@ -630,4 +1036,92 @@ export const investInCreator = (creatorId: string, planId: string, amount: numbe
       resolve(currentUser);
     }, 800);
   });
+};
+
+// Mock user data
+export const mockUser: User = {
+  id: 'user1',
+  email: 'user@example.com',
+  name: 'Jean Dupont',
+  balance: 2500,
+  investments: [
+    {
+      id: 'inv1',
+      creatorId: 'creator1',
+      creatorName: 'Emma *Asian #1*',
+      creatorImage: creators[0].imageUrl,
+      planId: 'plan1-2',
+      planName: 'Growth',
+      amount: 500,
+      returnRate: 12.5,
+      startDate: '2023-12-15',
+      endDate: '2024-06-15',
+      status: 'active',
+      earnings: 31.25
+    },
+    {
+      id: 'inv2',
+      creatorId: 'creator3',
+      creatorName: 'Kayla',
+      creatorImage: creators[2].imageUrl,
+      planId: 'plan3-2',
+      planName: 'Confort',
+      amount: 700,
+      returnRate: 11.2,
+      startDate: '2024-01-10',
+      endDate: '2024-07-10',
+      status: 'active',
+      earnings: 39.2
+    }
+  ],
+  transactions: [
+    {
+      id: 'trans1',
+      type: 'deposit',
+      amount: 1000,
+      date: '2023-12-01',
+      status: 'completed',
+      description: 'Dépôt initial'
+    },
+    {
+      id: 'trans2',
+      type: 'deposit',
+      amount: 2000,
+      date: '2023-12-10',
+      status: 'completed',
+      description: 'Ajout de fonds'
+    },
+    {
+      id: 'trans3',
+      type: 'investment',
+      amount: -500,
+      date: '2023-12-15',
+      status: 'completed',
+      description: 'Investissement - Emma *Asian #1* (Growth)'
+    },
+    {
+      id: 'trans4',
+      type: 'investment',
+      amount: -700,
+      date: '2024-01-10',
+      status: 'completed',
+      description: 'Investissement - Kayla (Confort)'
+    },
+    {
+      id: 'trans5',
+      type: 'earning',
+      amount: 31.25,
+      date: '2024-01-15',
+      status: 'completed',
+      description: 'Gains - Emma *Asian #1* (Growth)'
+    },
+    {
+      id: 'trans6',
+      type: 'earning',
+      amount: 39.2,
+      date: '2024-02-10',
+      status: 'completed',
+      description: 'Gains - Kayla (Confort)'
+    }
+  ]
 };
