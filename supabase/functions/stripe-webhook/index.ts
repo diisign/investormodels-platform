@@ -69,43 +69,6 @@ serve(async (req: Request) => {
       
       console.log("Type d'événement:", event.type);
       
-      // Vérification si cet événement a déjà été traité
-      // en l'enregistrant dans la table webhook_events
-      const supabase = initSupabaseClient();
-      
-      if (event.id) {
-        const { data: existingEvent, error: checkError } = await supabase
-          .from("webhook_events")
-          .select("id")
-          .eq("event_type", event.type)
-          .eq("raw_payload->id", event.id)
-          .maybeSingle();
-        
-        if (checkError) {
-          console.error("Erreur lors de la vérification d'événement existant:", checkError);
-        } else if (existingEvent) {
-          console.log("Événement déjà traité:", event.id);
-          return new Response(
-            JSON.stringify({ received: true, status: "duplicate_event" }),
-            { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
-        
-        // Enregistrement de l'événement
-        const { error: insertError } = await supabase
-          .from("webhook_events")
-          .insert({
-            event_type: event.type,
-            raw_payload: event,
-            event_data: event.data.object,
-            processed: false
-          });
-        
-        if (insertError) {
-          console.error("Erreur lors de l'enregistrement de l'événement:", insertError);
-        }
-      }
-      
       // Pour les événements de paiement réussi, lancer le traitement en arrière-plan
       if (event.type === 'checkout.session.completed' || 
           event.type === 'charge.succeeded' || 
@@ -121,15 +84,6 @@ serve(async (req: Request) => {
             try {
               console.log("Début du traitement de paiement en arrière-plan");
               await processPayment(paymentData);
-              
-              // Marquer l'événement comme traité
-              if (event.id) {
-                await supabase
-                  .from("webhook_events")
-                  .update({ processed: true })
-                  .eq("raw_payload->id", event.id);
-              }
-              
               console.log("Traitement de paiement terminé avec succès");
             } catch (error) {
               console.error("Erreur lors du traitement en arrière-plan:", error);
@@ -164,9 +118,3 @@ serve(async (req: Request) => {
     );
   }
 });
-
-// Fonction pour initialiser le client Supabase
-function initSupabaseClient() {
-  const { initSupabaseClient } = await import("./utils.ts");
-  return initSupabaseClient();
-}
