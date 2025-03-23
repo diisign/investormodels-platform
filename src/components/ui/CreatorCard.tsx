@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircleDollarSign, TrendingUp, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarImage } from './avatar';
 
 interface CreatorCardProps {
   id: string;
@@ -44,16 +45,19 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-2xl"></div>
       
-      <div className="relative aspect-[4/5] overflow-hidden rounded-t-2xl image-blur-wrapper">
-        <img
-          src={imageUrl}
-          alt={name}
-          className={cn(
-            'w-full h-full object-cover transition-all duration-700 image-blur',
-            imageLoaded ? 'loaded' : ''
-          )}
-          onLoad={() => setImageLoaded(true)}
-        />
+      <div className="flex flex-col items-center pt-6">
+        <Avatar className="h-20 w-20 mb-3 ring-2 ring-investment-200 dark:ring-investment-800">
+          <AvatarImage 
+            src={imageUrl} 
+            alt={name}
+            onLoad={() => setImageLoaded(true)}
+            className={cn(
+              'transition-all duration-700',
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            )}
+          />
+        </Avatar>
+        
         <div className="absolute top-3 left-3 z-20">
           <span className="px-2.5 py-1 bg-white/90 dark:bg-gray-900/90 text-investment-600 dark:text-investment-400 text-xs font-semibold rounded-full backdrop-blur-sm shadow-sm">
             {category}
@@ -62,7 +66,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
       </div>
       
       <div className="p-4 relative z-20">
-        <h3 className="font-semibold text-lg mb-2 text-foreground group-hover:text-creator-300 transition-colors duration-300">
+        <h3 className="font-semibold text-lg mb-2 text-foreground group-hover:text-creator-300 transition-colors duration-300 text-center">
           {name}
         </h3>
         

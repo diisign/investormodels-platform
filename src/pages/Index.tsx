@@ -9,6 +9,13 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { creators } from '@/utils/mockData';
 import { cn } from '@/lib/utils';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/carousel';
 
 const Index = () => {
   return (
@@ -174,21 +181,37 @@ const Index = () => {
               </Link>
             </FadeIn>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {creators.slice(0, 3).map((creator, index) => (
-                <FadeIn key={creator.id} direction="up" delay={100 * index}>
-                  <CreatorCard
-                    id={creator.id}
-                    name={creator.name}
-                    imageUrl={creator.imageUrl}
-                    category={creator.category}
-                    returnRate={creator.returnRate}
-                    investorsCount={creator.investorsCount}
-                    totalInvested={creator.totalInvested}
-                  />
-                </FadeIn>
-              ))}
-            </div>
+            <FadeIn direction="up" delay={100}>
+              <div className="relative px-10 pb-10">
+                <Carousel 
+                  opts={{
+                    align: "start",
+                    loop: true
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent>
+                    {creators.map((creator, index) => (
+                      <CarouselItem key={creator.id} className="md:basis-1/3 lg:basis-1/4">
+                        <div className="p-1">
+                          <CreatorCard
+                            id={creator.id}
+                            name={creator.name}
+                            imageUrl={creator.imageUrl}
+                            category={creator.category}
+                            returnRate={creator.returnRate}
+                            investorsCount={creator.investorsCount}
+                            totalInvested={creator.totalInvested}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-0" />
+                  <CarouselNext className="right-0" />
+                </Carousel>
+              </div>
+            </FadeIn>
             
             <div className="mt-12 text-center md:hidden">
               <Link to="/creators">
