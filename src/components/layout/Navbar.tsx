@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
@@ -98,17 +97,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               )}
             >
               Questions fréquentes
-            </Link>
-            <Link 
-              to="/about" 
-              className={cn(
-                'font-medium transition-colors duration-300',
-                isActive('/about') 
-                  ? 'text-investment-600 dark:text-investment-400' 
-                  : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
-              )}
-            >
-              À propos
             </Link>
           </div>
 
@@ -247,18 +235,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               onClick={closeMenu}
             >
               Questions fréquentes
-            </Link>
-            <Link 
-              to="/about" 
-              className={cn(
-                'block py-2 font-medium',
-                isActive('/about') 
-                  ? 'text-investment-600 dark:text-investment-400' 
-                  : 'text-gray-700 dark:text-gray-300'
-              )}
-              onClick={closeMenu}
-            >
-              À propos
             </Link>
             
             <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
