@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
@@ -16,6 +15,7 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/carousel';
+import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
 const Index = () => {
   return (
@@ -80,27 +80,10 @@ const Index = () => {
                 </div>
               </FadeIn>
               
-              {/* Hero Image */}
+              {/* Remplacer l'image par le graphique OnlyFans */}
               <FadeIn className="flex justify-center lg:justify-end" direction="up" delay={200}>
                 <div className="relative w-full max-w-md">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-investment-500 to-investment-600 rounded-2xl blur opacity-30 animate-pulse-light"></div>
-                  <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800">
-                    <img 
-                      src="https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=2021&auto=format&fit=crop" 
-                      alt="Creators investing platform" 
-                      className="w-full h-auto object-cover aspect-[3/4] transition-transform duration-700 hover:scale-105"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                      <div className="flex flex-col text-white">
-                        <span className="text-sm opacity-80">Investissement populaire</span>
-                        <span className="text-xl font-semibold">Emma Wilson</span>
-                        <div className="flex items-center mt-2 space-x-2">
-                          <span className="text-sm bg-green-500/20 text-green-400 rounded-full px-2 py-0.5">+11.2% ROI</span>
-                          <span className="text-sm">372 investisseurs</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <OnlyfansRevenueChart />
                 </div>
               </FadeIn>
             </div>
