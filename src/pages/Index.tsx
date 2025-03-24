@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
@@ -8,6 +9,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { creators } from '@/utils/mockData';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/utils/auth';
 import { 
   Carousel,
   CarouselContent,
@@ -18,6 +20,13 @@ import {
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
 const Index = () => {
+  const { isAuthenticated } = useAuth();
+  const creatorsRef = useRef<HTMLDivElement>(null);
+
+  const scrollToCreators = () => {
+    creatorsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navbar */}
@@ -46,15 +55,27 @@ const Index = () => {
                   Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur succès. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
                 <div className="flex flex-wrap gap-4 pt-4">
-                  <Link to="/register">
-                    <GradientButton 
-                      size="lg"
-                      icon={<ArrowRight className="h-5 w-5" />}
-                      iconPosition="right"
-                    >
-                      Commencer maintenant
-                    </GradientButton>
-                  </Link>
+                  {isAuthenticated ? (
+                    <button onClick={scrollToCreators}>
+                      <GradientButton 
+                        size="lg"
+                        icon={<ArrowRight className="h-5 w-5" />}
+                        iconPosition="right"
+                      >
+                        Commencer maintenant
+                      </GradientButton>
+                    </button>
+                  ) : (
+                    <Link to="/register">
+                      <GradientButton 
+                        size="lg"
+                        icon={<ArrowRight className="h-5 w-5" />}
+                        iconPosition="right"
+                      >
+                        Commencer maintenant
+                      </GradientButton>
+                    </Link>
+                  )}
                   <Link to="/how-it-works">
                     <GradientButton 
                       variant="outline" 
@@ -147,7 +168,7 @@ const Index = () => {
         </section>
         
         {/* Popular Creators Section */}
-        <section className="py-20">
+        <section ref={creatorsRef} className="py-20">
           <div className="container mx-auto px-4">
             <FadeIn className="flex justify-between items-end mb-12" direction="up">
               <div>
