@@ -20,12 +20,12 @@ const HowItWorks = () => {
       <main className="flex-grow pt-20">
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 via-purple-500/20 to-indigo-500/20 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-teal-500/20 via-teal-500/20 to-teal-500/20 pointer-events-none"></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <FadeIn direction="up" className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-violet-600 to-accent bg-clip-text text-transparent">
-                Comment fonctionne notre plateforme d'investissement
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-teal-600 to-accent bg-clip-text text-transparent">
+                Comment fonctionne CréatorInvest
               </h1>
               <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8">
                 Investissez dans les créatrices de contenu les plus prometteuses et recevez des retours sur investissement basés sur leurs performances.
@@ -56,8 +56,8 @@ const HowItWorks = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Step 1 */}
               <FadeIn direction="up" delay={100}>
-                <div className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-violet-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-purple-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
+                <div className="bg-gradient-to-br from-teal-50 to-teal-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-teal-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <Users className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3 text-primary">1. Parcourez les créatrices</h3>
@@ -69,8 +69,8 @@ const HowItWorks = () => {
 
               {/* Step 2 */}
               <FadeIn direction="up" delay={200}>
-                <div className="bg-gradient-to-br from-purple-50 to-violet-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-purple-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-600 rounded-full flex items-center justify-center text-white mx-auto mb-6">
+                <div className="bg-gradient-to-br from-teal-50 to-teal-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-teal-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <Camera className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3 text-primary">2. Choisissez où investir</h3>
@@ -82,8 +82,8 @@ const HowItWorks = () => {
 
               {/* Step 3 */}
               <FadeIn direction="up" delay={300}>
-                <div className="bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-violet-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-indigo-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
+                <div className="bg-gradient-to-br from-teal-50 to-teal-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-teal-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <Wallet className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3 text-primary">3. Financez votre compte</h3>
@@ -95,8 +95,8 @@ const HowItWorks = () => {
 
               {/* Step 4 */}
               <FadeIn direction="up" delay={400}>
-                <div className="bg-gradient-to-br from-indigo-50 to-accent-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-indigo-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-accent rounded-full flex items-center justify-center text-white mx-auto mb-6">
+                <div className="bg-gradient-to-br from-teal-50 to-accent-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-teal-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-accent rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <TrendingUp className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3 text-primary">4. Récoltez les bénéfices</h3>
@@ -110,7 +110,7 @@ const HowItWorks = () => {
         </section>
 
         {/* Investment Details */}
-        <section className="py-16 bg-gradient-to-br from-violet-500/5 via-purple-500/5 to-indigo-500/5">
+        <section className="py-16 bg-gradient-to-br from-teal-500/5 via-teal-500/5 to-teal-500/5">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="mb-12">
               <h2 className="text-3xl font-bold mb-4 text-center text-primary">Comment fonctionne l'investissement ?</h2>
@@ -140,7 +140,7 @@ const HowItWorks = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <div className="mt-1 text-purple-500"><CheckCheck size={20} /></div>
+                      <div className="mt-1 text-teal-500"><CheckCheck size={20} /></div>
                       <div>
                         <strong className="text-lg font-medium">Investissement minimal</strong>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -149,7 +149,7 @@ const HowItWorks = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <div className="mt-1 text-violet-500"><CheckCheck size={20} /></div>
+                      <div className="mt-1 text-teal-500"><CheckCheck size={20} /></div>
                       <div>
                         <strong className="text-lg font-medium">Durée d'engagement</strong>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -158,7 +158,7 @@ const HowItWorks = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <div className="mt-1 text-indigo-500"><CheckCheck size={20} /></div>
+                      <div className="mt-1 text-teal-500"><CheckCheck size={20} /></div>
                       <div>
                         <strong className="text-lg font-medium">Avantages exclusifs</strong>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -190,7 +190,7 @@ const HowItWorks = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <div className="mt-1 text-purple-500"><CheckCheck size={20} /></div>
+                      <div className="mt-1 text-teal-500"><CheckCheck size={20} /></div>
                       <div>
                         <strong className="text-lg font-medium">Croissance de la popularité</strong>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -199,7 +199,7 @@ const HowItWorks = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <div className="mt-1 text-violet-500"><CheckCheck size={20} /></div>
+                      <div className="mt-1 text-teal-500"><CheckCheck size={20} /></div>
                       <div>
                         <strong className="text-lg font-medium">Diversification</strong>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -208,7 +208,7 @@ const HowItWorks = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <div className="mt-1 text-indigo-500"><CheckCheck size={20} /></div>
+                      <div className="mt-1 text-teal-500"><CheckCheck size={20} /></div>
                       <div>
                         <strong className="text-lg font-medium">Remboursement</strong>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -236,8 +236,8 @@ const HowItWorks = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Benefits for Fans */}
               <FadeIn direction="left">
-                <div className="border border-violet-200 dark:border-violet-900/40 rounded-2xl overflow-hidden h-full">
-                  <div className="bg-gradient-to-r from-violet-600 to-purple-500 p-6">
+                <div className="border border-teal-200 dark:border-teal-900/40 rounded-2xl overflow-hidden h-full">
+                  <div className="bg-gradient-to-r from-teal-600 to-teal-500 p-6">
                     <h3 className="text-2xl font-semibold text-white mb-2 flex items-center gap-2">
                       <Users className="h-6 w-6" />
                       <span>Pour les investisseurs</span>
@@ -246,10 +246,10 @@ const HowItWorks = () => {
                       Voici pourquoi devenir un investisseur est avantageux
                     </p>
                   </div>
-                  <div className="p-6 bg-violet-50/50 dark:bg-gray-800">
+                  <div className="p-6 bg-teal-50/50 dark:bg-gray-800">
                     <ul className="space-y-4">
                       <li className="flex gap-3">
-                        <div className="mt-1 text-violet-600"><CheckCheck size={20} /></div>
+                        <div className="mt-1 text-teal-600"><CheckCheck size={20} /></div>
                         <div>
                           <strong className="font-medium">Rendements attractifs</strong>
                           <p className="text-gray-600 dark:text-gray-400">
@@ -258,7 +258,7 @@ const HowItWorks = () => {
                         </div>
                       </li>
                       <li className="flex gap-3">
-                        <div className="mt-1 text-violet-600"><CheckCheck size={20} /></div>
+                        <div className="mt-1 text-teal-600"><CheckCheck size={20} /></div>
                         <div>
                           <strong className="font-medium">Contenu exclusif</strong>
                           <p className="text-gray-600 dark:text-gray-400">
@@ -267,7 +267,7 @@ const HowItWorks = () => {
                         </div>
                       </li>
                       <li className="flex gap-3">
-                        <div className="mt-1 text-violet-600"><CheckCheck size={20} /></div>
+                        <div className="mt-1 text-teal-600"><CheckCheck size={20} /></div>
                         <div>
                           <strong className="font-medium">Communication directe</strong>
                           <p className="text-gray-600 dark:text-gray-400">
@@ -276,7 +276,7 @@ const HowItWorks = () => {
                         </div>
                       </li>
                       <li className="flex gap-3">
-                        <div className="mt-1 text-violet-600"><CheckCheck size={20} /></div>
+                        <div className="mt-1 text-teal-600"><CheckCheck size={20} /></div>
                         <div>
                           <strong className="font-medium">Transparence totale</strong>
                           <p className="text-gray-600 dark:text-gray-400">
@@ -348,7 +348,7 @@ const HowItWorks = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-16 bg-gradient-to-br from-violet-500/5 via-purple-500/5 to-indigo-500/5">
+        <section className="py-16 bg-gradient-to-br from-teal-500/5 via-teal-500/5 to-teal-500/5">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-primary">Questions fréquentes</h2>
@@ -360,7 +360,7 @@ const HowItWorks = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               <FadeIn direction="up" delay={100}>
                 <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-violet-600 dark:text-violet-400">Comment sont calculés les rendements ?</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Comment sont calculés les rendements ?</h3>
                   <p className="text-gray-600 dark:text-gray-400">
                     Les rendements sont calculés en fonction des revenus générés par les créatrices, de leur croissance d'audience et de leur engagement. Chaque plan propose un taux de rendement fixe ou variable selon les performances.
                   </p>
@@ -369,7 +369,7 @@ const HowItWorks = () => {
               
               <FadeIn direction="up" delay={150}>
                 <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-purple-600 dark:text-purple-400">Est-ce que mon investissement est sécurisé ?</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Est-ce que mon investissement est sécurisé ?</h3>
                   <p className="text-gray-600 dark:text-gray-400">
                     Nous mettons en place des garanties contractuelles avec les créatrices pour protéger vos investissements. Bien que tout investissement comporte des risques, notre plateforme travaille uniquement avec des créatrices vérifiées ayant un historique de performance stable.
                   </p>
@@ -378,7 +378,7 @@ const HowItWorks = () => {
               
               <FadeIn direction="up" delay={200}>
                 <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-violet-600 dark:text-violet-400">Puis-je investir dans plusieurs créatrices ?</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Puis-je investir dans plusieurs créatrices ?</h3>
                   <p className="text-gray-600 dark:text-gray-400">
                     Absolument ! Nous encourageons même la diversification de votre portefeuille d'investissement. Vous pouvez investir dans autant de créatrices que vous le souhaitez, dans la limite de votre solde disponible.
                   </p>
@@ -396,7 +396,7 @@ const HowItWorks = () => {
               
               <FadeIn direction="up" delay={300}>
                 <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-violet-600 dark:text-violet-400">Comment devenir une créatrice sur la plateforme ?</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Comment devenir une créatrice sur la plateforme ?</h3>
                   <p className="text-gray-600 dark:text-gray-400">
                     Les créatrices intéressées peuvent postuler via notre formulaire dédié. Nous évaluons chaque candidature selon plusieurs critères : qualité du contenu, taille de l'audience, engagement, régularité et potentiel de croissance.
                   </p>
@@ -405,7 +405,7 @@ const HowItWorks = () => {
               
               <FadeIn direction="up" delay={350}>
                 <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-purple-600 dark:text-purple-400">Quels moyens de paiement acceptez-vous ?</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Quels moyens de paiement acceptez-vous ?</h3>
                   <p className="text-gray-600 dark:text-gray-400">
                     Nous acceptons les cartes de crédit/débit, les virements bancaires et certaines cryptomonnaies. Tous les paiements sont sécurisés et chiffrés selon les normes les plus strictes de l'industrie.
                   </p>
@@ -419,10 +419,10 @@ const HowItWorks = () => {
         <section className="py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="max-w-4xl mx-auto">
-              <div className="bg-gradient-to-r from-violet-500/10 to-accent/10 dark:from-violet-900/20 dark:to-accent-900/20 p-8 rounded-2xl border border-violet-100 dark:border-violet-900/30">
+              <div className="bg-gradient-to-r from-teal-500/10 to-accent/10 dark:from-teal-900/20 dark:to-accent-900/20 p-8 rounded-2xl border border-teal-100 dark:border-teal-900/30">
                 <div className="flex flex-col md:flex-row items-center gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-20 h-20 bg-gradient-to-br from-violet-600 to-accent rounded-full flex items-center justify-center">
+                    <div className="w-20 h-20 bg-gradient-to-br from-teal-600 to-accent rounded-full flex items-center justify-center">
                       <ShieldCheck className="w-10 h-10 text-white" />
                     </div>
                   </div>
@@ -457,7 +457,7 @@ const HowItWorks = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="py-20 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 text-white">
+        <section className="py-20 bg-gradient-to-br from-teal-600 via-teal-600 to-teal-600 text-white">
           <div className="container mx-auto px-4 text-center">
             <FadeIn direction="up">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -470,7 +470,7 @@ const HowItWorks = () => {
               {!isAuthenticated ? (
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link to="/register">
-                    <Button className="bg-white text-violet-600 hover:bg-gray-100 px-8 py-6 rounded-xl text-lg font-semibold">
+                    <Button className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-6 rounded-xl text-lg font-semibold">
                       Créer un compte
                     </Button>
                   </Link>
@@ -483,7 +483,7 @@ const HowItWorks = () => {
               ) : (
                 <div className="flex justify-center">
                   <Link to="/creators">
-                    <Button className="bg-white text-violet-600 hover:bg-gray-100 px-8 py-6 rounded-xl text-lg font-semibold">
+                    <Button className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-6 rounded-xl text-lg font-semibold">
                       Explorer les créatrices
                     </Button>
                   </Link>
