@@ -40,10 +40,10 @@ const Index = () => {
                   Nouvelle façon d'investir
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  Investissez dans les <span className="text-gradient">créateurs</span> qui façonnent l'avenir
+                  Investissez dans les <span className="text-gradient">créatrices les plus performantes.</span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
-                  Notre plateforme vous permet d'investir directement dans les créateurs de contenu et de partager leur succès. Diversifiez votre portefeuille avec une nouvelle classe d'actifs.
+                  Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur succès. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
                 <div className="flex flex-wrap gap-4 pt-4">
                   <Link to="/register">
@@ -67,14 +67,14 @@ const Index = () => {
                 <div className="flex flex-wrap items-center gap-8 pt-6">
                   <div className="flex flex-col">
                     <span className="text-3xl font-bold text-investment-600">250+</span>
-                    <span className="text-sm text-gray-500">Créateurs</span>
+                    <span className="text-sm text-gray-500">Créatrices</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-3xl font-bold text-investment-600">12K+</span>
+                    <span className="text-3xl font-bold text-investment-600">20K+</span>
                     <span className="text-sm text-gray-500">Investisseurs</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-3xl font-bold text-investment-600">5M €</span>
+                    <span className="text-3xl font-bold text-investment-600">7M €</span>
                     <span className="text-sm text-gray-500">Investis</span>
                   </div>
                 </div>
@@ -112,7 +112,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-16" direction="up">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Avantages uniques de notre plateforme
+                Plateforme <span className="text-investment-600">visionnaire</span> unique au monde
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 Découvrez pourquoi de plus en plus d'investisseurs nous font confiance pour diversifier leur portefeuille.
@@ -126,7 +126,7 @@ const Index = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Rendements attractifs</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Nos créateurs offrent des rendements moyens de 8% à 15% par an, surpassant les placements traditionnels.
+                  Nos créatrices offrent des rendements moyens de 30% à 150% par trimestre.
                 </p>
               </FadeIn>
               
@@ -134,9 +134,9 @@ const Index = () => {
                 <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
                   <Users className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">Diversité de créateurs</h3>
+                <h3 className="text-xl font-semibold mb-3">Diversité des créatrices</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Plus de 250 créateurs de contenu dans différentes catégories pour diversifier votre portefeuille.
+                  Plus de 250 créatrices de contenu avec statistique détaillé sur du long terme.
                 </p>
               </FadeIn>
               
@@ -146,7 +146,7 @@ const Index = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Sécurité maximale</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Tous les investissements sont sécurisés par des contrats transparents et un système de surveillance avancé.
+                  Toutes les créatrices sont recrutés sous certains critère spéciaux pour vous proposez les plus performantes.
                 </p>
               </FadeIn>
               
@@ -169,14 +169,14 @@ const Index = () => {
             <FadeIn className="flex justify-between items-end mb-12" direction="up">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Créateurs populaires
+                  Top créatrices
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
-                  Découvrez les créateurs les plus populaires sur notre plateforme.
+                  Découvrez les créatrices les plus performantes de notre plateforme.
                 </p>
               </div>
               <Link to="/creators" className="hidden md:flex items-center text-investment-600 hover:text-investment-700 font-medium">
-                <span>Voir tous les créateurs</span>
+                <span>Voir toutes les créatrices</span>
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Link>
             </FadeIn>
@@ -216,7 +216,7 @@ const Index = () => {
             <div className="mt-12 text-center md:hidden">
               <Link to="/creators">
                 <GradientButton variant="outline">
-                  Voir tous les créateurs
+                  Voir toutes les créatrices
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
@@ -232,7 +232,7 @@ const Index = () => {
                 Comment ça marche
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                Investir dans vos créateurs préférés n'a jamais été aussi simple.
+                Investir dans vos créatrices préférées n'a jamais été aussi simple.
               </p>
             </FadeIn>
             
@@ -284,9 +284,9 @@ const Index = () => {
                   {/* Step 3 */}
                   <div className="flex flex-col md:flex-row items-start gap-8">
                     <FadeIn className="md:w-1/2 md:text-right order-2 md:order-1" direction="right">
-                      <h3 className="text-xl font-semibold mb-2">Choisissez vos créateurs</h3>
+                      <h3 className="text-xl font-semibold mb-2">Choisissez vos créatrices</h3>
                       <p className="text-gray-600 dark:text-gray-300">
-                        Parcourez notre catalogue de créateurs, analysez leurs performances et sélectionnez ceux qui vous inspirent.
+                        Parcourez notre catalogue de créatrices, analysez leurs performances et sélectionnez celles qui vous inspirent.
                       </p>
                     </FadeIn>
                     
@@ -329,48 +329,6 @@ const Index = () => {
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
-            </div>
-          </div>
-        </section>
-        
-        {/* CTA Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="relative overflow-hidden rounded-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-investment-600 to-investment-400"></div>
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20"></div>
-              
-              <div className="relative z-10 px-6 py-16 md:px-12 md:py-24 text-center">
-                <FadeIn direction="up">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                    Prêt à investir dans l'avenir des créateurs ?
-                  </h2>
-                  <p className="text-white/80 text-lg max-w-2xl mx-auto mb-8">
-                    Rejoignez des milliers d'investisseurs qui soutiennent déjà les créateurs de contenu tout en générant des rendements attractifs.
-                  </p>
-                  <div className="flex flex-wrap justify-center gap-4">
-                    <Link to="/register">
-                      <GradientButton 
-                        variant="secondary"
-                        size="lg"
-                        icon={<ArrowRight className="h-5 w-5" />}
-                        iconPosition="right"
-                      >
-                        Créer un compte
-                      </GradientButton>
-                    </Link>
-                    <Link to="/creators">
-                      <GradientButton 
-                        variant="outline"
-                        size="lg"
-                        className="!bg-transparent !text-white !border-white hover:!bg-white/20"
-                      >
-                        Découvrir les créateurs
-                      </GradientButton>
-                    </Link>
-                  </div>
-                </FadeIn>
-              </div>
             </div>
           </div>
         </section>
