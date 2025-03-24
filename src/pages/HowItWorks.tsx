@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -291,7 +292,7 @@ const HowItWorks = () => {
               {/* Benefits for Creators */}
               <FadeIn direction="right">
                 <div className="border border-accent-200 dark:border-accent-900/40 rounded-2xl overflow-hidden h-full">
-                  <div className="bg-gradient-to-r from-accent to-investment-600 p-6">
+                  <div className="bg-gradient-to-r from-accent to-teal-600 p-6">
                     <h3 className="text-2xl font-semibold text-white mb-2 flex items-center gap-2">
                       <Camera className="h-6 w-6" />
                       <span>Pour les créatrices</span>
@@ -346,76 +347,8 @@ const HowItWorks = () => {
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="py-16 bg-gradient-to-br from-teal-500/5 via-teal-500/5 to-teal-500/5">
-          <div className="container mx-auto px-4">
-            <FadeIn direction="up" className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-black dark:text-white">Questions fréquentes</h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                Découvrez les réponses aux questions les plus courantes sur notre plateforme.
-              </p>
-            </FadeIn>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <FadeIn direction="up" delay={100}>
-                <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Comment sont calculés les rendements ?</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Les rendements sont calculés en fonction des revenus générés par les créatrices, de leur croissance d'audience et de leur engagement. Chaque plan propose un taux de rendement fixe ou variable selon les performances.
-                  </p>
-                </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={150}>
-                <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Est-ce que mon investissement est sécurisé ?</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Nous mettons en place des garanties contractuelles avec les créatrices pour protéger vos investissements. Bien que tout investissement comporte des risques, notre plateforme travaille uniquement avec des créatrices vérifiées ayant un historique de performance stable.
-                  </p>
-                </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={200}>
-                <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Puis-je investir dans plusieurs créatrices ?</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Absolument ! Nous encourageons même la diversification de votre portefeuille d'investissement. Vous pouvez investir dans autant de créatrices que vous le souhaitez, dans la limite de votre solde disponible.
-                  </p>
-                </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={250}>
-                <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-accent dark:text-accent">Comment retirer mes fonds et mes gains ?</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Les gains sont crédités mensuellement sur votre compte. Vous pouvez les retirer à tout moment. Pour le capital investi, il est libéré à la fin de la période d'investissement choisie. Des retraits anticipés sont possibles sous certaines conditions.
-                  </p>
-                </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={300}>
-                <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Comment devenir une créatrice sur la plateforme ?</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Les créatrices intéressées peuvent postuler via notre formulaire dédié. Nous évaluons chaque candidature selon plusieurs critères : qualité du contenu, taille de l'audience, engagement, régularité et potentiel de croissance.
-                  </p>
-                </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={350}>
-                <div className="glass-card p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-teal-600 dark:text-teal-400">Quels moyens de paiement acceptez-vous ?</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Nous acceptons les cartes de crédit/débit, les virements bancaires et certaines cryptomonnaies. Tous les paiements sont sécurisés et chiffrés selon les normes les plus strictes de l'industrie.
-                  </p>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
-
         {/* Trust & Security */}
-        <section className="py-16 bg-white dark:bg-gray-900">
+        <section className="py-16 bg-gradient-to-br from-teal-500/5 via-teal-500/5 to-teal-500/5">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="max-w-4xl mx-auto">
               <div className="bg-gradient-to-r from-teal-500/10 to-accent/10 dark:from-teal-900/20 dark:to-accent-900/20 p-8 rounded-2xl border border-teal-100 dark:border-teal-900/30">
@@ -451,43 +384,6 @@ const HowItWorks = () => {
                   </div>
                 </div>
               </div>
-            </FadeIn>
-          </div>
-        </section>
-
-        {/* Call to Action */}
-        <section className="py-20 bg-gradient-to-br from-teal-600 via-teal-600 to-teal-600 text-white">
-          <div className="container mx-auto px-4 text-center">
-            <FadeIn direction="up">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Prêt à investir dans les créatrices de contenu les plus prometteuses ?
-              </h2>
-              <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
-                Rejoignez notre plateforme aujourd'hui et découvrez une nouvelle façon de générer des rendements tout en soutenant vos créatrices préférées.
-              </p>
-              
-              {!isAuthenticated ? (
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/register">
-                    <Button className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-6 rounded-xl text-lg font-semibold">
-                      Créer un compte
-                    </Button>
-                  </Link>
-                  <Link to="/creators">
-                    <Button variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-6 rounded-xl text-lg font-semibold">
-                      Explorer les créatrices
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex justify-center">
-                  <Link to="/creators">
-                    <Button className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-6 rounded-xl text-lg font-semibold">
-                      Explorer les créatrices
-                    </Button>
-                  </Link>
-                </div>
-              )}
             </FadeIn>
           </div>
         </section>

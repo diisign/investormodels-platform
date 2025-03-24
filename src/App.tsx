@@ -12,6 +12,7 @@ import Creators from "./pages/Creators";
 import CreatorDetails from "./pages/CreatorDetails";
 import About from "./pages/About";
 import HowItWorks from "./pages/HowItWorks";
+import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { AuthProvider, RequireAuth } from "./utils/auth";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
             
             {/* Routes protégées */}
