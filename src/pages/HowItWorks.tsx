@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -47,7 +46,7 @@ const HowItWorks = () => {
         <section className="py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-primary">Un processus simple en 4 étapes</h2>
+              <h2 className="text-3xl font-bold mb-4 text-black dark:text-white">Un processus simple en 4 étapes</h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                 Notre plateforme rend l'investissement dans les créatrices de contenu aussi simple que possible.
               </p>
@@ -60,7 +59,7 @@ const HowItWorks = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <Users className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-primary">1. Parcourez les créatrices</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">1. Parcourez les créatrices</h3>
                   <p className="text-gray-600 dark:text-gray-400 flex-grow">
                     Explorez notre catalogue de créatrices talentueuses et consultez leurs profils, statistiques et plans d'investissement.
                   </p>
@@ -73,7 +72,7 @@ const HowItWorks = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <Camera className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-primary">2. Choisissez où investir</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">2. Choisissez où investir</h3>
                   <p className="text-gray-600 dark:text-gray-400 flex-grow">
                     Sélectionnez les créatrices qui vous plaisent et choisissez le plan d'investissement qui correspond à vos objectifs financiers.
                   </p>
@@ -86,7 +85,7 @@ const HowItWorks = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <Wallet className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-primary">3. Financez votre compte</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">3. Financez votre compte</h3>
                   <p className="text-gray-600 dark:text-gray-400 flex-grow">
                     Déposez des fonds sur votre compte pour commencer à investir dans les créatrices que vous avez choisies.
                   </p>
@@ -99,7 +98,7 @@ const HowItWorks = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-accent rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <TrendingUp className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-primary">4. Récoltez les bénéfices</h3>
+                  <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">4. Récoltez les bénéfices</h3>
                   <p className="text-gray-600 dark:text-gray-400 flex-grow">
                     Recevez des retours mensuels basés sur les performances des créatrices dans lesquelles vous avez investi.
                   </p>
@@ -113,7 +112,7 @@ const HowItWorks = () => {
         <section className="py-16 bg-gradient-to-br from-teal-500/5 via-teal-500/5 to-teal-500/5">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-center text-primary">Comment fonctionne l'investissement ?</h2>
+              <h2 className="text-3xl font-bold mb-4 text-center text-black dark:text-white">Comment fonctionne l'investissement ?</h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto text-center">
                 Notre modèle d'investissement unique vous permet de soutenir les créatrices tout en générant des retours financiers.
               </p>
@@ -122,7 +121,7 @@ const HowItWorks = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <FadeIn direction="left">
                 <div className="glass-card p-8">
-                  <h3 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-primary">
+                  <h3 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-black dark:text-white">
                     <Sparkles className="text-accent h-6 w-6" />
                     <span>Les plans d'investissement</span>
                   </h3>
@@ -172,7 +171,7 @@ const HowItWorks = () => {
 
               <FadeIn direction="right">
                 <div className="glass-card p-8">
-                  <h3 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-primary">
+                  <h3 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-black dark:text-white">
                     <TrendingUp className="text-accent h-6 w-6" />
                     <span>Comment vous gagnez de l'argent</span>
                   </h3>
@@ -227,7 +226,7 @@ const HowItWorks = () => {
         <section className="py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="mb-12 text-center">
-              <h2 className="text-3xl font-bold mb-4 text-primary">Avantages pour tous</h2>
+              <h2 className="text-3xl font-bold mb-4 text-black dark:text-white">Avantages pour tous</h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                 Notre plateforme crée une relation gagnant-gagnant entre les créatrices et les investisseurs.
               </p>
@@ -351,7 +350,7 @@ const HowItWorks = () => {
         <section className="py-16 bg-gradient-to-br from-teal-500/5 via-teal-500/5 to-teal-500/5">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-primary">Questions fréquentes</h2>
+              <h2 className="text-3xl font-bold mb-4 text-black dark:text-white">Questions fréquentes</h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                 Découvrez les réponses aux questions les plus courantes sur notre plateforme.
               </p>
@@ -427,7 +426,7 @@ const HowItWorks = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-2 text-primary">Confiance et Sécurité</h3>
+                    <h3 className="text-2xl font-bold mb-2 text-black dark:text-white">Confiance et Sécurité</h3>
                     <p className="text-gray-600 dark:text-gray-400 mb-4">
                       Votre sécurité et votre confidentialité sont notre priorité absolue. Nous utilisons les technologies de cryptage les plus avancées pour protéger vos données personnelles et financières.
                     </p>
