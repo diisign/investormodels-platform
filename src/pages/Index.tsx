@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
@@ -66,7 +65,7 @@ const Index = () => {
                       </GradientButton>
                     </button>
                   ) : (
-                    <Link to="/register">
+                    <Link to="/login">
                       <GradientButton 
                         size="lg"
                         icon={<ArrowRight className="h-5 w-5" />}
