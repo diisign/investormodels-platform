@@ -12,13 +12,14 @@ import {
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
-// Données du chiffre d'affaires d'OnlyFans depuis 2020
+// Données mises à jour du chiffre d'affaires d'OnlyFans depuis 2019
 const revenueData = [
-  { year: '2020', revenue: 400 },
-  { year: '2021', revenue: 1200 },
-  { year: '2022', revenue: 2500 },
-  { year: '2023', revenue: 4300 },
-  { year: '2024', revenue: 5600 },
+  { year: '2019', revenue: 120 },
+  { year: '2020', revenue: 375 },
+  { year: '2021', revenue: 932 },
+  { year: '2022', revenue: 1100 },
+  { year: '2023', revenue: 1300 },
+  { year: '2024', revenue: 1600 },
 ];
 
 // Configuration du graphique
@@ -42,7 +43,7 @@ const OnlyfansRevenueChart = () => {
       <div className="absolute -inset-0.5 bg-gradient-to-r from-investment-500 to-investment-600 rounded-2xl blur opacity-30 animate-pulse-light"></div>
       <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 p-4 h-full">
         <h3 className="text-lg font-semibold mb-2">Croissance du Chiffre d'Affaires OnlyFans</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Évolution depuis 2020 (en millions $)</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Évolution depuis 2019 (en millions $)</p>
 
         <ChartContainer className="aspect-[5/4] h-[300px]" config={chartConfig}>
           <AreaChart data={revenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -91,7 +92,7 @@ const OnlyfansRevenueChart = () => {
         </ChartContainer>
 
         <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-          Source: Rapports financiers publics OnlyFans 2020-2024
+          Source: Rapports financiers publics OnlyFans 2019-2024
         </div>
       </div>
     </div>
