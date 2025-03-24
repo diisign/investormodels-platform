@@ -89,6 +89,17 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               Comment ça marche
             </Link>
             <Link 
+              to="/faq" 
+              className={cn(
+                'font-medium transition-colors duration-300',
+                isActive('/faq') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
+              )}
+            >
+              Questions fréquentes
+            </Link>
+            <Link 
               to="/about" 
               className={cn(
                 'font-medium transition-colors duration-300',
@@ -224,6 +235,18 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               onClick={closeMenu}
             >
               Comment ça marche
+            </Link>
+            <Link 
+              to="/faq" 
+              className={cn(
+                'block py-2 font-medium',
+                isActive('/faq') 
+                  ? 'text-investment-600 dark:text-investment-400' 
+                  : 'text-gray-700 dark:text-gray-300'
+              )}
+              onClick={closeMenu}
+            >
+              Questions fréquentes
             </Link>
             <Link 
               to="/about" 
