@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import { HelpCircle } from 'lucide-react';
 
 const FAQ = () => {
   const { isAuthenticated } = useAuth();
