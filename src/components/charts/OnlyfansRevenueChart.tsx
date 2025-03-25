@@ -12,8 +12,7 @@ import {
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
-// Données mises à jour du chiffre d'affaires d'OnlyFans depuis 2019
-// Values are rounded to remove decimals
+// Données du chiffre d'affaires d'OnlyFans depuis 2019
 const revenueData = [
   { year: '2019', revenue: 120 },
   { year: '2020', revenue: 375 },
