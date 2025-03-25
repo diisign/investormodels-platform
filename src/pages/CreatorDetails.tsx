@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
-  BarChart3, CircleDollarSign, TrendingUp, Users, Check, Instagram, 
-  Youtube, Calendar, ArrowRight, Twitter
+  BarChart3, CircleDollarSign, TrendingUp, Users, 
+  Calendar, ArrowRight, Twitter, Instagram, Youtube
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
@@ -19,12 +19,14 @@ const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
   const { isAuthenticated, user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
   
   // Find the creator data
   const creator = creators.find(c => c.id === creatorId);
+  
+  // Generate expected return rate between 80% and 130%
+  const expectedReturnRate = Math.floor(Math.random() * (130 - 80 + 1) + 80);
   
   if (!creator) {
     return (
@@ -62,22 +64,9 @@ const CreatorDetails = () => {
     { month: 'Déc', revenue: creator.monthlyRevenue },
   ];
   
-  const handlePlanSelect = (planId: string) => {
-    const plan = creator.plans.find(p => p.id === planId);
-    if (plan) {
-      setSelectedPlan(planId);
-      setInvestmentAmount(plan.minInvestment.toString());
-    }
-  };
-  
   const openInvestModal = () => {
     if (!isAuthenticated) {
       toast.error("Veuillez vous connecter pour investir");
-      return;
-    }
-    
-    if (!selectedPlan) {
-      toast.error("Veuillez sélectionner un plan d'investissement");
       return;
     }
     
@@ -92,11 +81,6 @@ const CreatorDetails = () => {
       return;
     }
     
-    if (!selectedPlan) {
-      toast.error("Veuillez sélectionner un plan d'investissement");
-      return;
-    }
-    
     const amount = Number(investmentAmount);
     if (isNaN(amount) || amount <= 0) {
       toast.error("Veuillez entrer un montant valide");
@@ -106,7 +90,8 @@ const CreatorDetails = () => {
     setLoading(true);
     
     try {
-      await investInCreator(creator.id, selectedPlan, amount);
+      // Use a default plan since we're removing plans
+      await investInCreator(creator.id, "default", amount);
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
     } catch (error) {
@@ -146,11 +131,6 @@ const CreatorDetails = () => {
               </FadeIn>
               
               <FadeIn direction="up" delay={100} className="flex-grow">
-                <div className="mb-2">
-                  <span className="inline-block bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {creator.category}
-                  </span>
-                </div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">{creator.name}</h1>
                 <div className="flex flex-wrap gap-6 mt-4">
                   <div className="flex items-center">
@@ -201,18 +181,8 @@ const CreatorDetails = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Left Column */}
               <div className="lg:col-span-2 space-y-8">
-                {/* About */}
-                <FadeIn direction="up" className="glass-card">
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-4">À propos</h2>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      {creator.description}
-                    </p>
-                  </div>
-                </FadeIn>
-                
                 {/* Performance */}
-                <FadeIn direction="up" delay={100} className="glass-card">
+                <FadeIn direction="up" className="glass-card">
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-4">Performance des revenus</h2>
                     <div className="h-72">
@@ -266,9 +236,9 @@ const CreatorDetails = () => {
                           <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 mr-3">
                             <TrendingUp className="h-5 w-5" />
                           </div>
-                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement moyen</span>
+                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement prévu</span>
                         </div>
-                        <div className="text-2xl font-bold">{creator.returnRate}%</div>
+                        <div className="text-2xl font-bold">{expectedReturnRate}%</div>
                       </div>
                       
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -287,75 +257,27 @@ const CreatorDetails = () => {
               
               {/* Right Column */}
               <div className="space-y-8">
-                {/* Investment Plans */}
+                {/* Investment Section */}
                 <FadeIn direction="up" className="glass-card">
                   <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-4">Plans d'investissement</h2>
-                    <div className="space-y-4">
-                      {creator.plans.map((plan) => (
-                        <div 
-                          key={plan.id}
-                          className={cn(
-                            "border rounded-lg p-4 cursor-pointer transition-all duration-300",
-                            selectedPlan === plan.id 
-                              ? "border-investment-500 dark:border-investment-400 bg-investment-50 dark:bg-investment-900/20"
-                              : "border-gray-200 dark:border-gray-700 hover:border-investment-300 dark:hover:border-investment-600 bg-white dark:bg-gray-800"
-                          )}
-                          onClick={() => handlePlanSelect(plan.id)}
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h3 className="font-semibold text-lg">{plan.name}</h3>
-                              <div className="flex items-center mt-1">
-                                <span className="text-green-600 dark:text-green-400 font-medium flex items-center">
-                                  <TrendingUp className="h-4 w-4 mr-1" />
-                                  {plan.returnRate}% de rendement
-                                </span>
-                              </div>
-                              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                Minimum: {plan.minInvestment}€
-                              </p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Durée: {plan.duration} mois
-                              </p>
-                            </div>
-                            
-                            <div className="flex items-center justify-center h-6 w-6 border-2 rounded-full mt-1 transition-colors duration-300">
-                              {selectedPlan === plan.id && (
-                                <Check className="h-4 w-4 text-investment-500 dark:text-investment-400" />
-                              )}
-                            </div>
-                          </div>
-                          
-                          <div className="mt-3 space-y-2">
-                            <h4 className="text-sm font-medium">Avantages:</h4>
-                            <ul className="space-y-1 text-sm">
-                              {plan.benefits.map((benefit, index) => (
-                                <li key={index} className="flex items-start">
-                                  <Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                                  <span className="text-gray-600 dark:text-gray-300">{benefit}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          
-                          {plan.popularity === 'high' && (
-                            <div className="mt-3 inline-block bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 text-xs font-medium px-2 py-1 rounded-full">
-                              Populaire
-                            </div>
-                          )}
+                    <h2 className="text-xl font-semibold mb-4">Investir</h2>
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                      <div className="mb-4">
+                        <h3 className="font-semibold text-lg">Soutenir {creator.name}</h3>
+                        <div className="flex items-center mt-2">
+                          <span className="text-green-600 dark:text-green-400 font-medium flex items-center">
+                            <TrendingUp className="h-4 w-4 mr-1" />
+                            {expectedReturnRate}% de rendement prévu
+                          </span>
                         </div>
-                      ))}
-                    </div>
-                    
-                    <div className="mt-6">
+                      </div>
+                      
                       <GradientButton 
                         fullWidth 
                         size="lg"
                         onClick={openInvestModal}
-                        disabled={!selectedPlan}
                       >
-                        {selectedPlan ? 'Investir maintenant' : 'Sélectionnez un plan'}
+                        Investir maintenant
                       </GradientButton>
                     </div>
                     
@@ -382,7 +304,7 @@ const CreatorDetails = () => {
                     <h2 className="text-xl font-semibold mb-4">Créateurs similaires</h2>
                     <div className="space-y-4">
                       {creators
-                        .filter(c => c.id !== creator.id && c.category === creator.category)
+                        .filter(c => c.id !== creator.id)
                         .slice(0, 3)
                         .map((similarCreator) => (
                           <Link 
@@ -402,16 +324,11 @@ const CreatorDetails = () => {
                                 <h4 className="font-medium">{similarCreator.name}</h4>
                                 <span className="text-xs font-medium text-green-500 flex items-center">
                                   <TrendingUp className="h-3 w-3 mr-1" />
-                                  {similarCreator.returnRate}%
+                                  {Math.floor(Math.random() * (130 - 80 + 1) + 80)}%
                                 </span>
                               </div>
-                              <div className="flex justify-between items-center mt-1">
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                  {similarCreator.category}
-                                </span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                  {similarCreator.investorsCount} investisseurs
-                                </span>
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {similarCreator.investorsCount} investisseurs
                               </div>
                             </div>
                           </Link>
@@ -457,19 +374,6 @@ const CreatorDetails = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="plan" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Plan
-                  </label>
-                  <input
-                    type="text"
-                    id="plan"
-                    value={creator.plans.find(p => p.id === selectedPlan)?.name || ''}
-                    className="input-field bg-gray-50 dark:bg-gray-700 pointer-events-none"
-                    readOnly
-                  />
-                </div>
-                
-                <div>
                   <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Montant (€)
                   </label>
@@ -482,14 +386,14 @@ const CreatorDetails = () => {
                       id="amount"
                       value={investmentAmount}
                       onChange={(e) => setInvestmentAmount(e.target.value)}
-                      min={creator.plans.find(p => p.id === selectedPlan)?.minInvestment || 0}
+                      min={50}
                       step="10"
                       className="input-field pl-10"
                       required
                     />
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Montant minimum: {creator.plans.find(p => p.id === selectedPlan)?.minInvestment}€
+                    Montant minimum: 50€
                   </p>
                 </div>
                 
