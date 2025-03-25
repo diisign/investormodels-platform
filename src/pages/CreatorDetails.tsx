@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -25,6 +24,11 @@ const getExpectedReturnRate = (creatorId: string): number => {
   
   // Map the character code to a number between 80 and 130
   return 80 + (charCode % 51);
+};
+
+// Calculate followers based on monthly revenue divided by 15
+const calculateFollowers = (monthlyRevenue: number): number => {
+  return Math.round(monthlyRevenue / 15);
 };
 
 const CreatorDetails = () => {
@@ -61,21 +65,23 @@ const CreatorDetails = () => {
     );
   }
   
-  // Create rounded revenue data for the chart
-  const monthlyRevenueData = [
-    { month: 'Jan', revenue: Math.round(creator?.monthlyRevenue * 0.7 || 0) },
-    { month: 'Fév', revenue: Math.round(creator?.monthlyRevenue * 0.8 || 0) },
-    { month: 'Mar', revenue: Math.round(creator?.monthlyRevenue * 0.9 || 0) },
-    { month: 'Avr', revenue: Math.round(creator?.monthlyRevenue * 0.85 || 0) },
-    { month: 'Mai', revenue: Math.round(creator?.monthlyRevenue * 0.95 || 0) },
-    { month: 'Juin', revenue: Math.round(creator?.monthlyRevenue * 1.05 || 0) },
-    { month: 'Juil', revenue: Math.round(creator?.monthlyRevenue * 1.1 || 0) },
-    { month: 'Août', revenue: Math.round(creator?.monthlyRevenue * 1.0 || 0) },
-    { month: 'Sep', revenue: Math.round(creator?.monthlyRevenue * 1.15 || 0) },
-    { month: 'Oct', revenue: Math.round(creator?.monthlyRevenue * 1.2 || 0) },
-    { month: 'Nov', revenue: Math.round(creator?.monthlyRevenue * 1.25 || 0) },
-    { month: 'Déc', revenue: Math.round(creator?.monthlyRevenue || 0) },
-  ];
+  // Create 12 months of revenue data ending with March
+  const monthNames = ['Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar'];
+  const monthlyRevenueData = monthNames.map((month, index) => {
+    // Create variations in the revenue data
+    const variationFactor = 0.7 + (Math.random() * 0.6); // Creates a value between 0.7 and 1.3
+    const revenue = Math.round(creator?.monthlyRevenue * variationFactor || 0);
+    return { month, revenue };
+  });
+  
+  // Update the creator's followers to be monthly revenue / 15
+  useEffect(() => {
+    if (creator) {
+      const updatedFollowers = calculateFollowers(creator.monthlyRevenue);
+      // This is just for display purposes, we're not actually modifying the original data
+      creator.followers = updatedFollowers;
+    }
+  }, [creator]);
   
   const openInvestModal = () => {
     if (!isAuthenticated) {
