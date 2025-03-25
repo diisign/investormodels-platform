@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
@@ -11,6 +11,22 @@ import { useAuth } from '@/utils/auth';
 
 type SortOption = 'popularity' | 'return' | 'alphabetical';
 type FilterCategory = 'all' | 'fitness' | 'photographie' | 'lifestyle' | 'cuisine' | 'mode' | 'tech';
+
+// Generate deterministic expected return rate based on creator ID (must match CreatorCard and CreatorDetails)
+const getExpectedReturnRate = (creatorId: string): number => {
+  const lastChar = creatorId.charAt(creatorId.length - 1);
+  const charCode = lastChar.charCodeAt(0);
+  return 80 + (charCode % 51);
+};
+
+// Get a deterministic monthly revenue value between 30,000 and 100,000 (must match CreatorCard)
+const getMonthlyRevenue = (creatorId: string): number => {
+  const firstChar = creatorId.charAt(0);
+  const secondChar = creatorId.charAt(1) || 'a';
+  const seedValue = (firstChar.charCodeAt(0) + secondChar.charCodeAt(0)) % 100;
+  const baseValue = 30000 + (seedValue * 700);
+  return baseValue + (seedValue % 987);
+};
 
 const Creators = () => {
   const { isAuthenticated } = useAuth();
@@ -54,7 +70,7 @@ const Creators = () => {
         case 'popularity':
           return b.investorsCount - a.investorsCount;
         case 'return':
-          return b.returnRate - a.returnRate;
+          return getExpectedReturnRate(b.id) - getExpectedReturnRate(a.id);
         case 'alphabetical':
           return a.name.localeCompare(b.name);
         default:
@@ -302,19 +318,25 @@ const Creators = () => {
             
             {/* Creators Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredCreators.map((creator, index) => (
-                <FadeIn key={creator.id} direction="up" delay={100 + (index % 8) * 50}>
-                  <CreatorCard
-                    id={creator.id}
-                    name={creator.name}
-                    imageUrl={creator.imageUrl}
-                    category={creator.category}
-                    returnRate={creator.returnRate}
-                    investorsCount={creator.investorsCount}
-                    totalInvested={creator.totalInvested}
-                  />
-                </FadeIn>
-              ))}
+              {filteredCreators.map((creator, index) => {
+                // Get the consistent monthly revenue for this creator
+                const monthlyRevenue = getMonthlyRevenue(creator.id);
+                
+                return (
+                  <FadeIn key={creator.id} direction="up" delay={100 + (index % 8) * 50}>
+                    <CreatorCard
+                      id={creator.id}
+                      name={creator.name}
+                      imageUrl={creator.imageUrl}
+                      category={creator.category}
+                      returnRate={getExpectedReturnRate(creator.id)}
+                      investorsCount={creator.investorsCount}
+                      totalInvested={creator.totalInvested}
+                      monthlyRevenue={monthlyRevenue}
+                    />
+                  </FadeIn>
+                );
+              })}
             </div>
             
             {/* No Results */}
