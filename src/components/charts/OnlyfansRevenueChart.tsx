@@ -12,29 +12,20 @@ import {
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
-// Données du chiffre d'affaires d'OnlyFans sur 12 mois finissant en mars
-// Generate monthly data with variations
-const generateMonthlyData = () => {
-  const monthNames = ['Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar'];
-  const baseRevenue = 1300; // Base revenue value
-  
-  return monthNames.map((month, index) => {
-    // Add variation to each month (between 85% and 115% of base revenue)
-    const variationFactor = 0.85 + (Math.random() * 0.3);
-    return {
-      month,
-      revenue: Math.round(baseRevenue * variationFactor)
-    };
-  });
-};
-
-// Generate the revenue data
-const revenueData = generateMonthlyData();
+// Yearly OnlyFans revenue data (in billions/millions USD)
+const revenueData = [
+  { year: '2019', revenue: 0.12 },  // 120 millions
+  { year: '2020', revenue: 0.375 }, // 375 millions
+  { year: '2021', revenue: 0.932 }, // 932 millions
+  { year: '2022', revenue: 1.1 },   // 1.1 milliards
+  { year: '2023', revenue: 1.3 },   // 1.3 milliards
+  { year: '2024', revenue: 1.6 }    // 1.6 milliards
+];
 
 // Configuration du graphique
 const chartConfig = {
   revenue: {
-    label: "Chiffre d'affaires (millions $)",
+    label: "Chiffre d'affaires (milliards $)",
     theme: {
       light: "#8B5CF6",
       dark: "#9B87F5"
@@ -44,7 +35,7 @@ const chartConfig = {
 
 const OnlyfansRevenueChart = () => {
   const formatTooltipValue = (value: number) => {
-    return `${Math.round(value)}M $`;
+    return value < 1 ? `${Math.round(value * 1000)}M $` : `${value}B $`;
   };
 
   return (
@@ -52,7 +43,7 @@ const OnlyfansRevenueChart = () => {
       <div className="absolute -inset-0.5 bg-gradient-to-r from-investment-500 to-investment-600 rounded-2xl blur opacity-30 animate-pulse-light"></div>
       <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 p-4 h-full">
         <h3 className="text-lg font-semibold mb-2">Croissance du Chiffre d'Affaires OnlyFans</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Évolution mensuelle (en millions $)</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Évolution annuelle (2019-2024)</p>
 
         <ChartContainer className="aspect-[5/4] h-[300px]" config={chartConfig}>
           <AreaChart data={revenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -64,14 +55,14 @@ const OnlyfansRevenueChart = () => {
             </defs>
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis 
-              dataKey="month" 
+              dataKey="year" 
               tick={{ fill: 'var(--foreground)' }}
               tickLine={{ stroke: 'var(--border)' }} 
             />
             <YAxis 
               tick={{ fill: 'var(--foreground)' }} 
               tickLine={{ stroke: 'var(--border)' }}
-              tickFormatter={(value) => `${Math.round(value)}M`}
+              tickFormatter={(value) => value < 1 ? `${value * 1000}M` : `${value}B`}
             />
             <ChartTooltip
               content={({ active, payload, label }) => {
@@ -101,7 +92,7 @@ const OnlyfansRevenueChart = () => {
         </ChartContainer>
 
         <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-          Source: Rapports financiers publics OnlyFans 2023-2024
+          Source: Rapports financiers publics OnlyFans 2019-2024
         </div>
       </div>
     </div>
