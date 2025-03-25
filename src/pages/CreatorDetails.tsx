@@ -17,6 +17,16 @@ import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 
+// Generate deterministic return rates based on creator ID
+const getExpectedReturnRate = (creatorId: string): number => {
+  // Use the last character of creatorId to generate a deterministic value
+  const lastChar = creatorId.charAt(creatorId.length - 1);
+  const charCode = lastChar.charCodeAt(0);
+  
+  // Map the character code to a number between 80 and 130
+  return 80 + (charCode % 51);
+};
+
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
   const { isAuthenticated, user } = useAuth();
@@ -28,8 +38,8 @@ const CreatorDetails = () => {
   // Find the creator data
   const creator = creators.find(c => c.id === creatorId);
   
-  // Generate expected return rate between 80% and 130%
-  const expectedReturnRate = Math.floor(Math.random() * (130 - 80 + 1) + 80);
+  // Get deterministic expected return rate
+  const expectedReturnRate = creatorId ? getExpectedReturnRate(creatorId) : 100;
   
   if (!creator) {
     return (
@@ -51,20 +61,20 @@ const CreatorDetails = () => {
     );
   }
   
-  // Mocked chart data
+  // Create rounded revenue data for the chart
   const monthlyRevenueData = [
-    { month: 'Jan', revenue: creator.monthlyRevenue * 0.7 },
-    { month: 'Fév', revenue: creator.monthlyRevenue * 0.8 },
-    { month: 'Mar', revenue: creator.monthlyRevenue * 0.9 },
-    { month: 'Avr', revenue: creator.monthlyRevenue * 0.85 },
-    { month: 'Mai', revenue: creator.monthlyRevenue * 0.95 },
-    { month: 'Juin', revenue: creator.monthlyRevenue * 1.05 },
-    { month: 'Juil', revenue: creator.monthlyRevenue * 1.1 },
-    { month: 'Août', revenue: creator.monthlyRevenue * 1.0 },
-    { month: 'Sep', revenue: creator.monthlyRevenue * 1.15 },
-    { month: 'Oct', revenue: creator.monthlyRevenue * 1.2 },
-    { month: 'Nov', revenue: creator.monthlyRevenue * 1.25 },
-    { month: 'Déc', revenue: creator.monthlyRevenue },
+    { month: 'Jan', revenue: Math.round(creator?.monthlyRevenue * 0.7 || 0) },
+    { month: 'Fév', revenue: Math.round(creator?.monthlyRevenue * 0.8 || 0) },
+    { month: 'Mar', revenue: Math.round(creator?.monthlyRevenue * 0.9 || 0) },
+    { month: 'Avr', revenue: Math.round(creator?.monthlyRevenue * 0.85 || 0) },
+    { month: 'Mai', revenue: Math.round(creator?.monthlyRevenue * 0.95 || 0) },
+    { month: 'Juin', revenue: Math.round(creator?.monthlyRevenue * 1.05 || 0) },
+    { month: 'Juil', revenue: Math.round(creator?.monthlyRevenue * 1.1 || 0) },
+    { month: 'Août', revenue: Math.round(creator?.monthlyRevenue * 1.0 || 0) },
+    { month: 'Sep', revenue: Math.round(creator?.monthlyRevenue * 1.15 || 0) },
+    { month: 'Oct', revenue: Math.round(creator?.monthlyRevenue * 1.2 || 0) },
+    { month: 'Nov', revenue: Math.round(creator?.monthlyRevenue * 1.25 || 0) },
+    { month: 'Déc', revenue: Math.round(creator?.monthlyRevenue || 0) },
   ];
   
   const openInvestModal = () => {

@@ -13,6 +13,7 @@ import {
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 // Données mises à jour du chiffre d'affaires d'OnlyFans depuis 2019
+// Values are rounded to remove decimals
 const revenueData = [
   { year: '2019', revenue: 120 },
   { year: '2020', revenue: 375 },
@@ -35,7 +36,7 @@ const chartConfig = {
 
 const OnlyfansRevenueChart = () => {
   const formatTooltipValue = (value: number) => {
-    return `${value}M $`;
+    return `${Math.round(value)}M $`;
   };
 
   return (
@@ -62,7 +63,7 @@ const OnlyfansRevenueChart = () => {
             <YAxis 
               tick={{ fill: 'var(--foreground)' }} 
               tickLine={{ stroke: 'var(--border)' }}
-              tickFormatter={(value) => `${value}M`}
+              tickFormatter={(value) => `${Math.round(value)}M`}
             />
             <ChartTooltip
               content={({ active, payload, label }) => {
