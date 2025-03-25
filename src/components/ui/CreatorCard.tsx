@@ -35,7 +35,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
     navigate(`/creator/${id}`);
   };
 
-  // Generate a deterministic return rate between 80% and 130% based on creator ID
+  // Generate a deterministic expected return rate between 80% and 130% based on creator ID
   const getExpectedReturnRate = (creatorId: string): number => {
     // Use the last character of creatorId to generate a deterministic value
     const lastChar = creatorId.charAt(creatorId.length - 1);
