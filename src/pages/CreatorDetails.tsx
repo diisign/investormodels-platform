@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -64,20 +65,20 @@ const CreatorDetails = () => {
     );
   }
   
-  // Create revenue data for the chart - using the original data pattern
+  // Create revenue data for the chart with monthly variations
   const monthlyRevenueData = [
-    { month: 'Avr', revenue: Math.round(creator.monthlyRevenue * 0.7) },
-    { month: 'Mai', revenue: Math.round(creator.monthlyRevenue * 0.75) },
-    { month: 'Juin', revenue: Math.round(creator.monthlyRevenue * 0.8) },
-    { month: 'Juil', revenue: Math.round(creator.monthlyRevenue * 0.85) },
-    { month: 'Août', revenue: Math.round(creator.monthlyRevenue * 0.9) },
-    { month: 'Sep', revenue: Math.round(creator.monthlyRevenue * 0.95) },
-    { month: 'Oct', revenue: Math.round(creator.monthlyRevenue * 1.0) },
-    { month: 'Nov', revenue: Math.round(creator.monthlyRevenue * 1.05) },
-    { month: 'Déc', revenue: Math.round(creator.monthlyRevenue * 1.1) },
-    { month: 'Jan', revenue: Math.round(creator.monthlyRevenue * 1.15) },
-    { month: 'Fév', revenue: Math.round(creator.monthlyRevenue * 1.2) },
-    { month: 'Mar', revenue: Math.round(creator.monthlyRevenue * 1.25) },
+    { month: 'Avr', revenue: Math.round(creator.monthlyRevenue * 0.7 + Math.random() * 500) },
+    { month: 'Mai', revenue: Math.round(creator.monthlyRevenue * 0.78 + Math.random() * 600) },
+    { month: 'Juin', revenue: Math.round(creator.monthlyRevenue * 0.82 - Math.random() * 400) },
+    { month: 'Juil', revenue: Math.round(creator.monthlyRevenue * 0.85 + Math.random() * 700) },
+    { month: 'Août', revenue: Math.round(creator.monthlyRevenue * 0.91 - Math.random() * 300) },
+    { month: 'Sep', revenue: Math.round(creator.monthlyRevenue * 0.95 + Math.random() * 400) },
+    { month: 'Oct', revenue: Math.round(creator.monthlyRevenue * 1.02 - Math.random() * 500) },
+    { month: 'Nov', revenue: Math.round(creator.monthlyRevenue * 1.07 + Math.random() * 300) },
+    { month: 'Déc', revenue: Math.round(creator.monthlyRevenue * 1.15 - Math.random() * 200) },
+    { month: 'Jan', revenue: Math.round(creator.monthlyRevenue * 1.12 + Math.random() * 400) },
+    { month: 'Fév', revenue: Math.round(creator.monthlyRevenue * 1.18 - Math.random() * 300) },
+    { month: 'Mar', revenue: Math.round(creator.monthlyRevenue * 1.25 + Math.random() * 600) },
   ];
   
   const openInvestModal = () => {

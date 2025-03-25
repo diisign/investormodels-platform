@@ -12,14 +12,14 @@ import {
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
-// Données du chiffre d'affaires d'OnlyFans depuis 2019
+// Données du chiffre d'affaires d'OnlyFans depuis 2019 avec des variations
 const revenueData = [
-  { year: '2019', revenue: 120 },
-  { year: '2020', revenue: 375 },
-  { year: '2021', revenue: 932 },
-  { year: '2022', revenue: 1100 },
-  { year: '2023', revenue: 1300 },
-  { year: '2024', revenue: 1600 },
+  { year: '2019', revenue: 120 + Math.random() * 20 },
+  { year: '2020', revenue: 375 - Math.random() * 25 },
+  { year: '2021', revenue: 932 + Math.random() * 40 },
+  { year: '2022', revenue: 1100 - Math.random() * 35 },
+  { year: '2023', revenue: 1300 + Math.random() * 50 },
+  { year: '2024', revenue: 1600 - Math.random() * 45 },
 ];
 
 // Configuration du graphique
