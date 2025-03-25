@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -65,7 +64,7 @@ const CreatorDetails = () => {
     );
   }
   
-  // Create revenue data for the chart - last month is March
+  // Create revenue data for the chart - using the original data pattern
   const monthlyRevenueData = [
     { month: 'Avr', revenue: Math.round(creator.monthlyRevenue * 0.7) },
     { month: 'Mai', revenue: Math.round(creator.monthlyRevenue * 0.75) },
