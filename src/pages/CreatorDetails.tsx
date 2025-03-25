@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -41,6 +40,9 @@ const CreatorDetails = () => {
   // Get deterministic expected return rate
   const expectedReturnRate = creatorId ? getExpectedReturnRate(creatorId) : 100;
   
+  // Calculate followers based on monthly revenue
+  const calculatedFollowers = creator ? Math.round(creator.monthlyRevenue / 15) : 0;
+  
   if (!creator) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -61,20 +63,20 @@ const CreatorDetails = () => {
     );
   }
   
-  // Create rounded revenue data for the chart
+  // Create revenue data for the chart - last month is March
   const monthlyRevenueData = [
-    { month: 'Jan', revenue: Math.round(creator?.monthlyRevenue * 0.7 || 0) },
-    { month: 'Fév', revenue: Math.round(creator?.monthlyRevenue * 0.8 || 0) },
-    { month: 'Mar', revenue: Math.round(creator?.monthlyRevenue * 0.9 || 0) },
-    { month: 'Avr', revenue: Math.round(creator?.monthlyRevenue * 0.85 || 0) },
-    { month: 'Mai', revenue: Math.round(creator?.monthlyRevenue * 0.95 || 0) },
-    { month: 'Juin', revenue: Math.round(creator?.monthlyRevenue * 1.05 || 0) },
-    { month: 'Juil', revenue: Math.round(creator?.monthlyRevenue * 1.1 || 0) },
-    { month: 'Août', revenue: Math.round(creator?.monthlyRevenue * 1.0 || 0) },
-    { month: 'Sep', revenue: Math.round(creator?.monthlyRevenue * 1.15 || 0) },
-    { month: 'Oct', revenue: Math.round(creator?.monthlyRevenue * 1.2 || 0) },
-    { month: 'Nov', revenue: Math.round(creator?.monthlyRevenue * 1.25 || 0) },
-    { month: 'Déc', revenue: Math.round(creator?.monthlyRevenue || 0) },
+    { month: 'Avr', revenue: Math.round(creator.monthlyRevenue * 0.7) },
+    { month: 'Mai', revenue: Math.round(creator.monthlyRevenue * 0.75) },
+    { month: 'Juin', revenue: Math.round(creator.monthlyRevenue * 0.8) },
+    { month: 'Juil', revenue: Math.round(creator.monthlyRevenue * 0.85) },
+    { month: 'Août', revenue: Math.round(creator.monthlyRevenue * 0.9) },
+    { month: 'Sep', revenue: Math.round(creator.monthlyRevenue * 0.95) },
+    { month: 'Oct', revenue: Math.round(creator.monthlyRevenue * 1.0) },
+    { month: 'Nov', revenue: Math.round(creator.monthlyRevenue * 1.05) },
+    { month: 'Déc', revenue: Math.round(creator.monthlyRevenue * 1.1) },
+    { month: 'Jan', revenue: Math.round(creator.monthlyRevenue * 1.15) },
+    { month: 'Fév', revenue: Math.round(creator.monthlyRevenue * 1.2) },
+    { month: 'Mar', revenue: Math.round(creator.monthlyRevenue * 1.25) },
   ];
   
   const openInvestModal = () => {
@@ -160,7 +162,7 @@ const CreatorDetails = () => {
                 <div className="flex flex-wrap gap-6 mt-4">
                   <div className="flex items-center">
                     <Users className="h-5 w-5 mr-2 text-investment-200" />
-                    <span>{creator.followers.toLocaleString()} followers</span>
+                    <span>{calculatedFollowers.toLocaleString()} followers</span>
                   </div>
                   <div className="flex items-center">
                     <Calendar className="h-5 w-5 mr-2 text-investment-200" />
@@ -331,33 +333,38 @@ const CreatorDetails = () => {
                       {creators
                         .filter(c => c.id !== creator.id)
                         .slice(0, 3)
-                        .map((similarCreator) => (
-                          <Link 
-                            key={similarCreator.id}
-                            to={`/creator/${similarCreator.id}`}
-                            className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-investment-300 dark:hover:border-investment-600 transition-colors"
-                          >
-                            <div className="h-12 w-12 rounded-full overflow-hidden mr-3">
-                              <img 
-                                src={similarCreator.imageUrl} 
-                                alt={similarCreator.name} 
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
-                            <div className="flex-grow">
-                              <div className="flex justify-between items-center">
-                                <h4 className="font-medium">{similarCreator.name}</h4>
-                                <span className="text-xs font-medium text-green-500 flex items-center">
-                                  <TrendingUp className="h-3 w-3 mr-1" />
-                                  {Math.floor(Math.random() * (130 - 80 + 1) + 80)}%
-                                </span>
+                        .map((similarCreator) => {
+                          const similarExpectedReturnRate = getExpectedReturnRate(similarCreator.id);
+                          const similarFollowers = Math.round(similarCreator.monthlyRevenue / 15);
+                          
+                          return (
+                            <Link 
+                              key={similarCreator.id}
+                              to={`/creator/${similarCreator.id}`}
+                              className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-investment-300 dark:hover:border-investment-600 transition-colors"
+                            >
+                              <div className="h-12 w-12 rounded-full overflow-hidden mr-3">
+                                <img 
+                                  src={similarCreator.imageUrl} 
+                                  alt={similarCreator.name} 
+                                  className="h-full w-full object-cover"
+                                />
                               </div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                {similarCreator.investorsCount} investisseurs
+                              <div className="flex-grow">
+                                <div className="flex justify-between items-center">
+                                  <h4 className="font-medium">{similarCreator.name}</h4>
+                                  <span className="text-xs font-medium text-green-500 flex items-center">
+                                    <TrendingUp className="h-3 w-3 mr-1" />
+                                    {similarExpectedReturnRate}%
+                                  </span>
+                                </div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                  {similarFollowers.toLocaleString()} followers
+                                </div>
                               </div>
-                            </div>
-                          </Link>
-                        ))}
+                            </Link>
+                          );
+                        })}
                     </div>
                     
                     <div className="mt-4">
@@ -464,3 +471,4 @@ const CreatorDetails = () => {
 };
 
 export default CreatorDetails;
+
