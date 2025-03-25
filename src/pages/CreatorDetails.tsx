@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, CircleDollarSign, TrendingUp, Users, 
-  Calendar, ArrowRight, Twitter, Instagram, Youtube
+  Calendar, ArrowRight, Twitter, Instagram, Youtube,
+  ArrowLeft
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
@@ -14,10 +15,12 @@ import { cn } from '@/lib/utils';
 import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
+import { Button } from '@/components/ui/button';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
   const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
@@ -107,6 +110,18 @@ const CreatorDetails = () => {
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
+        {/* Back Button */}
+        <div className="container mx-auto px-4 py-4">
+          <Button 
+            variant="ghost" 
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Retour</span>
+          </Button>
+        </div>
+
         {/* Hero Section */}
         <section className="relative bg-gradient-to-b from-investment-600 to-investment-700 text-white">
           <div className="absolute inset-0 overflow-hidden">
