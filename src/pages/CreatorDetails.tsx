@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -15,6 +16,7 @@ import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
+import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
 // Generate deterministic return rates based on creator ID
 const getExpectedReturnRate = (creatorId: string): number => {
@@ -471,4 +473,3 @@ const CreatorDetails = () => {
 };
 
 export default CreatorDetails;
-
