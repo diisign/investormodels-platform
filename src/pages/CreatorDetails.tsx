@@ -24,10 +24,8 @@ const CreatorDetails = () => {
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
   
-  // Find the creator data
   const creator = creators.find(c => c.id === creatorId);
   
-  // Get consistent creator profile data
   const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
   
   if (!creator) {
@@ -50,7 +48,6 @@ const CreatorDetails = () => {
     );
   }
   
-  // Generate consistent monthly revenue data
   const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
   
   const openInvestModal = () => {
@@ -79,7 +76,6 @@ const CreatorDetails = () => {
     setLoading(true);
     
     try {
-      // Use a default plan since we're removing plans
       await investInCreator(creator.id, "default", amount);
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
@@ -92,11 +88,9 @@ const CreatorDetails = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
-        {/* Back Button */}
         <div className="container mx-auto px-4 py-4">
           <Button 
             variant="ghost" 
@@ -108,7 +102,6 @@ const CreatorDetails = () => {
           </Button>
         </div>
 
-        {/* Hero Section */}
         <section className="relative bg-gradient-to-b from-investment-600 to-investment-700 text-white">
           <div className="absolute inset-0 overflow-hidden">
             <img 
@@ -176,13 +169,10 @@ const CreatorDetails = () => {
           </div>
         </section>
         
-        {/* Main Content */}
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column */}
               <div className="lg:col-span-2 space-y-8">
-                {/* Performance */}
                 <FadeIn direction="up" className="glass-card">
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-4">Performance des revenus</h2>
@@ -198,10 +188,7 @@ const CreatorDetails = () => {
                             axisLine={false} 
                             tickLine={false} 
                             tickFormatter={(value) => `${value / 1000}k€`}
-                            domain={[
-                              creatorProfile?.minRevenue || 0,
-                              creatorProfile?.maxRevenue || 100000
-                            ]}
+                            domain={[0, 120000]}
                           />
                           <Tooltip 
                             formatter={(value) => [`${value}€`, 'Revenu']} 
@@ -221,7 +208,6 @@ const CreatorDetails = () => {
                   </div>
                 </FadeIn>
                 
-                {/* Key Stats */}
                 <FadeIn direction="up" delay={200} className="glass-card">
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-4">Statistiques clés</h2>
@@ -260,9 +246,7 @@ const CreatorDetails = () => {
                 </FadeIn>
               </div>
               
-              {/* Right Column */}
               <div className="space-y-8">
-                {/* Investment Section */}
                 <FadeIn direction="up" className="glass-card">
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-4">Investir</h2>
@@ -303,7 +287,6 @@ const CreatorDetails = () => {
                   </div>
                 </FadeIn>
                 
-                {/* Similar Creators */}
                 <FadeIn direction="up" delay={100} className="glass-card">
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-4">Créatrices similaires</h2>
@@ -360,7 +343,6 @@ const CreatorDetails = () => {
         </section>
       </main>
       
-      {/* Investment Modal */}
       {showInvestModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">

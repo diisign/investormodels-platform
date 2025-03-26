@@ -1,3 +1,4 @@
+
 export interface CreatorProfile {
   id: string;
   name: string;
@@ -187,7 +188,7 @@ export const getCreatorProfile = (creatorId: string): CreatorProfile => {
 // Generate monthly performance data based on min and max revenue ranges
 export const generateMonthlyPerformanceData = (creatorId: string) => {
   const profile = getCreatorProfile(creatorId);
-  const { minRevenue, maxRevenue } = profile;
+  const { minRevenue, maxRevenue, monthlyRevenue } = profile;
   const range = maxRevenue - minRevenue;
   
   const monthNames = ['Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar'];
@@ -197,6 +198,11 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
   const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   
   return monthNames.map((month, index) => {
+    // For last month (March), use the exact monthlyRevenue value
+    if (index === monthNames.length - 1) {
+      return { month, revenue: monthlyRevenue };
+    }
+    
     // Generate deterministic value between min and max revenue
     // Using both the creator ID and month index to ensure consistent but varied data
     const hashValue = (seed + index * 123) % 1000 / 1000;
