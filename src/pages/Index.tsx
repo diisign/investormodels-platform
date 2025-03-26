@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
@@ -49,41 +48,34 @@ const Index = () => {
                   <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  Investissez dans les <span className="text-gradient" style={{ 
-                    background: 'linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                    textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
-                  }}>créatrices les plus performantes.</span>
+                  Investissez dans les <span className="text-[#8B5CF6]">créatrices les plus performantes.</span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
                   Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur succès. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
-                <div className="flex flex-wrap gap-4 pt-4">
-                  {isAuthenticated ? (
-                    <button onClick={scrollToCreators}>
-                      <GradientButton 
-                        size="lg"
-                        icon={<ArrowRight className="h-5 w-5" />}
-                        iconPosition="right"
-                      >
-                        Commencer maintenant
-                      </GradientButton>
-                    </button>
-                  ) : (
-                    <Link to="/login">
-                      <GradientButton 
-                        size="lg"
-                        icon={<ArrowRight className="h-5 w-5" />}
-                        iconPosition="right"
-                      >
-                        Commencer maintenant
-                      </GradientButton>
-                    </Link>
-                  )}
-                </div>
+                
+                {isAuthenticated ? (
+                  <button onClick={scrollToCreators}>
+                    <GradientButton 
+                      size="lg"
+                      icon={<ArrowRight className="h-5 w-5" />}
+                      iconPosition="right"
+                    >
+                      Commencer maintenant
+                    </GradientButton>
+                  </button>
+                ) : (
+                  <Link to="/login">
+                    <GradientButton 
+                      size="lg"
+                      icon={<ArrowRight className="h-5 w-5" />}
+                      iconPosition="right"
+                    >
+                      Commencer maintenant
+                    </GradientButton>
+                  </Link>
+                )}
+                
                 <div className="flex flex-wrap items-center gap-8 pt-6">
                   <div className="flex flex-col">
                     <span className="text-3xl font-bold text-investment-600">250+</span>
