@@ -7,7 +7,7 @@
 }
 
 .creator-gradient {
-  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%);
+  background: linear-gradient(102.3deg, #4C1D95 0%, #6D28D9 20%, #8B5CF6 50%, #A78BFA 80%, #C4B5FD 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -15,7 +15,7 @@
 }
 
 .text-gradient {
-  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%);
+  background: linear-gradient(102.3deg, #4C1D95 0%, #6D28D9 20%, #8B5CF6 50%, #A78BFA 80%, #C4B5FD 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -23,7 +23,7 @@
 }
 
 .creator-gradient-bg {
-  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%);
+  background: linear-gradient(102.3deg, #4C1D95 0%, #6D28D9 20%, #8B5CF6 50%, #A78BFA 80%, #C4B5FD 100%);
 }
 
 .hover-scale {
