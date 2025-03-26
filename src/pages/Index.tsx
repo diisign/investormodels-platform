@@ -129,7 +129,7 @@ const Index = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Rendements attractifs</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Nos créatrices offrent des rendements moyens de 30% à 150% par trimestre.
+                  Nos créatrices offrent des rendements moyens de 80% à 150% par trimestre.
                 </p>
               </FadeIn>
               
