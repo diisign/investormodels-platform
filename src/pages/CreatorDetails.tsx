@@ -206,7 +206,7 @@ const CreatorDetails = () => {
                       
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
                         <div className="flex items-center mb-3">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 mr-3">
+                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
                             <TrendingUp className="h-5 w-5" />
                           </div>
                           <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement prévu</span>
