@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -169,13 +170,19 @@ const CreatorDetails = () => {
                             formatter={(value) => [`${value}€`, 'Revenu']} 
                             labelFormatter={(label) => `Mois: ${label}`}
                           />
+                          <defs>
+                            <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1}/>
+                            </linearGradient>
+                          </defs>
                           <Line
                             type="monotone"
                             dataKey="revenue"
-                            stroke="#0ea5e9"
+                            stroke="#8B5CF6"
                             strokeWidth={3}
                             dot={{ r: 0 }}
-                            activeDot={{ r: 6, strokeWidth: 0 }}
+                            activeDot={{ r: 6, strokeWidth: 0, fill: "#8B5CF6" }}
                           />
                         </LineChart>
                       </ResponsiveContainer>
