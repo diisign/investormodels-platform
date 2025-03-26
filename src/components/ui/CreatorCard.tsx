@@ -27,29 +27,21 @@ const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, cl
       className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
     >
       <Link to={`/creator/${id}`} className="block h-full">
-        <div className="relative h-60 overflow-hidden">
-          <img 
-            src={imageUrl} 
-            alt={creatorProfile.name} 
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-          />
+        <div className="relative p-4 flex flex-col items-center">
           <div className="absolute top-3 left-3">
             <span className="px-2 py-1 text-xs font-medium bg-white/90 dark:bg-gray-800/90 rounded-full text-investment-600 dark:text-investment-400">
               {category}
             </span>
           </div>
-          <div className="absolute top-3 right-3">
-            <Avatar className="h-12 w-12 border-2 border-white shadow-md">
-              <AvatarImage src={imageUrl} alt={creatorProfile.name} />
-              <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-          </div>
-        </div>
-        
-        <div className="p-4">
-          <h3 className="font-bold text-lg mb-2 truncate">{creatorProfile.name}</h3>
           
-          <div className="grid grid-cols-2 gap-4 mb-3">
+          <Avatar className="h-32 w-32 border-4 border-white dark:border-gray-700 shadow-lg mb-4">
+            <AvatarImage src={imageUrl} alt={creatorProfile.name} className="object-cover" />
+            <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+          
+          <h3 className="font-bold text-lg mb-4 truncate text-center">{creatorProfile.name}</h3>
+          
+          <div className="grid grid-cols-2 gap-4 w-full">
             <div className="flex items-center">
               <Users className="h-4 w-4 mr-1 text-gray-500 dark:text-gray-400" />
               <span className="text-sm text-gray-500 dark:text-gray-400">{creatorProfile.followers.toLocaleString()} followers</span>
@@ -67,7 +59,9 @@ const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, cl
               <span className="text-sm text-gray-500 dark:text-gray-400">{investorsCount} investisseurs</span>
             </div>
           </div>
-          
+        </div>
+        
+        <div className="px-4 pb-4 pt-2">
           <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-500 dark:text-gray-400">Total investi</span>
