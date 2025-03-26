@@ -1,14 +1,14 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CircleDollarSign, TrendingUp, Users } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Avatar, AvatarImage } from './avatar';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Users, TrendingUp } from 'lucide-react';
+import { creators } from '@/utils/mockData';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 
-interface CreatorCardProps {
+export interface CreatorCardProps {
   id: string;
-  name: string;
+  name?: string;
   imageUrl: string;
   category: string;
   investorsCount: number;
@@ -16,92 +16,52 @@ interface CreatorCardProps {
   className?: string;
 }
 
-const CreatorCard: React.FC<CreatorCardProps> = ({
-  id,
-  name,
-  imageUrl,
-  category,
-  investorsCount,
-  totalInvested,
-  className,
-}) => {
-  const navigate = useNavigate();
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  // Get consistent creator data
+const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, className = '' }: CreatorCardProps) => {
   const creatorProfile = getCreatorProfile(id);
-
-  const handleCardClick = () => {
-    navigate(`/creator/${id}`);
-  };
-
+  
   return (
-    <div 
-      className={cn(
-        'glass-card cursor-pointer overflow-hidden relative group',
-        'hover:translate-y-[-5px] hover:shadow-xl',
-        'transition-all duration-500 ease-out-expo',
-        className
-      )}
-      onClick={handleCardClick}
+    <motion.div 
+      whileHover={{ y: -5 }}
+      transition={{ type: 'spring', stiffness: 300 }}
+      className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-2xl"></div>
-      
-      <div className="flex flex-col items-center pt-6">
-        <Avatar className="h-20 w-20 mb-3 ring-2 ring-investment-200 dark:ring-investment-800">
-          <AvatarImage 
+      <Link to={`/creator/${id}`} className="block h-full">
+        <div className="relative h-60 overflow-hidden">
+          <img 
             src={imageUrl} 
-            alt={name}
-            onLoad={() => setImageLoaded(true)}
-            className={cn(
-              'transition-all duration-700',
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            )}
+            alt={creatorProfile.name} 
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
           />
-        </Avatar>
-        
-        <div className="absolute top-3 left-3 z-20">
-          <span className="px-2.5 py-1 bg-white/90 dark:bg-gray-900/90 text-investment-600 dark:text-investment-400 text-xs font-semibold rounded-full backdrop-blur-sm shadow-sm">
-            {category}
-          </span>
+          <div className="absolute top-3 left-3">
+            <span className="px-2 py-1 text-xs font-medium bg-white/90 dark:bg-gray-800/90 rounded-full text-investment-600 dark:text-investment-400">
+              {category}
+            </span>
+          </div>
         </div>
-      </div>
-      
-      <div className="p-4 relative z-20">
-        <h3 className="font-semibold text-lg mb-2 text-foreground group-hover:text-creator-300 transition-colors duration-300 text-center">
-          {name}
-        </h3>
         
-        <div className="grid grid-cols-3 gap-1 mt-3">
-          <div className="flex flex-col items-center p-2 bg-gray-50/90 dark:bg-gray-800/70 rounded-lg">
-            <TrendingUp className="h-4 w-4 text-green-500 mb-1" />
-            <span className="text-xs text-gray-600 dark:text-gray-300">Rendement prévu</span>
-            <span className="font-semibold text-sm text-gray-800 dark:text-white">{creatorProfile.returnRate}%</span>
+        <div className="p-4">
+          <h3 className="font-bold text-lg mb-2 truncate">{creatorProfile.name}</h3>
+          
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <Users className="h-4 w-4 mr-1 text-gray-500 dark:text-gray-400" />
+              <span className="text-sm text-gray-500 dark:text-gray-400">{investorsCount} investisseurs</span>
+            </div>
+            <div className="flex items-center">
+              <TrendingUp className="h-4 w-4 mr-1 text-green-500" />
+              <span className="text-sm font-medium text-green-500">{creatorProfile.returnRate}%</span>
+            </div>
           </div>
           
-          <div className="flex flex-col items-center p-2 bg-gray-50/90 dark:bg-gray-800/70 rounded-lg">
-            <Users className="h-4 w-4 text-blue-500 mb-1" />
-            <span className="text-xs text-gray-600 dark:text-gray-300">Investisseurs</span>
-            <span className="font-semibold text-sm text-gray-800 dark:text-white">{investorsCount}</span>
-          </div>
-          
-          <div className="flex flex-col items-center p-2 bg-gray-50/90 dark:bg-gray-800/70 rounded-lg">
-            <CircleDollarSign className="h-4 w-4 text-investment-500 mb-1" />
-            <span className="text-xs text-gray-600 dark:text-gray-300">Revenu</span>
-            <span className="font-semibold text-sm text-gray-800 dark:text-white">{creatorProfile.monthlyRevenue.toLocaleString()}€</span>
+          <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-500 dark:text-gray-400">Total investi</span>
+              <span className="font-medium">{totalInvested.toLocaleString()}€</span>
+            </div>
           </div>
         </div>
-        
-        <div 
-          className="w-full mt-4 h-9 bg-gradient-to-r from-investment-600 to-investment-500 rounded-lg 
-                    flex items-center justify-center text-black font-medium text-sm
-                    transform transition-all duration-300 opacity-0 translate-y-2
-                    group-hover:opacity-100 group-hover:translate-y-0 shadow-md"
-        >
-          Voir le profil
-        </div>
-      </div>
-    </div>
+      </Link>
+    </motion.div>
   );
 };
 

@@ -203,10 +203,14 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
       return { month, revenue: monthlyRevenue };
     }
     
-    // Generate deterministic value between min and max revenue
-    // Using both the creator ID and month index to ensure consistent but varied data
-    const hashValue = (seed + index * 123) % 1000 / 1000;
-    const revenue = Math.round(minRevenue + (range * hashValue));
+    // Generate deterministic but volatile revenue between min and max range
+    // Using both the creator ID, month index, and volatile multipliers for more randomness
+    const volatilityFactor = Math.sin(seed * (index + 1) * 0.7) * 0.5 + 0.5; // value between 0-1
+    const secondaryFactor = Math.cos((seed + 123) * (index + 1) * 0.3) * 0.3 + 0.5; // additional randomness
+    const combinedFactor = (volatilityFactor * 0.7 + secondaryFactor * 0.3); // weighted combination
+    
+    // Ensure revenue stays within min and max bounds despite volatility
+    const revenue = Math.round(minRevenue + (range * combinedFactor));
     
     return { month, revenue };
   });
