@@ -231,7 +231,6 @@ const CreatorDetails = () => {
                     <h2 className="text-xl font-semibold mb-4">Investir</h2>
                     <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                       <div className="mb-4">
-                        <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                         <div className="flex items-center mt-2">
                           <span className="text-green-600 dark:text-green-400 font-medium flex items-center">
                             <TrendingUp className="h-4 w-4 mr-1" />
