@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, CircleDollarSign, TrendingUp, Users, 
-  Calendar, ArrowRight, Twitter, Instagram, Youtube,
-  ArrowLeft
+  Calendar, ArrowRight, ArrowLeft
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
@@ -140,30 +139,6 @@ const CreatorDetails = () => {
                     <span>{creator.totalInvested.toLocaleString()}€ investis</span>
                   </div>
                 </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={200} className="flex gap-3 mt-4 md:mt-0">
-                <a 
-                  href="#" 
-                  className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a 
-                  href="#" 
-                  className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="h-5 w-5" />
-                </a>
-                <a 
-                  href="#" 
-                  className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                  aria-label="YouTube"
-                >
-                  <Youtube className="h-5 w-5" />
-                </a>
               </FadeIn>
             </div>
           </div>

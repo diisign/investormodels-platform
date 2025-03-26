@@ -2,8 +2,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, TrendingUp } from 'lucide-react';
+import { Users, TrendingUp, CircleDollarSign } from 'lucide-react';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 export interface CreatorCardProps {
   id: string;
@@ -13,8 +14,7 @@ export interface CreatorCardProps {
   investorsCount: number;
   totalInvested: number;
   className?: string;
-  // We added returnRate to the props but it's not needed since we get it from creatorProfile
-  monthlyRevenue?: number; // Add optional monthlyRevenue prop
+  monthlyRevenue?: number;
 }
 
 const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, className = '' }: CreatorCardProps) => {
@@ -38,19 +38,33 @@ const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, cl
               {category}
             </span>
           </div>
+          <div className="absolute top-3 right-3">
+            <Avatar className="h-12 w-12 border-2 border-white shadow-md">
+              <AvatarImage src={imageUrl} alt={creatorProfile.name} />
+              <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+          </div>
         </div>
         
         <div className="p-4">
           <h3 className="font-bold text-lg mb-2 truncate">{creatorProfile.name}</h3>
           
-          <div className="flex items-center justify-between mb-3">
+          <div className="grid grid-cols-2 gap-4 mb-3">
             <div className="flex items-center">
               <Users className="h-4 w-4 mr-1 text-gray-500 dark:text-gray-400" />
-              <span className="text-sm text-gray-500 dark:text-gray-400">{investorsCount} investisseurs</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">{creatorProfile.followers.toLocaleString()} followers</span>
             </div>
             <div className="flex items-center">
               <TrendingUp className="h-4 w-4 mr-1 text-green-500" />
               <span className="text-sm font-medium text-green-500">{creatorProfile.returnRate}%</span>
+            </div>
+            <div className="flex items-center">
+              <CircleDollarSign className="h-4 w-4 mr-1 text-gray-500 dark:text-gray-400" />
+              <span className="text-sm text-gray-500 dark:text-gray-400">{creatorProfile.monthlyRevenue.toLocaleString()}€</span>
+            </div>
+            <div className="flex items-center">
+              <Users className="h-4 w-4 mr-1 text-gray-500 dark:text-gray-400" />
+              <span className="text-sm text-gray-500 dark:text-gray-400">{investorsCount} investisseurs</span>
             </div>
           </div>
           
