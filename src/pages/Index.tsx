@@ -115,7 +115,7 @@ const Index = () => {
                   Découvrez les créatrices les plus performantes de notre plateforme.
                 </p>
               </div>
-              <Link to="/creators" className="hidden md:flex items-center text-investment-600 hover:text-investment-700 font-medium">
+              <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium">
                 <span>Voir toutes les créatrices</span>
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Link>
@@ -154,7 +154,10 @@ const Index = () => {
             
             <div className="mt-12 text-center md:hidden">
               <Link to="/creators">
-                <GradientButton variant="outline">
+                <GradientButton 
+                  variant="outline" 
+                  className="text-[#8B5CF6] border-[#8B5CF6] hover:bg-[#8B5CF6]/10"
+                >
                   Voir toutes les créatrices
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
