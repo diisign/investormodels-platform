@@ -197,20 +197,56 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
   // This ensures the same creator always gets the same performance chart
   const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   
+  // Generate initial random fluctuations
+  let volatilityFactors = monthNames.map((_, index) => {
+    // Create more complex random patterns using different trigonometric functions and prime multipliers
+    const primaryFactor = Math.sin(seed * (index + 3) * 0.41) * 0.5 + 0.5;
+    const secondaryFactor = Math.cos((seed + 271) * (index + 5) * 0.37) * 0.4 + 0.5;
+    const tertiaryFactor = Math.sin((seed + 137) * (index + 7) * 0.23) * 0.3 + 0.5;
+    
+    // Mix these patterns together with varying weights to create more natural randomness
+    return (primaryFactor * 0.5 + secondaryFactor * 0.3 + tertiaryFactor * 0.2);
+  });
+  
+  // Apply smoothing to avoid overly regular patterns
+  // Use a simple moving average approach with noise
+  const smoothedFactors = volatilityFactors.map((factor, index) => {
+    if (index === 0 || index === volatilityFactors.length - 1) return factor;
+    
+    // Get neighboring values
+    const prev = volatilityFactors[index - 1];
+    const next = volatilityFactors[index + 1];
+    
+    // Add some noise based on creator ID to break patterns further
+    const noise = Math.sin(seed * (index + 11) * 0.17) * 0.15;
+    
+    // Weighted average with noise
+    return (prev * 0.25 + factor * 0.5 + next * 0.25) + noise;
+  });
+  
+  // Apply additional irregularity every few months to break patterns
+  smoothedFactors.forEach((_, index) => {
+    // Add occasional spikes or dips (approximately every 3-4 months, but irregularly)
+    if ((index % 3 === (seed % 3)) || (index % 4 === (seed % 4))) {
+      const irregularityMagnitude = (Math.random() * 0.3) - 0.15; // Between -0.15 and 0.15
+      smoothedFactors[index] += irregularityMagnitude;
+      
+      // Ensure we stay in valid range
+      smoothedFactors[index] = Math.max(0.05, Math.min(0.95, smoothedFactors[index]));
+    }
+  });
+  
+  // Generate revenue data with the smoothed factors
   return monthNames.map((month, index) => {
     // For last month (March), use the exact monthlyRevenue value
     if (index === monthNames.length - 1) {
       return { month, revenue: monthlyRevenue };
     }
     
-    // Generate deterministic but volatile revenue between min and max range
-    // Using both the creator ID, month index, and volatile multipliers for more randomness
-    const volatilityFactor = Math.sin(seed * (index + 1) * 0.7) * 0.5 + 0.5; // value between 0-1
-    const secondaryFactor = Math.cos((seed + 123) * (index + 1) * 0.3) * 0.3 + 0.5; // additional randomness
-    const combinedFactor = (volatilityFactor * 0.7 + secondaryFactor * 0.3); // weighted combination
-    
-    // Ensure revenue stays within min and max bounds despite volatility
-    const revenue = Math.round(minRevenue + (range * combinedFactor));
+    // Calculate revenue with the more natural volatility pattern
+    // Ensure it stays within the min-max range
+    const factor = smoothedFactors[index];
+    const revenue = Math.round(minRevenue + (range * factor));
     
     return { month, revenue };
   });
