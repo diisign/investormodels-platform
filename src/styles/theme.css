@@ -44,7 +44,7 @@
     --creator-gradient-to: 210 40% 60%;
     
     --hero-gradient-from: 0 0% 100%;
-    --hero-gradient-to: 180 70% 80%;
+    --hero-gradient-to: 180 70% 70%;
   }
 
   .dark {
@@ -89,6 +89,6 @@
     --creator-gradient-to: 210 30% 35%;
     
     --hero-gradient-from: 0 0% 90%;
-    --hero-gradient-to: 180 70% 65%;
+    --hero-gradient-to: 180 70% 55%;
   }
 }
