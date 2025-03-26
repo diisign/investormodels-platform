@@ -46,7 +46,7 @@ const Index = () => {
               {/* Hero Text */}
               <FadeIn className="space-y-6" direction="up">
                 <div className="inline-block rounded-full bg-investment-50 dark:bg-investment-900/20 px-3 py-1 text-sm font-medium text-purple-600 dark:text-purple-400 mb-4">
-                  Nouvelle façon d'investir
+                  <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                   Investissez dans les <span className="text-gradient">créatrices les plus performantes.</span>
@@ -103,7 +103,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Popular Creators Section - Moved above Features Section */}
+        {/* Popular Creators Section - Now positioned above Features Section */}
         <section ref={creatorsRef} className="py-20">
           <div className="container mx-auto px-4">
             <FadeIn className="flex justify-between items-end mb-12" direction="up">
@@ -163,7 +163,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features Section - Now positioned after Top Creators section */}
+        {/* Features Section - Now positioned below Top Creators section */}
         <section className="py-20 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-16" direction="up">
