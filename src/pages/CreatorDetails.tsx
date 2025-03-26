@@ -124,15 +124,15 @@ const CreatorDetails = () => {
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile?.name || creator.name}</h1>
                 <div className="flex flex-wrap gap-6 mt-4">
                   <div className="flex items-center">
-                    <Users className="h-5 w-5 mr-2 text-[hsl(var(--hero-icon-color))]" />
+                    <Users className="h-5 w-5 mr-2 text-purple-500" />
                     <span>{creatorProfile?.followers.toLocaleString() || 0} followers</span>
                   </div>
                   <div className="flex items-center">
-                    <Calendar className="h-5 w-5 mr-2 text-[hsl(var(--hero-icon-color))]" />
+                    <Calendar className="h-5 w-5 mr-2 text-purple-500" />
                     <span>Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}</span>
                   </div>
                   <div className="flex items-center">
-                    <CircleDollarSign className="h-5 w-5 mr-2 text-[hsl(var(--hero-icon-color))]" />
+                    <CircleDollarSign className="h-5 w-5 mr-2 text-purple-500" />
                     <span>{creator.totalInvested.toLocaleString()}€ investis</span>
                   </div>
                 </div>
@@ -196,7 +196,7 @@ const CreatorDetails = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
                         <div className="flex items-center mb-3">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
+                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
                             <Users className="h-5 w-5" />
                           </div>
                           <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Investisseurs</span>
@@ -216,7 +216,7 @@ const CreatorDetails = () => {
                       
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
                         <div className="flex items-center mb-3">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 mr-3">
+                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
                             <BarChart3 className="h-5 w-5" />
                           </div>
                           <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Revenu mensuel</span>

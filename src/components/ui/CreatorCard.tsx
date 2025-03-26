@@ -52,7 +52,7 @@ const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, cl
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Users className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <Users className="h-4 w-4 mr-2 text-purple-500" />
                 <span className="text-sm">Followers</span>
               </div>
               <span className="text-sm font-medium">{creatorProfile.followers.toLocaleString()}</span>
@@ -60,7 +60,7 @@ const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, cl
             
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <CircleDollarSign className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <CircleDollarSign className="h-4 w-4 mr-2 text-purple-500" />
                 <span className="text-sm">Revenu mensuel</span>
               </div>
               <span className="text-sm font-medium">{creatorProfile.monthlyRevenue.toLocaleString()}€</span>
@@ -68,7 +68,7 @@ const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, cl
             
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Users className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <Users className="h-4 w-4 mr-2 text-purple-500" />
                 <span className="text-sm">Investisseurs</span>
               </div>
               <span className="text-sm font-medium">{investorsCount}</span>
