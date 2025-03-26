@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
