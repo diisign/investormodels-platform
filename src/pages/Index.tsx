@@ -45,7 +45,7 @@ const Index = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               {/* Hero Text */}
               <FadeIn className="space-y-6" direction="up">
-                <div className="inline-block rounded-full bg-investment-50 dark:bg-investment-900/20 px-3 py-1 text-sm font-medium text-investment-800 dark:text-investment-300 mb-4">
+                <div className="inline-block rounded-full bg-investment-50 dark:bg-investment-900/20 px-3 py-1 text-sm font-medium text-purple-600 dark:text-purple-400 mb-4">
                   Nouvelle façon d'investir
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
@@ -76,14 +76,6 @@ const Index = () => {
                       </GradientButton>
                     </Link>
                   )}
-                  <Link to="/how-it-works">
-                    <GradientButton 
-                      variant="outline" 
-                      size="lg"
-                    >
-                      Comment ça marche
-                    </GradientButton>
-                  </Link>
                 </div>
                 <div className="flex flex-wrap items-center gap-8 pt-6">
                   <div className="flex flex-col">
@@ -111,63 +103,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features Section */}
-        <section className="py-20 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <FadeIn className="text-center max-w-3xl mx-auto mb-16" direction="up">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Plateforme <span className="text-investment-600">visionnaire</span> unique au monde
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Découvrez pourquoi de plus en plus d'investisseurs nous font confiance pour diversifier leur portefeuille.
-              </p>
-            </FadeIn>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
-                  <BarChart3 className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Rendements attractifs</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Nos créatrices offrent des rendements moyens de 80% à 150% par trimestre.
-                </p>
-              </FadeIn>
-              
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
-                  <Users className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Diversité des créatrices</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Plus de 250 créatrices de contenu avec statistique détaillé sur du long terme.
-                </p>
-              </FadeIn>
-              
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
-                  <ShieldCheck className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Sécurité maximale</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Toutes les créatrices sont recrutés sous certains critère spéciaux pour vous proposez les plus performantes.
-                </p>
-              </FadeIn>
-              
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
-                  <Zap className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Investissement facile</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Interface intuitive et processus simplifié pour investir en quelques clics, même pour les débutants.
-                </p>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
-        
-        {/* Popular Creators Section */}
+        {/* Popular Creators Section - Moved above Features Section */}
         <section ref={creatorsRef} className="py-20">
           <div className="container mx-auto px-4">
             <FadeIn className="flex justify-between items-end mb-12" direction="up">
@@ -223,6 +159,62 @@ const Index = () => {
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
+            </div>
+          </div>
+        </section>
+        
+        {/* Features Section - Now positioned after Top Creators section */}
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto px-4">
+            <FadeIn className="text-center max-w-3xl mx-auto mb-16" direction="up">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Plateforme <span className="text-investment-600">visionnaire</span> unique au monde
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300">
+                Découvrez pourquoi de plus en plus d'investisseurs nous font confiance pour diversifier leur portefeuille.
+              </p>
+            </FadeIn>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                  <BarChart3 className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Rendements attractifs</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Nos créatrices offrent des rendements moyens de 80% à 150% par trimestre.
+                </p>
+              </FadeIn>
+              
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                  <Users className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Diversité des créatrices</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Plus de 250 créatrices de contenu avec statistique détaillé sur du long terme.
+                </p>
+              </FadeIn>
+              
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                  <ShieldCheck className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Sécurité maximale</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Toutes les créatrices sont recrutés sous certains critère spéciaux pour vous proposez les plus performantes.
+                </p>
+              </FadeIn>
+              
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                  <Zap className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Investissement facile</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Interface intuitive et processus simplifié pour investir en quelques clics, même pour les débutants.
+                </p>
+              </FadeIn>
             </div>
           </div>
         </section>
