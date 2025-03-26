@@ -11,7 +11,15 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Add subtle shadow for better readability */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced shadow for better readability */
+}
+
+.text-gradient {
+  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced shadow for better readability */
 }
 
 .creator-gradient-bg {
