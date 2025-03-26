@@ -116,7 +116,7 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator2',
-    name: 'Maria *Gymnastics Girl 🤸🏻‍*',
+    name: 'Maria 🤸🏻‍*',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1505236273555-17add303d4fb?q=80&w=2069&auto=format&fit=crop',
     category: 'Photographie',
@@ -501,7 +501,7 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator9',
-    name: 'Ariana 💄 Petite colombian 🌶',
+    name: 'Ariana Colombian 🌶',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/r/rn/rnj/rnj2ki36l6ih5ay5ecbbplaearzyhqpd1725115071/440793308/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1602017322281-85b2e82e3dec?q=80&w=2070&auto=format&fit=crop',
     category: 'Fitness',
@@ -705,7 +705,7 @@ export const creators: Creator[] = [
       },
       {
         id: 'plan12-3',
- name: 'Couture',
+        name: 'Couture',
         returnRate: 16.2,
         minInvestment: 1400,
         duration: 12,

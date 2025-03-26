@@ -22,7 +22,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
   },
   "creator2": {
     id: "creator2",
-    name: "Maria *Gymnastics Girl 🤸🏻‍*",
+    name: "Maria 🤸🏻‍*",
     monthlyRevenue: 75150,
     returnRate: 120,
     followers: 5010,
@@ -85,7 +85,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
   },
   "creator9": {
     id: "creator9",
-    name: "Ariana 💄 Petite colombian 🌶",
+    name: "Ariana Colombian 🌶",
     monthlyRevenue: 67600,
     returnRate: 110,
     followers: 4507,
