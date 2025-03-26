@@ -102,14 +102,7 @@ const CreatorDetails = () => {
         </div>
 
         <section className="relative bg-gradient-to-b from-investment-600 to-investment-700 text-white">
-          <div className="absolute inset-0 overflow-hidden">
-            <img 
-              src={creator.coverImageUrl} 
-              alt={creatorProfile?.name || creator.name} 
-              className="w-full h-full object-cover opacity-20"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-investment-600 to-investment-700 opacity-90"></div>
           
           <div className="container mx-auto px-4 py-16 relative z-10">
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8">
