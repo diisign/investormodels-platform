@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
@@ -60,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
         <div className="flex items-center justify-between">
           <button 
             onClick={handleLogoClick}
-            className="text-2xl font-bold creator-gradient"
+            className="text-2xl font-bold text-gradient"
           >
             CréatorInvest
           </button>
