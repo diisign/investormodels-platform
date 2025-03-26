@@ -123,15 +123,15 @@ const CreatorDetails = () => {
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile?.name || creator.name}</h1>
                 <div className="flex flex-wrap gap-6 mt-4">
                   <div className="flex items-center">
-                    <Users className="h-5 w-5 mr-2 text-teal-200" />
+                    <Users className="h-5 w-5 mr-2 text-[hsl(var(--hero-icon-color))]" />
                     <span>{creatorProfile?.followers.toLocaleString() || 0} followers</span>
                   </div>
                   <div className="flex items-center">
-                    <Calendar className="h-5 w-5 mr-2 text-teal-200" />
+                    <Calendar className="h-5 w-5 mr-2 text-[hsl(var(--hero-icon-color))]" />
                     <span>Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}</span>
                   </div>
                   <div className="flex items-center">
-                    <CircleDollarSign className="h-5 w-5 mr-2 text-teal-200" />
+                    <CircleDollarSign className="h-5 w-5 mr-2 text-[hsl(var(--hero-icon-color))]" />
                     <span>{creator.totalInvested.toLocaleString()}€ investis</span>
                   </div>
                 </div>
