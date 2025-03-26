@@ -49,8 +49,8 @@ const Index = () => {
                   <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  Investissez dans les <span className="text-gradient" style={{ 
-                    background: 'linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%)',
+                  Investissez dans les <span style={{ 
+                    background: 'linear-gradient(102.3deg, #6D28D9 5.9%, #8B5CF6 30%, #A78BFA 64%, #C4B5FD 89%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
