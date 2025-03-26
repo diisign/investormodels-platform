@@ -102,8 +102,8 @@ const CreatorDetails = () => {
           </Button>
         </div>
 
-        <section className="relative bg-gradient-to-b from-teal-500 to-blue-600 text-white">
-          <div className="absolute inset-0 bg-gradient-to-b from-teal-500 to-blue-600 opacity-90"></div>
+        <section className="relative bg-gradient-to-b from-teal-400/80 to-blue-500/80 text-white">
+          <div className="absolute inset-0 bg-gradient-to-b from-teal-400/80 to-blue-500/80 opacity-80"></div>
           
           <div className="container mx-auto px-4 py-16 relative z-10">
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8">

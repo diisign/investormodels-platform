@@ -39,6 +39,9 @@
     --sidebar-accent-foreground: 215 15% 90%;
     --sidebar-border: 180 50% 30%;
     --sidebar-ring: 180 75% 65%;
+
+    --creator-gradient-from: 180 40% 70%;
+    --creator-gradient-to: 210 40% 60%;
   }
 
   .dark {
@@ -78,5 +81,8 @@
     --sidebar-accent-foreground: 215 15% 90%;
     --sidebar-border: 180 35% 16%;
     --sidebar-ring: 180 75% 65%;
+
+    --creator-gradient-from: 180 30% 40%;
+    --creator-gradient-to: 210 30% 35%;
   }
 }
