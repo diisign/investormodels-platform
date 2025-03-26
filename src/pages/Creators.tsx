@@ -77,9 +77,9 @@ const Creators = () => {
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="mb-8">
-              <h1 className="text-3xl font-bold mb-2">Découvrez nos créateurs</h1>
+              <h1 className="text-3xl font-bold mb-2">Découvrez nos créatrices</h1>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl">
-                Parcourez notre sélection de créateurs talentueux et investissez dans ceux qui vous inspirent. Diversifiez votre portefeuille tout en soutenant le contenu que vous aimez.
+                Parcourez notre sélection de créatrices talentueuses et investissez dans celles qui vous inspirent. Diversifiez votre portefeuille tout en soutenant le contenu que vous aimez.
               </p>
             </FadeIn>
             
@@ -94,7 +94,7 @@ const Creators = () => {
                     </div>
                     <input
                       type="text"
-                      placeholder="Rechercher un créateur..."
+                      placeholder="Rechercher une créatrice..."
                       value={searchTerm}
                       onChange={handleSearchChange}
                       className="input-field pl-10 w-full"
@@ -208,7 +208,7 @@ const Creators = () => {
             <FadeIn direction="up" delay={150} className="mb-6">
               <div className="flex items-center justify-between">
                 <p className="text-gray-600 dark:text-gray-300">
-                  {filteredCreators.length} {filteredCreators.length > 1 ? 'créateurs' : 'créateur'} {searchTerm && `correspondant à "${searchTerm}"`}
+                  {filteredCreators.length} {filteredCreators.length > 1 ? 'créatrices' : 'créatrice'} {searchTerm && `correspondant à "${searchTerm}"`}
                 </p>
               </div>
             </FadeIn>
@@ -243,7 +243,7 @@ const Creators = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Aucun résultat trouvé</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                  Nous n'avons trouvé aucun créateur correspondant à votre recherche. Essayez avec d'autres termes ou filtres.
+                  Nous n'avons trouvé aucune créatrice correspondant à votre recherche. Essayez avec d'autres termes ou filtres.
                 </p>
               </FadeIn>
             )}

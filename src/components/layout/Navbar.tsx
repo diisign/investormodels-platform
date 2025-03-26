@@ -74,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                   : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
               )}
             >
-              Créateurs
+              Créatrices
             </Link>
             <Link 
               to="/how-it-works" 
@@ -210,7 +210,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               )}
               onClick={closeMenu}
             >
-              Créateurs
+              Créatrices
             </Link>
             <Link 
               to="/how-it-works" 
