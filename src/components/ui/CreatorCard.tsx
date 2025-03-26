@@ -4,16 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { CircleDollarSign, TrendingUp, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarImage } from './avatar';
+import { getCreatorProfile } from '@/utils/creatorProfiles';
 
 interface CreatorCardProps {
   id: string;
   name: string;
   imageUrl: string;
   category: string;
-  returnRate: number;
   investorsCount: number;
   totalInvested: number;
-  monthlyRevenue?: number;
   className?: string;
 }
 
@@ -22,48 +21,19 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
   name,
   imageUrl,
   category,
-  returnRate,
   investorsCount,
   totalInvested,
-  monthlyRevenue,
   className,
 }) => {
   const navigate = useNavigate();
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  // Get consistent creator data
+  const creatorProfile = getCreatorProfile(id);
+
   const handleCardClick = () => {
     navigate(`/creator/${id}`);
   };
-
-  // Generate a deterministic expected return rate between 80% and 130% based on creator ID
-  const getExpectedReturnRate = (creatorId: string): number => {
-    // Use the last character of creatorId to generate a deterministic value
-    const lastChar = creatorId.charAt(creatorId.length - 1);
-    const charCode = lastChar.charCodeAt(0);
-    
-    // Map the character code to a number between 80 and 130
-    return 80 + (charCode % 51);
-  };
-
-  // Use the expected return rate instead of the provided returnRate
-  const expectedReturnRate = getExpectedReturnRate(id);
-
-  // Get a deterministic monthly revenue value between 30,000 and 100,000 (not round numbers)
-  const getMonthlyRevenue = (creatorId: string): number => {
-    // Use the first and second characters of creatorId to generate a deterministic value
-    const firstChar = creatorId.charAt(0);
-    const secondChar = creatorId.charAt(1) || 'a';
-    const seedValue = (firstChar.charCodeAt(0) + secondChar.charCodeAt(0)) % 100;
-    
-    // Generate a base value between 30,000 and 100,000
-    const baseValue = 30000 + (seedValue * 700);
-    
-    // Add some non-round variation
-    return baseValue + (seedValue % 987);
-  };
-
-  // Use either the provided monthlyRevenue or generate one
-  const displayedRevenue = monthlyRevenue || getMonthlyRevenue(id);
 
   return (
     <div 
@@ -106,7 +76,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
           <div className="flex flex-col items-center p-2 bg-gray-50/90 dark:bg-gray-800/70 rounded-lg">
             <TrendingUp className="h-4 w-4 text-green-500 mb-1" />
             <span className="text-xs text-gray-600 dark:text-gray-300">Rendement prévu</span>
-            <span className="font-semibold text-sm text-gray-800 dark:text-white">{expectedReturnRate}%</span>
+            <span className="font-semibold text-sm text-gray-800 dark:text-white">{creatorProfile.returnRate}%</span>
           </div>
           
           <div className="flex flex-col items-center p-2 bg-gray-50/90 dark:bg-gray-800/70 rounded-lg">
@@ -118,7 +88,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
           <div className="flex flex-col items-center p-2 bg-gray-50/90 dark:bg-gray-800/70 rounded-lg">
             <CircleDollarSign className="h-4 w-4 text-investment-500 mb-1" />
             <span className="text-xs text-gray-600 dark:text-gray-300">Revenu</span>
-            <span className="font-semibold text-sm text-gray-800 dark:text-white">{displayedRevenue.toLocaleString()}€</span>
+            <span className="font-semibold text-sm text-gray-800 dark:text-white">{creatorProfile.monthlyRevenue.toLocaleString()}€</span>
           </div>
         </div>
         

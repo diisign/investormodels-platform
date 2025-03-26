@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, CircleDollarSign, TrendingUp, Users, 
@@ -10,26 +10,11 @@ import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { cn } from '@/lib/utils';
 import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
-
-// Generate deterministic return rates based on creator ID
-const getExpectedReturnRate = (creatorId: string): number => {
-  // Use the last character of creatorId to generate a deterministic value
-  const lastChar = creatorId.charAt(creatorId.length - 1);
-  const charCode = lastChar.charCodeAt(0);
-  
-  // Map the character code to a number between 80 and 130
-  return 80 + (charCode % 51);
-};
-
-// Calculate followers based on monthly revenue divided by 15
-const calculateFollowers = (monthlyRevenue: number): number => {
-  return Math.round(monthlyRevenue / 15);
-};
+import { getCreatorProfile, generateMonthlyPerformanceData } from '@/utils/creatorProfiles';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
@@ -42,8 +27,8 @@ const CreatorDetails = () => {
   // Find the creator data
   const creator = creators.find(c => c.id === creatorId);
   
-  // Get deterministic expected return rate
-  const expectedReturnRate = creatorId ? getExpectedReturnRate(creatorId) : 100;
+  // Get consistent creator profile data
+  const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
   
   if (!creator) {
     return (
@@ -65,23 +50,8 @@ const CreatorDetails = () => {
     );
   }
   
-  // Create 12 months of revenue data ending with March
-  const monthNames = ['Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar'];
-  const monthlyRevenueData = monthNames.map((month, index) => {
-    // Create variations in the revenue data
-    const variationFactor = 0.7 + (Math.random() * 0.6); // Creates a value between 0.7 and 1.3
-    const revenue = Math.round(creator?.monthlyRevenue * variationFactor || 0);
-    return { month, revenue };
-  });
-  
-  // Update the creator's followers to be monthly revenue / 15
-  useEffect(() => {
-    if (creator) {
-      const updatedFollowers = calculateFollowers(creator.monthlyRevenue);
-      // This is just for display purposes, we're not actually modifying the original data
-      creator.followers = updatedFollowers;
-    }
-  }, [creator]);
+  // Generate consistent monthly revenue data
+  const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
   
   const openInvestModal = () => {
     if (!isAuthenticated) {
@@ -143,7 +113,7 @@ const CreatorDetails = () => {
           <div className="absolute inset-0 overflow-hidden">
             <img 
               src={creator.coverImageUrl} 
-              alt={creator.name} 
+              alt={creatorProfile?.name || creator.name} 
               className="w-full h-full object-cover opacity-20"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -155,18 +125,18 @@ const CreatorDetails = () => {
                 <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white overflow-hidden shadow-xl">
                   <img 
                     src={creator.imageUrl} 
-                    alt={creator.name} 
+                    alt={creatorProfile?.name || creator.name} 
                     className="w-full h-full object-cover"
                   />
                 </div>
               </FadeIn>
               
               <FadeIn direction="up" delay={100} className="flex-grow">
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">{creator.name}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile?.name || creator.name}</h1>
                 <div className="flex flex-wrap gap-6 mt-4">
                   <div className="flex items-center">
                     <Users className="h-5 w-5 mr-2 text-investment-200" />
-                    <span>{creator.followers.toLocaleString()} followers</span>
+                    <span>{creatorProfile?.followers.toLocaleString() || 0} followers</span>
                   </div>
                   <div className="flex items-center">
                     <Calendar className="h-5 w-5 mr-2 text-investment-200" />
@@ -228,6 +198,10 @@ const CreatorDetails = () => {
                             axisLine={false} 
                             tickLine={false} 
                             tickFormatter={(value) => `${value / 1000}k€`}
+                            domain={[
+                              creatorProfile?.minRevenue || 0,
+                              creatorProfile?.maxRevenue || 100000
+                            ]}
                           />
                           <Tooltip 
                             formatter={(value) => [`${value}€`, 'Revenu']} 
@@ -269,7 +243,7 @@ const CreatorDetails = () => {
                           </div>
                           <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement prévu</span>
                         </div>
-                        <div className="text-2xl font-bold">{expectedReturnRate}%</div>
+                        <div className="text-2xl font-bold">{creatorProfile?.returnRate || 0}%</div>
                       </div>
                       
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -279,7 +253,7 @@ const CreatorDetails = () => {
                           </div>
                           <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Revenu mensuel</span>
                         </div>
-                        <div className="text-2xl font-bold">{creator.monthlyRevenue.toLocaleString()}€</div>
+                        <div className="text-2xl font-bold">{creatorProfile?.monthlyRevenue.toLocaleString() || 0}€</div>
                       </div>
                     </div>
                   </div>
@@ -294,11 +268,11 @@ const CreatorDetails = () => {
                     <h2 className="text-xl font-semibold mb-4">Investir</h2>
                     <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                       <div className="mb-4">
-                        <h3 className="font-semibold text-lg">Soutenir {creator.name}</h3>
+                        <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                         <div className="flex items-center mt-2">
                           <span className="text-green-600 dark:text-green-400 font-medium flex items-center">
                             <TrendingUp className="h-4 w-4 mr-1" />
-                            {expectedReturnRate}% de rendement prévu
+                            {creatorProfile?.returnRate || 0}% de rendement prévu
                           </span>
                         </div>
                       </div>
@@ -332,38 +306,41 @@ const CreatorDetails = () => {
                 {/* Similar Creators */}
                 <FadeIn direction="up" delay={100} className="glass-card">
                   <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-4">Créateurs similaires</h2>
+                    <h2 className="text-xl font-semibold mb-4">Créatrices similaires</h2>
                     <div className="space-y-4">
                       {creators
                         .filter(c => c.id !== creator.id)
                         .slice(0, 3)
-                        .map((similarCreator) => (
-                          <Link 
-                            key={similarCreator.id}
-                            to={`/creator/${similarCreator.id}`}
-                            className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-investment-300 dark:hover:border-investment-600 transition-colors"
-                          >
-                            <div className="h-12 w-12 rounded-full overflow-hidden mr-3">
-                              <img 
-                                src={similarCreator.imageUrl} 
-                                alt={similarCreator.name} 
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
-                            <div className="flex-grow">
-                              <div className="flex justify-between items-center">
-                                <h4 className="font-medium">{similarCreator.name}</h4>
-                                <span className="text-xs font-medium text-green-500 flex items-center">
-                                  <TrendingUp className="h-3 w-3 mr-1" />
-                                  {Math.floor(Math.random() * (130 - 80 + 1) + 80)}%
-                                </span>
+                        .map((similarCreator) => {
+                          const similarProfile = getCreatorProfile(similarCreator.id);
+                          return (
+                            <Link 
+                              key={similarCreator.id}
+                              to={`/creator/${similarCreator.id}`}
+                              className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-investment-300 dark:hover:border-investment-600 transition-colors"
+                            >
+                              <div className="h-12 w-12 rounded-full overflow-hidden mr-3">
+                                <img 
+                                  src={similarCreator.imageUrl} 
+                                  alt={similarProfile.name} 
+                                  className="h-full w-full object-cover"
+                                />
                               </div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                {similarCreator.investorsCount} investisseurs
+                              <div className="flex-grow">
+                                <div className="flex justify-between items-center">
+                                  <h4 className="font-medium">{similarProfile.name}</h4>
+                                  <span className="text-xs font-medium text-green-500 flex items-center">
+                                    <TrendingUp className="h-3 w-3 mr-1" />
+                                    {similarProfile.returnRate}%
+                                  </span>
+                                </div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                  {similarCreator.investorsCount} investisseurs
+                                </div>
                               </div>
-                            </div>
-                          </Link>
-                        ))}
+                            </Link>
+                          );
+                        })}
                     </div>
                     
                     <div className="mt-4">
@@ -371,7 +348,7 @@ const CreatorDetails = () => {
                         to="/creators" 
                         className="text-investment-600 hover:text-investment-500 text-sm font-medium flex items-center justify-center"
                       >
-                        <span>Voir tous les créateurs</span>
+                        <span>Voir toutes les créatrices</span>
                         <ArrowRight className="h-4 w-4 ml-1" />
                       </Link>
                     </div>
