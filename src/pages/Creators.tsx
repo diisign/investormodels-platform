@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -77,7 +76,7 @@ const Creators = () => {
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="mb-8">
-              <h1 className="text-3xl font-bold mb-2">Découvrez nos créatrices</h1>
+              <h1 className="text-3xl font-bold mb-2 text-[#8B5CF6]">Découvrez nos créatrices</h1>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl">
                 Parcourez notre sélection de créatrices talentueuses et investissez dans celles qui vous inspirent. Diversifiez votre portefeuille tout en soutenant le contenu que vous aimez.
               </p>
