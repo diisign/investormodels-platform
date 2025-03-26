@@ -48,7 +48,7 @@ const Index = () => {
                   <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  Investissez dans les <span className="purple-gradient-text">créatrices les plus performantes.</span>
+                  Investissez dans les <span className="purple-gradient-text text-gradient">créatrices les plus performantes.</span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
                   Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur succès. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
@@ -102,7 +102,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Popular Creators Section - Now positioned above Features Section */}
+        {/* Popular Creators Section */}
         <section ref={creatorsRef} className="py-20">
           <div className="container mx-auto px-4">
             <FadeIn className="flex justify-between items-end mb-12" direction="up">
@@ -165,7 +165,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features Section - Now positioned below Top Creators section */}
+        {/* Features Section */}
         <section className="py-20 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-16" direction="up">
