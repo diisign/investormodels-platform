@@ -177,7 +177,7 @@ const Index = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-5">
                   <BarChart3 className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Rendements attractifs</h3>
@@ -187,7 +187,7 @@ const Index = () => {
               </FadeIn>
               
               <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-5">
                   <Users className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Diversité des créatrices</h3>
@@ -197,7 +197,7 @@ const Index = () => {
               </FadeIn>
               
               <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-5">
                   <ShieldCheck className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Sécurité maximale</h3>
@@ -207,7 +207,7 @@ const Index = () => {
               </FadeIn>
               
               <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
-                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 mb-5">
+                <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-5">
                   <Zap className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Investissement facile</h3>
