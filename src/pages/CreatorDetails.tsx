@@ -188,8 +188,11 @@ const CreatorDetails = () => {
                             axisLine={false} 
                             tickLine={false} 
                             tickFormatter={(value) => `${Math.floor(value / 1000)}k€`}
-                            domain={['dataMin - 5000', 'dataMax + 5000']}
-                            tickCount={6}
+                            domain={[
+                              (dataMin) => Math.floor(dataMin / 10000) * 10000, 
+                              (dataMax) => Math.ceil(dataMax / 10000) * 10000
+                            ]}
+                            tickCount={5}
                           />
                           <Tooltip 
                             formatter={(value) => [`${value}€`, 'Revenu']} 
