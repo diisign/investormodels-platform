@@ -102,11 +102,14 @@ const CreatorDetails = () => {
           </Button>
         </div>
 
-        <section className="relative bg-gradient-to-b from-teal-400/80 to-blue-500/80 text-white">
-          <div className="absolute inset-0 bg-gradient-to-b from-teal-400/80 to-blue-500/80 opacity-80"></div>
+        <section className="relative overflow-hidden">
+          {/* Background elements */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--hero-gradient-from))] to-[hsl(var(--hero-gradient-to))] opacity-90"></div>
+          <div className="absolute -top-[10%] -right-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-r from-investment-200/20 to-investment-400/10 blur-3xl"></div>
+          <div className="absolute -bottom-[20%] -left-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-l from-investment-200/30 to-investment-300/10 blur-3xl"></div>
           
           <div className="container mx-auto px-4 py-16 relative z-10">
-            <div className="flex flex-col md:flex-row items-start md:items-end gap-8">
+            <div className="flex flex-col md:flex-row items-start md:items-end gap-8 text-white">
               <FadeIn direction="up">
                 <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white overflow-hidden shadow-xl">
                   <img 
