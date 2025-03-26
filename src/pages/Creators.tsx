@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -9,7 +10,6 @@ import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 
 type SortOption = 'popularity' | 'return' | 'alphabetical';
-type FilterCategory = 'all' | 'fitness' | 'photographie' | 'lifestyle' | 'cuisine' | 'mode' | 'tech';
 
 // Generate deterministic expected return rate based on creator ID (must match CreatorCard and CreatorDetails)
 const getExpectedReturnRate = (creatorId: string): number => {
@@ -31,7 +31,6 @@ const Creators = () => {
   const { isAuthenticated } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('popularity');
-  const [filterCategory, setFilterCategory] = useState<FilterCategory>('all');
   const [showFilters, setShowFilters] = useState(false);
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +39,6 @@ const Creators = () => {
   
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
-  };
-  
-  const handleFilterChange = (category: FilterCategory) => {
-    setFilterCategory(category);
   };
   
   const toggleFilters = () => {
@@ -57,11 +52,7 @@ const Creators = () => {
       const matchesSearch = creator.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            creator.category.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // Apply category filter
-      const matchesCategory = filterCategory === 'all' || 
-                             creator.category.toLowerCase() === filterCategory;
-      
-      return matchesSearch && matchesCategory;
+      return matchesSearch;
     })
     .sort((a, b) => {
       // Apply sorting
@@ -164,87 +155,6 @@ const Creators = () => {
                                 <span>Alphabétique</span>
                               </button>
                             </div>
-                            
-                            <h4 className="font-semibold mb-3 mt-6">Catégories</h4>
-                            <div className="space-y-2">
-                              <button 
-                                className={cn(
-                                  "w-full text-left px-3 py-2 rounded-lg",
-                                  filterCategory === 'all' 
-                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
-                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                )}
-                                onClick={() => handleFilterChange('all')}
-                              >
-                                Toutes les catégories
-                              </button>
-                              <button 
-                                className={cn(
-                                  "w-full text-left px-3 py-2 rounded-lg",
-                                  filterCategory === 'fitness' 
-                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
-                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                )}
-                                onClick={() => handleFilterChange('fitness')}
-                              >
-                                Fitness
-                              </button>
-                              <button 
-                                className={cn(
-                                  "w-full text-left px-3 py-2 rounded-lg",
-                                  filterCategory === 'photographie' 
-                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
-                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                )}
-                                onClick={() => handleFilterChange('photographie')}
-                              >
-                                Photographie
-                              </button>
-                              <button 
-                                className={cn(
-                                  "w-full text-left px-3 py-2 rounded-lg",
-                                  filterCategory === 'lifestyle' 
-                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
-                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                )}
-                                onClick={() => handleFilterChange('lifestyle')}
-                              >
-                                Lifestyle
-                              </button>
-                              <button 
-                                className={cn(
-                                  "w-full text-left px-3 py-2 rounded-lg",
-                                  filterCategory === 'cuisine' 
-                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
-                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                )}
-                                onClick={() => handleFilterChange('cuisine')}
-                              >
-                                Cuisine
-                              </button>
-                              <button 
-                                className={cn(
-                                  "w-full text-left px-3 py-2 rounded-lg",
-                                  filterCategory === 'mode' 
-                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
-                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                )}
-                                onClick={() => handleFilterChange('mode')}
-                              >
-                                Mode
-                              </button>
-                              <button 
-                                className={cn(
-                                  "w-full text-left px-3 py-2 rounded-lg",
-                                  filterCategory === 'tech' 
-                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
-                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                )}
-                                onClick={() => handleFilterChange('tech')}
-                              >
-                                Tech
-                              </button>
-                            </div>
                           </div>
                         </div>
                       )}
@@ -253,19 +163,8 @@ const Creators = () => {
                 </div>
                 
                 {/* Active Filters */}
-                {(searchTerm || filterCategory !== 'all' || sortBy !== 'popularity') && (
+                {(searchTerm || sortBy !== 'popularity') && (
                   <div className="flex flex-wrap gap-2 mt-4">
-                    {filterCategory !== 'all' && (
-                      <div className="bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 text-sm rounded-full px-3 py-1 flex items-center">
-                        <span>Catégorie: {filterCategory}</span>
-                        <button 
-                          className="ml-2 hover:text-investment-800"
-                          onClick={() => handleFilterChange('all')}
-                        >
-                          &times;
-                        </button>
-                      </div>
-                    )}
                     {sortBy !== 'popularity' && (
                       <div className="bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 text-sm rounded-full px-3 py-1 flex items-center">
                         <span>Tri: {
@@ -296,7 +195,6 @@ const Creators = () => {
                       onClick={() => {
                         setSearchTerm('');
                         setSortBy('popularity');
-                        setFilterCategory('all');
                       }}
                     >
                       Réinitialiser tous les filtres
