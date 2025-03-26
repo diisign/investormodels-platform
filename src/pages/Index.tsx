@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
@@ -48,7 +49,7 @@ const Index = () => {
                   <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  Investissez dans les <span className="createur-performant-gradient">créatrices les plus performantes.</span>
+                  Investissez dans les <span className="creatrices-highlight">créatrices</span> <span className="createur-performant-gradient">les plus performantes.</span>
                 </h1>
                 
                 <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
