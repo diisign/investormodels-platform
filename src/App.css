@@ -7,7 +7,7 @@
 }
 
 .creator-gradient {
-  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%);
+  background: linear-gradient(to right, #4C1D95 0%, #7C3AED 50%, #A78BFA 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

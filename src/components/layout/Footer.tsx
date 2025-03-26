@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, ExternalLink } from 'lucide-react';
@@ -11,7 +10,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand & About */}
           <div className="space-y-4">
-            <Link to="/" className="text-2xl font-bold text-gradient inline-block">
+            <Link to="/" className="text-2xl font-bold creator-gradient inline-block">
               CréatorInvest
             </Link>
             <p className="text-muted-foreground dark:text-muted-foreground mt-2">
