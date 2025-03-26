@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
@@ -54,6 +53,7 @@ const Index = () => {
                 <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
                   Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur succès. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
+                
                 <div className="flex flex-wrap gap-4 pt-4">
                   {isAuthenticated ? (
                     <button onClick={scrollToCreators}>
@@ -93,7 +93,7 @@ const Index = () => {
                 </div>
               </FadeIn>
               
-              {/* Remplacer l'image par le graphique OnlyFans */}
+              {/* Chart section */}
               <FadeIn className="flex justify-center lg:justify-end" direction="up" delay={200}>
                 <div className="relative w-full max-w-md">
                   <OnlyfansRevenueChart />
