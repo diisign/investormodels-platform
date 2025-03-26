@@ -202,7 +202,6 @@ const Index = () => {
                             name={creator.name}
                             imageUrl={creator.imageUrl}
                             category={creator.category}
-                            returnRate={creator.returnRate}
                             investorsCount={creator.investorsCount}
                             totalInvested={creator.totalInvested}
                           />

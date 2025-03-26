@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Users, TrendingUp } from 'lucide-react';
-import { creators } from '@/utils/mockData';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 
 export interface CreatorCardProps {
@@ -14,6 +13,8 @@ export interface CreatorCardProps {
   investorsCount: number;
   totalInvested: number;
   className?: string;
+  // We added returnRate to the props but it's not needed since we get it from creatorProfile
+  monthlyRevenue?: number; // Add optional monthlyRevenue prop
 }
 
 const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, className = '' }: CreatorCardProps) => {

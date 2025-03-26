@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -329,7 +328,6 @@ const Creators = () => {
                       name={creator.name}
                       imageUrl={creator.imageUrl}
                       category={creator.category}
-                      returnRate={getExpectedReturnRate(creator.id)}
                       investorsCount={creator.investorsCount}
                       totalInvested={creator.totalInvested}
                       monthlyRevenue={monthlyRevenue}
