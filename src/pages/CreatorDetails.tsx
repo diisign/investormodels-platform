@@ -187,8 +187,9 @@ const CreatorDetails = () => {
                           <YAxis 
                             axisLine={false} 
                             tickLine={false} 
-                            tickFormatter={(value) => `${Math.round(value / 1000)}k€`}
+                            tickFormatter={(value) => `${Math.floor(value / 1000)}k€`}
                             domain={['dataMin - 5000', 'dataMax + 5000']}
+                            tickCount={6}
                           />
                           <Tooltip 
                             formatter={(value) => [`${value}€`, 'Revenu']} 
