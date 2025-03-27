@@ -424,7 +424,7 @@ const CreatorDetails = () => {
                   <h3 className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Estimation du rendement (3 mois)</h3>
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Taux de rendement:</span>
-                    <span className="font-medium text-purple-600 dark:text-purple-400">{creatorProfile?.returnRate || 0}% annuel</span>
+                    <span className="font-medium text-purple-600 dark:text-purple-400">{creatorProfile?.returnRate || 0}%</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés (3 mois):</span>
