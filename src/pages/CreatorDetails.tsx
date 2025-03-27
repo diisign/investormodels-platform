@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -24,6 +25,7 @@ const CreatorDetails = () => {
   const [loading, setLoading] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
+  const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
   
   const creator = creators.find(c => c.id === creatorId);
   
@@ -64,6 +66,19 @@ const CreatorDetails = () => {
     enabled: !!user && isAuthenticated,
     refetchOnWindowFocus: true,
   });
+  
+  // Calculate estimated return when investment amount changes
+  useEffect(() => {
+    if (creatorProfile && investmentAmount) {
+      // Calculate return for 3 months
+      const monthlyReturnRate = creatorProfile.returnRate / 100 / 12; // Convert annual rate to monthly
+      const investmentValue = parseFloat(investmentAmount);
+      const threeMonthReturn = investmentValue * monthlyReturnRate * 3; // Return over 3 months
+      setEstimatedReturn(threeMonthReturn);
+    } else {
+      setEstimatedReturn(0);
+    }
+  }, [investmentAmount, creatorProfile]);
   
   if (!creator) {
     return (
@@ -403,6 +418,18 @@ const CreatorDetails = () => {
                   <p className="text-xs text-gray-500 mt-1">
                     Montant minimum: 50€
                   </p>
+                </div>
+                
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800/30">
+                  <h3 className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Estimation du rendement (3 mois)</h3>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Taux de rendement:</span>
+                    <span className="font-medium text-purple-600 dark:text-purple-400">{creatorProfile?.returnRate || 0}% annuel</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés (3 mois):</span>
+                    <span className="font-medium text-purple-600 dark:text-purple-400">{estimatedReturn.toFixed(2)}€</span>
+                  </div>
                 </div>
                 
                 <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
