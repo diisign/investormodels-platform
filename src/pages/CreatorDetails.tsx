@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, CircleDollarSign, TrendingUp, Users, 
@@ -15,6 +14,8 @@ import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import { getCreatorProfile, generateMonthlyPerformanceData } from '@/utils/creatorProfiles';
+import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
@@ -28,17 +29,53 @@ const CreatorDetails = () => {
   
   const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
   
+  const { data: userBalance = 0 } = useQuery({
+    queryKey: ['userBalance', user?.id],
+    queryFn: async () => {
+      if (!user) return 0;
+      
+      try {
+        console.log('Récupération du solde pour l\'utilisateur:', user.id);
+        
+        const { data, error } = await supabase
+          .from('transactions')
+          .select('amount, status')
+          .eq('user_id', user.id)
+          .eq('status', 'completed');
+        
+        if (error) {
+          console.error('Erreur lors de la récupération des transactions:', error);
+          throw error;
+        }
+        
+        console.log('Transactions récupérées:', data);
+        
+        const total = data && data.length > 0 
+          ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) 
+          : 0;
+        
+        console.log('Solde calculé:', total);
+        return total;
+      } catch (error) {
+        console.error('Erreur lors de la récupération du solde:', error);
+        return 0;
+      }
+    },
+    enabled: !!user && isAuthenticated,
+    refetchOnWindowFocus: true,
+  });
+  
   if (!creator) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
         <main className="flex-grow pt-20">
           <div className="container mx-auto px-4 py-12 text-center">
-            <h1 className="text-3xl font-bold mb-4">Créateur non trouvé</h1>
-            <p className="mb-6">Le créateur que vous cherchez n'existe pas ou a été supprimé.</p>
+            <h1 className="text-3xl font-bold mb-4">Créatrice non trouvée</h1>
+            <p className="mb-6">La créatrice que vous cherchez n'existe pas ou a été supprimée.</p>
             <Link to="/creators">
               <GradientButton>
-                Retour à la liste des créateurs
+                Retour à la liste des créatrices
               </GradientButton>
             </Link>
           </div>
@@ -103,7 +140,6 @@ const CreatorDetails = () => {
         </div>
 
         <section className="relative overflow-hidden">
-          {/* Background elements */}
           <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--hero-gradient-from))] to-[hsl(var(--hero-gradient-to))] opacity-95"></div>
           <div className="absolute -top-[10%] -right-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-r from-investment-200/10 to-investment-400/5 blur-3xl"></div>
           <div className="absolute -bottom-[20%] -left-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-l from-investment-200/20 to-investment-300/10 blur-3xl"></div>
@@ -334,7 +370,7 @@ const CreatorDetails = () => {
               <div className="space-y-4">
                 <div>
                   <label htmlFor="creator" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Créateur
+                    Créatrice
                   </label>
                   <input
                     type="text"
@@ -372,7 +408,7 @@ const CreatorDetails = () => {
                 <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Solde disponible:</span>
-                    <span className="font-medium">{user?.balance || 0}€</span>
+                    <span className="font-medium">{userBalance.toFixed(2)}€</span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Montant d'investissement:</span>
@@ -380,7 +416,7 @@ const CreatorDetails = () => {
                   </div>
                   <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Solde après investissement:</span>
-                    <span className="font-medium">{(user?.balance || 0) - Number(investmentAmount || 0)}€</span>
+                    <span className="font-medium">{(userBalance - Number(investmentAmount || 0)).toFixed(2)}€</span>
                   </div>
                 </div>
                 
@@ -394,7 +430,7 @@ const CreatorDetails = () => {
                   </button>
                   <GradientButton 
                     type="submit"
-                    disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > user.balance}
+                    disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > userBalance}
                   >
                     {loading ? 'Traitement...' : 'Confirmer l\'investissement'}
                   </GradientButton>
