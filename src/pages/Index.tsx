@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -30,18 +29,14 @@ const Index = () => {
     creatorsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Display 2 creators side by side on mobile
   const slidesPerView = width < 640 ? 2 : width < 768 ? 2 : width < 1024 ? 3 : 4;
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={false} />
       
-      {/* Hero Section */}
       <main className="flex-grow pt-16 md:pt-20">
         <section className="relative overflow-hidden pb-12 md:pb-20 pt-16 md:pt-24 lg:pt-32">
-          {/* Background elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-[10%] -right-[10%] z-0 h-[300px] md:h-[500px] w-[300px] md:w-[500px] rounded-full bg-gradient-to-tr from-investment-200/40 to-investment-400/20 blur-3xl"></div>
             <div className="absolute -bottom-[20%] -left-[10%] z-0 h-[300px] md:h-[600px] w-[300px] md:w-[600px] rounded-full bg-gradient-to-bl from-investment-200/30 to-investment-300/10 blur-3xl"></div>
@@ -49,7 +44,6 @@ const Index = () => {
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-              {/* Hero Text */}
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 <div className="inline-block rounded-full bg-investment-50 dark:bg-investment-900/20 px-3 py-1 text-sm font-medium text-purple-600 dark:text-purple-400 mb-3 md:mb-4">
                   <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
@@ -101,7 +95,6 @@ const Index = () => {
                 </div>
               </FadeIn>
               
-              {/* Chart section with better mobile sizing and positioning */}
               <FadeIn className="flex justify-center lg:justify-end mt-8 lg:mt-0" direction="up" delay={200}>
                 <div className="w-full max-w-md lg:max-w-lg mx-auto">
                   <OnlyfansRevenueChart />
@@ -111,7 +104,6 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Popular Creators Section - Updated with navigation arrows at profile level */}
         <section ref={creatorsRef} className="py-12 md:py-20">
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
@@ -130,17 +122,17 @@ const Index = () => {
             </FadeIn>
             
             <FadeIn direction="up" delay={100}>
-              <div className="relative px-0 md:px-10 pb-6 md:pb-10">
+              <div className="relative px-8 md:px-12 pb-6 md:pb-10">
                 <Carousel 
                   opts={{
-                    align: "start",
+                    align: "center",
                     loop: true
                   }}
                   className="w-full"
                 >
-                  <CarouselContent>
+                  <CarouselContent className="-ml-2 md:-ml-4">
                     {creators.map((creator, index) => (
-                      <CarouselItem key={creator.id} className={`basis-1/${slidesPerView}`}>
+                      <CarouselItem key={creator.id} className={`pl-2 md:pl-4 basis-1/${slidesPerView}`}>
                         <div className="p-1">
                           <CreatorCard
                             id={creator.id}
@@ -154,8 +146,8 @@ const Index = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-0 md:-left-6 -translate-y-1/2 top-1/2 z-10 h-8 w-8 rounded-full sm:flex" />
-                  <CarouselNext className="right-0 md:-right-6 -translate-y-1/2 top-1/2 z-10 h-8 w-8 rounded-full sm:flex" />
+                  <CarouselPrevious className="-left-2 md:-left-6 h-9 w-9 rounded-full" />
+                  <CarouselNext className="-right-2 md:-right-6 h-9 w-9 rounded-full" />
                 </Carousel>
               </div>
             </FadeIn>
@@ -174,7 +166,6 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features Section - Updated to display 2x2 grid on mobile */}
         <section className="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-16" direction="up">
@@ -231,7 +222,6 @@ const Index = () => {
         </section>
       </main>
       
-      {/* Footer */}
       <Footer />
     </div>
   );
