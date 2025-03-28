@@ -13,3 +13,6 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
     storage: localStorage
   }
 });
+
+// Export URL for other components to use without accessing the protected property
+export const getSupabaseUrl = () => supabaseUrl;

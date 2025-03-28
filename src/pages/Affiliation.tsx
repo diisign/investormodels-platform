@@ -52,16 +52,18 @@ const Affiliation = () => {
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
-        {/* Hero Section */}
+        {/* Hero Section with blue gradient background */}
         <section className="relative py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-purple-500/20 to-purple-500/20 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--affiliation-gradient-from))] to-[hsl(var(--affiliation-gradient-to))] opacity-95"></div>
+          <div className="absolute -top-[10%] -right-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-r from-investment-200/10 to-investment-400/5 blur-3xl"></div>
+          <div className="absolute -bottom-[20%] -left-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-l from-investment-200/20 to-investment-300/10 blur-3xl"></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <FadeIn direction="up" className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-accent bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Programme d'Affiliation
               </h1>
-              <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8">
+              <p className="text-lg md:text-xl text-white/90 mb-8">
                 Parrainez vos amis et gagnez 50€ de crédit lorsqu'ils investissent 100€ dans une créatrice.
               </p>
               {!isAuthenticated && (
@@ -71,7 +73,7 @@ const Affiliation = () => {
                       gradientDirection="to-r" 
                       fullWidth 
                       size="lg"
-                      className="from-purple-600 to-purple-500"
+                      className="from-white/90 to-white/70 text-blue-900"
                     >
                       Créer un compte pour parrainer
                     </GradientButton>
