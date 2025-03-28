@@ -17,7 +17,6 @@ const Affiliation = () => {
   const [copied, setCopied] = useState(false);
   const { isMobile } = useScreenSize();
   
-  // Générer un code de parrainage basé sur l'ID utilisateur ou un code temporaire si non connecté
   const affiliationCode = isAuthenticated && user 
     ? `${user.id.substring(0, 8)}` 
     : 'DEMO2024';
@@ -50,13 +49,10 @@ const Affiliation = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow">
-        {/* Hero Section - Redesigned with White Theme */}
         <section className="py-12 lg:py-20 relative overflow-hidden bg-white">
-          {/* White Background with Light Decorative Elements */}
           <div className="absolute top-20 right-10 w-64 h-64 rounded-full bg-gray-50 blur-3xl"></div>
           <div className="absolute bottom-10 left-10 w-48 h-48 rounded-full bg-gray-100 blur-2xl"></div>
           
@@ -70,9 +66,7 @@ const Affiliation = () => {
               </p>
             </div>
             
-            {/* Reordered Card Layout for Mobile */}
             <div className="max-w-4xl mx-auto">
-              {/* Center Card (Programme Partenaire) on top for mobile */}
               <div className="mb-4">
                 <Card className="bg-white shadow-xl border-0 relative">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
@@ -116,15 +110,13 @@ const Affiliation = () => {
                     {isAuthenticated && (
                       <div className="pt-2 md:pt-3 w-full">
                         <GradientButton 
-                          className="w-full text-white text-xs h-8 px-2"
                           onClick={handleShare}
                           size="sm"
                           gradientDirection="to-r"
                           fullWidth
                           icon={<Share2 className="h-3 w-3" />}
                           iconPosition="left"
-                          variant="primary"
-                          className="from-teal-400 to-blue-500"
+                          className="from-teal-400 to-blue-500 text-white text-xs h-8 px-2"
                         >
                           Partager
                         </GradientButton>
@@ -134,9 +126,7 @@ const Affiliation = () => {
                 </Card>
               </div>
               
-              {/* Two side-by-side cards below */}
               <div className="grid grid-cols-2 gap-4">
-                {/* Left Card - Pour Vos Filleuls */}
                 <Card className="bg-gray-50 border-gray-200 shadow-md overflow-hidden">
                   <div className="p-3 md:p-4 flex flex-col items-center text-center h-full">
                     <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-purple-100 flex items-center justify-center mb-2">
@@ -153,7 +143,6 @@ const Affiliation = () => {
                   </div>
                 </Card>
                 
-                {/* Right Card - Pour Vous */}
                 <Card className="bg-gray-50 border-gray-200 shadow-md overflow-hidden">
                   <div className="p-3 md:p-4 flex flex-col items-center text-center h-full">
                     <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-purple-100 flex items-center justify-center mb-2">
@@ -174,7 +163,6 @@ const Affiliation = () => {
           </div>
         </section>
 
-        {/* Avantages */}
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="text-center mb-8">
@@ -252,7 +240,6 @@ const Affiliation = () => {
           </div>
         </section>
 
-        {/* FAQ Section */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">

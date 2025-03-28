@@ -62,6 +62,8 @@ const Index = () => {
                         size={isMobile ? "default" : "lg"}
                         icon={<ArrowRight className="h-5 w-5" />}
                         iconPosition="right"
+                        gradientDirection="to-r"
+                        className="from-teal-400 to-blue-500 text-white"
                       >
                         Commencer maintenant
                       </GradientButton>
@@ -72,6 +74,8 @@ const Index = () => {
                         size={isMobile ? "default" : "lg"}
                         icon={<ArrowRight className="h-5 w-5" />}
                         iconPosition="right"
+                        gradientDirection="to-r"
+                        className="from-teal-400 to-blue-500 text-white"
                       >
                         Commencer maintenant
                       </GradientButton>
