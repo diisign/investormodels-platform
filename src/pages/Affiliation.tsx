@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -53,19 +52,15 @@ const Affiliation = () => {
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
-        {/* Hero Section with blue gradient background */}
-        <section className="relative py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--affiliation-gradient-from))] to-[hsl(var(--affiliation-gradient-to))] opacity-95"></div>
-          <div className="absolute -top-[10%] -right-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-r from-investment-200/10 to-investment-400/5 blur-3xl"></div>
-          <div className="absolute -bottom-[20%] -left-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-l from-investment-200/20 to-investment-300/10 blur-3xl"></div>
-          
+        {/* Hero Section with white background */}
+        <section className="relative py-16 md:py-20 overflow-hidden bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <FadeIn direction="up" className="text-center md:text-left">
-                <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                <h1 className="text-4xl md:text-5xl font-bold mb-6 text-black dark:text-white">
                   Programme d'Affiliation
                 </h1>
-                <p className="text-lg md:text-xl text-white/90 mb-8">
+                <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8">
                   Parrainez vos amis et gagnez 50€ de crédit lorsqu'ils investissent 100€ dans une créatrice.
                 </p>
                 {!isAuthenticated && (
@@ -75,7 +70,7 @@ const Affiliation = () => {
                         gradientDirection="to-r" 
                         fullWidth 
                         size="lg"
-                        className="from-white/90 to-white/70 text-blue-900"
+                        className="from-purple-600 to-purple-400 text-white"
                       >
                         Créer un compte pour parrainer
                       </GradientButton>
@@ -87,50 +82,50 @@ const Affiliation = () => {
               <FadeIn direction="up" delay={0.2} className="hidden md:block">
                 <div className="relative">
                   {/* Floating elements animation */}
-                  <div className="absolute top-0 left-1/4 animate-float-slow">
-                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-lg shadow-lg">
-                      <Coins className="h-12 w-12 text-yellow-300" />
-                      <p className="text-white font-medium mt-2">Bonus 50€</p>
+                  <div className="absolute -top-10 left-1/4 animate-float-slow">
+                    <div className="bg-purple-100 p-4 rounded-lg shadow-lg border border-purple-200">
+                      <Coins className="h-12 w-12 text-purple-500" />
+                      <p className="text-purple-900 font-medium mt-2">Bonus 50€</p>
                     </div>
                   </div>
-                  <div className="absolute bottom-10 right-10 animate-float">
-                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-lg shadow-lg">
-                      <BarChart3 className="h-10 w-10 text-teal-300" />
-                      <p className="text-white font-medium mt-2">Suivi en temps réel</p>
+                  <div className="absolute -bottom-4 right-10 animate-float">
+                    <div className="bg-purple-100 p-4 rounded-lg shadow-lg border border-purple-200">
+                      <BarChart3 className="h-10 w-10 text-teal-500" />
+                      <p className="text-purple-900 font-medium mt-2">Suivi en temps réel</p>
                     </div>
                   </div>
                   
                   {/* Central illustration */}
-                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mx-auto max-w-md border border-white/20">
+                  <div className="bg-white rounded-xl p-6 mx-auto max-w-md border border-gray-200 shadow-lg">
                     <div className="flex items-center justify-center mb-4">
-                      <div className="bg-white/20 h-20 w-20 rounded-full flex items-center justify-center">
-                        <BadgeDollarSign className="h-10 w-10 text-white" />
+                      <div className="bg-purple-100 h-20 w-20 rounded-full flex items-center justify-center">
+                        <BadgeDollarSign className="h-10 w-10 text-purple-600" />
                       </div>
                     </div>
                     
                     <div className="space-y-4">
-                      <div className="bg-white/10 rounded-lg p-3 flex items-center">
+                      <div className="bg-purple-50 rounded-lg p-3 flex items-center">
                         <div className="bg-purple-500/50 p-2 rounded-full mr-3">
                           <Gift className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                          <p className="text-white font-medium">Offrez un bonus à vos amis</p>
-                          <p className="text-white/80 text-sm">Ils reçoivent 25€ grâce à vous</p>
+                          <p className="text-purple-900 font-medium">Offrez un bonus à vos amis</p>
+                          <p className="text-purple-700 text-sm">Ils reçoivent 25€ grâce à vous</p>
                         </div>
                       </div>
                       
-                      <div className="bg-white/10 rounded-lg p-3 flex items-center">
+                      <div className="bg-purple-50 rounded-lg p-3 flex items-center">
                         <div className="bg-teal-500/50 p-2 rounded-full mr-3">
                           <Coins className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                          <p className="text-white font-medium">Recevez 50€ par parrainage</p>
-                          <p className="text-white/80 text-sm">Sans limite de parrainages</p>
+                          <p className="text-purple-900 font-medium">Recevez 50€ par parrainage</p>
+                          <p className="text-purple-700 text-sm">Sans limite de parrainages</p>
                         </div>
                       </div>
                       
-                      <div className="mt-6 pt-4 border-t border-white/20 text-center">
-                        <p className="text-white font-medium">Programme sans limite de gains</p>
+                      <div className="mt-6 pt-4 border-t border-purple-100 text-center">
+                        <p className="text-purple-900 font-medium">Programme sans limite de gains</p>
                       </div>
                     </div>
                   </div>
@@ -288,4 +283,3 @@ const Affiliation = () => {
 };
 
 export default Affiliation;
-
