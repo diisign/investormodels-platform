@@ -46,7 +46,10 @@ const OnlyfansRevenueChart = () => {
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Évolution annuelle (2019-2024)</p>
 
         <ChartContainer className="aspect-[5/4] h-[300px]" config={chartConfig}>
-          <AreaChart data={revenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <AreaChart 
+            data={revenueData} 
+            margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+          >
             <defs>
               <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
@@ -58,11 +61,13 @@ const OnlyfansRevenueChart = () => {
               dataKey="year" 
               tick={{ fill: 'var(--foreground)' }}
               tickLine={{ stroke: 'var(--border)' }} 
+              padding={{ left: 5, right: 5 }}
             />
             <YAxis 
               tick={{ fill: 'var(--foreground)' }} 
               tickLine={{ stroke: 'var(--border)' }}
               tickFormatter={(value) => value < 1 ? `${value * 1000}M` : `${value}B`}
+              width={40}
             />
             <ChartTooltip
               content={({ active, payload, label }) => {

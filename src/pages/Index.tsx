@@ -101,9 +101,9 @@ const Index = () => {
                 </div>
               </FadeIn>
               
-              {/* Chart section with better mobile sizing */}
+              {/* Chart section with better mobile sizing and positioning */}
               <FadeIn className="flex justify-center lg:justify-end mt-8 lg:mt-0" direction="up" delay={200}>
-                <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md">
+                <div className="w-full max-w-md lg:max-w-lg mx-auto">
                   <OnlyfansRevenueChart />
                 </div>
               </FadeIn>
