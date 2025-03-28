@@ -10,10 +10,12 @@ import GradientButton from '@/components/ui/GradientButton';
 import { BadgeDollarSign, Users, Gift, Copy, Share2, CreditCard, HeartHandshake, Award, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useScreenSize } from '@/hooks/use-mobile';
 
 const Affiliation = () => {
   const { isAuthenticated, user } = useAuth();
   const [copied, setCopied] = useState(false);
+  const { isMobile } = useScreenSize();
   
   // Générer un code de parrainage basé sur l'ID utilisateur ou un code temporaire si non connecté
   const affiliationCode = isAuthenticated && user 
@@ -84,129 +86,6 @@ const Affiliation = () => {
           </div>
         </section>
 
-        {/* Comment ça marche */}
-        <section className="py-16 bg-white dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <FadeIn direction="up" className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-black dark:text-white">Comment fonctionne le parrainage</h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                Notre programme d'affiliation est simple et avantageux pour tous.
-              </p>
-            </FadeIn>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Étape 1 */}
-              <FadeIn direction="up" delay={100}>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-purple-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
-                    <Share2 className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">1. Partagez votre lien</h3>
-                  <p className="text-gray-600 dark:text-gray-400 flex-grow">
-                    Invitez vos amis à rejoindre CréatorInvest en utilisant votre lien d'affiliation personnel.
-                  </p>
-                </div>
-              </FadeIn>
-
-              {/* Étape 2 */}
-              <FadeIn direction="up" delay={200}>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-purple-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white mx-auto mb-6">
-                    <CreditCard className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">2. Ils investissent</h3>
-                  <p className="text-gray-600 dark:text-gray-400 flex-grow">
-                    Lorsque vos amis s'inscrivent et investissent 100€ ou plus dans une créatrice, le bonus est débloqué.
-                  </p>
-                </div>
-              </FadeIn>
-
-              {/* Étape 3 */}
-              <FadeIn direction="up" delay={300}>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-purple-100 dark:border-gray-700 text-center h-full flex flex-col hover:shadow-lg transition-all duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
-                    <Award className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">3. Recevez votre bonus</h3>
-                  <p className="text-gray-600 dark:text-gray-400 flex-grow">
-                    Vous recevez automatiquement 50€ de crédit sur votre compte, utilisable pour vos propres investissements.
-                  </p>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
-
-        {/* Partager section */}
-        <section className="py-16 bg-gradient-to-br from-purple-500/5 via-purple-500/5 to-purple-500/5">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <FadeIn direction="up" className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
-                <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white">Partagez votre lien de parrainage</h2>
-                
-                {isAuthenticated ? (
-                  <>
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Votre lien d'affiliation personnel</label>
-                      <div className="flex">
-                        <input 
-                          type="text" 
-                          value={affiliationLink} 
-                          readOnly 
-                          className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-l-lg text-gray-800 dark:text-gray-200 focus:ring-purple-500 focus:border-purple-500"
-                        />
-                        <button 
-                          onClick={handleCopyLink}
-                          className={cn(
-                            "px-4 py-3 rounded-r-lg flex items-center gap-2 transition-colors",
-                            copied 
-                              ? "bg-green-500 text-white" 
-                              : "bg-purple-600 hover:bg-purple-700 text-white"
-                          )}
-                        >
-                          {copied ? "Copié !" : "Copier"}
-                          <Copy size={16} />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Button 
-                        className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2 px-6 py-5 text-base"
-                        onClick={handleShare}
-                      >
-                        <Share2 size={18} />
-                        Partager mon lien
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-center">
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
-                      Connectez-vous ou créez un compte pour obtenir votre lien de parrainage personnel.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Link to="/login">
-                        <Button variant="outline" className="px-6 py-5 text-base">
-                          Se connecter
-                        </Button>
-                      </Link>
-                      <Link to="/register">
-                        <GradientButton
-                          gradientDirection="to-r"
-                          className="from-purple-600 to-purple-500 px-6 py-5 text-base"
-                        >
-                          Créer un compte
-                        </GradientButton>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </FadeIn>
-            </div>
-          </div>
-        </section>
-
         {/* Avantages */}
         <section className="py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
@@ -217,7 +96,7 @@ const Affiliation = () => {
               </p>
             </FadeIn>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className={`grid grid-cols-1 ${isMobile ? 'sm:grid-cols-2' : 'md:grid-cols-2'} gap-6`}>
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-6 h-full">
                   <div className="flex items-start space-x-4">
@@ -303,9 +182,9 @@ const Affiliation = () => {
                       {isAuthenticated ? (
                         <Button 
                           className="bg-purple-600 hover:bg-purple-700 text-white"
-                          onClick={handleCopyLink}
+                          onClick={handleShare}
                         >
-                          Copier mon lien d'affiliation
+                          Partager mon lien d'affiliation
                         </Button>
                       ) : (
                         <Link to="/register">
