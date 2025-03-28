@@ -60,11 +60,13 @@ const Creators = () => {
         case 'popularity':
           return b.investorsCount - a.investorsCount;
         case 'return':
+          // Modifié pour être sûr que le tri du rendement est bien en ordre décroissant
           return getExpectedReturnRate(b.id) - getExpectedReturnRate(a.id);
         case 'alphabetical':
           return a.name.localeCompare(b.name);
         default:
-          return 0;
+          // Par défaut, trier par rendement décroissant
+          return getExpectedReturnRate(b.id) - getExpectedReturnRate(a.id);
       }
     });
   
