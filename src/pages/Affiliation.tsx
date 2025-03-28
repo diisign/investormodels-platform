@@ -7,7 +7,7 @@ import FadeIn from '@/components/animations/FadeIn';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
-import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, Coins, BarChart3, ArrowRight, PiggyBank, UserPlus, Rocket } from 'lucide-react';
+import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, PiggyBank, UserPlus, Rocket } from 'lucide-react';
 import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
@@ -100,8 +100,8 @@ const Affiliation = () => {
                 <Card className="col-span-3 md:col-span-1 bg-white shadow-xl border-0 relative md:transform md:-translate-y-6 z-20">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
                   <div className="p-4 md:p-8 flex flex-col items-center">
-                    <div className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-gradient-to-br from-teal-100 to-blue-100 flex items-center justify-center mb-3 md:mb-6">
-                      <BadgeDollarSign className="h-8 w-8 md:h-10 md:w-10 text-teal-600" />
+                    <div className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-3 md:mb-6">
+                      <BadgeDollarSign className="h-8 w-8 md:h-10 md:w-10 text-purple-600" />
                     </div>
                     
                     <h2 className="text-xl md:text-2xl font-bold text-center mb-3 md:mb-6 text-gray-800">
@@ -118,7 +118,7 @@ const Affiliation = () => {
                       <div className="flex justify-center">
                         <div className="flex items-center gap-2 text-teal-600">
                           <span className="font-semibold text-sm md:text-base">Sans limite</span>
-                          <Rocket size={isMobile ? 16 : 18} />
+                          <Rocket size={isMobile ? 16 : 18} className="text-purple-600" />
                           <span className="font-semibold text-sm md:text-base">de parrainages</span>
                         </div>
                       </div>
@@ -174,45 +174,6 @@ const Affiliation = () => {
                   </div>
                 </Card>
               </div>
-              
-              {/* Steps Beneath Cards */}
-              <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <FadeIn direction="up" delay={0.1} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center">
-                      <span className="text-xl font-bold text-teal-700">1</span>
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">Partagez votre lien</h3>
-                  <p className="text-gray-600 text-center text-sm">
-                    Envoyez votre lien d'affiliation à vos amis et sur vos réseaux sociaux.
-                  </p>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={0.2} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center">
-                      <span className="text-xl font-bold text-teal-700">2</span>
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">Ils investissent</h3>
-                  <p className="text-gray-600 text-center text-sm">
-                    Vos filleuls créent un compte et font leur premier investissement.
-                  </p>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={0.3} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center">
-                      <span className="text-xl font-bold text-teal-700">3</span>
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">Vous gagnez</h3>
-                  <p className="text-gray-600 text-center text-sm">
-                    Recevez vos commissions et suivez en temps réel vos revenus d'affiliation.
-                  </p>
-                </FadeIn>
-              </div>
             </div>
           </div>
         </section>
@@ -231,8 +192,8 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-blue-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <BadgeDollarSign className="h-6 w-6 text-blue-600" />
+                    <div className="bg-purple-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <BadgeDollarSign className="h-6 w-6 text-purple-600" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-gray-900">Bonus généreux</h3>
@@ -247,8 +208,8 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-blue-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <Gift className="h-6 w-6 text-blue-600" />
+                    <div className="bg-purple-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <Gift className="h-6 w-6 text-purple-600" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-gray-900">Avantages filleuls</h3>
@@ -263,8 +224,8 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-blue-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <Users className="h-6 w-6 text-blue-600" />
+                    <div className="bg-purple-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <Users className="h-6 w-6 text-purple-600" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-gray-900">Suivi en temps réel</h3>
@@ -279,8 +240,8 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-blue-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <HeartHandshake className="h-6 w-6 text-blue-600" />
+                    <div className="bg-purple-100 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <HeartHandshake className="h-6 w-6 text-purple-600" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-gray-900">Soutien mutuel</h3>
@@ -303,7 +264,7 @@ const Affiliation = () => {
                 <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
                   <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                     <div className="md:flex-1">
-                      <Sparkles className="h-12 w-12 text-teal-600 mb-4" />
+                      <Sparkles className="h-12 w-12 text-purple-600 mb-4" />
                       <h2 className="text-2xl font-bold mb-4 text-gray-900">
                         Commencez dès maintenant
                       </h2>
