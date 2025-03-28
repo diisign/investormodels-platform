@@ -17,7 +17,7 @@ export interface CreatorCardProps {
   monthlyRevenue?: number;
 }
 
-const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, className = '' }: CreatorCardProps) => {
+const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, monthlyRevenue, className = '' }: CreatorCardProps) => {
   const creatorProfile = getCreatorProfile(id);
   
   return (
@@ -63,7 +63,7 @@ const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, cl
                 <CircleDollarSign className="h-4 w-4 mr-2 text-purple-500" />
                 <span className="text-sm">Revenu mensuel</span>
               </div>
-              <span className="text-sm font-medium">{creatorProfile.monthlyRevenue.toLocaleString()}€</span>
+              <span className="text-sm font-medium">{(monthlyRevenue || creatorProfile.monthlyRevenue).toLocaleString()}€</span>
             </div>
             
             <div className="flex items-center justify-between">

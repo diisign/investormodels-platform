@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -30,29 +29,24 @@ const Creators = () => {
     setShowFilters(!showFilters);
   };
   
-  // Filter and sort creators
   const filteredCreators = creators
     .filter(creator => {
-      // Apply search filter
       const matchesSearch = creator.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            creator.category.toLowerCase().includes(searchTerm.toLowerCase());
       
       return matchesSearch;
     })
     .sort((a, b) => {
-      // Apply sorting using creatorProfiles data for accurate return rate sorting
       switch (sortBy) {
         case 'popularity':
           return b.investorsCount - a.investorsCount;
         case 'return':
-          // Get actual return rates from creatorProfiles for proper sorting
           const profileA = getCreatorProfile(a.id);
           const profileB = getCreatorProfile(b.id);
           return profileB.returnRate - profileA.returnRate;
         case 'alphabetical':
           return a.name.localeCompare(b.name);
         default:
-          // Default to sorting by return rate using creatorProfiles
           const defaultProfileA = getCreatorProfile(a.id);
           const defaultProfileB = getCreatorProfile(b.id);
           return defaultProfileB.returnRate - defaultProfileA.returnRate;
@@ -61,7 +55,6 @@ const Creators = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
@@ -74,11 +67,9 @@ const Creators = () => {
               </p>
             </FadeIn>
             
-            {/* Search and Filters Bar */}
             <FadeIn direction="up" delay={100} className="mb-8">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-4">
                 <div className="flex flex-col md:flex-row gap-4">
-                  {/* Search Input */}
                   <div className="relative flex-grow">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Search className="h-5 w-5 text-gray-400" />
@@ -92,7 +83,6 @@ const Creators = () => {
                     />
                   </div>
                   
-                  {/* Sort and Filter Buttons */}
                   <div className="flex gap-2">
                     <div className="relative">
                       <button
@@ -103,7 +93,6 @@ const Creators = () => {
                         <span>Filtres</span>
                       </button>
                       
-                      {/* Filter Dropdown */}
                       {showFilters && (
                         <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 z-10 animate-scale-in origin-top-right">
                           <div className="p-4">
@@ -153,7 +142,6 @@ const Creators = () => {
                   </div>
                 </div>
                 
-                {/* Active Filters */}
                 {(searchTerm || sortBy !== 'return') && (
                   <div className="flex flex-wrap gap-2 mt-4">
                     {sortBy !== 'return' && (
@@ -195,7 +183,6 @@ const Creators = () => {
               </div>
             </FadeIn>
             
-            {/* Results Info */}
             <FadeIn direction="up" delay={150} className="mb-6">
               <div className="flex items-center justify-between">
                 <p className="text-gray-600 dark:text-gray-300">
@@ -204,10 +191,8 @@ const Creators = () => {
               </div>
             </FadeIn>
             
-            {/* Creators Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredCreators.map((creator, index) => {
-                // Get creator profile data for this creator
                 const creatorProfile = getCreatorProfile(creator.id);
                 
                 return (
@@ -226,7 +211,6 @@ const Creators = () => {
               })}
             </div>
             
-            {/* No Results */}
             {filteredCreators.length === 0 && (
               <FadeIn direction="up" className="text-center py-16">
                 <div className="text-gray-400 mb-3">
@@ -248,4 +232,3 @@ const Creators = () => {
 };
 
 export default Creators;
-
