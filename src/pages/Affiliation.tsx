@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -52,8 +53,8 @@ const Affiliation = () => {
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
-        {/* Hero Section with white background */}
-        <section className="relative py-16 md:py-20 overflow-hidden bg-white dark:bg-gray-900">
+        {/* Hero Section with light blue background */}
+        <section className="relative py-16 md:py-20 overflow-hidden bg-blue-50 dark:bg-gray-900">
           <div className="container mx-auto px-4 relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <FadeIn direction="up" className="text-center md:text-left">
@@ -70,7 +71,7 @@ const Affiliation = () => {
                         gradientDirection="to-r" 
                         fullWidth 
                         size="lg"
-                        className="from-purple-600 to-purple-400 text-white"
+                        className="from-blue-600 to-blue-400 text-white"
                       >
                         Créer un compte pour parrainer
                       </GradientButton>
@@ -81,51 +82,51 @@ const Affiliation = () => {
               
               <FadeIn direction="up" delay={0.2} className="hidden md:block">
                 <div className="relative">
-                  {/* Floating elements animation */}
-                  <div className="absolute -top-10 left-1/4 animate-float-slow">
-                    <div className="bg-purple-100 p-4 rounded-lg shadow-lg border border-purple-200">
-                      <Coins className="h-12 w-12 text-purple-500" />
-                      <p className="text-purple-900 font-medium mt-2">Bonus 50€</p>
+                  {/* Floating elements animation - Fixed positioning */}
+                  <div className="absolute -top-20 left-1/4 animate-float-slow">
+                    <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
+                      <Coins className="h-12 w-12 text-blue-500" />
+                      <p className="text-blue-900 font-medium mt-2">Bonus 50€</p>
                     </div>
                   </div>
-                  <div className="absolute -bottom-4 right-10 animate-float">
-                    <div className="bg-purple-100 p-4 rounded-lg shadow-lg border border-purple-200">
-                      <BarChart3 className="h-10 w-10 text-teal-500" />
-                      <p className="text-purple-900 font-medium mt-2">Suivi en temps réel</p>
+                  <div className="absolute -bottom-16 right-10 animate-float">
+                    <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
+                      <BarChart3 className="h-10 w-10 text-blue-500" />
+                      <p className="text-blue-900 font-medium mt-2">Suivi en temps réel</p>
                     </div>
                   </div>
                   
                   {/* Central illustration */}
                   <div className="bg-white rounded-xl p-6 mx-auto max-w-md border border-gray-200 shadow-lg">
                     <div className="flex items-center justify-center mb-4">
-                      <div className="bg-purple-100 h-20 w-20 rounded-full flex items-center justify-center">
-                        <BadgeDollarSign className="h-10 w-10 text-purple-600" />
+                      <div className="bg-blue-100 h-20 w-20 rounded-full flex items-center justify-center">
+                        <BadgeDollarSign className="h-10 w-10 text-blue-600" />
                       </div>
                     </div>
                     
                     <div className="space-y-4">
-                      <div className="bg-purple-50 rounded-lg p-3 flex items-center">
-                        <div className="bg-purple-500/50 p-2 rounded-full mr-3">
+                      <div className="bg-blue-50 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500/50 p-2 rounded-full mr-3">
                           <Gift className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                          <p className="text-purple-900 font-medium">Offrez un bonus à vos amis</p>
-                          <p className="text-purple-700 text-sm">Ils reçoivent 25€ grâce à vous</p>
+                          <p className="text-blue-900 font-medium">Ils reçoivent 50€ lors de son premier investissement</p>
+                          <p className="text-blue-700 text-sm">(100€ minimum)</p>
                         </div>
                       </div>
                       
-                      <div className="bg-purple-50 rounded-lg p-3 flex items-center">
+                      <div className="bg-blue-50 rounded-lg p-3 flex items-center">
                         <div className="bg-teal-500/50 p-2 rounded-full mr-3">
                           <Coins className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                          <p className="text-purple-900 font-medium">Recevez 50€ par parrainage</p>
-                          <p className="text-purple-700 text-sm">Sans limite de parrainages</p>
+                          <p className="text-blue-900 font-medium">Recevez 50% des gains du parrainage</p>
+                          <p className="text-blue-700 text-sm">Sans limite de parrainages</p>
                         </div>
                       </div>
                       
-                      <div className="mt-6 pt-4 border-t border-purple-100 text-center">
-                        <p className="text-purple-900 font-medium">Programme sans limite de gains</p>
+                      <div className="mt-6 pt-4 border-t border-blue-100 text-center">
+                        <p className="text-blue-900 font-medium">Programme sans limite de gains</p>
                       </div>
                     </div>
                   </div>
@@ -149,8 +150,8 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <BadgeDollarSign className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <BadgeDollarSign className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Bonus généreux</h3>
@@ -165,13 +166,13 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <Gift className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <Gift className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Avantages filleuls</h3>
                       <p className="text-gray-600 dark:text-gray-400 text-sm">
-                        Vos amis bénéficient d'un bonus de 25€.
+                        Vos amis bénéficient d'un bonus de 50€.
                       </p>
                     </div>
                   </div>
@@ -181,8 +182,8 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Suivi en temps réel</h3>
@@ -197,8 +198,8 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
-                      <HeartHandshake className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                      <HeartHandshake className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Soutien mutuel</h3>
@@ -221,7 +222,7 @@ const Affiliation = () => {
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-md border border-gray-100 dark:border-gray-700">
                   <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                     <div className="md:flex-1">
-                      <Sparkles className="h-12 w-12 text-purple-600 mb-4" />
+                      <Sparkles className="h-12 w-12 text-blue-600 mb-4" />
                       <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">
                         Commencez dès maintenant
                       </h2>
@@ -230,7 +231,7 @@ const Affiliation = () => {
                       </p>
                       {isAuthenticated ? (
                         <Button 
-                          className="bg-purple-600 hover:bg-purple-700 text-white"
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
                           onClick={handleShare}
                         >
                           Partager mon lien d'affiliation
@@ -239,7 +240,7 @@ const Affiliation = () => {
                         <Link to="/register">
                           <GradientButton 
                             gradientDirection="to-r" 
-                            className="from-purple-600 to-purple-500"
+                            className="from-blue-600 to-blue-500"
                           >
                             Créer un compte
                           </GradientButton>
