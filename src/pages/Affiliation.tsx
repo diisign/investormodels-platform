@@ -75,7 +75,7 @@ const Affiliation = () => {
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-3 gap-3 md:gap-6">
                 {/* Left Card */}
-                <Card className="col-span-3 md:col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
+                <Card className="col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
                   <div className="p-4 md:p-6 flex flex-col items-center text-center h-full">
                     <div className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-purple-100 flex items-center justify-center mb-3 md:mb-4">
                       <UserPlus className="h-7 w-7 md:h-8 md:w-8 text-purple-600" />
@@ -97,11 +97,11 @@ const Affiliation = () => {
                 </Card>
                 
                 {/* Center Card - Main Content */}
-                <Card className="col-span-3 md:col-span-1 bg-white shadow-xl border-0 relative md:transform md:-translate-y-6 z-20">
+                <Card className="col-span-1 bg-white shadow-xl border-0 relative md:transform md:-translate-y-6 z-20">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
                   <div className="p-4 md:p-8 flex flex-col items-center">
-                    <div className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-gradient-to-br from-teal-100 to-blue-100 flex items-center justify-center mb-3 md:mb-6">
-                      <BadgeDollarSign className="h-8 w-8 md:h-10 md:w-10 text-teal-600" />
+                    <div className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-3 md:mb-6">
+                      <BadgeDollarSign className="h-8 w-8 md:h-10 md:w-10 text-purple-600" />
                     </div>
                     
                     <h2 className="text-xl md:text-2xl font-bold text-center mb-3 md:mb-6 text-gray-800">
@@ -153,7 +153,7 @@ const Affiliation = () => {
                 </Card>
                 
                 {/* Right Card */}
-                <Card className="col-span-3 md:col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
+                <Card className="col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
                   <div className="p-4 md:p-6 flex flex-col items-center text-center h-full">
                     <div className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-purple-100 flex items-center justify-center mb-3 md:mb-4">
                       <PiggyBank className="h-7 w-7 md:h-8 md:w-8 text-purple-600" />
@@ -173,45 +173,6 @@ const Affiliation = () => {
                     </div>
                   </div>
                 </Card>
-              </div>
-              
-              {/* Steps Beneath Cards */}
-              <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <FadeIn direction="up" delay={0.1} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center">
-                      <span className="text-xl font-bold text-teal-700">1</span>
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">Partagez votre lien</h3>
-                  <p className="text-gray-600 text-center text-sm">
-                    Envoyez votre lien d'affiliation à vos amis et sur vos réseaux sociaux.
-                  </p>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={0.2} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center">
-                      <span className="text-xl font-bold text-teal-700">2</span>
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">Ils investissent</h3>
-                  <p className="text-gray-600 text-center text-sm">
-                    Vos filleuls créent un compte et font leur premier investissement.
-                  </p>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={0.3} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center">
-                      <span className="text-xl font-bold text-teal-700">3</span>
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">Vous gagnez</h3>
-                  <p className="text-gray-600 text-center text-sm">
-                    Recevez vos commissions et suivez en temps réel vos revenus d'affiliation.
-                  </p>
-                </FadeIn>
               </div>
             </div>
           </div>
