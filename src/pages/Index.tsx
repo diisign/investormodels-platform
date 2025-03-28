@@ -108,7 +108,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
               <div>
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-[#8B5CF6]">
                   Top créatrices
                 </h2>
                 <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
