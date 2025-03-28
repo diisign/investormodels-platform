@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
@@ -199,7 +200,7 @@ const Login = () => {
                         disabled={isLoading}
                         icon={<LogIn className="h-5 w-5" />}
                         iconPosition="right"
-                        className="mt-2"
+                        className="from-purple-gradient-from to-purple-gradient-to text-white mt-2"
                       >
                         {isLoading ? 'Connexion en cours...' : 'Se connecter'}
                       </GradientButton>
