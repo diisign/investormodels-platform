@@ -71,24 +71,24 @@ const Affiliation = () => {
               </p>
             </div>
             
-            {/* New Card Layout */}
+            {/* New Card Layout - Modified for mobile */}
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div className="grid grid-cols-3 gap-3 md:gap-6">
                 {/* Left Card */}
-                <Card className="lg:col-span-4 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
-                  <div className="p-6 flex flex-col items-center text-center h-full">
-                    <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                      <UserPlus className="h-8 w-8 text-blue-600" />
+                <Card className="col-span-3 md:col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
+                  <div className="p-4 md:p-6 flex flex-col items-center text-center h-full">
+                    <div className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-purple-100 flex items-center justify-center mb-3 md:mb-4">
+                      <UserPlus className="h-7 w-7 md:h-8 md:w-8 text-purple-600" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Pour Vos Filleuls</h3>
-                    <div className="mt-2 mb-4">
-                      <span className="text-3xl font-bold text-teal-600">50€</span>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Pour Vos Filleuls</h3>
+                    <div className="mt-1 md:mt-2 mb-2 md:mb-4">
+                      <span className="text-2xl md:text-3xl font-bold text-teal-600">50€</span>
                       <span className="text-gray-600 ml-2">de bonus</span>
                     </div>
-                    <p className="text-gray-500 flex-grow">
+                    <p className="text-gray-500 text-sm md:text-base flex-grow">
                       Chaque filleul reçoit un bonus de 50€ à utiliser sur la plateforme dès son premier investissement de 100€.
                     </p>
-                    <div className="mt-4 w-full">
+                    <div className="mt-3 md:mt-4 w-full">
                       <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
                         <div className="h-full w-1/3 bg-teal-500 rounded-full"></div>
                       </div>
@@ -97,39 +97,39 @@ const Affiliation = () => {
                 </Card>
                 
                 {/* Center Card - Main Content */}
-                <Card className="lg:col-span-4 bg-white shadow-xl border-0 relative transform -translate-y-6 z-20">
+                <Card className="col-span-3 md:col-span-1 bg-white shadow-xl border-0 relative md:transform md:-translate-y-6 z-20">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
-                  <div className="p-8 flex flex-col items-center">
-                    <div className="h-20 w-20 rounded-full bg-gradient-to-br from-teal-100 to-blue-100 flex items-center justify-center mb-6">
-                      <BadgeDollarSign className="h-10 w-10 text-teal-600" />
+                  <div className="p-4 md:p-8 flex flex-col items-center">
+                    <div className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-gradient-to-br from-teal-100 to-blue-100 flex items-center justify-center mb-3 md:mb-6">
+                      <BadgeDollarSign className="h-8 w-8 md:h-10 md:w-10 text-teal-600" />
                     </div>
                     
-                    <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+                    <h2 className="text-xl md:text-2xl font-bold text-center mb-3 md:mb-6 text-gray-800">
                       Programme Partenaire
                     </h2>
                     
-                    <div className="space-y-6 text-center">
-                      <div className="p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-700 font-medium">
+                    <div className="space-y-3 md:space-y-6 text-center">
+                      <div className="p-3 md:p-4 bg-gray-50 rounded-lg">
+                        <p className="text-sm md:text-base text-gray-700 font-medium">
                           Invitez vos amis à rejoindre CréatorInvest et recevez des récompenses pour chaque parrainage réussi.
                         </p>
                       </div>
                       
                       <div className="flex justify-center">
                         <div className="flex items-center gap-2 text-teal-600">
-                          <span className="font-semibold">Sans limite</span>
-                          <Rocket size={18} />
-                          <span className="font-semibold">de parrainages</span>
+                          <span className="font-semibold text-sm md:text-base">Sans limite</span>
+                          <Rocket size={isMobile ? 16 : 18} />
+                          <span className="font-semibold text-sm md:text-base">de parrainages</span>
                         </div>
                       </div>
                       
                       {!isAuthenticated && (
-                        <div className="pt-4">
+                        <div className="pt-2 md:pt-4">
                           <Link to="/register">
                             <GradientButton 
                               gradientDirection="to-r" 
                               fullWidth 
-                              size="lg"
+                              size={isMobile ? "sm" : "lg"}
                               className="from-teal-500 to-blue-500 text-white"
                             >
                               Créer un compte pour parrainer
@@ -140,11 +140,12 @@ const Affiliation = () => {
                       
                       {isAuthenticated && (
                         <Button 
-                          className="w-full bg-teal-500 hover:bg-teal-600 text-white"
+                          className="w-full bg-teal-500 hover:bg-teal-600 text-white text-sm md:text-base"
                           onClick={handleShare}
+                          size={isMobile ? "sm" : "default"}
                         >
                           <Share2 className="mr-2 h-4 w-4" />
-                          Partager mon lien d'affiliation
+                          Partager mon lien
                         </Button>
                       )}
                     </div>
@@ -152,20 +153,20 @@ const Affiliation = () => {
                 </Card>
                 
                 {/* Right Card */}
-                <Card className="lg:col-span-4 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
-                  <div className="p-6 flex flex-col items-center text-center h-full">
-                    <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                      <PiggyBank className="h-8 w-8 text-blue-600" />
+                <Card className="col-span-3 md:col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
+                  <div className="p-4 md:p-6 flex flex-col items-center text-center h-full">
+                    <div className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-purple-100 flex items-center justify-center mb-3 md:mb-4">
+                      <PiggyBank className="h-7 w-7 md:h-8 md:w-8 text-purple-600" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Pour Vous</h3>
-                    <div className="mt-2 mb-4">
-                      <span className="text-3xl font-bold text-teal-600">50%</span>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Pour Vous</h3>
+                    <div className="mt-1 md:mt-2 mb-2 md:mb-4">
+                      <span className="text-2xl md:text-3xl font-bold text-teal-600">50%</span>
                       <span className="text-gray-600 ml-2">des gains</span>
                     </div>
-                    <p className="text-gray-500 flex-grow">
+                    <p className="text-gray-500 text-sm md:text-base flex-grow">
                       Recevez 50% des gains générés par vos filleuls pour toute la durée de leur investissement sur la plateforme.
                     </p>
-                    <div className="mt-4 w-full">
+                    <div className="mt-3 md:mt-4 w-full">
                       <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
                         <div className="h-full w-2/3 bg-teal-500 rounded-full"></div>
                       </div>
@@ -175,7 +176,7 @@ const Affiliation = () => {
               </div>
               
               {/* Steps Beneath Cards */}
-              <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                 <FadeIn direction="up" delay={0.1} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                   <div className="flex items-center justify-center mb-4">
                     <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center">
