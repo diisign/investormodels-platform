@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -206,8 +207,8 @@ const Creators = () => {
             {/* Creators Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredCreators.map((creator, index) => {
-                // Get the consistent monthly revenue for this creator
-                const monthlyRevenue = getMonthlyRevenue(creator.id);
+                // Get creator profile data for this creator
+                const creatorProfile = getCreatorProfile(creator.id);
                 
                 return (
                   <FadeIn key={creator.id} direction="up" delay={100 + (index % 8) * 50}>
@@ -218,7 +219,7 @@ const Creators = () => {
                       category={creator.category}
                       investorsCount={creator.investorsCount}
                       totalInvested={creator.totalInvested}
-                      monthlyRevenue={monthlyRevenue}
+                      monthlyRevenue={creatorProfile.monthlyRevenue}
                     />
                   </FadeIn>
                 );
@@ -247,3 +248,4 @@ const Creators = () => {
 };
 
 export default Creators;
+
