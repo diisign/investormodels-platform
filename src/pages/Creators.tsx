@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -8,29 +7,14 @@ import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
+import { getCreatorProfile } from '@/utils/creatorProfiles';
 
 type SortOption = 'popularity' | 'return' | 'alphabetical';
-
-// Generate deterministic expected return rate based on creator ID (must match CreatorCard and CreatorDetails)
-const getExpectedReturnRate = (creatorId: string): number => {
-  const lastChar = creatorId.charAt(creatorId.length - 1);
-  const charCode = lastChar.charCodeAt(0);
-  return 80 + (charCode % 51);
-};
-
-// Get a deterministic monthly revenue value between 30,000 and 100,000 (must match CreatorCard)
-const getMonthlyRevenue = (creatorId: string): number => {
-  const firstChar = creatorId.charAt(0);
-  const secondChar = creatorId.charAt(1) || 'a';
-  const seedValue = (firstChar.charCodeAt(0) + secondChar.charCodeAt(0)) % 100;
-  const baseValue = 30000 + (seedValue * 700);
-  return baseValue + (seedValue % 987);
-};
 
 const Creators = () => {
   const { isAuthenticated } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<SortOption>('return'); // Changed default to 'return'
+  const [sortBy, setSortBy] = useState<SortOption>('return'); // Default to 'return'
   const [showFilters, setShowFilters] = useState(false);
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,18 +39,22 @@ const Creators = () => {
       return matchesSearch;
     })
     .sort((a, b) => {
-      // Apply sorting
+      // Apply sorting using creatorProfiles data for accurate return rate sorting
       switch (sortBy) {
         case 'popularity':
           return b.investorsCount - a.investorsCount;
         case 'return':
-          // Modifié pour être sûr que le tri du rendement est bien en ordre décroissant
-          return getExpectedReturnRate(b.id) - getExpectedReturnRate(a.id);
+          // Get actual return rates from creatorProfiles for proper sorting
+          const profileA = getCreatorProfile(a.id);
+          const profileB = getCreatorProfile(b.id);
+          return profileB.returnRate - profileA.returnRate;
         case 'alphabetical':
           return a.name.localeCompare(b.name);
         default:
-          // Par défaut, trier par rendement décroissant
-          return getExpectedReturnRate(b.id) - getExpectedReturnRate(a.id);
+          // Default to sorting by return rate using creatorProfiles
+          const defaultProfileA = getCreatorProfile(a.id);
+          const defaultProfileB = getCreatorProfile(b.id);
+          return defaultProfileB.returnRate - defaultProfileA.returnRate;
       }
     });
   
