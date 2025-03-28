@@ -10,7 +10,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Creators from "./pages/Creators";
 import CreatorDetails from "./pages/CreatorDetails";
-import HowItWorks from "./pages/HowItWorks";
+import Affiliation from "./pages/Affiliation";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -32,7 +32,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/affiliation" element={<Affiliation />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
             

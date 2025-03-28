@@ -71,10 +71,10 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link 
-                  to="/how-it-works" 
+                  to="/affiliation" 
                   className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
-                  Comment ça marche
+                  Affiliation
                 </Link>
               </li>
               <li>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
@@ -88,15 +89,15 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               Créatrices
             </Link>
             <Link 
-              to="/how-it-works" 
+              to="/affiliation" 
               className={cn(
                 'font-medium transition-colors duration-300',
-                isActive('/how-it-works') 
+                isActive('/affiliation') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
               )}
             >
-              Comment ça marche
+              Affiliation
             </Link>
             <Link 
               to="/faq" 
@@ -230,16 +231,16 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               Créatrices
             </Link>
             <Link 
-              to="/how-it-works" 
+              to="/affiliation" 
               className={cn(
                 'block py-2 font-medium',
-                isActive('/how-it-works') 
+                isActive('/affiliation') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300'
               )}
               onClick={closeMenu}
             >
-              Comment ça marche
+              Affiliation
             </Link>
             <Link 
               to="/faq" 
