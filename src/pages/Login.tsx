@@ -199,7 +199,8 @@ const Login = () => {
                         disabled={isLoading}
                         icon={<LogIn className="h-5 w-5" />}
                         iconPosition="right"
-                        className="from-purple-gradient-from to-purple-gradient-to bg-gradient-to-r text-white mt-2"
+                        gradientDirection="to-r"
+                        className="from-teal-400 to-blue-500 text-white mt-2"
                       >
                         {isLoading ? 'Connexion en cours...' : 'Se connecter'}
                       </GradientButton>
