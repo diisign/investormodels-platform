@@ -56,13 +56,16 @@ const Affiliation = () => {
         {/* Hero Section with light blue background */}
         <section className="relative py-16 md:py-20 overflow-hidden bg-blue-50 dark:bg-gray-900">
           <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white">
+                Programme d'Affiliation
+              </h1>
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <FadeIn direction="up" className="text-center md:text-left">
-                <h1 className="text-4xl md:text-5xl font-bold mb-6 text-black dark:text-white">
-                  Programme d'Affiliation
-                </h1>
                 <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8">
-                  Parrainez vos amis et gagnez 50€ de crédit lorsqu'ils investissent 100€ dans une créatrice.
+                  Programme d'Affiliation
                 </p>
                 {!isAuthenticated && (
                   <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
@@ -82,14 +85,14 @@ const Affiliation = () => {
               
               <FadeIn direction="up" delay={0.2} className="hidden md:block">
                 <div className="relative">
-                  {/* Floating elements animation - Fixed positioning */}
-                  <div className="absolute -top-20 left-1/4 animate-float-slow">
+                  {/* Floating elements animation - Fixed positioning with better placement */}
+                  <div className="absolute -top-24 left-1/3 animate-float-slow">
                     <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
                       <Coins className="h-12 w-12 text-blue-500" />
                       <p className="text-blue-900 font-medium mt-2">Bonus 50€</p>
                     </div>
                   </div>
-                  <div className="absolute -bottom-16 right-10 animate-float">
+                  <div className="absolute -bottom-24 right-20 animate-float">
                     <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
                       <BarChart3 className="h-10 w-10 text-blue-500" />
                       <p className="text-blue-900 font-medium mt-2">Suivi en temps réel</p>
@@ -123,10 +126,6 @@ const Affiliation = () => {
                           <p className="text-blue-900 font-medium">Recevez 50% des gains du parrainage</p>
                           <p className="text-blue-700 text-sm">Sans limite de parrainages</p>
                         </div>
-                      </div>
-                      
-                      <div className="mt-6 pt-4 border-t border-blue-100 text-center">
-                        <p className="text-blue-900 font-medium">Programme sans limite de gains</p>
                       </div>
                     </div>
                   </div>
