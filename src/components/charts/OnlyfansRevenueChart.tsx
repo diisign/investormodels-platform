@@ -45,7 +45,7 @@ const OnlyfansRevenueChart = () => {
         <h3 className="text-lg font-semibold mb-1 sm:mb-2">Croissance du Chiffre d'Affaires OnlyFans</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-4">Évolution annuelle (2019-2024)</p>
 
-        <ChartContainer className="aspect-[5/4] h-[220px] sm:h-[280px]" config={chartConfig}>
+        <ChartContainer className="aspect-[5/4] h-[240px] sm:h-[320px]" config={chartConfig}>
           <AreaChart 
             data={revenueData} 
             margin={{ top: 5, right: 15, left: 15, bottom: 5 }}
