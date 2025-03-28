@@ -100,15 +100,15 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               Affiliation
             </Link>
             <Link 
-              to="/faq" 
+              to="/dashboard" 
               className={cn(
                 'font-medium transition-colors duration-300',
-                isActive('/faq') 
+                isActive('/dashboard') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
               )}
             >
-              Questions fréquentes
+              Tableau de bord
             </Link>
           </div>
 
@@ -243,16 +243,16 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               Affiliation
             </Link>
             <Link 
-              to="/faq" 
+              to="/dashboard" 
               className={cn(
                 'block py-2 font-medium',
-                isActive('/faq') 
+                isActive('/dashboard') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300'
               )}
               onClick={closeMenu}
             >
-              Questions fréquentes
+              Tableau de bord
             </Link>
             
             <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
