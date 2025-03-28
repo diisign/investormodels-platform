@@ -45,10 +45,10 @@ const OnlyfansRevenueChart = () => {
         <h3 className="text-lg font-semibold mb-1 sm:mb-2">Croissance du Chiffre d'Affaires OnlyFans</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-4">Évolution annuelle (2019-2024)</p>
 
-        <ChartContainer className="aspect-[4/3] h-[250px] sm:h-[300px]" config={chartConfig}>
+        <ChartContainer className="aspect-[5/4] h-[220px] sm:h-[280px]" config={chartConfig}>
           <AreaChart 
             data={revenueData} 
-            margin={{ top: 5, right: 5, left: -10, bottom: 5 }}
+            margin={{ top: 5, right: 15, left: 0, bottom: 5 }}
           >
             <defs>
               <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
@@ -59,16 +59,17 @@ const OnlyfansRevenueChart = () => {
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis 
               dataKey="year" 
-              tick={{ fill: 'var(--foreground)', fontSize: 11 }}
+              tick={{ fill: 'var(--foreground)', fontSize: 10 }}
               tickLine={{ stroke: 'var(--border)' }} 
-              padding={{ left: 10, right: 10 }}
+              padding={{ left: 15, right: 15 }}
               tickMargin={5}
             />
             <YAxis 
-              tick={{ fill: 'var(--foreground)', fontSize: 11 }} 
+              tick={{ fill: 'var(--foreground)', fontSize: 10 }} 
               tickLine={{ stroke: 'var(--border)' }}
               tickFormatter={(value) => value < 1 ? `${value * 1000}M` : `${value}B`}
-              width={35}
+              width={40}
+              dx={3}
             />
             <ChartTooltip
               content={({ active, payload, label }) => {
