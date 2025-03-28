@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -54,73 +53,68 @@ const Affiliation = () => {
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
-        {/* Hero Section with white background */}
-        <section className="relative py-16 md:py-20 overflow-hidden bg-white dark:bg-gray-900">
+        {/* Hero Section with gradient background */}
+        <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-creator-50 to-white dark:from-creator-900 dark:to-creator-800">
           <div className="container mx-auto px-4 relative z-10">
-            <div className="text-center mb-14">
-              <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white">
+            <div className="text-center mb-10">
+              <h1 className="text-4xl md:text-5xl font-bold text-creator-800 dark:text-creator-100">
                 Programme d'Affiliation
               </h1>
+              <p className="mt-4 text-creator-700 dark:text-creator-200 max-w-2xl mx-auto">
+                Parrainez vos amis et gagnez ensemble avec notre programme de récompenses exclusif.
+              </p>
             </div>
             
-            <div className="flex justify-center mb-12">
-              <div className="relative max-w-4xl w-full">
-                {/* Left floating box */}
-                <div className="absolute -left-16 md:-left-32 top-1/3 z-20 transform -translate-y-1/2">
-                  <Card className="bg-blue-100 p-3 border border-blue-200 shadow-md animate-float-slow">
-                    <CardContent className="p-3 flex flex-col items-center">
-                      <Coins className="h-10 w-10 text-blue-500 mb-2" />
-                      <p className="text-blue-900 font-medium text-center">Bonus 50€</p>
-                    </CardContent>
-                  </Card>
-                </div>
+            <div className="max-w-5xl mx-auto">
+              {/* Affiliation card with new layout */}
+              <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-creator-100 dark:border-creator-700">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-creator-400 to-creator-600"></div>
                 
-                {/* Right floating box */}
-                <div className="absolute -right-16 md:-right-32 top-1/3 z-20 transform -translate-y-1/2">
-                  <Card className="bg-blue-100 p-3 border border-blue-200 shadow-md animate-float">
-                    <CardContent className="p-3 flex flex-col items-center">
-                      <BarChart3 className="h-10 w-10 text-blue-500 mb-2" />
-                      <p className="text-blue-900 font-medium text-center">Suivi en temps réel</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                {/* Central card */}
-                <Card className="bg-white rounded-xl shadow-lg border border-gray-200 z-10 relative">
-                  <CardContent className="p-8">
-                    <div className="flex items-center justify-center mb-8">
-                      <div className="bg-blue-100 h-20 w-20 rounded-full flex items-center justify-center">
-                        <BadgeDollarSign className="h-10 w-10 text-blue-600" />
-                      </div>
+                <div className="grid md:grid-cols-3 gap-0">
+                  {/* Left column */}
+                  <div className="p-6 flex flex-col items-center justify-center bg-creator-50 dark:bg-creator-900/50">
+                    <div className="h-16 w-16 rounded-full bg-creator-100 dark:bg-creator-800 flex items-center justify-center mb-4">
+                      <Coins className="h-8 w-8 text-creator-600 dark:text-creator-300" />
+                    </div>
+                    <p className="text-center text-creator-800 dark:text-creator-100 font-semibold">Bonus 50€</p>
+                    <p className="text-center text-creator-600 dark:text-creator-300 text-sm mt-2">
+                      Pour chaque parrainage
+                    </p>
+                  </div>
+                  
+                  {/* Middle column - main content */}
+                  <div className="md:col-span-1 p-8 flex flex-col items-center justify-center bg-white dark:bg-gray-800">
+                    <div className="h-20 w-20 rounded-full bg-creator-100 dark:bg-creator-800 flex items-center justify-center mb-6">
+                      <BadgeDollarSign className="h-10 w-10 text-creator-600 dark:text-creator-300" />
                     </div>
                     
-                    <div className="space-y-6 max-w-sm mx-auto">
-                      <div className="bg-blue-50 rounded-lg p-4 text-center">
-                        <p className="text-blue-900 font-medium mb-1">
+                    <div className="space-y-4 text-center">
+                      <div>
+                        <p className="text-creator-800 dark:text-creator-100 font-medium text-lg">
                           Ils reçoivent 50€ lors de son premier investissement
                         </p>
-                        <p className="text-blue-700 text-sm">
+                        <p className="text-creator-600 dark:text-creator-300 text-sm">
                           (100€ minimum)
                         </p>
                       </div>
                       
-                      <div className="bg-blue-50 rounded-lg p-4 text-center">
-                        <p className="text-blue-900 font-medium mb-1">
+                      <div>
+                        <p className="text-creator-800 dark:text-creator-100 font-medium text-lg">
                           Recevez 50% des gains du parrainage
                         </p>
-                        <p className="text-blue-700 text-sm">
+                        <p className="text-creator-600 dark:text-creator-300 text-sm">
                           Sans limite de parrainages
                         </p>
                       </div>
                       
                       {!isAuthenticated && (
-                        <div className="mt-6 pt-4">
+                        <div className="pt-4">
                           <Link to="/register">
                             <GradientButton 
                               gradientDirection="to-r" 
                               fullWidth 
                               size="lg"
-                              className="from-blue-600 to-blue-400 text-white"
+                              className="from-creator-500 to-creator-400 text-white"
                             >
                               Créer un compte pour parrainer
                             </GradientButton>
@@ -128,22 +122,33 @@ const Affiliation = () => {
                         </div>
                       )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                  
+                  {/* Right column */}
+                  <div className="p-6 flex flex-col items-center justify-center bg-creator-50 dark:bg-creator-900/50">
+                    <div className="h-16 w-16 rounded-full bg-creator-100 dark:bg-creator-800 flex items-center justify-center mb-4">
+                      <BarChart3 className="h-8 w-8 text-creator-600 dark:text-creator-300" />
+                    </div>
+                    <p className="text-center text-creator-800 dark:text-creator-100 font-semibold">Suivi en temps réel</p>
+                    <p className="text-center text-creator-600 dark:text-creator-300 text-sm mt-2">
+                      De vos parrainages
+                    </p>
+                  </div>
+                </div>
               </div>
+              
+              {isAuthenticated && (
+                <FadeIn direction="up" className="text-center mt-8">
+                  <Button 
+                    className="bg-creator-600 hover:bg-creator-700 text-white"
+                    onClick={handleShare}
+                  >
+                    <Share2 className="mr-2 h-4 w-4" />
+                    Partager mon lien d'affiliation
+                  </Button>
+                </FadeIn>
+              )}
             </div>
-            
-            {isAuthenticated && (
-              <FadeIn direction="up" className="text-center mt-8">
-                <Button 
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                  onClick={handleShare}
-                >
-                  <Share2 className="mr-2 h-4 w-4" />
-                  Partager mon lien d'affiliation
-                </Button>
-              </FadeIn>
-            )}
           </div>
         </section>
 
