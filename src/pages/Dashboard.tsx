@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, BarChart, Bar
@@ -48,6 +48,19 @@ const Dashboard = () => {
   
   const totalInvested = user?.investments.reduce((total, inv) => total + inv.amount, 0) || 0;
   const totalEarnings = user?.investments.reduce((total, inv) => total + inv.earnings, 0) || 0;
+  
+  // Mock referral data
+  const referralData = {
+    totalReferrals: 3,
+    pendingReferrals: 1,
+    completedReferrals: 2,
+    earnings: 75,
+    recentReferrals: [
+      { name: 'Jean Dupont', status: 'completed', date: '12/05/2023', reward: 25 },
+      { name: 'Marie Lambert', status: 'pending', date: '27/05/2023', reward: 0 },
+      { name: 'Thomas Bernard', status: 'completed', date: '04/06/2023', reward: 50 },
+    ]
+  };
   
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,6 +153,100 @@ const Dashboard = () => {
                 </div>
               </FadeIn>
             </div>
+            
+            {/* New Referral Card */}
+            <FadeIn direction="up" delay={500} className="glass-card mb-8">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold">Programme de parrainage</h3>
+                  <Link to="/affiliation" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
+                    <span>Voir tout</span>
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Link>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total parrainages</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-investment-100 dark:bg-investment-900/30 text-investment-600">
+                        <UserPlus className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.totalReferrals}</div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">En attente</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600">
+                        <Users className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.pendingReferrals}</div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Complétés</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 text-green-600">
+                        <Award className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.completedReferrals}</div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Gains totaux</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600">
+                        <Gift className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.earnings}€</div>
+                  </div>
+                </div>
+                
+                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Derniers parrainages</h4>
+                <div className="space-y-3">
+                  {referralData.recentReferrals.map((referral, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                      <div className="flex items-center">
+                        <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 mr-3">
+                          {referral.name.charAt(0)}
+                        </div>
+                        <div>
+                          <h5 className="text-sm font-medium">{referral.name}</h5>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">{referral.date}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        {referral.status === 'completed' ? (
+                          <>
+                            <span className="text-sm font-medium text-green-500 mr-2">+{referral.reward}€</span>
+                            <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                              Complété
+                            </span>
+                          </>
+                        ) : (
+                          <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                            En attente
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-6 flex justify-center">
+                  <GradientButton size="sm" className="from-teal-400 to-blue-500 text-white" asChild>
+                    <Link to="/affiliation">
+                      Inviter des amis
+                    </Link>
+                  </GradientButton>
+                </div>
+              </div>
+            </FadeIn>
             
             {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
