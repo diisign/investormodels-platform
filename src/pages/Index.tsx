@@ -1,6 +1,7 @@
+
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
@@ -122,7 +123,7 @@ const Index = () => {
             </FadeIn>
             
             <FadeIn direction="up" delay={100}>
-              <div className="relative px-8 md:px-12 pb-6 md:pb-10">
+              <div className="relative px-16 md:px-20 pb-6 md:pb-10">
                 <Carousel 
                   opts={{
                     align: "center",
@@ -146,8 +147,8 @@ const Index = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="-left-2 md:-left-6 h-9 w-9 rounded-full" />
-                  <CarouselNext className="-right-2 md:-right-6 h-9 w-9 rounded-full" />
+                  <CarouselPrevious />
+                  <CarouselNext />
                 </Carousel>
               </div>
             </FadeIn>
