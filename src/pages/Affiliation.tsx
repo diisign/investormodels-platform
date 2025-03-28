@@ -7,7 +7,7 @@ import FadeIn from '@/components/animations/FadeIn';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
-import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles } from 'lucide-react';
+import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, Coins, BarChart3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 
@@ -60,28 +60,83 @@ const Affiliation = () => {
           <div className="absolute -bottom-[20%] -left-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-l from-investment-200/20 to-investment-300/10 blur-3xl"></div>
           
           <div className="container mx-auto px-4 relative z-10">
-            <FadeIn direction="up" className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                Programme d'Affiliation
-              </h1>
-              <p className="text-lg md:text-xl text-white/90 mb-8">
-                Parrainez vos amis et gagnez 50€ de crédit lorsqu'ils investissent 100€ dans une créatrice.
-              </p>
-              {!isAuthenticated && (
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/register">
-                    <GradientButton 
-                      gradientDirection="to-r" 
-                      fullWidth 
-                      size="lg"
-                      className="from-white/90 to-white/70 text-blue-900"
-                    >
-                      Créer un compte pour parrainer
-                    </GradientButton>
-                  </Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <FadeIn direction="up" className="text-center md:text-left">
+                <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                  Programme d'Affiliation
+                </h1>
+                <p className="text-lg md:text-xl text-white/90 mb-8">
+                  Parrainez vos amis et gagnez 50€ de crédit lorsqu'ils investissent 100€ dans une créatrice.
+                </p>
+                {!isAuthenticated && (
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <Link to="/register">
+                      <GradientButton 
+                        gradientDirection="to-r" 
+                        fullWidth 
+                        size="lg"
+                        className="from-white/90 to-white/70 text-blue-900"
+                      >
+                        Créer un compte pour parrainer
+                      </GradientButton>
+                    </Link>
+                  </div>
+                )}
+              </FadeIn>
+              
+              <FadeIn direction="up" delay={0.2} className="hidden md:block">
+                <div className="relative">
+                  {/* Floating elements animation */}
+                  <div className="absolute top-0 left-1/4 animate-float-slow">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-lg shadow-lg">
+                      <Coins className="h-12 w-12 text-yellow-300" />
+                      <p className="text-white font-medium mt-2">Bonus 50€</p>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-10 right-10 animate-float">
+                    <div className="bg-white/20 backdrop-blur-sm p-4 rounded-lg shadow-lg">
+                      <BarChart3 className="h-10 w-10 text-teal-300" />
+                      <p className="text-white font-medium mt-2">Suivi en temps réel</p>
+                    </div>
+                  </div>
+                  
+                  {/* Central illustration */}
+                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mx-auto max-w-md border border-white/20">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="bg-white/20 h-20 w-20 rounded-full flex items-center justify-center">
+                        <BadgeDollarSign className="h-10 w-10 text-white" />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="bg-white/10 rounded-lg p-3 flex items-center">
+                        <div className="bg-purple-500/50 p-2 rounded-full mr-3">
+                          <Gift className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-white font-medium">Offrez un bonus à vos amis</p>
+                          <p className="text-white/80 text-sm">Ils reçoivent 25€ grâce à vous</p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white/10 rounded-lg p-3 flex items-center">
+                        <div className="bg-teal-500/50 p-2 rounded-full mr-3">
+                          <Coins className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-white font-medium">Recevez 50€ par parrainage</p>
+                          <p className="text-white/80 text-sm">Sans limite de parrainages</p>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-6 pt-4 border-t border-white/20 text-center">
+                        <p className="text-white font-medium">Programme sans limite de gains</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </FadeIn>
+              </FadeIn>
+            </div>
           </div>
         </section>
 
@@ -233,3 +288,4 @@ const Affiliation = () => {
 };
 
 export default Affiliation;
+
