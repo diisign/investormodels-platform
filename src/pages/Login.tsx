@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
@@ -7,6 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
+import { toast } from 'sonner';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,8 +20,15 @@ const Login = () => {
     general: ''
   });
   
-  const { login, isLoading } = useAuth();
+  const { login, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log("User already authenticated, redirecting to dashboard");
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -37,6 +45,9 @@ const Login = () => {
     if (!email.trim()) {
       newErrors.email = 'L\'email est requis';
       isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Format d\'email invalide';
+      isValid = false;
     }
 
     if (!password) {
@@ -51,6 +62,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Login form submitted');
+    setErrors({ email: '', password: '', general: '' });
     
     if (validateForm()) {
       try {
@@ -63,8 +75,10 @@ const Login = () => {
             general: 'Identifiants incorrects'
           });
         } else {
-          // Let auth context handle the redirect
-          // The navigation happens in the auth.tsx login function
+          toast.success("Connexion réussie! Redirection...");
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 500);
         }
       } catch (error) {
         console.error('Login submission error:', error);

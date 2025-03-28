@@ -9,6 +9,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
+    storageKey: 'creator-invest-auth',
     storage: localStorage
   }
 });
