@@ -94,14 +94,14 @@ const Affiliation = () => {
                     
                     {!isAuthenticated && (
                       <div className="pt-2 md:pt-3 w-full">
-                        <Link to="/register">
+                        <Link to="/login">
                           <GradientButton 
                             gradientDirection="to-r" 
                             fullWidth 
                             size="sm"
                             className="from-teal-400 to-blue-500 text-white text-xs py-1 h-8"
                           >
-                            Créer un compte
+                            Me connecter
                           </GradientButton>
                         </Link>
                       </div>
