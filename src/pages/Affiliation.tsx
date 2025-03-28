@@ -62,73 +62,81 @@ const Affiliation = () => {
               </h1>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <FadeIn direction="up" className="text-center md:text-left">
-                {!isAuthenticated && (
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                    <Link to="/register">
-                      <GradientButton 
-                        gradientDirection="to-r" 
-                        fullWidth 
-                        size="lg"
-                        className="from-blue-600 to-blue-400 text-white"
-                      >
-                        Créer un compte pour parrainer
-                      </GradientButton>
-                    </Link>
+            <div className="flex justify-center mb-12">
+              <div className="relative max-w-4xl w-full">
+                {/* Left floating element */}
+                <div className="absolute -left-10 md:-left-24 top-1/2 -translate-y-1/2 animate-float-slow z-20">
+                  <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
+                    <Coins className="h-12 w-12 text-blue-500" />
+                    <p className="text-blue-900 font-medium mt-2">Bonus 50€</p>
                   </div>
-                )}
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={0.2} className="hidden md:block">
-                <div className="relative">
-                  {/* Floating elements animation - Fixed positioning with better placement */}
-                  <div className="absolute -top-20 -left-32 animate-float-slow">
-                    <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
-                      <Coins className="h-12 w-12 text-blue-500" />
-                      <p className="text-blue-900 font-medium mt-2">Bonus 50€</p>
-                    </div>
+                </div>
+                
+                {/* Right floating element */}
+                <div className="absolute -right-10 md:-right-24 top-1/2 -translate-y-1/2 animate-float z-20">
+                  <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
+                    <BarChart3 className="h-10 w-10 text-blue-500" />
+                    <p className="text-blue-900 font-medium mt-2">Suivi en temps réel</p>
                   </div>
-                  <div className="absolute -bottom-20 -right-32 animate-float">
-                    <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
-                      <BarChart3 className="h-10 w-10 text-blue-500" />
-                      <p className="text-blue-900 font-medium mt-2">Suivi en temps réel</p>
+                </div>
+                
+                {/* Central card */}
+                <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 z-10 relative">
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="bg-blue-100 h-20 w-20 rounded-full flex items-center justify-center">
+                      <BadgeDollarSign className="h-10 w-10 text-blue-600" />
                     </div>
                   </div>
                   
-                  {/* Central illustration */}
-                  <div className="bg-white rounded-xl p-6 mx-auto max-w-md border border-gray-200 shadow-lg">
-                    <div className="flex items-center justify-center mb-4">
-                      <div className="bg-blue-100 h-20 w-20 rounded-full flex items-center justify-center">
-                        <BadgeDollarSign className="h-10 w-10 text-blue-600" />
-                      </div>
+                  <div className="space-y-6 max-w-sm mx-auto text-center">
+                    <div className="bg-blue-50 rounded-lg p-4">
+                      <p className="text-blue-900 font-medium mb-1">
+                        Ils reçoivent 50€ lors de son premier investissement
+                      </p>
+                      <p className="text-blue-700 text-sm">
+                        (100€ minimum)
+                      </p>
                     </div>
                     
-                    <div className="space-y-4 max-w-xs mx-auto">
-                      <div className="bg-blue-50 rounded-lg p-3 flex items-center">
-                        <div className="bg-blue-500/50 p-2 rounded-full mr-3">
-                          <Gift className="h-5 w-5 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-blue-900 font-medium">Ils reçoivent 50€ lors de son premier investissement</p>
-                          <p className="text-blue-700 text-sm">(100€ minimum)</p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-blue-50 rounded-lg p-3 flex items-center">
-                        <div className="bg-teal-500/50 p-2 rounded-full mr-3">
-                          <Coins className="h-5 w-5 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-blue-900 font-medium">Recevez 50% des gains du parrainage</p>
-                          <p className="text-blue-700 text-sm">Sans limite de parrainages</p>
-                        </div>
-                      </div>
+                    <div className="bg-blue-50 rounded-lg p-4">
+                      <p className="text-blue-900 font-medium mb-1">
+                        Recevez 50% des gains du parrainage
+                      </p>
+                      <p className="text-blue-700 text-sm">
+                        Sans limite de parrainages
+                      </p>
                     </div>
+                    
+                    {!isAuthenticated && (
+                      <div className="mt-6 pt-4">
+                        <Link to="/register">
+                          <GradientButton 
+                            gradientDirection="to-r" 
+                            fullWidth 
+                            size="lg"
+                            className="from-blue-600 to-blue-400 text-white"
+                          >
+                            Créer un compte pour parrainer
+                          </GradientButton>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </FadeIn>
+              </div>
             </div>
+            
+            {isAuthenticated && (
+              <FadeIn direction="up" className="text-center mt-8">
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={handleShare}
+                >
+                  <Share2 className="mr-2 h-4 w-4" />
+                  Partager mon lien d'affiliation
+                </Button>
+              </FadeIn>
+            )}
           </div>
         </section>
 
