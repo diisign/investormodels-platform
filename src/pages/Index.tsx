@@ -1,6 +1,7 @@
+
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
@@ -108,7 +109,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
               <div>
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-[#8B5CF6]">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
                   Top créatrices
                 </h2>
                 <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
@@ -122,7 +123,7 @@ const Index = () => {
             </FadeIn>
             
             <FadeIn direction="up" delay={100}>
-              <div className="relative px-12 md:px-16 pb-6 md:pb-10">
+              <div className="relative px-16 md:px-20 pb-6 md:pb-10">
                 <Carousel 
                   opts={{
                     align: "center",
@@ -146,8 +147,8 @@ const Index = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="-left-4 md:-left-8 h-9 w-9 rounded-full" />
-                  <CarouselNext className="-right-4 md:-right-8 h-9 w-9 rounded-full" />
+                  <CarouselPrevious />
+                  <CarouselNext />
                 </Carousel>
               </div>
             </FadeIn>
