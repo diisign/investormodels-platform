@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -29,7 +30,7 @@ const getMonthlyRevenue = (creatorId: string): number => {
 const Creators = () => {
   const { isAuthenticated } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<SortOption>('popularity');
+  const [sortBy, setSortBy] = useState<SortOption>('return'); // Changed default to 'return'
   const [showFilters, setShowFilters] = useState(false);
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,17 +163,17 @@ const Creators = () => {
                 </div>
                 
                 {/* Active Filters */}
-                {(searchTerm || sortBy !== 'popularity') && (
+                {(searchTerm || sortBy !== 'return') && (
                   <div className="flex flex-wrap gap-2 mt-4">
-                    {sortBy !== 'popularity' && (
+                    {sortBy !== 'return' && (
                       <div className="bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 text-sm rounded-full px-3 py-1 flex items-center">
                         <span>Tri: {
-                          sortBy === 'return' ? 'Rendement' :
-                          sortBy === 'alphabetical' ? 'Alphabétique' : 'Popularité'
+                          sortBy === 'popularity' ? 'Popularité' :
+                          sortBy === 'alphabetical' ? 'Alphabétique' : 'Rendement'
                         }</span>
                         <button 
                           className="ml-2 hover:text-investment-800"
-                          onClick={() => handleSortChange('popularity')}
+                          onClick={() => handleSortChange('return')}
                         >
                           &times;
                         </button>
@@ -193,7 +194,7 @@ const Creators = () => {
                       className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-sm"
                       onClick={() => {
                         setSearchTerm('');
-                        setSortBy('popularity');
+                        setSortBy('return');
                       }}
                     >
                       Réinitialiser tous les filtres
