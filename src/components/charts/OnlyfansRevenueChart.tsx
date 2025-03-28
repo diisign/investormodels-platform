@@ -48,7 +48,7 @@ const OnlyfansRevenueChart = () => {
         <ChartContainer className="aspect-[5/4] h-[220px] sm:h-[280px]" config={chartConfig}>
           <AreaChart 
             data={revenueData} 
-            margin={{ top: 5, right: 15, left: 10, bottom: 5 }}
+            margin={{ top: 5, right: 15, left: 15, bottom: 5 }}
           >
             <defs>
               <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
@@ -61,7 +61,7 @@ const OnlyfansRevenueChart = () => {
               dataKey="year" 
               tick={{ fill: 'var(--foreground)', fontSize: 10 }}
               tickLine={{ stroke: 'var(--border)' }} 
-              padding={{ left: 20, right: 20 }}
+              padding={{ left: 25, right: 20 }}
               tickMargin={5}
             />
             <YAxis 
