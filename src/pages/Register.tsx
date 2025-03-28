@@ -253,7 +253,8 @@ const Register = () => {
                         disabled={isLoading}
                         icon={<ArrowRight className="h-5 w-5" />}
                         iconPosition="right"
-                        className="mt-2"
+                        gradientDirection="to-r"
+                        className="from-teal-400 to-blue-500 text-white mt-2"
                       >
                         {isLoading ? 'Création du compte...' : 'Créer un compte'}
                       </GradientButton>
