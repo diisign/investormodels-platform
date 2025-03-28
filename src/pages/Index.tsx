@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BarChart3, ShieldCheck, Users, Zap } from 'lucide-react';
+import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
@@ -10,7 +10,7 @@ import Footer from '@/components/layout/Footer';
 import { creators } from '@/utils/mockData';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useScreenSize } from '@/hooks/use-mobile';
 import { 
   Carousel,
   CarouselContent,
@@ -24,10 +24,16 @@ const Index = () => {
   const { isAuthenticated } = useAuth();
   const creatorsRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const { width } = useScreenSize();
 
   const scrollToCreators = () => {
     creatorsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Show swipe indicators on mobile
+  const showSwipeIndicators = width < 768;
+  // Display 2 creators side by side on mobile
+  const slidesPerView = width < 640 ? 2 : width < 768 ? 2 : width < 1024 ? 3 : 4;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -107,7 +113,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Popular Creators Section - Now with better mobile layout */}
+        {/* Popular Creators Section - Updated for 2 side-by-side on mobile with swipe indicators */}
         <section ref={creatorsRef} className="py-12 md:py-20">
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
@@ -126,7 +132,18 @@ const Index = () => {
             </FadeIn>
             
             <FadeIn direction="up" delay={100}>
-              <div className="relative px-4 md:px-10 pb-6 md:pb-10">
+              <div className="relative px-0 md:px-10 pb-6 md:pb-10">
+                {/* Mobile swipe indicators */}
+                {showSwipeIndicators && (
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <ChevronLeft className="h-5 w-5 text-purple-500" />
+                      <span className="mx-1">Swipe</span>
+                      <ChevronRight className="h-5 w-5 text-purple-500" />
+                    </div>
+                  </div>
+                )}
+                
                 <Carousel 
                   opts={{
                     align: "start",
@@ -136,7 +153,7 @@ const Index = () => {
                 >
                   <CarouselContent>
                     {creators.map((creator, index) => (
-                      <CarouselItem key={creator.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                      <CarouselItem key={creator.id} className={`basis-1/${slidesPerView}`}>
                         <div className="p-1">
                           <CreatorCard
                             id={creator.id}
@@ -150,8 +167,8 @@ const Index = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-0 hidden sm:flex" />
-                  <CarouselNext className="right-0 hidden sm:flex" />
+                  <CarouselPrevious className="left-0 -ml-1 hidden sm:flex" />
+                  <CarouselNext className="right-0 -mr-1 hidden sm:flex" />
                 </Carousel>
               </div>
             </FadeIn>
@@ -170,7 +187,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features Section - Mobile optimized */}
+        {/* Features Section - Updated to display 2x2 grid on mobile */}
         <section className="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-16" direction="up">
@@ -182,43 +199,43 @@ const Index = () => {
               </p>
             </FadeIn>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-5 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
-                <div className="h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-4 md:mb-5">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
+                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <BarChart3 className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">Rendements attractifs</h3>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Rendements attractifs</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
                   Nos créatrices offrent des rendements moyens de 80% à 150% par trimestre.
                 </p>
               </FadeIn>
               
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-5 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
-                <div className="h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-4 md:mb-5">
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
+                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <Users className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">Diversité des créatrices</h3>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Diversité des créatrices</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
                   Plus de 250 créatrices de contenu avec statistique détaillé sur du long terme.
                 </p>
               </FadeIn>
               
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-5 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
-                <div className="h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-4 md:mb-5">
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
+                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <ShieldCheck className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">Sécurité maximale</h3>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Sécurité maximale</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
                   Toutes les créatrices sont recrutés sous certains critère spéciaux pour vous proposez les plus performantes.
                 </p>
               </FadeIn>
               
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-5 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
-                <div className="h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-4 md:mb-5">
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
+                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <Zap className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">Investissement facile</h3>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Investissement facile</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
                   Interface intuitive et processus simplifié pour investir en quelques clics, même pour les débutants.
                 </p>
               </FadeIn>
