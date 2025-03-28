@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
@@ -134,14 +133,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                     className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-800 animate-scale-in origin-top-right"
                   >
                     <Link 
-                      to="/dashboard" 
-                      className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <LayoutDashboard className="h-4 w-4 mr-2" />
-                      <span>Tableau de bord</span>
-                    </Link>
-                    <Link 
                       to="/profile" 
                       className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                       onClick={() => setIsUserMenuOpen(false)}
@@ -267,13 +258,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                     </Avatar>
                     <span className="font-medium">{user?.name || user?.email}</span>
                   </div>
-                  <Link 
-                    to="/dashboard" 
-                    className="block py-2 font-medium text-gray-700 dark:text-gray-300"
-                    onClick={closeMenu}
-                  >
-                    Tableau de bord
-                  </Link>
                   <Link 
                     to="/profile" 
                     className="block py-2 font-medium text-gray-700 dark:text-gray-300"
