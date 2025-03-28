@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -6,7 +7,7 @@ import FadeIn from '@/components/animations/FadeIn';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
-import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, Coins, BarChart3 } from 'lucide-react';
+import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, Coins, BarChart3, ArrowRight, PiggyBank, UserPlus, Rocket } from 'lucide-react';
 import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
@@ -52,59 +53,76 @@ const Affiliation = () => {
       {/* Navbar */}
       <Navbar isLoggedIn={isAuthenticated} />
       
-      <main className="flex-grow pt-20">
-        {/* Hero Section with gradient background */}
-        <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-creator-50 to-white dark:from-creator-900 dark:to-creator-800">
+      <main className="flex-grow">
+        {/* Hero Section - Completely Redesigned with Purple Theme */}
+        <section className="py-16 lg:py-24 relative overflow-hidden">
+          {/* Purple Gradient Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--purple-gradient-from))] to-[hsl(var(--purple-gradient-to))] opacity-90"></div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-20 right-10 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-48 h-48 rounded-full bg-white/5 blur-2xl"></div>
+          
           <div className="container mx-auto px-4 relative z-10">
-            <div className="text-center mb-10">
-              <h1 className="text-4xl md:text-5xl font-bold text-creator-800 dark:text-creator-100">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
                 Programme d'Affiliation
               </h1>
-              <p className="mt-4 text-creator-700 dark:text-creator-200 max-w-2xl mx-auto">
+              <p className="mt-4 text-white/80 max-w-2xl mx-auto text-lg">
                 Parrainez vos amis et gagnez ensemble avec notre programme de récompenses exclusif.
               </p>
             </div>
             
-            <div className="max-w-5xl mx-auto">
-              {/* Affiliation card with new layout */}
-              <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-creator-100 dark:border-creator-700">
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-creator-400 to-creator-600"></div>
-                
-                <div className="grid md:grid-cols-3 gap-0">
-                  {/* Left column */}
-                  <div className="p-6 flex flex-col items-center justify-center bg-creator-50 dark:bg-creator-900/50">
-                    <div className="h-16 w-16 rounded-full bg-creator-100 dark:bg-creator-800 flex items-center justify-center mb-4">
-                      <Coins className="h-8 w-8 text-creator-600 dark:text-creator-300" />
+            {/* New Card Layout */}
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left Card */}
+                <Card className="lg:col-span-4 bg-white/10 backdrop-blur-md border-white/20 shadow-xl overflow-hidden">
+                  <div className="p-6 flex flex-col items-center text-center h-full">
+                    <div className="h-16 w-16 rounded-full bg-purple-700/30 flex items-center justify-center mb-4">
+                      <UserPlus className="h-8 w-8 text-white" />
                     </div>
-                    <p className="text-center text-creator-800 dark:text-creator-100 font-semibold">Bonus 50€</p>
-                    <p className="text-center text-creator-600 dark:text-creator-300 text-sm mt-2">
-                      Pour chaque parrainage
+                    <h3 className="text-xl font-bold text-white mb-2">Pour Vos Filleuls</h3>
+                    <div className="mt-2 mb-4">
+                      <span className="text-3xl font-bold text-white">50€</span>
+                      <span className="text-white/80 ml-2">de bonus</span>
+                    </div>
+                    <p className="text-white/70 flex-grow">
+                      Chaque filleul reçoit un bonus de 50€ à utiliser sur la plateforme dès son premier investissement de 100€.
                     </p>
+                    <div className="mt-4 w-full">
+                      <div className="h-1 w-full bg-white/20 rounded-full overflow-hidden">
+                        <div className="h-full w-1/3 bg-white rounded-full"></div>
+                      </div>
+                    </div>
                   </div>
-                  
-                  {/* Middle column - main content */}
-                  <div className="md:col-span-1 p-8 flex flex-col items-center justify-center bg-white dark:bg-gray-800">
-                    <div className="h-20 w-20 rounded-full bg-creator-100 dark:bg-creator-800 flex items-center justify-center mb-6">
-                      <BadgeDollarSign className="h-10 w-10 text-creator-600 dark:text-creator-300" />
+                </Card>
+                
+                {/* Center Card - Main Content */}
+                <Card className="lg:col-span-4 bg-white dark:bg-gray-800 shadow-2xl border-0 relative transform -translate-y-6 z-20">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[hsl(var(--purple-accent))] to-[hsl(var(--purple-light))]"></div>
+                  <div className="p-8 flex flex-col items-center">
+                    <div className="h-20 w-20 rounded-full bg-[hsl(var(--purple-light))] flex items-center justify-center mb-6">
+                      <BadgeDollarSign className="h-10 w-10 text-[hsl(var(--purple-dark))]" />
                     </div>
                     
-                    <div className="space-y-4 text-center">
-                      <div>
-                        <p className="text-creator-800 dark:text-creator-100 font-medium text-lg">
-                          Ils reçoivent 50€ lors de son premier investissement
-                        </p>
-                        <p className="text-creator-600 dark:text-creator-300 text-sm">
-                          (100€ minimum)
+                    <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">
+                      Programme Partenaire
+                    </h2>
+                    
+                    <div className="space-y-6 text-center">
+                      <div className="p-4 bg-[hsl(var(--purple-light))/10] rounded-lg">
+                        <p className="text-gray-700 dark:text-gray-300 font-medium">
+                          Invitez vos amis à rejoindre CréatorInvest et recevez des récompenses pour chaque parrainage réussi.
                         </p>
                       </div>
                       
-                      <div>
-                        <p className="text-creator-800 dark:text-creator-100 font-medium text-lg">
-                          Recevez 50% des gains du parrainage
-                        </p>
-                        <p className="text-creator-600 dark:text-creator-300 text-sm">
-                          Sans limite de parrainages
-                        </p>
+                      <div className="flex justify-center">
+                        <div className="flex items-center gap-2 text-[hsl(var(--purple-dark))] dark:text-[hsl(var(--purple-light))]">
+                          <span className="font-semibold">Sans limite</span>
+                          <Rocket size={18} />
+                          <span className="font-semibold">de parrainages</span>
+                        </div>
                       </div>
                       
                       {!isAuthenticated && (
@@ -114,40 +132,88 @@ const Affiliation = () => {
                               gradientDirection="to-r" 
                               fullWidth 
                               size="lg"
-                              className="from-creator-500 to-creator-400 text-white"
+                              className="from-[hsl(var(--purple-accent))] to-[hsl(var(--purple-dark))] text-white"
                             >
                               Créer un compte pour parrainer
                             </GradientButton>
                           </Link>
                         </div>
                       )}
+                      
+                      {isAuthenticated && (
+                        <Button 
+                          className="w-full bg-[hsl(var(--purple-accent))] hover:bg-[hsl(var(--purple-dark))] text-white"
+                          onClick={handleShare}
+                        >
+                          <Share2 className="mr-2 h-4 w-4" />
+                          Partager mon lien d'affiliation
+                        </Button>
+                      )}
                     </div>
                   </div>
-                  
-                  {/* Right column */}
-                  <div className="p-6 flex flex-col items-center justify-center bg-creator-50 dark:bg-creator-900/50">
-                    <div className="h-16 w-16 rounded-full bg-creator-100 dark:bg-creator-800 flex items-center justify-center mb-4">
-                      <BarChart3 className="h-8 w-8 text-creator-600 dark:text-creator-300" />
+                </Card>
+                
+                {/* Right Card */}
+                <Card className="lg:col-span-4 bg-white/10 backdrop-blur-md border-white/20 shadow-xl overflow-hidden">
+                  <div className="p-6 flex flex-col items-center text-center h-full">
+                    <div className="h-16 w-16 rounded-full bg-purple-700/30 flex items-center justify-center mb-4">
+                      <PiggyBank className="h-8 w-8 text-white" />
                     </div>
-                    <p className="text-center text-creator-800 dark:text-creator-100 font-semibold">Suivi en temps réel</p>
-                    <p className="text-center text-creator-600 dark:text-creator-300 text-sm mt-2">
-                      De vos parrainages
+                    <h3 className="text-xl font-bold text-white mb-2">Pour Vous</h3>
+                    <div className="mt-2 mb-4">
+                      <span className="text-3xl font-bold text-white">50%</span>
+                      <span className="text-white/80 ml-2">des gains</span>
+                    </div>
+                    <p className="text-white/70 flex-grow">
+                      Recevez 50% des gains générés par vos filleuls pour toute la durée de leur investissement sur la plateforme.
                     </p>
+                    <div className="mt-4 w-full">
+                      <div className="h-1 w-full bg-white/20 rounded-full overflow-hidden">
+                        <div className="h-full w-2/3 bg-white rounded-full"></div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </Card>
               </div>
               
-              {isAuthenticated && (
-                <FadeIn direction="up" className="text-center mt-8">
-                  <Button 
-                    className="bg-creator-600 hover:bg-creator-700 text-white"
-                    onClick={handleShare}
-                  >
-                    <Share2 className="mr-2 h-4 w-4" />
-                    Partager mon lien d'affiliation
-                  </Button>
+              {/* Steps Beneath Cards */}
+              <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <FadeIn direction="up" delay={0.1} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="h-12 w-12 rounded-full bg-[hsl(var(--purple-accent))/20] flex items-center justify-center">
+                      <span className="text-xl font-bold text-white">1</span>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold text-white text-center mb-2">Partagez votre lien</h3>
+                  <p className="text-white/70 text-center text-sm">
+                    Envoyez votre lien d'affiliation à vos amis et sur vos réseaux sociaux.
+                  </p>
                 </FadeIn>
-              )}
+                
+                <FadeIn direction="up" delay={0.2} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="h-12 w-12 rounded-full bg-[hsl(var(--purple-accent))/20] flex items-center justify-center">
+                      <span className="text-xl font-bold text-white">2</span>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold text-white text-center mb-2">Ils investissent</h3>
+                  <p className="text-white/70 text-center text-sm">
+                    Vos filleuls créent un compte et font leur premier investissement.
+                  </p>
+                </FadeIn>
+                
+                <FadeIn direction="up" delay={0.3} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="h-12 w-12 rounded-full bg-[hsl(var(--purple-accent))/20] flex items-center justify-center">
+                      <span className="text-xl font-bold text-white">3</span>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold text-white text-center mb-2">Vous gagnez</h3>
+                  <p className="text-white/70 text-center text-sm">
+                    Recevez vos commissions et suivez en temps réel vos revenus d'affiliation.
+                  </p>
+                </FadeIn>
+              </div>
             </div>
           </div>
         </section>
