@@ -53,8 +53,8 @@ const Affiliation = () => {
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
-        {/* Hero Section with light blue background */}
-        <section className="relative py-16 md:py-20 overflow-hidden bg-blue-50 dark:bg-gray-900">
+        {/* Hero Section with white background */}
+        <section className="relative py-16 md:py-20 overflow-hidden bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white">
@@ -64,9 +64,6 @@ const Affiliation = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <FadeIn direction="up" className="text-center md:text-left">
-                <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8">
-                  Programme d'Affiliation
-                </p>
                 {!isAuthenticated && (
                   <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                     <Link to="/register">
@@ -86,13 +83,13 @@ const Affiliation = () => {
               <FadeIn direction="up" delay={0.2} className="hidden md:block">
                 <div className="relative">
                   {/* Floating elements animation - Fixed positioning with better placement */}
-                  <div className="absolute -top-24 left-1/3 animate-float-slow">
+                  <div className="absolute -top-20 -left-32 animate-float-slow">
                     <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
                       <Coins className="h-12 w-12 text-blue-500" />
                       <p className="text-blue-900 font-medium mt-2">Bonus 50€</p>
                     </div>
                   </div>
-                  <div className="absolute -bottom-24 right-20 animate-float">
+                  <div className="absolute -bottom-20 -right-32 animate-float">
                     <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
                       <BarChart3 className="h-10 w-10 text-blue-500" />
                       <p className="text-blue-900 font-medium mt-2">Suivi en temps réel</p>
@@ -107,7 +104,7 @@ const Affiliation = () => {
                       </div>
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-4 max-w-xs mx-auto">
                       <div className="bg-blue-50 rounded-lg p-3 flex items-center">
                         <div className="bg-blue-500/50 p-2 rounded-full mr-3">
                           <Gift className="h-5 w-5 text-white" />
