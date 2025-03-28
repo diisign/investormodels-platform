@@ -71,93 +71,96 @@ const Affiliation = () => {
               </p>
             </div>
             
-            {/* New Card Layout - Modified for mobile */}
+            {/* Reordered Card Layout for Mobile */}
             <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-3 gap-1 sm:gap-2 md:gap-4">
-                {/* Left Card */}
-                <Card className="col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
-                  <div className="p-2 sm:p-3 md:p-4 flex flex-col items-center text-center h-full">
-                    <div className="h-8 w-8 md:h-12 md:w-12 rounded-full bg-purple-100 flex items-center justify-center mb-1 md:mb-2">
-                      <UserPlus className="h-4 w-4 md:h-6 md:w-6 text-[#8B5CF6]" />
-                    </div>
-                    <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vos Filleuls</h3>
-                    <div className="mt-1 mb-1">
-                      <span className="text-sm md:text-xl font-bold text-teal-600">50€</span>
-                      <span className="text-gray-600 text-xs ml-1">bonus</span>
-                    </div>
-                    <p className="text-xs text-gray-500 hidden md:block flex-grow">
-                      Chaque filleul reçoit un bonus de 50€ à utiliser sur la plateforme.
-                    </p>
-                  </div>
-                </Card>
-                
-                {/* Center Card - Main Content */}
-                <Card className="col-span-1 bg-white shadow-xl border-0 relative md:transform md:-translate-y-2 z-20">
+              {/* Center Card (Programme Partenaire) on top for mobile */}
+              <div className="mb-4">
+                <Card className="bg-white shadow-xl border-0 relative">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
-                  <div className="p-2 sm:p-3 md:p-4 flex flex-col items-center">
-                    <div className="h-8 w-8 md:h-12 md:w-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-1 md:mb-3">
-                      <BadgeDollarSign className="h-4 w-4 md:h-6 md:w-6 text-[#8B5CF6]" />
+                  <div className="p-3 md:p-4 flex flex-col items-center">
+                    <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-2 md:mb-3">
+                      <BadgeDollarSign className="h-5 w-5 md:h-6 md:w-6 text-[#8B5CF6]" />
                     </div>
                     
-                    <h2 className="text-xs md:text-sm font-bold text-center mb-1 md:mb-3 text-gray-800">
+                    <h2 className="text-sm md:text-base font-bold text-center mb-2 md:mb-3 text-gray-800">
                       Programme Partenaire
                     </h2>
                     
-                    <div className="space-y-1 md:space-y-3 text-center">
-                      <div className="p-1 md:p-2 bg-gray-50 rounded-lg hidden md:block">
-                        <p className="text-xs md:text-sm text-gray-700 font-medium">
-                          Invitez vos amis à rejoindre CréatorInvest.
-                        </p>
+                    <div className="text-center mb-2">
+                      <p className="text-sm text-gray-700 font-medium">
+                        Invitez vos amis à rejoindre CréatorInvest.
+                      </p>
+                    </div>
+                    
+                    <div className="flex justify-center">
+                      <div className="flex items-center gap-1 text-teal-600">
+                        <span className="font-semibold text-xs md:text-sm">Sans limite</span>
+                        <Rocket size={isMobile ? 12 : 14} className="text-[#8B5CF6]" />
                       </div>
-                      
-                      <div className="flex justify-center">
-                        <div className="flex items-center gap-1 text-teal-600">
-                          <span className="font-semibold text-xs md:text-sm">Sans limite</span>
-                          <Rocket size={isMobile ? 12 : 14} className="text-[#8B5CF6]" />
-                        </div>
+                    </div>
+                    
+                    {!isAuthenticated && (
+                      <div className="pt-2 md:pt-3 w-full">
+                        <Link to="/register">
+                          <GradientButton 
+                            gradientDirection="to-r" 
+                            fullWidth 
+                            size="sm"
+                            className="from-teal-500 to-blue-500 text-white text-xs py-1 h-8"
+                          >
+                            Créer un compte
+                          </GradientButton>
+                        </Link>
                       </div>
-                      
-                      {!isAuthenticated && (
-                        <div className="pt-1 md:pt-2">
-                          <Link to="/register">
-                            <GradientButton 
-                              gradientDirection="to-r" 
-                              fullWidth 
-                              size="sm"
-                              className="from-teal-500 to-blue-500 text-white text-xs py-1 h-7"
-                            >
-                              Créer un compte
-                            </GradientButton>
-                          </Link>
-                        </div>
-                      )}
-                      
-                      {isAuthenticated && (
+                    )}
+                    
+                    {isAuthenticated && (
+                      <div className="pt-2 md:pt-3 w-full">
                         <Button 
-                          className="w-full bg-teal-500 hover:bg-teal-600 text-white text-xs h-7 px-2"
+                          className="w-full bg-teal-500 hover:bg-teal-600 text-white text-xs h-8 px-2"
                           onClick={handleShare}
                           size="sm"
                         >
                           <Share2 className="mr-1 h-3 w-3" />
                           Partager
                         </Button>
-                      )}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              </div>
+              
+              {/* Two side-by-side cards below */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Left Card - Pour Vos Filleuls */}
+                <Card className="bg-gray-50 border-gray-200 shadow-md overflow-hidden">
+                  <div className="p-3 md:p-4 flex flex-col items-center text-center h-full">
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-purple-100 flex items-center justify-center mb-2">
+                      <UserPlus className="h-4 w-4 md:h-5 md:w-5 text-[#8B5CF6]" />
                     </div>
+                    <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vos Filleuls</h3>
+                    <div className="mt-1 mb-1">
+                      <span className="text-sm md:text-xl font-bold text-teal-600">50€</span>
+                      <span className="text-gray-600 text-xs ml-1">bonus</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Chaque filleul reçoit un bonus de 50€ à utiliser sur la plateforme.
+                    </p>
                   </div>
                 </Card>
                 
-                {/* Right Card */}
-                <Card className="col-span-1 bg-gray-50 border-gray-200 shadow-md overflow-hidden">
-                  <div className="p-2 sm:p-3 md:p-4 flex flex-col items-center text-center h-full">
-                    <div className="h-8 w-8 md:h-12 md:w-12 rounded-full bg-purple-100 flex items-center justify-center mb-1 md:mb-2">
-                      <PiggyBank className="h-4 w-4 md:h-6 md:w-6 text-[#8B5CF6]" />
+                {/* Right Card - Pour Vous */}
+                <Card className="bg-gray-50 border-gray-200 shadow-md overflow-hidden">
+                  <div className="p-3 md:p-4 flex flex-col items-center text-center h-full">
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-purple-100 flex items-center justify-center mb-2">
+                      <PiggyBank className="h-4 w-4 md:h-5 md:w-5 text-[#8B5CF6]" />
                     </div>
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vous</h3>
                     <div className="mt-1 mb-1">
                       <span className="text-sm md:text-xl font-bold text-teal-600">50%</span>
                       <span className="text-gray-600 text-xs ml-1">des gains</span>
                     </div>
-                    <p className="text-xs text-gray-500 hidden md:block flex-grow">
+                    <p className="text-xs text-gray-500 mt-1">
                       Recevez 50% des gains générés par vos filleuls.
                     </p>
                   </div>
@@ -181,7 +184,7 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <BadgeDollarSign className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
@@ -197,7 +200,7 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <Gift className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
@@ -213,7 +216,7 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <Users className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
@@ -229,7 +232,7 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 text-[#8B5CF6] p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <HeartHandshake className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
@@ -245,7 +248,7 @@ const Affiliation = () => {
           </div>
         </section>
 
-        {/* FAQ Section - Replacing the "Commencez dès maintenant" section */}
+        {/* FAQ Section */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
