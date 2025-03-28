@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
@@ -50,7 +49,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
 
   const userIsLoggedIn = isAuthenticated;
   
-  // Get first letter of user's name or email for avatar fallback
   const getAvatarInitial = () => {
     if (!user) return '';
     

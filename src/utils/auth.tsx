@@ -9,6 +9,7 @@ type User = {
   id: string;
   email: string;
   name?: string;
+  avatar_url?: string; // Added avatar_url property
   // Propriétés temporaires pour éviter les erreurs TypeScript
   balance?: number;
   transactions?: any[];
@@ -37,7 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     // Set up auth state listener FIRST with more verbose logging
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, newSession) => {
+      async (event, newSession) => {
         console.log('Auth state changed:', event, newSession);
         setSession(newSession);
         
@@ -51,6 +52,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             transactions: [],
             investments: []
           };
+          
+          // Fetch user profile to get avatar_url
+          try {
+            const { data: profileData, error } = await supabase
+              .from('profiles')
+              .select('avatar_url')
+              .eq('id', newSession.user.id)
+              .maybeSingle();
+              
+            if (profileData && !error) {
+              userData.avatar_url = profileData.avatar_url;
+            }
+          } catch (error) {
+            console.error('Error fetching profile:', error);
+          }
+          
           setUser(userData);
           setIsAuthenticated(true);
         } else {
@@ -63,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // THEN check for existing session with more verbose logging
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       console.log('Got existing session:', currentSession);
       setSession(currentSession);
       
@@ -77,6 +94,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           transactions: [],
           investments: []
         };
+        
+        // Fetch user profile to get avatar_url
+        try {
+          const { data: profileData, error } = await supabase
+            .from('profiles')
+            .select('avatar_url')
+            .eq('id', currentSession.user.id)
+            .maybeSingle();
+            
+          if (profileData && !error) {
+            userData.avatar_url = profileData.avatar_url;
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
+        
         setUser(userData);
         setIsAuthenticated(true);
       }
