@@ -30,8 +30,6 @@ const Index = () => {
     creatorsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Show swipe indicators on mobile
-  const showSwipeIndicators = width < 768;
   // Display 2 creators side by side on mobile
   const slidesPerView = width < 640 ? 2 : width < 768 ? 2 : width < 1024 ? 3 : 4;
 
@@ -113,7 +111,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Popular Creators Section - Updated for 2 side-by-side on mobile with swipe indicators */}
+        {/* Popular Creators Section - Updated with navigation arrows at profile level */}
         <section ref={creatorsRef} className="py-12 md:py-20">
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
@@ -133,17 +131,6 @@ const Index = () => {
             
             <FadeIn direction="up" delay={100}>
               <div className="relative px-0 md:px-10 pb-6 md:pb-10">
-                {/* Mobile swipe indicators */}
-                {showSwipeIndicators && (
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <ChevronLeft className="h-5 w-5 text-purple-500" />
-                      <span className="mx-1">Swipe</span>
-                      <ChevronRight className="h-5 w-5 text-purple-500" />
-                    </div>
-                  </div>
-                )}
-                
                 <Carousel 
                   opts={{
                     align: "start",
@@ -167,8 +154,8 @@ const Index = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-0 -ml-1 hidden sm:flex" />
-                  <CarouselNext className="right-0 -mr-1 hidden sm:flex" />
+                  <CarouselPrevious className="left-0 md:-left-6 -translate-y-1/2 top-1/2 z-10 h-8 w-8 rounded-full sm:flex" />
+                  <CarouselNext className="right-0 md:-right-6 -translate-y-1/2 top-1/2 z-10 h-8 w-8 rounded-full sm:flex" />
                 </Carousel>
               </div>
             </FadeIn>
