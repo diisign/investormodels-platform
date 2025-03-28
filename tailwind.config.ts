@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -89,6 +90,10 @@ export default {
 					700: '#0f766e',
 					800: '#115e59',
 					900: '#134e4a',
+				},
+				'purple-gradient': {
+					'from': '#9b87f5',
+					'to': '#8B5CF6',
 				}
 			},
 			borderRadius: {
