@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -106,7 +105,7 @@ const Affiliation = () => {
                             gradientDirection="to-r" 
                             fullWidth 
                             size="sm"
-                            className="from-teal-500 to-blue-500 text-white text-xs py-1 h-8"
+                            className="from-teal-400 to-blue-500 text-white text-xs py-1 h-8"
                           >
                             Créer un compte
                           </GradientButton>
@@ -116,14 +115,19 @@ const Affiliation = () => {
                     
                     {isAuthenticated && (
                       <div className="pt-2 md:pt-3 w-full">
-                        <Button 
-                          className="w-full bg-teal-500 hover:bg-teal-600 text-white text-xs h-8 px-2"
+                        <GradientButton 
+                          className="w-full text-white text-xs h-8 px-2"
                           onClick={handleShare}
                           size="sm"
+                          gradientDirection="to-r"
+                          fullWidth
+                          icon={<Share2 className="h-3 w-3" />}
+                          iconPosition="left"
+                          variant="primary"
+                          className="from-teal-400 to-blue-500"
                         >
-                          <Share2 className="mr-1 h-3 w-3" />
                           Partager
-                        </Button>
+                        </GradientButton>
                       </div>
                     )}
                   </div>
