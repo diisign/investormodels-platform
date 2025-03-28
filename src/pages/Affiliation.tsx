@@ -7,8 +7,7 @@ import FadeIn from '@/components/animations/FadeIn';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
-import { BadgeDollarSign, Users, Gift, Copy, Share2, CreditCard, HeartHandshake, Award, Sparkles } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 
@@ -164,8 +163,8 @@ const Affiliation = () => {
           </div>
         </section>
 
-        {/* FAQ / CTA */}
-        <section className="py-16 bg-gradient-to-br from-purple-500/5 via-purple-500/5 to-purple-500/5">
+        {/* FAQ / CTA - Changed background to white */}
+        <section className="py-16 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <FadeIn direction="up">

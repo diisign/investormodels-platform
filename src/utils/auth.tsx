@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
@@ -153,7 +154,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Login successful:', data);
       toast.success("Connexion réussie");
       
-      setUser({ ...data.user });
+      // Fix: Create a valid User object from data.user
+      if (data.user) {
+        const userData: User = {
+          id: data.user.id,
+          email: data.user.email || '',
+          name: data.user.user_metadata?.name,
+          balance: 1000,
+          transactions: [],
+          investments: []
+        };
+        setUser(userData);
+      }
+      
       setIsAuthenticated(true);
       return true;
     } catch (error) {
