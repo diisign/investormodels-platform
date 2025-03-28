@@ -10,6 +10,7 @@ import GradientButton from '@/components/ui/GradientButton';
 import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, Coins, BarChart3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Affiliation = () => {
   const { isAuthenticated, user } = useAuth();
@@ -56,7 +57,7 @@ const Affiliation = () => {
         {/* Hero Section with white background */}
         <section className="relative py-16 md:py-20 overflow-hidden bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 relative z-10">
-            <div className="text-center mb-12">
+            <div className="text-center mb-14">
               <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white">
                 Programme d'Affiliation
               </h1>
@@ -64,65 +65,71 @@ const Affiliation = () => {
             
             <div className="flex justify-center mb-12">
               <div className="relative max-w-4xl w-full">
-                {/* Left floating element */}
-                <div className="absolute -left-10 md:-left-24 top-1/2 -translate-y-1/2 animate-float-slow z-20">
-                  <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
-                    <Coins className="h-12 w-12 text-blue-500" />
-                    <p className="text-blue-900 font-medium mt-2">Bonus 50€</p>
-                  </div>
+                {/* Left floating box */}
+                <div className="absolute -left-16 md:-left-32 top-1/3 z-20 transform -translate-y-1/2">
+                  <Card className="bg-blue-100 p-3 border border-blue-200 shadow-md animate-float-slow">
+                    <CardContent className="p-3 flex flex-col items-center">
+                      <Coins className="h-10 w-10 text-blue-500 mb-2" />
+                      <p className="text-blue-900 font-medium text-center">Bonus 50€</p>
+                    </CardContent>
+                  </Card>
                 </div>
                 
-                {/* Right floating element */}
-                <div className="absolute -right-10 md:-right-24 top-1/2 -translate-y-1/2 animate-float z-20">
-                  <div className="bg-blue-100 p-4 rounded-lg shadow-lg border border-blue-200">
-                    <BarChart3 className="h-10 w-10 text-blue-500" />
-                    <p className="text-blue-900 font-medium mt-2">Suivi en temps réel</p>
-                  </div>
+                {/* Right floating box */}
+                <div className="absolute -right-16 md:-right-32 top-1/3 z-20 transform -translate-y-1/2">
+                  <Card className="bg-blue-100 p-3 border border-blue-200 shadow-md animate-float">
+                    <CardContent className="p-3 flex flex-col items-center">
+                      <BarChart3 className="h-10 w-10 text-blue-500 mb-2" />
+                      <p className="text-blue-900 font-medium text-center">Suivi en temps réel</p>
+                    </CardContent>
+                  </Card>
                 </div>
                 
                 {/* Central card */}
-                <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 z-10 relative">
-                  <div className="flex items-center justify-center mb-6">
-                    <div className="bg-blue-100 h-20 w-20 rounded-full flex items-center justify-center">
-                      <BadgeDollarSign className="h-10 w-10 text-blue-600" />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-6 max-w-sm mx-auto text-center">
-                    <div className="bg-blue-50 rounded-lg p-4">
-                      <p className="text-blue-900 font-medium mb-1">
-                        Ils reçoivent 50€ lors de son premier investissement
-                      </p>
-                      <p className="text-blue-700 text-sm">
-                        (100€ minimum)
-                      </p>
-                    </div>
-                    
-                    <div className="bg-blue-50 rounded-lg p-4">
-                      <p className="text-blue-900 font-medium mb-1">
-                        Recevez 50% des gains du parrainage
-                      </p>
-                      <p className="text-blue-700 text-sm">
-                        Sans limite de parrainages
-                      </p>
-                    </div>
-                    
-                    {!isAuthenticated && (
-                      <div className="mt-6 pt-4">
-                        <Link to="/register">
-                          <GradientButton 
-                            gradientDirection="to-r" 
-                            fullWidth 
-                            size="lg"
-                            className="from-blue-600 to-blue-400 text-white"
-                          >
-                            Créer un compte pour parrainer
-                          </GradientButton>
-                        </Link>
+                <Card className="bg-white rounded-xl shadow-lg border border-gray-200 z-10 relative">
+                  <CardContent className="p-8">
+                    <div className="flex items-center justify-center mb-8">
+                      <div className="bg-blue-100 h-20 w-20 rounded-full flex items-center justify-center">
+                        <BadgeDollarSign className="h-10 w-10 text-blue-600" />
                       </div>
-                    )}
-                  </div>
-                </div>
+                    </div>
+                    
+                    <div className="space-y-6 max-w-sm mx-auto">
+                      <div className="bg-blue-50 rounded-lg p-4 text-center">
+                        <p className="text-blue-900 font-medium mb-1">
+                          Ils reçoivent 50€ lors de son premier investissement
+                        </p>
+                        <p className="text-blue-700 text-sm">
+                          (100€ minimum)
+                        </p>
+                      </div>
+                      
+                      <div className="bg-blue-50 rounded-lg p-4 text-center">
+                        <p className="text-blue-900 font-medium mb-1">
+                          Recevez 50% des gains du parrainage
+                        </p>
+                        <p className="text-blue-700 text-sm">
+                          Sans limite de parrainages
+                        </p>
+                      </div>
+                      
+                      {!isAuthenticated && (
+                        <div className="mt-6 pt-4">
+                          <Link to="/register">
+                            <GradientButton 
+                              gradientDirection="to-r" 
+                              fullWidth 
+                              size="lg"
+                              className="from-blue-600 to-blue-400 text-white"
+                            >
+                              Créer un compte pour parrainer
+                            </GradientButton>
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
             
