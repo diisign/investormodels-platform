@@ -41,14 +41,14 @@ const OnlyfansRevenueChart = () => {
   return (
     <div className="relative w-full h-full">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-investment-500 to-investment-600 rounded-2xl blur opacity-30 animate-pulse-light"></div>
-      <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 p-4 h-full">
-        <h3 className="text-lg font-semibold mb-2">Croissance du Chiffre d'Affaires OnlyFans</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Évolution annuelle (2019-2024)</p>
+      <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 p-2 sm:p-4 h-full">
+        <h3 className="text-lg font-semibold mb-1 sm:mb-2">Croissance du Chiffre d'Affaires OnlyFans</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-4">Évolution annuelle (2019-2024)</p>
 
-        <ChartContainer className="aspect-[5/4] h-[300px]" config={chartConfig}>
+        <ChartContainer className="aspect-[4/3] h-[250px] sm:h-[300px]" config={chartConfig}>
           <AreaChart 
             data={revenueData} 
-            margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+            margin={{ top: 5, right: 5, left: -10, bottom: 5 }}
           >
             <defs>
               <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
@@ -59,15 +59,16 @@ const OnlyfansRevenueChart = () => {
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis 
               dataKey="year" 
-              tick={{ fill: 'var(--foreground)' }}
+              tick={{ fill: 'var(--foreground)', fontSize: 11 }}
               tickLine={{ stroke: 'var(--border)' }} 
-              padding={{ left: 5, right: 5 }}
+              padding={{ left: 10, right: 10 }}
+              tickMargin={5}
             />
             <YAxis 
-              tick={{ fill: 'var(--foreground)' }} 
+              tick={{ fill: 'var(--foreground)', fontSize: 11 }} 
               tickLine={{ stroke: 'var(--border)' }}
               tickFormatter={(value) => value < 1 ? `${value * 1000}M` : `${value}B`}
-              width={40}
+              width={35}
             />
             <ChartTooltip
               content={({ active, payload, label }) => {
@@ -96,7 +97,7 @@ const OnlyfansRevenueChart = () => {
           </AreaChart>
         </ChartContainer>
 
-        <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+        <div className="mt-2 sm:mt-4 text-xs text-gray-500 dark:text-gray-400">
           Source: Rapports financiers publics OnlyFans 2019-2024
         </div>
       </div>
