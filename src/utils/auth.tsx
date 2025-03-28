@@ -1,7 +1,7 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
-import { supabase } from '../integrations/supabase/client';
+import { supabase, getSupabaseUrl } from '../integrations/supabase/client';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 
 type User = {
@@ -36,7 +36,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     console.log('AuthProvider: Setting up auth state listener');
     
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
         console.log('Auth state changed:', event, newSession);
@@ -54,7 +53,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             investments: []
           };
           
-          // Fetch user profile to get avatar_url
           setTimeout(async () => {
             try {
               const { data: profileData, error } = await supabase
@@ -86,7 +84,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       console.log('Got existing session:', currentSession);
       setSession(currentSession);
@@ -103,7 +100,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           investments: []
         };
         
-        // Fetch user profile to get avatar_url
         setTimeout(async () => {
           try {
             const { data: profileData, error } = await supabase
@@ -140,7 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Attempting login with:', email);
       setIsLoading(true);
       
-      console.log('Using Supabase URL:', supabase.supabaseUrl);
+      console.log('Using Supabase URL:', getSupabaseUrl());
       console.log('Attempting to login with Supabase');
       
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -157,7 +153,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Login successful:', data);
       toast.success("Connexion réussie");
       
-      // Let the auth state change handle the redirection
+      setUser({ ...data.user });
+      setIsAuthenticated(true);
       return true;
     } catch (error) {
       console.error('Erreur de connexion:', error);

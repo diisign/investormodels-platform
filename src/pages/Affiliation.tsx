@@ -96,17 +96,17 @@ const Affiliation = () => {
               </p>
             </FadeIn>
 
-            <div className={`grid grid-cols-1 ${isMobile ? 'sm:grid-cols-2' : 'md:grid-cols-2'} gap-6`}>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
               <FadeIn direction="left">
-                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-6 h-full">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
+                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <BadgeDollarSign className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <div>
+                    <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Bonus généreux</h3>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        Recevez 50€ pour chaque ami qui investit 100€ ou plus. Il n'y a pas de limite au nombre de personnes que vous pouvez parrainer.
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                        Recevez 50€ pour chaque ami qui investit 100€ ou plus.
                       </p>
                     </div>
                   </div>
@@ -114,15 +114,15 @@ const Affiliation = () => {
               </FadeIn>
 
               <FadeIn direction="right">
-                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-6 h-full">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
+                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <Gift className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Avantages pour vos filleuls</h3>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        Vos amis bénéficient également d'un bonus de 25€ lorsqu'ils s'inscrivent avec votre code et investissent 100€.
+                    <div className="text-center sm:text-left">
+                      <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Avantages filleuls</h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                        Vos amis bénéficient d'un bonus de 25€.
                       </p>
                     </div>
                   </div>
@@ -130,15 +130,15 @@ const Affiliation = () => {
               </FadeIn>
 
               <FadeIn direction="left">
-                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-6 h-full">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
+                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <div>
+                    <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Suivi en temps réel</h3>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        Suivez facilement le statut de vos parrainages et vos bonus dans votre tableau de bord personnel.
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                        Suivez facilement vos parrainages.
                       </p>
                     </div>
                   </div>
@@ -146,15 +146,15 @@ const Affiliation = () => {
               </FadeIn>
 
               <FadeIn direction="right">
-                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-6 h-full">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
+                <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 p-4 sm:p-6 h-full">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
+                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <HeartHandshake className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <div>
+                    <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Soutien mutuel</h3>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        En parrainant des amis, vous participez également au soutien des créatrices de contenu et contribuez à l'écosystème.
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                        Contribuez à l'écosystème créatif.
                       </p>
                     </div>
                   </div>
