@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -143,7 +144,7 @@ const Dashboard = () => {
                   </div>
                   <Link to="/creators" className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
                     <Plus className="h-4 w-4 mr-1" />
-                    Découvrir plus de créateurs
+                    Découvrir plus de créatrices
                   </Link>
                 </div>
               </FadeIn>
@@ -285,8 +286,12 @@ const Dashboard = () => {
                         Vous n'avez pas encore investi dans des créateurs.
                       </p>
                       <Link to="/creators">
-                        <GradientButton size="sm">
-                          Découvrir des créateurs
+                        <GradientButton 
+                          size="sm"
+                          gradientDirection="to-r"
+                          className="from-teal-400 to-blue-500 text-white"
+                        >
+                          Découvrir des créatrices
                         </GradientButton>
                       </Link>
                     </div>
