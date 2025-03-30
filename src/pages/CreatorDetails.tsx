@@ -101,6 +101,12 @@ const CreatorDetails = () => {
     );
   }
   
+  const calculateTotalInvested = (monthlyRevenue: number): number => {
+    const baseValue = Math.floor(monthlyRevenue * 3.5);
+    let totalInvested = Math.round(baseValue / 1000) * 1000;
+    return Math.min(105000, Math.max(42000, totalInvested));
+  };
+  
   const creator = mockCreator || {
     id: creatorProfile.id,
     name: creatorProfile.name,
@@ -108,7 +114,7 @@ const CreatorDetails = () => {
     category: "Lifestyle",
     returnRate: creatorProfile.returnRate / 10,
     investorsCount: Math.floor(creatorProfile.followers / 15),
-    totalInvested: Math.floor(creatorProfile.monthlyRevenue * 3.5),
+    totalInvested: calculateTotalInvested(creatorProfile.monthlyRevenue),
     monthlyRevenue: creatorProfile.monthlyRevenue,
     followers: creatorProfile.followers,
     creationDate: new Date(Date.now() - Math.random() * 126144000000).toISOString(),
