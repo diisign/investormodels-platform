@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -8,7 +7,7 @@ import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
-import { getCreatorProfile, creatorProfiles } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
 import {
   Pagination,
   PaginationContent,
@@ -65,14 +64,8 @@ const Creators = () => {
     // Add additional creators from creatorProfiles that aren't already in combinedCreators
     Object.values(creatorProfiles).forEach(profile => {
       if (!combinedCreators.some(c => c.id === profile.id)) {
-        // Calculer un "total investi" rond et variable basé sur le revenu mensuel
-        const baseValue = Math.floor(profile.monthlyRevenue * 3.5);
-        
-        // Arrondir à la centaine d'euros la plus proche
-        let totalInvested = Math.round(baseValue / 1000) * 1000;
-        
-        // S'assurer que la valeur est dans la plage 42 000 - 105 000
-        totalInvested = Math.min(105000, Math.max(42000, totalInvested));
+        // Calculer le "total investi" de façon cohérente
+        const totalInvested = calculateTotalInvested(profile.monthlyRevenue);
         
         // For creators that only exist in creatorProfiles, create placeholder data
         combinedCreators.push({

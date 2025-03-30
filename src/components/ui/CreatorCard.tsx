@@ -30,8 +30,6 @@ const CreatorCard = ({
 }: CreatorCardProps) => {
   const creatorProfile = getCreatorProfile(id);
   
-  // Nous n'avons plus besoin de valider ici puisque la valeur est déjà dans la plage correcte
-  
   return (
     <motion.div 
       whileHover={{ y: -5 }}

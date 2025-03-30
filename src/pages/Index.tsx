@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft, Star } from 'lucide-react';
@@ -19,7 +18,7 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { getCreatorProfile, creatorProfiles } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
@@ -37,15 +36,8 @@ const Index = () => {
   // Add creators from creatorProfiles if they're not already in allCreators
   Object.values(creatorProfiles).forEach(profile => {
     if (!allCreators.some(c => c.id === profile.id)) {
-      // Calculer un "total investi" rond et variable basé sur le revenu mensuel
-      // Cette formule donne des valeurs entre 42 000 et 105 000 selon le revenu
-      const baseValue = Math.floor(profile.monthlyRevenue * 3.5);
-      
-      // Arrondir à la centaine d'euros la plus proche
-      let totalInvested = Math.round(baseValue / 1000) * 1000;
-      
-      // S'assurer que la valeur est dans la plage 42 000 - 105 000
-      totalInvested = Math.min(105000, Math.max(42000, totalInvested));
+      // Calculer le total investi de manière cohérente
+      const totalInvested = calculateTotalInvested(profile.monthlyRevenue);
       
       allCreators.push({
         id: profile.id,

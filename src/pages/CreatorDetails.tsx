@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
-import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles } from '@/utils/creatorProfiles';
+import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 
@@ -100,12 +100,6 @@ const CreatorDetails = () => {
       </div>
     );
   }
-  
-  const calculateTotalInvested = (monthlyRevenue: number): number => {
-    const baseValue = Math.floor(monthlyRevenue * 3.5);
-    let totalInvested = Math.round(baseValue / 1000) * 1000;
-    return Math.min(105000, Math.max(42000, totalInvested));
-  };
   
   const creator = mockCreator || {
     id: creatorProfile.id,

@@ -1,4 +1,3 @@
-
 export interface CreatorProfile {
   id: string;
   name: string;
@@ -385,4 +384,18 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     month,
     revenue: revenueValues[index]
   }));
+};
+
+// Fonction pour calculer le "total investi" de manière cohérente
+export const calculateTotalInvested = (monthlyRevenue: number): number => {
+  // Utiliser une formule basée sur le revenu mensuel
+  const baseValue = Math.floor(monthlyRevenue * 3.5);
+  
+  // Arrondir à la centaine d'euros la plus proche
+  let totalInvested = Math.round(baseValue / 1000) * 1000;
+  
+  // S'assurer que la valeur est dans la plage 42 000 - 105 000
+  totalInvested = Math.min(105000, Math.max(42000, totalInvested));
+  
+  return totalInvested;
 };
