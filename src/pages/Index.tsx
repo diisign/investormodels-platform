@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft, Star } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
@@ -30,6 +30,14 @@ const Index = () => {
   };
 
   const slidesPerView = width < 640 ? 2 : width < 768 ? 2 : width < 1024 ? 3 : 4;
+
+  // Données fictives pour les avis Trustpilot
+  const trustpilotReviews = [
+    { id: 1, name: "Sophie M.", rating: 5, comment: "Une plateforme révolutionnaire ! J'ai diversifié mon portefeuille avec des rendements impressionnants." },
+    { id: 2, name: "Thomas L.", rating: 5, comment: "Interface intuitive et support client exceptionnel. Mes investissements ont augmenté de 120% en trois mois." },
+    { id: 3, name: "Emma R.", rating: 4, comment: "Excellente plateforme pour investir dans un secteur innovant. Très satisfaite des résultats." },
+    { id: 4, name: "Lucas D.", rating: 5, comment: "Jamais je n'aurais pensé obtenir de tels rendements. Merci pour cette opportunité unique." },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -166,6 +174,74 @@ const Index = () => {
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
+            </div>
+          </div>
+        </section>
+        
+        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
+          <div className="container mx-auto px-4">
+            <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-12" direction="up">
+              <div className="flex items-center justify-center gap-1 mb-4">
+                <div className="bg-[#00b67a] text-white px-2 py-1 rounded">
+                  <span className="font-bold">Trustpilot</span>
+                </div>
+                <div className="flex items-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star 
+                      key={star} 
+                      className={cn(
+                        "h-5 w-5 fill-current", 
+                        star <= 4 ? "text-[#00b67a]" : "", 
+                        star === 5 ? "text-[#00b67a] fill-[#00b67a]/70" : ""
+                      )} 
+                    />
+                  ))}
+                </div>
+                <span className="font-bold text-[#00b67a]">4.7/5</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
+                Ce que disent <span className="text-investment-600">nos utilisateurs</span>
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
+                Rejoignez plus de 20 000 investisseurs satisfaits qui ont déjà fait confiance à notre plateforme.
+              </p>
+            </FadeIn>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+              {trustpilotReviews.map((review, index) => (
+                <FadeIn 
+                  key={review.id} 
+                  className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" 
+                  direction="up" 
+                  delay={100 * index}
+                >
+                  <div className="flex items-center mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star 
+                        key={star} 
+                        className={cn(
+                          "h-4 w-4 fill-current", 
+                          star <= review.rating ? "text-[#00b67a]" : "text-gray-300 dark:text-gray-600"
+                        )} 
+                      />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">"{review.comment}"</p>
+                  <div className="text-sm font-medium">{review.name}</div>
+                </FadeIn>
+              ))}
+            </div>
+            
+            <div className="mt-10 text-center">
+              <a 
+                href="https://www.trustpilot.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-[#00b67a] hover:underline"
+              >
+                Voir tous nos avis sur Trustpilot
+                <ArrowRight className="h-4 w-4 ml-1" />
+              </a>
             </div>
           </div>
         </section>
