@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft, Star } from 'lucide-react';
@@ -18,7 +19,7 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { getCreatorProfile } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles } from '@/utils/creatorProfiles';
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
@@ -30,11 +31,39 @@ const Index = () => {
     creatorsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Get all creators from both sources
+  const allCreators = [...creators];
+  
+  // Add creators from creatorProfiles if they're not already in allCreators
+  Object.values(creatorProfiles).forEach(profile => {
+    if (!allCreators.some(c => c.id === profile.id)) {
+      allCreators.push({
+        id: profile.id,
+        name: profile.name,
+        imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
+        category: "Lifestyle", // Default category
+        returnRate: profile.returnRate,
+        investorsCount: Math.floor(profile.followers / 15),
+        totalInvested: Math.min(105000, Math.max(42000, Math.floor(profile.monthlyRevenue * 3.5))),
+        monthlyRevenue: profile.monthlyRevenue,
+        followers: profile.followers,
+        creationDate: new Date().toISOString().split('T')[0],
+        description: "",
+        plans: []
+      });
+    }
+  });
+  
   // Get top 10 creators with highest return rates
-  const topCreators = [...creators]
+  const topCreators = [...allCreators]
     .map(creator => {
       const profile = getCreatorProfile(creator.id);
-      return { ...creator, returnRate: profile.returnRate };
+      return { 
+        ...creator, 
+        returnRate: profile.returnRate,
+        // Ensure totalInvested is between 42,000 and 105,000
+        totalInvested: Math.min(105000, Math.max(42000, creator.totalInvested))
+      };
     })
     .sort((a, b) => b.returnRate - a.returnRate)
     .slice(0, 10);
@@ -214,7 +243,7 @@ const Index = () => {
                           <div className="p-1">
                             <CreatorCard
                               id={creator.id}
-                              name={creator.name}
+                              name={creator.name || creatorProfile.name}
                               imageUrl={creator.imageUrl}
                               category={creator.category}
                               investorsCount={creator.investorsCount}

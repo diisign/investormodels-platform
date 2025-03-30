@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -54,7 +55,8 @@ const Creators = () => {
         imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
         category: creator.category,
         investorsCount: creator.investorsCount,
-        totalInvested: creator.totalInvested,
+        // Ensure totalInvested is between 42,000 and 105,000
+        totalInvested: Math.min(105000, Math.max(42000, creator.totalInvested)),
         monthlyRevenue: creator.monthlyRevenue,
         returnRate: profile.returnRate
       });
@@ -70,7 +72,8 @@ const Creators = () => {
           imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
           category: determineCategory(profile.id), // Helper function to assign random category
           investorsCount: Math.floor(profile.followers / 15),
-          totalInvested: Math.floor(profile.monthlyRevenue * 3.5),
+          // Ensure totalInvested is between 42,000 and 105,000
+          totalInvested: Math.min(105000, Math.max(42000, Math.floor(profile.monthlyRevenue * 3.5))),
           monthlyRevenue: profile.monthlyRevenue,
           returnRate: profile.returnRate
         });
