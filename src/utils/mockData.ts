@@ -57,44 +57,35 @@ export interface Transaction {
   description: string;
 }
 
-// Function to invest in a creator
 export const investInCreator = async (
   creatorId: string, 
   planId: string, 
   amount: number
 ): Promise<void> => {
-  // Find the creator and plan
   const creator = creators.find(c => c.id === creatorId);
   if (!creator) throw new Error("Creator not found");
   
   const plan = creator.plans.find(p => p.id === planId);
   if (!plan) throw new Error("Plan not found");
   
-  // In a real app, we would check the user's balance and create an investment
-  // For now, just simulate a successful investment
   console.log(`Investment of ${amount}€ in ${creator.name}'s ${plan.name} plan`);
   
-  // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1000));
   
-  // Check if amount is reasonable
   if (amount <= 0) throw new Error("Amount must be positive");
   if (amount < plan.minInvestment) throw new Error(`Minimum investment for this plan is ${plan.minInvestment}€`);
   
   return;
 };
 
-// Mock user data for Dashboard
 export const mockUserData = {
   id: 'user1',
   name: 'John Doe',
   email: 'john@example.com',
   balance: 2500,
   investments: [
-    // Sample investments can be added here if needed
   ],
   transactions: [
-    // Sample transactions can be added here if needed
   ]
 };
 

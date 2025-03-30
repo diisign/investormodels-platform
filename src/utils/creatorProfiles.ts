@@ -7,6 +7,7 @@ export interface CreatorProfile {
   followers: number;
   minRevenue: number;
   maxRevenue: number;
+  imageUrl?: string; // Adding imageUrl field to the interface
 }
 
 // Fixed creator profiles with consistent data
@@ -19,7 +20,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 90,
     followers: 2867,
     minRevenue: 25000,
-    maxRevenue: 60000
+    maxRevenue: 60000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/ke/kei/keiep1nsav9m2m3e7l0ynbcttg9cfoez1657600220/186389633/avatar.jpg"
   },
   "creator2": {
     id: "creator2",
@@ -28,7 +30,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 120,
     followers: 5010,
     minRevenue: 50000,
-    maxRevenue: 98000
+    maxRevenue: 98000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg"
   },
   "creator3": {
     id: "creator3",
@@ -37,7 +40,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 125,
     followers: 5920,
     minRevenue: 60000,
-    maxRevenue: 99650
+    maxRevenue: 99650,
+    imageUrl: "https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp"
   },
   "creator4": {
     id: "creator4",
@@ -46,7 +50,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 80,
     followers: 2170,
     minRevenue: 19650,
-    maxRevenue: 58500
+    maxRevenue: 58500,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg"
   },
   "creator5": {
     id: "creator5",
@@ -55,7 +60,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 100,
     followers: 3487,
     minRevenue: 39950,
-    maxRevenue: 70000
+    maxRevenue: 70000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/6/6f/6ff/6ffsabyn44okaxnazykunwo0x5zw1kmd1739911134/355023516/avatar.jpg"
   },
   "creator6": {
     id: "creator6",
@@ -64,7 +70,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 110,
     followers: 3933,
     minRevenue: 41750,
-    maxRevenue: 83000
+    maxRevenue: 83000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg"
   },
   "creator7": {
     id: "creator7",
@@ -73,7 +80,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 115,
     followers: 4313,
     minRevenue: 48450,
-    maxRevenue: 86450
+    maxRevenue: 86450,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg"
   },
   "creator8": {
     id: "creator8",
@@ -82,7 +90,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 100,
     followers: 3330,
     minRevenue: 30150,
-    maxRevenue: 72850
+    maxRevenue: 72850,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/w/ww/www/wwwm2nbmdojruuvvmskbb0rfiqur4w8w1738821490/424984894/avatar.jpg"
   },
   "creator9": {
     id: "creator9",
@@ -91,7 +100,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 110,
     followers: 4507,
     minRevenue: 50000,
-    maxRevenue: 90000
+    maxRevenue: 90000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/r/rn/rnj/rnj2ki36l6ih5ay5ecbbplaearzyhqpd1725115071/440793308/avatar.jpg"
   },
   "creator10": {
     id: "creator10",
@@ -100,7 +110,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 120,
     followers: 5227,
     minRevenue: 52000,
-    maxRevenue: 95650
+    maxRevenue: 95650,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/le/lec/lecj3pxbtb4ymxfen8yurh1aqum6xooq1736534589/124057483/avatar.jpg"
   },
   "creator11": {
     id: "creator11",
@@ -109,7 +120,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 110,
     followers: 3943,
     minRevenue: 48650,
-    maxRevenue: 83650
+    maxRevenue: 83650,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/g/gc/gcl/gclytoh6ibqn1khp1cf2i6ymelztqmgl1714404792/412109090/avatar.jpg"
   },
   "creator12": {
     id: "creator12",
@@ -118,7 +130,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 95,
     followers: 3257,
     minRevenue: 27000,
-    maxRevenue: 72150
+    maxRevenue: 72150,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/p/po/poq/poqsgzzsem9nmffr5e3dmnis3gdfkdjt1739306610/161871329/avatar.jpg"
   },
   "creator13": {
     id: "creator13",
@@ -127,7 +140,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 85,
     followers: 2550,
     minRevenue: 23000,
-    maxRevenue: 57550
+    maxRevenue: 57550,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/c/cq/cqy/cqydatlsrhxwwop9ybh9xkh4kmtmoaj41705156342/277839437/avatar.jpg"
   },
   "creator14": {
     id: "creator14",
@@ -136,7 +150,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 100,
     followers: 3633,
     minRevenue: 36000,
-    maxRevenue: 71150
+    maxRevenue: 71150,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tr/tre/treu426uagi2nu0ppnuhscgqhz1vajrb1614919839/avatar.jpg"
   },
   "creator15": {
     id: "creator15",
@@ -145,7 +160,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 130,
     followers: 6330,
     minRevenue: 69850,
-    maxRevenue: 120350
+    maxRevenue: 120350,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg"
   },
   "creator16": {
     id: "creator16",
@@ -154,9 +170,10 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 105,
     followers: 3853,
     minRevenue: 42500,
-    maxRevenue: 79000
+    maxRevenue: 79000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lv/lvi/lviitmbx2pppksgphr5kk2vh5tmwzo1w1704302300/6793248/avatar.jpg"
   },
-  // Nouveaux profils de créatrices
+  // Nouveaux profils de créatrices avec les images que vous avez fournies
   "creator17": {
     id: "creator17",
     name: "Victoria 💋",
@@ -164,7 +181,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 115,
     followers: 4567,
     minRevenue: 45000,
-    maxRevenue: 85000
+    maxRevenue: 85000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/n/nl/nl7/nl7ujr6gpao7riitqgeul2kuvclb7snl1724680176/344510725/avatar.jpg"
   },
   "creator18": {
     id: "creator18",
@@ -173,7 +191,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 118,
     followers: 4820,
     minRevenue: 48000,
-    maxRevenue: 88000
+    maxRevenue: 88000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/z/zr/zrj/zrjivxcnygnbhjjpnvalhffjejnk5emb1707238486/9376223/avatar.jpg"
   },
   "creator19": {
     id: "creator19",
@@ -182,7 +201,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 112,
     followers: 4227,
     minRevenue: 42000,
-    maxRevenue: 81000
+    maxRevenue: 81000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg"
   },
   "creator20": {
     id: "creator20",
@@ -191,7 +211,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 122,
     followers: 5413,
     minRevenue: 54000,
-    maxRevenue: 97000
+    maxRevenue: 97000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/s/sn/snk/snknlldkypeays71iobp4qqamgmyx83m1730686874/345711625/avatar.jpg"
   },
   "creator21": {
     id: "creator21",
@@ -200,7 +221,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 105,
     followers: 3780,
     minRevenue: 38000,
-    maxRevenue: 77000
+    maxRevenue: 77000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/j/j4/j4s/j4szddk3kng9ryu0tu4ltlz7llofo0gs1714221649/9059542/avatar.jpg"
   },
   "creator22": {
     id: "creator22",
@@ -209,7 +231,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 128,
     followers: 6120,
     minRevenue: 61000,
-    maxRevenue: 110000
+    maxRevenue: 110000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/i/ik/ikh/ikhxjrnd5wxourm8hqcjibrk7smzblyn1718163760/145464089/avatar.jpg"
   },
   "creator23": {
     id: "creator23",
@@ -218,7 +241,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 120,
     followers: 5127,
     minRevenue: 51000,
-    maxRevenue: 92000
+    maxRevenue: 92000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jq/jqy/jqypn1apftzib3fautwdfox0cj02c4jp1703395505/101611678/avatar.jpg"
   },
   "creator24": {
     id: "creator24",
@@ -227,7 +251,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 102,
     followers: 3573,
     minRevenue: 36000,
-    maxRevenue: 74000
+    maxRevenue: 74000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/n/na/naa/naao7csjw7xicftell1shcb9lsxjmdy91737645433/2301291/avatar.jpg"
   },
   "creator25": {
     id: "creator25",
@@ -236,7 +261,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 125,
     followers: 5820,
     minRevenue: 58000,
-    maxRevenue: 105000
+    maxRevenue: 105000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/kg/kgy/kgya8xp7dt359cjnl608o82odpc7rgbc1705207113/6554260/avatar.jpg"
   },
   "creator26": {
     id: "creator26",
@@ -245,7 +271,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 110,
     followers: 4140,
     minRevenue: 41000,
-    maxRevenue: 80000
+    maxRevenue: 80000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/h/hn/hnp/hnp6h41vafuzgo9lb93jyrg1khl7yusd1674778751/302999100/avatar.jpg"
   },
   "creator27": {
     id: "creator27",
@@ -254,7 +281,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 116,
     followers: 4700,
     minRevenue: 47000,
-    maxRevenue: 87000
+    maxRevenue: 87000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/w/wt/wtt/wttm01muz3ow11csonxw9vhuzbfyfjkp1714596535/365403081/avatar.jpg"
   },
   "creator28": {
     id: "creator28",
@@ -263,7 +291,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 108,
     followers: 3980,
     minRevenue: 40000,
-    maxRevenue: 78000
+    maxRevenue: 78000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/q/q0/q0o/q0o3kw7gqhvuioaplnveb6q77j4ko6ln1673237481/13754453/avatar.jpg"
   },
   "creator29": {
     id: "creator29",
@@ -272,7 +301,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     returnRate: 114,
     followers: 4387,
     minRevenue: 44000,
-    maxRevenue: 83000
+    maxRevenue: 83000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lv/lvi/lviitmbx2pppksgphr5kk2vh5tmwzo1w1704302300/6793248/avatar.jpg" // Réutilisation d'une image
   }
 };
 

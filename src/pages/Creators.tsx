@@ -67,7 +67,7 @@ const Creators = () => {
         combinedCreators.push({
           id: profile.id,
           name: profile.name,
-          imageUrl: `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
+          imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
           category: determineCategory(profile.id), // Helper function to assign random category
           investorsCount: Math.floor(profile.followers / 15),
           totalInvested: Math.floor(profile.monthlyRevenue * 2.5),
