@@ -30,21 +30,18 @@ const Index = () => {
     creatorsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Get all creators from both sources
   const allCreators = [...creators];
   
-  // Add creators from creatorProfiles if they're not already in allCreators
   Object.values(creatorProfiles).forEach(profile => {
     if (!allCreators.some(c => c.id === profile.id)) {
-      // Calculer le total investi de manière cohérente
       const totalInvested = calculateTotalInvested(profile.monthlyRevenue);
       
       allCreators.push({
         id: profile.id,
         name: profile.name,
         imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
-        coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop', // Default cover image
-        category: "Lifestyle", // Default category
+        coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop',
+        category: "Lifestyle",
         returnRate: profile.returnRate,
         investorsCount: Math.floor(profile.followers / 15),
         totalInvested: totalInvested,
@@ -57,23 +54,20 @@ const Index = () => {
     }
   });
   
-  // Get top 10 creators with highest return rates
   const topCreators = [...allCreators]
     .map(creator => {
       const profile = getCreatorProfile(creator.id);
       return { 
         ...creator, 
         returnRate: profile.returnRate,
-        totalInvested: creator.totalInvested // Conserver la valeur déjà calculée
+        totalInvested: creator.totalInvested
       };
     })
     .sort((a, b) => b.returnRate - a.returnRate)
     .slice(0, 10);
 
-  // Updated slidesPerView to show 3 profiles on mobile devices
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
-  // Données fictives pour les avis Trustpilot avec des styles d'écriture variés
   const trustpilotReviews = [
     { 
       id: 1, 
@@ -151,10 +145,10 @@ const Index = () => {
                   <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
                 </div>
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
-                  Investissez dans les <span className="text-[#8B5CF6]">créatrices les plus performantes.</span>
+                  Investissez dans les <span className="text-[#8B5CF6]">créatrices OnlyFans.</span>
                 </h1>
                 <p className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
-                  Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur succès. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
+                  Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur revenus. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
                 
                 <div className="pt-2">
