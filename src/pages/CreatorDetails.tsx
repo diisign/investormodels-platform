@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -67,13 +66,11 @@ const CreatorDetails = () => {
     refetchOnWindowFocus: true,
   });
   
-  // Calculate estimated return when investment amount changes
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
-      // Calculate return for 3 months
-      const monthlyReturnRate = creatorProfile.returnRate / 100 / 12; // Convert annual rate to monthly
+      const monthlyReturnRate = creatorProfile.returnRate / 100 / 12;
       const investmentValue = parseFloat(investmentAmount);
-      const threeMonthReturn = investmentValue * monthlyReturnRate * 3; // Return over 3 months
+      const threeMonthReturn = investmentValue * monthlyReturnRate * 3;
       setEstimatedReturn(threeMonthReturn);
     } else {
       setEstimatedReturn(0);
@@ -128,7 +125,6 @@ const CreatorDetails = () => {
     setLoading(true);
     
     try {
-      // Fix here: Pass the user ID as the fourth argument to investInCreator
       await investInCreator(creator.id, "default", amount, user?.id || "anonymous");
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
