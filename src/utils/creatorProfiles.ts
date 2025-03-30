@@ -1,3 +1,4 @@
+
 export interface CreatorProfile {
   id: string;
   name: string;
@@ -154,6 +155,124 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     followers: 3853,
     minRevenue: 42500,
     maxRevenue: 79000
+  },
+  // Nouveaux profils de créatrices
+  "creator17": {
+    id: "creator17",
+    name: "Victoria 💋",
+    monthlyRevenue: 68500,
+    returnRate: 115,
+    followers: 4567,
+    minRevenue: 45000,
+    maxRevenue: 85000
+  },
+  "creator18": {
+    id: "creator18",
+    name: "Nina 💜",
+    monthlyRevenue: 72300,
+    returnRate: 118,
+    followers: 4820,
+    minRevenue: 48000,
+    maxRevenue: 88000
+  },
+  "creator19": {
+    id: "creator19",
+    name: "Zoe 🌹",
+    monthlyRevenue: 63400,
+    returnRate: 112,
+    followers: 4227,
+    minRevenue: 42000,
+    maxRevenue: 81000
+  },
+  "creator20": {
+    id: "creator20",
+    name: "Melanie 🍒",
+    monthlyRevenue: 81200,
+    returnRate: 122,
+    followers: 5413,
+    minRevenue: 54000,
+    maxRevenue: 97000
+  },
+  "creator21": {
+    id: "creator21",
+    name: "Samantha 🌸",
+    monthlyRevenue: 56700,
+    returnRate: 105,
+    followers: 3780,
+    minRevenue: 38000,
+    maxRevenue: 77000
+  },
+  "creator22": {
+    id: "creator22",
+    name: "Jasmine 🔥",
+    monthlyRevenue: 91800,
+    returnRate: 128,
+    followers: 6120,
+    minRevenue: 61000,
+    maxRevenue: 110000
+  },
+  "creator23": {
+    id: "creator23",
+    name: "Isabel 💫",
+    monthlyRevenue: 76900,
+    returnRate: 120,
+    followers: 5127,
+    minRevenue: 51000,
+    maxRevenue: 92000
+  },
+  "creator24": {
+    id: "creator24",
+    name: "Julia 🌙",
+    monthlyRevenue: 53600,
+    returnRate: 102,
+    followers: 3573,
+    minRevenue: 36000,
+    maxRevenue: 74000
+  },
+  "creator25": {
+    id: "creator25",
+    name: "Natalie 💕",
+    monthlyRevenue: 87300,
+    returnRate: 125,
+    followers: 5820,
+    minRevenue: 58000,
+    maxRevenue: 105000
+  },
+  "creator26": {
+    id: "creator26",
+    name: "Kim 🦋",
+    monthlyRevenue: 62100,
+    returnRate: 110,
+    followers: 4140,
+    minRevenue: 41000,
+    maxRevenue: 80000
+  },
+  "creator27": {
+    id: "creator27",
+    name: "Hannah 💎",
+    monthlyRevenue: 70500,
+    returnRate: 116,
+    followers: 4700,
+    minRevenue: 47000,
+    maxRevenue: 87000
+  },
+  "creator28": {
+    id: "creator28",
+    name: "Wendy 🌊",
+    monthlyRevenue: 59700,
+    returnRate: 108,
+    followers: 3980,
+    minRevenue: 40000,
+    maxRevenue: 78000
+  },
+  "creator29": {
+    id: "creator29",
+    name: "Quinn 🌈",
+    monthlyRevenue: 65800,
+    returnRate: 114,
+    followers: 4387,
+    minRevenue: 44000,
+    maxRevenue: 83000
   }
 };
 
