@@ -1,3 +1,4 @@
+
 export interface Creator {
   id: string;
   name: string;
@@ -807,3 +808,26 @@ export const creators: Creator[] = [
         minInvestment: 620,
         duration: 6,
         benefits: [
+          'Rapports mensuels',
+          'Programmes personnalisés',
+          'Séances de coaching'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan13-3',
+        name: 'Harmonie',
+        returnRate: 15.0,
+        minInvestment: 1200,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Plan complet personnalisé',
+          'Coaching privé régulier',
+          'Produits bien-être offerts'
+        ],
+        popularity: 'low'
+      }
+    ]
+  }
+];
