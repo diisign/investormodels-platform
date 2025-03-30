@@ -19,6 +19,7 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
+import { getCreatorProfile } from '@/utils/creatorProfiles';
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
@@ -29,6 +30,15 @@ const Index = () => {
   const scrollToCreators = () => {
     creatorsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Get top 10 creators with highest return rates
+  const topCreators = [...creators]
+    .map(creator => {
+      const profile = getCreatorProfile(creator.id);
+      return { ...creator, returnRate: profile.returnRate };
+    })
+    .sort((a, b) => b.returnRate - a.returnRate)
+    .slice(0, 10);
 
   const slidesPerView = width < 640 ? 2 : width < 768 ? 2 : width < 1024 ? 3 : 4;
 
@@ -177,7 +187,7 @@ const Index = () => {
                   Top créatrices
                 </h2>
                 <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
-                  Découvrez les créatrices les plus performantes de notre plateforme.
+                  Découvrez les créatrices avec les rendements prévus les plus élevés.
                 </p>
               </div>
               <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
@@ -196,20 +206,25 @@ const Index = () => {
                   className="w-full"
                 >
                   <CarouselContent className="-ml-2 md:-ml-4">
-                    {creators.map((creator, index) => (
-                      <CarouselItem key={creator.id} className={`pl-2 md:pl-4 basis-1/${slidesPerView}`}>
-                        <div className="p-1">
-                          <CreatorCard
-                            id={creator.id}
-                            name={creator.name}
-                            imageUrl={creator.imageUrl}
-                            category={creator.category}
-                            investorsCount={creator.investorsCount}
-                            totalInvested={creator.totalInvested}
-                          />
-                        </div>
-                      </CarouselItem>
-                    ))}
+                    {topCreators.map((creator, index) => {
+                      const creatorProfile = getCreatorProfile(creator.id);
+                      
+                      return (
+                        <CarouselItem key={creator.id} className={`pl-2 md:pl-4 basis-1/${slidesPerView}`}>
+                          <div className="p-1">
+                            <CreatorCard
+                              id={creator.id}
+                              name={creator.name}
+                              imageUrl={creator.imageUrl}
+                              category={creator.category}
+                              investorsCount={creator.investorsCount}
+                              totalInvested={creator.totalInvested}
+                              monthlyRevenue={creatorProfile.monthlyRevenue}
+                            />
+                          </div>
+                        </CarouselItem>
+                      );
+                    })}
                   </CarouselContent>
                   <CarouselPrevious className="-left-2 md:-left-6 h-9 w-9 rounded-full" />
                   <CarouselNext className="-right-2 md:-right-6 h-9 w-9 rounded-full" />
