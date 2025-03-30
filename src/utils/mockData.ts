@@ -886,7 +886,7 @@ export const creators: Creator[] = [
   {
     id: 'creator16',
     name: 'Sophia Rose 💫',
-    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/z/zr/zrv/zrv1j9rljjc6hfcjpydcetuwsgyeqpwr1724532862/351296775/avatar.jpg',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/s/sk/skd/skd5j7mkmz8zarvtep6pye7few85szoe1712429107/61786830/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop',
     category: 'Lifestyle',
     returnRate: 12.8,
