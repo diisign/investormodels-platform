@@ -791,4 +791,4 @@ export const creators: Creator[] = [
         id: 'plan14-1',
         name: 'Débutant',
         returnRate: 8.6,
-        minInvestment: 160,
+        minInvestment: 160
