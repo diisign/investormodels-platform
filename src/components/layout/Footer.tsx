@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
               CréatorInvest
             </Link>
             <p className="text-muted-foreground dark:text-muted-foreground mt-2">
-              La première plateforme qui vous permet d'investir dans les créatrices de contenu et de partager leur succès.
+              La première plateforme qui vous permet d'investir dans les créatrices OnlyFans et de partager leurs revenus.
             </p>
             <div className="flex space-x-4 mt-4">
               <a 
@@ -75,14 +75,6 @@ const Footer: React.FC = () => {
                   className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
                   Affiliation
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/about" 
-                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
-                >
-                  À propos
                 </Link>
               </li>
             </ul>

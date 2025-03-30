@@ -17,6 +17,11 @@ import { AuthProvider, RequireAuth } from "./utils/auth";
 import Deposit from "./pages/Deposit";
 import Profile from "./pages/Profile";
 import WebhookDebug from "./pages/WebhookDebug";
+import FAQ from "./pages/FAQ";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Cookies from "./pages/Cookies";
+import Legal from "./pages/Legal";
 
 const queryClient = new QueryClient();
 
@@ -32,8 +37,14 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/affiliation" element={<Affiliation />} />
-            <Route path="/faq" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
+            
+            {/* Legal Pages */}
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/cookies" element={<Cookies />} />
+            <Route path="/legal" element={<Legal />} />
             
             {/* Routes protégées */}
             <Route path="/dashboard" element={
