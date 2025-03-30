@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft, Star } from 'lucide-react';
@@ -31,12 +32,64 @@ const Index = () => {
 
   const slidesPerView = width < 640 ? 2 : width < 768 ? 2 : width < 1024 ? 3 : 4;
 
-  // Données fictives pour les avis Trustpilot
+  // Données fictives pour les avis Trustpilot avec des styles d'écriture variés
   const trustpilotReviews = [
-    { id: 1, name: "Sophie M.", rating: 5, comment: "Une plateforme révolutionnaire ! J'ai diversifié mon portefeuille avec des rendements impressionnants." },
-    { id: 2, name: "Thomas L.", rating: 5, comment: "Interface intuitive et support client exceptionnel. Mes investissements ont augmenté de 120% en trois mois." },
-    { id: 3, name: "Emma R.", rating: 4, comment: "Excellente plateforme pour investir dans un secteur innovant. Très satisfaite des résultats." },
-    { id: 4, name: "Lucas D.", rating: 5, comment: "Jamais je n'aurais pensé obtenir de tels rendements. Merci pour cette opportunité unique." },
+    { 
+      id: 1, 
+      name: "Sophie M.", 
+      rating: 5, 
+      comment: "Une plateforme révolutionnaire ! J'ai diversifié mon portefeuille avec des rendements impressionnants.", 
+      style: "font-normal"
+    },
+    { 
+      id: 2, 
+      name: "Thomas L.", 
+      rating: 5, 
+      comment: "Interface intuitive et support client exceptionnel. Mes investissements ont augmenté de 120% en trois mois!!! INCROYABLE", 
+      style: "font-bold"
+    },
+    { 
+      id: 3, 
+      name: "Emma R.", 
+      rating: 4, 
+      comment: "Excellente plateforme pour investir dans un secteur innovant. Très satisfaite des résultats.", 
+      style: "italic"
+    },
+    { 
+      id: 4, 
+      name: "Lucas D.", 
+      rating: 5, 
+      comment: "Jamais je n'aurais pensé obtenir de tels rendements. Merci pour cette opportunité unique.", 
+      style: "font-light"
+    },
+    { 
+      id: 5, 
+      name: "Julien M.", 
+      rating: 5, 
+      comment: "J'ADORE!!! TOP TOP TOP! Des revenus ÉNORMES après seulement quelques mois! À découvrir ABSOLUMENT!", 
+      style: "uppercase text-sm"
+    },
+    { 
+      id: 6, 
+      name: "Marie-Claire R.", 
+      rating: 4, 
+      comment: "Après quelques hésitations, j'ai franchi le pas... et je ne regrette pas du tout mon choix. Des rendements solides et réguliers.", 
+      style: "font-serif"
+    },
+    { 
+      id: 7, 
+      name: "Alexandre P.", 
+      rating: 5, 
+      comment: "trés satisfait de mon investissement, j'ai recuperer ma mise en 8 semaines seulement, je recommande fortement!!!", 
+      style: "tracking-tight"
+    },
+    { 
+      id: 8, 
+      name: "Nathalie T.", 
+      rating: 4, 
+      comment: "Service client réactif, plateforme sécurisée et rendements au rendez-vous. Que demander de plus?", 
+      style: "tracking-wide"
+    },
   ];
 
   return (
@@ -207,41 +260,41 @@ const Index = () => {
               </p>
             </FadeIn>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-              {trustpilotReviews.map((review, index) => (
-                <FadeIn 
-                  key={review.id} 
-                  className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" 
-                  direction="up" 
-                  delay={100 * index}
-                >
-                  <div className="flex items-center mb-4">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star 
-                        key={star} 
-                        className={cn(
-                          "h-4 w-4 fill-current", 
-                          star <= review.rating ? "text-[#00b67a]" : "text-gray-300 dark:text-gray-600"
-                        )} 
-                      />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">"{review.comment}"</p>
-                  <div className="text-sm font-medium">{review.name}</div>
-                </FadeIn>
-              ))}
-            </div>
-            
-            <div className="mt-10 text-center">
-              <a 
-                href="https://www.trustpilot.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-[#00b67a] hover:underline"
+            <div className="relative px-4 md:px-10 pb-12">
+              <Carousel 
+                opts={{
+                  align: "center",
+                  loop: true,
+                }}
+                className="w-full"
               >
-                Voir tous nos avis sur Trustpilot
-                <ArrowRight className="h-4 w-4 ml-1" />
-              </a>
+                <CarouselContent>
+                  {trustpilotReviews.map((review) => (
+                    <CarouselItem key={review.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                      <FadeIn 
+                        className="bg-white dark:bg-gray-800 h-full rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" 
+                        direction="up"
+                      >
+                        <div className="flex items-center mb-4">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star 
+                              key={star} 
+                              className={cn(
+                                "h-4 w-4 fill-current", 
+                                star <= review.rating ? "text-[#00b67a]" : "text-gray-300 dark:text-gray-600"
+                              )} 
+                            />
+                          ))}
+                        </div>
+                        <p className={cn("text-gray-700 dark:text-gray-300 mb-4", review.style)}>"{review.comment}"</p>
+                        <div className="text-sm font-medium mt-auto">{review.name}</div>
+                      </FadeIn>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="-left-2 md:-left-6 h-9 w-9 rounded-full" />
+                <CarouselNext className="-right-2 md:-right-6 h-9 w-9 rounded-full" />
+              </Carousel>
             </div>
           </div>
         </section>
