@@ -128,7 +128,8 @@ const CreatorDetails = () => {
     setLoading(true);
     
     try {
-      await investInCreator(creator.id, "default", amount);
+      // Fix here: Pass the user ID as the fourth argument to investInCreator
+      await investInCreator(creator.id, "default", amount, user?.id || "anonymous");
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
     } catch (error) {
