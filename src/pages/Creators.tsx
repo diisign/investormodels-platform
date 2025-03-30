@@ -8,6 +8,14 @@ import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 type SortOption = 'popularity' | 'return' | 'alphabetical';
 
@@ -16,6 +24,8 @@ const Creators = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('return'); // Default to 'return'
   const [showFilters, setShowFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -52,6 +62,19 @@ const Creators = () => {
           return defaultProfileB.returnRate - defaultProfileA.returnRate;
       }
     });
+  
+  const totalPages = Math.ceil(filteredCreators.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCreators = filteredCreators.slice(indexOfFirstItem, indexOfLastItem);
+  
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -192,7 +215,7 @@ const Creators = () => {
             </FadeIn>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredCreators.map((creator, index) => {
+              {currentCreators.map((creator, index) => {
                 const creatorProfile = getCreatorProfile(creator.id);
                 
                 return (
@@ -211,7 +234,7 @@ const Creators = () => {
               })}
             </div>
             
-            {filteredCreators.length === 0 && (
+            {currentCreators.length === 0 && (
               <FadeIn direction="up" className="text-center py-16">
                 <div className="text-gray-400 mb-3">
                   <Search className="h-12 w-12 mx-auto opacity-30" />
@@ -220,6 +243,62 @@ const Creators = () => {
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
                   Nous n'avons trouvé aucune créatrice correspondant à votre recherche. Essayez avec d'autres termes ou filtres.
                 </p>
+              </FadeIn>
+            )}
+            
+            {filteredCreators.length > 0 && (
+              <FadeIn direction="up" delay={200} className="mt-8">
+                <Pagination>
+                  <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          className="cursor-pointer"
+                        />
+                      </PaginationItem>
+                    )}
+                    
+                    {[...Array(totalPages)].map((_, i) => {
+                      const pageNumber = i + 1;
+                      if (
+                        pageNumber === 1 ||
+                        pageNumber === totalPages ||
+                        (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
+                      ) {
+                        return (
+                          <PaginationItem key={pageNumber}>
+                            <PaginationLink
+                              isActive={pageNumber === currentPage}
+                              onClick={() => handlePageChange(pageNumber)}
+                              className="cursor-pointer"
+                            >
+                              {pageNumber}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      }
+                      
+                      if (
+                        (pageNumber === currentPage - 2 && pageNumber > 2) ||
+                        (pageNumber === currentPage + 2 && pageNumber < totalPages - 1)
+                      ) {
+                        return <PaginationItem key={`ellipsis-${pageNumber}`}><span>...</span></PaginationItem>;
+                      }
+                      
+                      return null;
+                    })}
+                    
+                    {currentPage < totalPages && (
+                      <PaginationItem>
+                        <PaginationNext 
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          className="cursor-pointer"
+                        />
+                      </PaginationItem>
+                    )}
+                  </PaginationContent>
+                </Pagination>
               </FadeIn>
             )}
           </div>
