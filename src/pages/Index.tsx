@@ -39,7 +39,8 @@ const Index = () => {
     .sort((a, b) => b.returnRate - a.returnRate)
     .slice(0, 10);
 
-  const slidesPerView = width < 640 ? 2 : width < 768 ? 2 : width < 1024 ? 3 : 4;
+  // Updated slidesPerView to show 3 profiles on mobile devices
+  const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Données fictives pour les avis Trustpilot avec des styles d'écriture variés
   const trustpilotReviews = [
