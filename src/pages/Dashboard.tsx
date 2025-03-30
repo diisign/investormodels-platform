@@ -11,7 +11,7 @@ import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
-import { mockUser } from '@/utils/mockData';
+import { mockUserData } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import UserBalance from '@/components/UserBalance';
 
