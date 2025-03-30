@@ -148,7 +148,7 @@ const Index = () => {
                   Investissez dans les <span className="text-[#8B5CF6]">créatrices OnlyFans.</span>
                 </h1>
                 <p className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
-                  Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leur revenus. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
+                  Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leurs revenus. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
                 
                 <div className="pt-2">

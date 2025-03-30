@@ -158,11 +158,6 @@ const Footer: React.FC = () => {
           <p className="text-muted-foreground dark:text-muted-foreground text-sm">
             &copy; {new Date().getFullYear()} CréatorInvest. Tous droits réservés.
           </p>
-          <div className="mt-4 sm:mt-0">
-            <p className="text-muted-foreground dark:text-muted-foreground text-sm">
-              Ce site est une démonstration et ne permet pas de réels investissements.
-            </p>
-          </div>
         </div>
       </div>
     </footer>
