@@ -55,8 +55,8 @@ const Creators = () => {
         imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
         category: creator.category,
         investorsCount: creator.investorsCount,
-        // Ensure totalInvested is between 42,000 and 105,000
-        totalInvested: Math.min(105000, Math.max(42000, creator.totalInvested)),
+        // Utiliser la valeur d'investissement déjà existante
+        totalInvested: creator.totalInvested,
         monthlyRevenue: creator.monthlyRevenue,
         returnRate: profile.returnRate
       });
@@ -65,6 +65,15 @@ const Creators = () => {
     // Add additional creators from creatorProfiles that aren't already in combinedCreators
     Object.values(creatorProfiles).forEach(profile => {
       if (!combinedCreators.some(c => c.id === profile.id)) {
+        // Calculer un "total investi" rond et variable basé sur le revenu mensuel
+        const baseValue = Math.floor(profile.monthlyRevenue * 3.5);
+        
+        // Arrondir à la centaine d'euros la plus proche
+        let totalInvested = Math.round(baseValue / 1000) * 1000;
+        
+        // S'assurer que la valeur est dans la plage 42 000 - 105 000
+        totalInvested = Math.min(105000, Math.max(42000, totalInvested));
+        
         // For creators that only exist in creatorProfiles, create placeholder data
         combinedCreators.push({
           id: profile.id,
@@ -72,8 +81,7 @@ const Creators = () => {
           imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
           category: determineCategory(profile.id), // Helper function to assign random category
           investorsCount: Math.floor(profile.followers / 15),
-          // Ensure totalInvested is between 42,000 and 105,000
-          totalInvested: Math.min(105000, Math.max(42000, Math.floor(profile.monthlyRevenue * 3.5))),
+          totalInvested: totalInvested,
           monthlyRevenue: profile.monthlyRevenue,
           returnRate: profile.returnRate
         });

@@ -30,8 +30,7 @@ const CreatorCard = ({
 }: CreatorCardProps) => {
   const creatorProfile = getCreatorProfile(id);
   
-  // Ensure totalInvested is between 42,000 and 105,000
-  const validatedTotalInvested = Math.max(42000, Math.min(105000, totalInvested));
+  // Nous n'avons plus besoin de valider ici puisque la valeur est déjà dans la plage correcte
   
   return (
     <motion.div 
@@ -98,7 +97,7 @@ const CreatorCard = ({
           <div className="pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <span className="text-xs sm:text-base font-medium">Total investi</span>
-              <span className="text-xs sm:text-base font-semibold text-investment-600 dark:text-investment-400">{validatedTotalInvested.toLocaleString()}€</span>
+              <span className="text-xs sm:text-base font-semibold text-investment-600 dark:text-investment-400">{totalInvested.toLocaleString()}€</span>
             </div>
           </div>
         </div>

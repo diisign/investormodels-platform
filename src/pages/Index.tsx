@@ -37,6 +37,16 @@ const Index = () => {
   // Add creators from creatorProfiles if they're not already in allCreators
   Object.values(creatorProfiles).forEach(profile => {
     if (!allCreators.some(c => c.id === profile.id)) {
+      // Calculer un "total investi" rond et variable basé sur le revenu mensuel
+      // Cette formule donne des valeurs entre 42 000 et 105 000 selon le revenu
+      const baseValue = Math.floor(profile.monthlyRevenue * 3.5);
+      
+      // Arrondir à la centaine d'euros la plus proche
+      let totalInvested = Math.round(baseValue / 1000) * 1000;
+      
+      // S'assurer que la valeur est dans la plage 42 000 - 105 000
+      totalInvested = Math.min(105000, Math.max(42000, totalInvested));
+      
       allCreators.push({
         id: profile.id,
         name: profile.name,
@@ -45,7 +55,7 @@ const Index = () => {
         category: "Lifestyle", // Default category
         returnRate: profile.returnRate,
         investorsCount: Math.floor(profile.followers / 15),
-        totalInvested: Math.min(105000, Math.max(42000, Math.floor(profile.monthlyRevenue * 3.5))),
+        totalInvested: totalInvested,
         monthlyRevenue: profile.monthlyRevenue,
         followers: profile.followers,
         creationDate: new Date().toISOString().split('T')[0],
@@ -62,8 +72,7 @@ const Index = () => {
       return { 
         ...creator, 
         returnRate: profile.returnRate,
-        // Ensure totalInvested is between 42,000 and 105,000
-        totalInvested: Math.min(105000, Math.max(42000, creator.totalInvested))
+        totalInvested: creator.totalInvested // Conserver la valeur déjà calculée
       };
     })
     .sort((a, b) => b.returnRate - a.returnRate)
