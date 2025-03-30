@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
@@ -7,7 +8,7 @@ import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
-import { getCreatorProfile } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles } from '@/utils/creatorProfiles';
 import {
   Pagination,
   PaginationContent,
@@ -15,9 +16,22 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  PaginationEllipsis,
 } from '@/components/ui/pagination';
 
 type SortOption = 'popularity' | 'return' | 'alphabetical';
+
+// Create an interface for consolidated creator data
+interface ConsolidatedCreator {
+  id: string;
+  name: string;
+  imageUrl: string;
+  category: string;
+  investorsCount: number;
+  totalInvested: number;
+  monthlyRevenue: number;
+  returnRate: number;
+}
 
 const Creators = () => {
   const { isAuthenticated } = useAuth();
@@ -25,21 +39,69 @@ const Creators = () => {
   const [sortBy, setSortBy] = useState<SortOption>('return'); // Default to 'return'
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
   const itemsPerPage = 12;
+  
+  useEffect(() => {
+    // Combine creators from mockData and creatorProfiles
+    const combinedCreators: ConsolidatedCreator[] = [];
+    
+    // Add creators from mockData
+    creators.forEach(creator => {
+      combinedCreators.push({
+        id: creator.id,
+        name: creator.name,
+        imageUrl: creator.imageUrl,
+        category: creator.category,
+        investorsCount: creator.investorsCount,
+        totalInvested: creator.totalInvested,
+        monthlyRevenue: creator.monthlyRevenue,
+        returnRate: getCreatorProfile(creator.id).returnRate
+      });
+    });
+    
+    // Add additional creators from creatorProfiles that aren't already in combinedCreators
+    Object.values(creatorProfiles).forEach(profile => {
+      if (!combinedCreators.some(c => c.id === profile.id)) {
+        // For creators that only exist in creatorProfiles, create placeholder data
+        combinedCreators.push({
+          id: profile.id,
+          name: profile.name,
+          imageUrl: `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
+          category: determineCategory(profile.id), // Helper function to assign random category
+          investorsCount: Math.floor(profile.followers / 15),
+          totalInvested: Math.floor(profile.monthlyRevenue * 2.5),
+          monthlyRevenue: profile.monthlyRevenue,
+          returnRate: profile.returnRate
+        });
+      }
+    });
+    
+    setAllCreators(combinedCreators);
+  }, []);
+  
+  // Helper function to deterministically assign a category based on creator ID
+  const determineCategory = (id: string): string => {
+    const categories = ['Fitness', 'Lifestyle', 'Mode', 'Photographie', 'Cuisine', 'Tech'];
+    const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return categories[sum % categories.length];
+  };
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page on new search
   };
   
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
+    setCurrentPage(1); // Reset to first page on new sort
   };
   
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
   
-  const filteredCreators = creators
+  const filteredCreators = allCreators
     .filter(creator => {
       const matchesSearch = creator.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            creator.category.toLowerCase().includes(searchTerm.toLowerCase());
@@ -51,15 +113,11 @@ const Creators = () => {
         case 'popularity':
           return b.investorsCount - a.investorsCount;
         case 'return':
-          const profileA = getCreatorProfile(a.id);
-          const profileB = getCreatorProfile(b.id);
-          return profileB.returnRate - profileA.returnRate;
+          return b.returnRate - a.returnRate;
         case 'alphabetical':
           return a.name.localeCompare(b.name);
         default:
-          const defaultProfileA = getCreatorProfile(a.id);
-          const defaultProfileB = getCreatorProfile(b.id);
-          return defaultProfileB.returnRate - defaultProfileA.returnRate;
+          return b.returnRate - a.returnRate;
       }
     });
   
@@ -215,23 +273,19 @@ const Creators = () => {
             </FadeIn>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {currentCreators.map((creator, index) => {
-                const creatorProfile = getCreatorProfile(creator.id);
-                
-                return (
-                  <FadeIn key={creator.id} direction="up" delay={100 + (index % 8) * 50}>
-                    <CreatorCard
-                      id={creator.id}
-                      name={creator.name}
-                      imageUrl={creator.imageUrl}
-                      category={creator.category}
-                      investorsCount={creator.investorsCount}
-                      totalInvested={creator.totalInvested}
-                      monthlyRevenue={creatorProfile.monthlyRevenue}
-                    />
-                  </FadeIn>
-                );
-              })}
+              {currentCreators.map((creator, index) => (
+                <FadeIn key={creator.id} direction="up" delay={100 + (index % 8) * 50}>
+                  <CreatorCard
+                    id={creator.id}
+                    name={creator.name}
+                    imageUrl={creator.imageUrl}
+                    category={creator.category}
+                    investorsCount={creator.investorsCount}
+                    totalInvested={creator.totalInvested}
+                    monthlyRevenue={creator.monthlyRevenue}
+                  />
+                </FadeIn>
+              ))}
             </div>
             
             {currentCreators.length === 0 && (
@@ -283,7 +337,7 @@ const Creators = () => {
                         (pageNumber === currentPage - 2 && pageNumber > 2) ||
                         (pageNumber === currentPage + 2 && pageNumber < totalPages - 1)
                       ) {
-                        return <PaginationItem key={`ellipsis-${pageNumber}`}><span>...</span></PaginationItem>;
+                        return <PaginationItem key={`ellipsis-${pageNumber}`}><PaginationEllipsis /></PaginationItem>;
                       }
                       
                       return null;
