@@ -57,7 +57,6 @@ export interface Transaction {
   description: string;
 }
 
-// Mock creators data
 export const creators: Creator[] = [
   {
     id: 'creator1',
@@ -883,10 +882,64 @@ export const creators: Creator[] = [
         popularity: 'low'
       }
     ]
+  },
+  {
+    id: 'creator16',
+    name: 'Sophia Rose 💫',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/z/zr/zrv/zrv1j9rljjc6hfcjpydcetuwsgyeqpwr1724532862/351296775/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop',
+    category: 'Lifestyle',
+    returnRate: 12.8,
+    investorsCount: 318,
+    totalInvested: 63500,
+    monthlyRevenue: 22000,
+    followers: 430000,
+    creationDate: '2021-05-18',
+    description: "Créatrice de contenu lifestyle et voyages. Mes revenus proviennent principalement de mes collaborations avec des marques de luxe et de mes contenus exclusifs sur le voyage et le bien-être.",
+    plans: [
+      {
+        id: 'plan16-1',
+        name: 'Découverte',
+        returnRate: 8.7,
+        minInvestment: 175,
+        duration: 3,
+        benefits: [
+          'Rapport trimestriel',
+          'Accès au contenu exclusif'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan16-2',
+        name: 'Voyageur',
+        returnRate: 12.8,
+        minInvestment: 675,
+        duration: 6,
+        benefits: [
+          'Rapport mensuel détaillé',
+          'Conseils voyage personnalisés',
+          'Remises sur les produits partenaires'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan16-3',
+        name: 'Globe-trotter',
+        returnRate: 16.3,
+        minInvestment: 1350,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation lifestyle complète',
+          'Accès aux événements VIP',
+          'Produits exclusifs offerts'
+        ],
+        popularity: 'low'
+      }
+    ]
   }
 ];
 
-// Function to simulate authentication
 export let isAuthenticated = false;
 let currentUser: User | null = null;
 
@@ -1038,7 +1091,6 @@ export const investInCreator = (creatorId: string, planId: string, amount: numbe
   });
 };
 
-// Mock user data
 export const mockUser: User = {
   id: 'user1',
   email: 'user@example.com',

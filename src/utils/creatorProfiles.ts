@@ -145,6 +145,15 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     followers: 6330,
     minRevenue: 69850,
     maxRevenue: 120350
+  },
+  "creator16": {
+    id: "creator16",
+    name: "Sophia Rose 💫",
+    monthlyRevenue: 57800,
+    returnRate: 105,
+    followers: 3853,
+    minRevenue: 42500,
+    maxRevenue: 79000
   }
 };
 
