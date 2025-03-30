@@ -58,6 +58,62 @@ export interface Transaction {
   description: string;
 }
 
+// Function to invest in a creator
+export const investInCreator = (
+  user: User, 
+  creatorId: string, 
+  planId: string, 
+  amount: number
+): User => {
+  // Find the creator and plan
+  const creator = creators.find(c => c.id === creatorId);
+  if (!creator) throw new Error("Creator not found");
+  
+  const plan = creator.plans.find(p => p.id === planId);
+  if (!plan) throw new Error("Plan not found");
+  
+  // Check if user has enough balance
+  if (user.balance < amount) throw new Error("Insufficient balance");
+  
+  const now = new Date();
+  const endDate = new Date(now);
+  endDate.setMonth(now.getMonth() + plan.duration);
+  
+  // Create new investment
+  const newInvestment: Investment = {
+    id: `inv${user.investments.length + 1}`,
+    creatorId,
+    creatorName: creator.name,
+    creatorImage: creator.imageUrl,
+    planId,
+    planName: plan.name,
+    amount,
+    returnRate: plan.returnRate,
+    startDate: now.toISOString().split('T')[0],
+    endDate: endDate.toISOString().split('T')[0],
+    status: 'active',
+    earnings: 0
+  };
+  
+  // Create transaction record
+  const newTransaction: Transaction = {
+    id: `tx${user.transactions.length + 1}`,
+    type: 'investment',
+    amount,
+    date: now.toISOString().split('T')[0],
+    status: 'completed',
+    description: `Investissement dans ${creator.name} - Plan ${plan.name}`
+  };
+  
+  // Update user data
+  return {
+    ...user,
+    balance: user.balance - amount,
+    investments: [...user.investments, newInvestment],
+    transactions: [...user.transactions, newTransaction]
+  };
+};
+
 export const creators: Creator[] = [
   {
     id: 'creator1',
