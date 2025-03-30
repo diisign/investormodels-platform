@@ -15,17 +15,32 @@ export interface CreatorCardProps {
   totalInvested: number;
   className?: string;
   monthlyRevenue?: number;
+  rank?: number;
 }
 
-const CreatorCard = ({ id, imageUrl, category, investorsCount, totalInvested, monthlyRevenue, className = '' }: CreatorCardProps) => {
+const CreatorCard = ({ 
+  id, 
+  imageUrl, 
+  category, 
+  investorsCount, 
+  totalInvested, 
+  monthlyRevenue, 
+  className = '',
+  rank 
+}: CreatorCardProps) => {
   const creatorProfile = getCreatorProfile(id);
   
   return (
     <motion.div 
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
-      className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
+      className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative`}
     >
+      {rank !== undefined && (
+        <div className="absolute top-2 left-2 z-10 h-7 w-7 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 flex items-center justify-center text-white font-bold text-sm shadow-md">
+          {rank}
+        </div>
+      )}
       <Link to={`/creator/${id}`} className="block h-full">
         <div className="relative p-4">
           <div className="flex flex-col items-center mb-4">

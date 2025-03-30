@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft, Star } from 'lucide-react';
@@ -220,6 +219,7 @@ const Index = () => {
                               investorsCount={creator.investorsCount}
                               totalInvested={creator.totalInvested}
                               monthlyRevenue={creatorProfile.monthlyRevenue}
+                              rank={index + 1}
                             />
                           </div>
                         </CarouselItem>
