@@ -302,7 +302,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     followers: 4387,
     minRevenue: 44000,
     maxRevenue: 83000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lv/lvi/lviitmbx2pppksgphr5kk2vh5tmwzo1w1704302300/6793248/avatar.jpg" // Réutilisation d'une image
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/l9/l9x/l9xmlchxkcd4qlxzgvv2rthxmcy927sl1716795807/50366283/avatar.jpg"
   }
 };
 
