@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -14,7 +13,7 @@ import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
-import { getCreatorProfile, generateMonthlyPerformanceData } from '@/utils/creatorProfiles';
+import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles } from '@/utils/creatorProfiles';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 
@@ -27,9 +26,13 @@ const CreatorDetails = () => {
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
   
-  const creator = creators.find(c => c.id === creatorId);
+  const mockCreator = creators.find(c => c.id === creatorId);
+  
+  const profileExists = creatorId && creatorProfiles[creatorId];
   
   const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
+  
+  const creatorExists = !!mockCreator || !!profileExists;
   
   const { data: userBalance = 0 } = useQuery({
     queryKey: ['userBalance', user?.id],
@@ -67,20 +70,18 @@ const CreatorDetails = () => {
     refetchOnWindowFocus: true,
   });
   
-  // Calculate estimated return when investment amount changes
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
-      // Calculate return for 3 months
-      const monthlyReturnRate = creatorProfile.returnRate / 100 / 12; // Convert annual rate to monthly
+      const monthlyReturnRate = creatorProfile.returnRate / 100 / 12;
       const investmentValue = parseFloat(investmentAmount);
-      const threeMonthReturn = investmentValue * monthlyReturnRate * 3; // Return over 3 months
+      const threeMonthReturn = investmentValue * monthlyReturnRate * 3;
       setEstimatedReturn(threeMonthReturn);
     } else {
       setEstimatedReturn(0);
     }
   }, [investmentAmount, creatorProfile]);
   
-  if (!creator) {
+  if (!creatorExists || !creatorProfile) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
@@ -99,6 +100,20 @@ const CreatorDetails = () => {
       </div>
     );
   }
+  
+  const creator = mockCreator || {
+    id: creatorProfile.id,
+    name: creatorProfile.name,
+    imageUrl: creatorProfile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`,
+    category: "Lifestyle",
+    returnRate: creatorProfile.returnRate / 10,
+    investorsCount: Math.floor(creatorProfile.followers / 15),
+    totalInvested: Math.floor(creatorProfile.monthlyRevenue * 3.5),
+    monthlyRevenue: creatorProfile.monthlyRevenue,
+    followers: creatorProfile.followers,
+    creationDate: new Date(Date.now() - Math.random() * 126144000000).toISOString(),
+    coverImageUrl: 'https://images.unsplash.com/photo-1579762593131-b8945254345c?q=80&w=2071&auto=format&fit=crop'
+  };
   
   const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
   
@@ -165,18 +180,22 @@ const CreatorDetails = () => {
                 <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white overflow-hidden shadow-xl">
                   <img 
                     src={creator.imageUrl} 
-                    alt={creatorProfile?.name || creator.name} 
+                    alt={creatorProfile.name} 
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
+                    }}
                   />
                 </div>
               </FadeIn>
               
               <FadeIn direction="up" delay={100} className="flex-grow">
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile?.name || creator.name}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
                 <div className="flex flex-wrap gap-6 mt-4">
                   <div className="flex items-center">
                     <Users className="h-5 w-5 mr-2 text-purple-500" />
-                    <span>{creatorProfile?.followers.toLocaleString() || 0} followers</span>
+                    <span>{creatorProfile.followers.toLocaleString() || 0} followers</span>
                   </div>
                   <div className="flex items-center">
                     <Calendar className="h-5 w-5 mr-2 text-purple-500" />
