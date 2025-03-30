@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -66,11 +67,13 @@ const CreatorDetails = () => {
     refetchOnWindowFocus: true,
   });
   
+  // Calculate estimated return when investment amount changes
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
-      const monthlyReturnRate = creatorProfile.returnRate / 100 / 12;
+      // Calculate return for 3 months
+      const monthlyReturnRate = creatorProfile.returnRate / 100 / 12; // Convert annual rate to monthly
       const investmentValue = parseFloat(investmentAmount);
-      const threeMonthReturn = investmentValue * monthlyReturnRate * 3;
+      const threeMonthReturn = investmentValue * monthlyReturnRate * 3; // Return over 3 months
       setEstimatedReturn(threeMonthReturn);
     } else {
       setEstimatedReturn(0);
@@ -125,7 +128,7 @@ const CreatorDetails = () => {
     setLoading(true);
     
     try {
-      await investInCreator(creator.id, "default", amount, user?.id || "anonymous");
+      await investInCreator(creator.id, "default", amount);
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
     } catch (error) {
