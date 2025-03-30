@@ -388,14 +388,20 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
 
 // Fonction pour calculer le "total investi" de manière cohérente
 export const calculateTotalInvested = (monthlyRevenue: number): number => {
-  // Utiliser une formule basée sur le revenu mensuel
-  const baseValue = Math.floor(monthlyRevenue * 3.5);
+  // Generate a random number between 32,000 and 99,900
+  const minValue = 32000;
+  const maxValue = 99900;
   
-  // Arrondir à la centaine d'euros la plus proche
-  let totalInvested = Math.round(baseValue / 1000) * 1000;
+  // Use the monthly revenue as a seed to ensure consistency for the same creator
+  const seed = monthlyRevenue % 10000;
+  const randomFactor = (seed / 10000) * 0.5 + 0.25; // This will give a value between 0.25 and 0.75
   
-  // S'assurer que la valeur est dans la plage 42 000 - 105 000
-  totalInvested = Math.min(105000, Math.max(42000, totalInvested));
+  // Calculate total invested based on the random factor and our min/max range
+  const range = maxValue - minValue;
+  let totalInvested = Math.round(minValue + (range * randomFactor));
+  
+  // Ensure the value is rounded to the nearest 100
+  totalInvested = Math.round(totalInvested / 100) * 100;
   
   return totalInvested;
 };
