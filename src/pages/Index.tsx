@@ -41,6 +41,7 @@ const Index = () => {
         id: profile.id,
         name: profile.name,
         imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
+        coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop', // Default cover image
         category: "Lifestyle", // Default category
         returnRate: profile.returnRate,
         investorsCount: Math.floor(profile.followers / 15),
