@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -28,15 +27,15 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return `bg-gradient-${gradientDirection} from-violet-500 to-purple-600 text-white hover:shadow-lg hover:shadow-violet-200/50 focus:ring-violet-400/50`; // Mis à jour pour une teinte violette
+        return `bg-gradient-${gradientDirection} from-violet-600 to-purple-700 text-white hover:shadow-lg hover:shadow-violet-200/50 focus:ring-violet-400/50`;
       case 'secondary':
         return `bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 hover:shadow-md focus:ring-gray-400/50`;
       case 'outline':
-        return `bg-transparent border border-violet-400 text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:ring-violet-400/50`; // Mis à jour pour une teinte violette
+        return `bg-transparent border border-violet-400 text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:ring-violet-400/50`;
       case 'ghost':
-        return `bg-transparent text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:ring-violet-400/50`; // Mis à jour pour une teinte violette
+        return `bg-transparent text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:ring-violet-400/50`;
       default:
-        return `bg-gradient-${gradientDirection} from-violet-500 to-purple-600 text-white hover:shadow-lg hover:shadow-violet-200/50 focus:ring-violet-400/50`; // Mis à jour pour une teinte violette
+        return `bg-gradient-${gradientDirection} from-violet-600 to-purple-700 text-white hover:shadow-lg hover:shadow-violet-200/50 focus:ring-violet-400/50`;
     }
   };
 

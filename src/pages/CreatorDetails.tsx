@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -73,11 +72,11 @@ const CreatorDetails = () => {
   
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
-      // Correction du calcul du rendement estimé
-      const returnRate = creatorProfile.returnRate / 100;  // Convertir pourcentage en décimal
+      const annualRate = creatorProfile.returnRate / 100;  // Convertir pourcentage en décimal
       const investmentValue = parseFloat(investmentAmount);
-      // Rendement sur 3 mois = montant investi * taux de rendement annuel / 4 (trimestre)
-      const threeMonthReturn = investmentValue * (returnRate / 4);
+      
+      const threeMonthReturn = investmentValue * annualRate * (3/12);
+      
       setEstimatedReturn(threeMonthReturn);
     } else {
       setEstimatedReturn(0);
@@ -320,7 +319,7 @@ const CreatorDetails = () => {
                         fullWidth 
                         size="lg"
                         onClick={openInvestModal}
-                        variant="primary"  // Assurons-nous d'utiliser le variant primary
+                        variant="primary"
                       >
                         Investir maintenant
                       </GradientButton>
@@ -480,7 +479,7 @@ const CreatorDetails = () => {
                   </button>
                   <GradientButton 
                     type="submit"
-                    variant="primary"  // Utilisons le variant primary
+                    variant="primary"
                     disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > userBalance}
                   >
                     {loading ? 'Traitement...' : 'Confirmer l\'investissement'}
