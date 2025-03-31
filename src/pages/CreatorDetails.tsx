@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -75,8 +76,11 @@ const CreatorDetails = () => {
       const investmentValue = parseFloat(investmentAmount);
       const annualRate = creatorProfile.returnRate; // Taux annuel en pourcentage
       
-      const threeMonthRate = annualRate * (3/12);
-      const threeMonthGain = (investmentValue * threeMonthRate) / 100;
+      // Pour 3 mois: annualRate% * 3/12 = annualRate * 0.25
+      // Par exemple, si annualRate est 90%, alors 90 * 0.25 = 22.5%
+      // Et 22.5% de 100€ = 22.5€
+      const threeMonthPercentage = annualRate * 0.25; // 3/12 = 0.25 (3 mois)
+      const threeMonthGain = (investmentValue * threeMonthPercentage) / 100;
       
       setEstimatedReturn(threeMonthGain);
     } else {
