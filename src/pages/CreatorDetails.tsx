@@ -75,14 +75,8 @@ const CreatorDetails = () => {
       const investmentValue = parseFloat(investmentAmount);
       const annualRate = creatorProfile.returnRate; // Taux annuel en pourcentage
       
-      // Calcul pour 3 mois
-      // Pour un taux annuel de 130%, le taux sur 3 mois est de 130% * 3/12 = 32.5%
       const threeMonthRate = annualRate * (3/12);
-      
-      // Calcul du gain sur 3 mois
-      // Si 120% de 100€ = 120€, alors pour 32.5% de rendement sur 100€:
-      // 100€ * 32.5/100 = 32.5€ de gain
-      const threeMonthGain = investmentValue * (threeMonthRate/100);
+      const threeMonthGain = (investmentValue * threeMonthRate) / 100;
       
       setEstimatedReturn(threeMonthGain);
     } else {
@@ -327,7 +321,7 @@ const CreatorDetails = () => {
                         size="lg"
                         onClick={openInvestModal}
                         variant="primary"
-                        className="bg-gradient-to-r from-violet-800 to-purple-950 shadow-xl hover:shadow-violet-400/40 transition-all duration-300"
+                        className="bg-gradient-to-r from-violet-800 to-purple-950 shadow-xl hover:shadow-2xl hover:shadow-violet-400/40 transition-all duration-300"
                       >
                         Investir maintenant
                       </GradientButton>
@@ -488,7 +482,7 @@ const CreatorDetails = () => {
                   <GradientButton 
                     type="submit"
                     variant="primary"
-                    className="bg-gradient-to-r from-violet-800 to-purple-950 shadow-xl hover:shadow-violet-400/40 transition-all duration-300"
+                    className="bg-gradient-to-r from-violet-800 to-purple-950 shadow-xl hover:shadow-2xl hover:shadow-violet-400/40 transition-all duration-300"
                     disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > userBalance}
                   >
                     {loading ? 'Traitement...' : 'Confirmer l\'investissement'}

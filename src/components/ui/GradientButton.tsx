@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -27,7 +28,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return `bg-gradient-${gradientDirection} from-violet-800 to-purple-950 text-white hover:shadow-xl hover:shadow-violet-400/40 focus:ring-violet-500/50 shadow-xl`;
+        return `bg-gradient-${gradientDirection} from-violet-800 to-purple-950 text-white hover:shadow-2xl hover:shadow-violet-400/40 focus:ring-violet-500/50 shadow-xl`;
       case 'secondary':
         return `bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 hover:shadow-md focus:ring-gray-400/50`;
       case 'outline':
@@ -35,7 +36,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
       case 'ghost':
         return `bg-transparent text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:ring-violet-400/50`;
       default:
-        return `bg-gradient-${gradientDirection} from-violet-800 to-purple-950 text-white hover:shadow-xl hover:shadow-violet-400/40 focus:ring-violet-500/50 shadow-xl`;
+        return `bg-gradient-${gradientDirection} from-violet-800 to-purple-950 text-white hover:shadow-2xl hover:shadow-violet-400/40 focus:ring-violet-500/50 shadow-xl`;
     }
   };
 
