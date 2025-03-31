@@ -321,7 +321,8 @@ const CreatorDetails = () => {
                         size="lg"
                         onClick={openInvestModal}
                         variant="primary"
-                        className="bg-gradient-to-r from-violet-800 to-purple-950 shadow-xl hover:shadow-2xl hover:shadow-violet-400/40 transition-all duration-300"
+                        gradientDirection="to-r"
+                        className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300"
                       >
                         Investir maintenant
                       </GradientButton>
@@ -482,7 +483,8 @@ const CreatorDetails = () => {
                   <GradientButton 
                     type="submit"
                     variant="primary"
-                    className="bg-gradient-to-r from-violet-800 to-purple-950 shadow-xl hover:shadow-2xl hover:shadow-violet-400/40 transition-all duration-300"
+                    gradientDirection="to-r"
+                    className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-lg transition-all duration-300"
                     disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > userBalance}
                   >
                     {loading ? 'Traitement...' : 'Confirmer l\'investissement'}
