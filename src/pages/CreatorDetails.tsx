@@ -72,10 +72,11 @@ const CreatorDetails = () => {
   
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
-      const annualRate = creatorProfile.returnRate / 100;  // Convertir pourcentage en décimal
+      const annualRateGain = creatorProfile.returnRate / 100;  // Convertir pourcentage en décimal
       const investmentValue = parseFloat(investmentAmount);
       
-      const threeMonthReturn = investmentValue * annualRate * (3/12);
+      const threeMonthReturnRate = annualRateGain * (3/12);
+      const threeMonthReturn = investmentValue * threeMonthReturnRate;
       
       setEstimatedReturn(threeMonthReturn);
     } else {
@@ -320,6 +321,7 @@ const CreatorDetails = () => {
                         size="lg"
                         onClick={openInvestModal}
                         variant="primary"
+                        className="bg-gradient-to-r from-violet-600 to-purple-800 shadow-md"
                       >
                         Investir maintenant
                       </GradientButton>
@@ -480,6 +482,7 @@ const CreatorDetails = () => {
                   <GradientButton 
                     type="submit"
                     variant="primary"
+                    className="bg-gradient-to-r from-violet-600 to-purple-800 shadow-md"
                     disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > userBalance}
                   >
                     {loading ? 'Traitement...' : 'Confirmer l\'investissement'}

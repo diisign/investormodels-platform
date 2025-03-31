@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-violet-600 text-white hover:bg-violet-700/90", // Couleur plus foncée pour correspondre au dégradé
+        default: "bg-violet-600 text-white hover:bg-violet-700/90 shadow-sm hover:shadow-md", // Ajout de shadow
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -18,7 +18,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-violet-600 underline-offset-4 hover:underline", // Mise à jour pour être cohérent
+        link: "text-violet-600 underline-offset-4 hover:underline",
         image: "bg-transparent p-0 aspect-square overflow-hidden border-0 rounded-full hover:opacity-80 transition-opacity",
       },
       size: {
