@@ -72,13 +72,21 @@ const CreatorDetails = () => {
   
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
-      const annualRateGain = creatorProfile.returnRate / 100;  // Convertir pourcentage en décimal
       const investmentValue = parseFloat(investmentAmount);
+      const annualRate = creatorProfile.returnRate; // Taux annuel en pourcentage
       
-      const threeMonthReturnRate = annualRateGain * (3/12);
-      const threeMonthReturn = investmentValue * threeMonthReturnRate;
+      // Calcul pour 3 mois (un quart d'année)
+      // Si le taux annuel est de 120%, alors pour 3 mois c'est 30% (120% * 3/12)
+      const threeMonthRate = annualRate * (3/12);
       
-      setEstimatedReturn(threeMonthReturn);
+      // Le montant total après 3 mois est l'investissement initial + le gain
+      // Exemple: 100€ avec 30% de rendement sur 3 mois = 130€ (100€ + 30€)
+      const totalAfterThreeMonths = investmentValue * (1 + threeMonthRate/100);
+      
+      // Le gain est la différence entre le montant après 3 mois et l'investissement initial
+      const threeMonthGain = totalAfterThreeMonths - investmentValue;
+      
+      setEstimatedReturn(threeMonthGain);
     } else {
       setEstimatedReturn(0);
     }
@@ -321,7 +329,7 @@ const CreatorDetails = () => {
                         size="lg"
                         onClick={openInvestModal}
                         variant="primary"
-                        className="bg-gradient-to-r from-violet-600 to-purple-800 shadow-md"
+                        className="bg-gradient-to-r from-violet-700 to-purple-900 shadow-lg hover:shadow-violet-300/30 transition-all duration-300"
                       >
                         Investir maintenant
                       </GradientButton>
@@ -444,7 +452,7 @@ const CreatorDetails = () => {
                   </p>
                 </div>
                 
-                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800/30">
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
                   <h3 className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Estimation du rendement (3 mois)</h3>
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Taux de rendement:</span>
@@ -482,7 +490,7 @@ const CreatorDetails = () => {
                   <GradientButton 
                     type="submit"
                     variant="primary"
-                    className="bg-gradient-to-r from-violet-600 to-purple-800 shadow-md"
+                    className="bg-gradient-to-r from-violet-700 to-purple-900 shadow-lg hover:shadow-violet-300/30 transition-all duration-300"
                     disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > userBalance}
                   >
                     {loading ? 'Traitement...' : 'Confirmer l\'investissement'}
