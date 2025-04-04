@@ -29,18 +29,18 @@ const generateRealisticData = () => {
   ];
   
   // Divide investment equally among creators
-  const investmentPerCreator = initialInvestment / 4;
+  const investmentPerCreator = initialInvestment / 4; // 50€ per creator
   
   // Calculate returns for each creator after 12 months (4 quarters)
   const portfolioData = creators.map(creator => {
-    // Calculate compound return over 4 quarters
-    // For example, 130% quarterly return means *1.30 each quarter
-    const returnMultiplier = creator.returnRate / 100;
+    // Calculate quarterly returns - correctly implemented
+    // 130% return means multiplying by 1.30 each quarter
+    const quarterlyMultiplier = creator.returnRate / 100;
     let amount = investmentPerCreator;
     
-    // Compound over 4 quarters
+    // Apply compound quarterly return over 4 quarters
     for (let i = 0; i < 4; i++) {
-      amount = amount * returnMultiplier;
+      amount = amount * quarterlyMultiplier;
     }
     
     return {
@@ -52,32 +52,41 @@ const generateRealisticData = () => {
     };
   });
   
-  // Calculate total returns
+  // Calculate total final value and earnings
   const totalValue = portfolioData.reduce((sum, item) => sum + item.value, 0);
   const totalEarnings = totalValue - initialInvestment;
   
   // Generate performance data (monthly growth)
-  const startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 11); // Start 12 months ago
-  
   const performanceData = [];
   let cumulativeValue = initialInvestment;
+  
+  // Start date 12 months ago
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - 11);
   
   for (let i = 0; i < 12; i++) {
     const currentDate = new Date(startDate);
     currentDate.setMonth(currentDate.getMonth() + i);
     
-    // Apply quarterly returns
-    if (i % 3 === 0 && i > 0) {
-      portfolioData.forEach(creator => {
-        const portion = (creator.initial / initialInvestment) * cumulativeValue;
-        const quarterlyReturn = portion * (creator.returnRate / 100 - 1);
-        cumulativeValue += quarterlyReturn;
+    // Apply quarterly returns at months 3, 6, 9, and 12
+    if (i % 3 === 2) { // Month indices 2, 5, 8, 11 (representing months 3, 6, 9, 12)
+      let newCumulativeValue = 0;
+      
+      // Apply each creator's quarterly return to their portion of the investment
+      creators.forEach((creator, index) => {
+        const creatorPortion = i === 0 ? 
+          investmentPerCreator : 
+          (portfolioData[index].initial / initialInvestment) * cumulativeValue;
+          
+        const quarterlyMultiplier = creator.returnRate / 100;
+        newCumulativeValue += creatorPortion * quarterlyMultiplier;
       });
+      
+      cumulativeValue = newCumulativeValue;
     }
     
-    // Add some small random fluctuation for visual interest
-    const randomFluctuation = cumulativeValue * (Math.random() * 0.05 - 0.025);
+    // Add small random fluctuation for visual interest (smaller now for more realistic curve)
+    const randomFluctuation = cumulativeValue * (Math.random() * 0.03 - 0.015);
     const monthValue = cumulativeValue + randomFluctuation;
     
     performanceData.push({
@@ -98,8 +107,7 @@ const generateRealisticData = () => {
     status: 'active'
   }));
   
-  // Generate random transactions based on the investment history
-  const transactionTypes = ['deposit', 'investment', 'earning'];
+  // Generate transactions based on the investment history
   const transactions = [
     // Initial deposit
     {
@@ -119,39 +127,60 @@ const generateRealisticData = () => {
       status: 'completed',
       description: `Investissement - ${creator.name}`
     })),
-    // Some earnings
-    ...creators.map((creator, index) => ({
-      id: String(index + 6),
-      type: 'earning',
-      amount: parseFloat((investmentPerCreator * (creator.returnRate / 100 - 1)).toFixed(2)),
-      date: '15/7/2024',
-      status: 'completed',
-      description: `Gains T1 - ${creator.name}`
-    })),
-    ...creators.map((creator, index) => ({
-      id: String(index + 10),
-      type: 'earning',
-      amount: parseFloat((investmentPerCreator * (creator.returnRate / 100 - 1) * 1.1).toFixed(2)),
-      date: '15/10/2024',
-      status: 'completed',
-      description: `Gains T2 - ${creator.name}`
-    })),
-    ...creators.map((creator, index) => ({
-      id: String(index + 14),
-      type: 'earning',
-      amount: parseFloat((investmentPerCreator * (creator.returnRate / 100 - 1) * 1.2).toFixed(2)),
-      date: '15/1/2025',
-      status: 'completed',
-      description: `Gains T3 - ${creator.name}`
-    })),
-    {
-      id: '18',
-      type: 'earning',
-      amount: parseFloat((totalEarnings * 0.25).toFixed(2)),
-      date: '1/4/2025',
-      status: 'pending',
-      description: 'Gains T4 - Tous les créateurs'
-    }
+    // Quarterly earnings - Q1
+    ...creators.map((creator, index) => {
+      const q1Return = investmentPerCreator * (creator.returnRate / 100) - investmentPerCreator;
+      return {
+        id: String(index + 6),
+        type: 'earning',
+        amount: parseFloat(q1Return.toFixed(2)),
+        date: '12/7/2024',
+        status: 'completed',
+        description: `Gains T1 - ${creator.name}`
+      };
+    }),
+    // Quarterly earnings - Q2
+    ...creators.map((creator, index) => {
+      const q1Value = investmentPerCreator * (creator.returnRate / 100);
+      const q2Return = q1Value * (creator.returnRate / 100) - q1Value;
+      return {
+        id: String(index + 10),
+        type: 'earning',
+        amount: parseFloat(q2Return.toFixed(2)),
+        date: '12/10/2024',
+        status: 'completed',
+        description: `Gains T2 - ${creator.name}`
+      };
+    }),
+    // Quarterly earnings - Q3
+    ...creators.map((creator, index) => {
+      const q1Value = investmentPerCreator * (creator.returnRate / 100);
+      const q2Value = q1Value * (creator.returnRate / 100);
+      const q3Return = q2Value * (creator.returnRate / 100) - q2Value;
+      return {
+        id: String(index + 14),
+        type: 'earning',
+        amount: parseFloat(q3Return.toFixed(2)),
+        date: '12/1/2025',
+        status: 'completed',
+        description: `Gains T3 - ${creator.name}`
+      };
+    }),
+    // Quarterly earnings - Q4
+    ...creators.map((creator, index) => {
+      const q1Value = investmentPerCreator * (creator.returnRate / 100);
+      const q2Value = q1Value * (creator.returnRate / 100);
+      const q3Value = q2Value * (creator.returnRate / 100);
+      const q4Return = q3Value * (creator.returnRate / 100) - q3Value;
+      return {
+        id: String(index + 18),
+        type: 'earning',
+        amount: parseFloat(q4Return.toFixed(2)),
+        date: '12/4/2025',
+        status: 'pending',
+        description: `Gains T4 - ${creator.name}`
+      };
+    })
   ];
   
   // Generate referral data
@@ -168,8 +197,8 @@ const generateRealisticData = () => {
     recentReferrals: []
   };
   
-  // Current balance is initial investment + total earnings
-  const balance = parseFloat((initialInvestment + totalEarnings).toFixed(2));
+  // Calculate final balance
+  const balance = parseFloat(totalValue.toFixed(2));
   
   return {
     performanceData,
