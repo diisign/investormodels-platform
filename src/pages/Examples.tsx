@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -22,10 +21,10 @@ const generateRealisticData = () => {
   // Four creators with their specific returns (130%, 120%, 115%, 125%)
   // Each return is applied quarterly (every 3 months)
   const creators = [
-    { name: 'Sophia Martinez', returnRate: 130, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' },
-    { name: 'Emma Wilson', returnRate: 120, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' },
-    { name: 'Kayla Smith', returnRate: 115, imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' },
-    { name: 'Lala Avi', returnRate: 125, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' }
+    { name: 'Sophia Martinez', returnRate: 1.30, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' },
+    { name: 'Emma Wilson', returnRate: 1.20, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' },
+    { name: 'Kayla Smith', returnRate: 1.15, imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' },
+    { name: 'Lala Avi', returnRate: 1.25, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' }
   ];
   
   // Divide investment equally among creators
@@ -33,14 +32,12 @@ const generateRealisticData = () => {
   
   // Calculate returns for each creator after 12 months (4 quarters)
   const portfolioData = creators.map(creator => {
-    // Calculate quarterly returns - correctly implemented
-    // 130% return means multiplying by 1.30 each quarter
-    const quarterlyMultiplier = creator.returnRate / 100;
+    // Calculate quarterly returns
     let amount = investmentPerCreator;
     
     // Apply compound quarterly return over 4 quarters
     for (let i = 0; i < 4; i++) {
-      amount = amount * quarterlyMultiplier;
+      amount = amount * creator.returnRate;
     }
     
     return {
@@ -48,7 +45,7 @@ const generateRealisticData = () => {
       value: parseFloat(amount.toFixed(2)),
       initial: investmentPerCreator,
       imageUrl: creator.imageUrl,
-      returnRate: creator.returnRate
+      returnRate: Math.round((creator.returnRate - 1) * 100) // Convert back to percentage for display
     };
   });
   
@@ -78,8 +75,7 @@ const generateRealisticData = () => {
           investmentPerCreator : 
           (portfolioData[index].initial / initialInvestment) * cumulativeValue;
           
-        const quarterlyMultiplier = creator.returnRate / 100;
-        newCumulativeValue += creatorPortion * quarterlyMultiplier;
+        newCumulativeValue += creatorPortion * creator.returnRate;
       });
       
       cumulativeValue = newCumulativeValue;
@@ -129,7 +125,7 @@ const generateRealisticData = () => {
     })),
     // Quarterly earnings - Q1
     ...creators.map((creator, index) => {
-      const q1Return = investmentPerCreator * (creator.returnRate / 100) - investmentPerCreator;
+      const q1Return = investmentPerCreator * creator.returnRate - investmentPerCreator;
       return {
         id: String(index + 6),
         type: 'earning',
@@ -141,8 +137,8 @@ const generateRealisticData = () => {
     }),
     // Quarterly earnings - Q2
     ...creators.map((creator, index) => {
-      const q1Value = investmentPerCreator * (creator.returnRate / 100);
-      const q2Return = q1Value * (creator.returnRate / 100) - q1Value;
+      const q1Value = investmentPerCreator * creator.returnRate;
+      const q2Return = q1Value * creator.returnRate - q1Value;
       return {
         id: String(index + 10),
         type: 'earning',
@@ -154,9 +150,9 @@ const generateRealisticData = () => {
     }),
     // Quarterly earnings - Q3
     ...creators.map((creator, index) => {
-      const q1Value = investmentPerCreator * (creator.returnRate / 100);
-      const q2Value = q1Value * (creator.returnRate / 100);
-      const q3Return = q2Value * (creator.returnRate / 100) - q2Value;
+      const q1Value = investmentPerCreator * creator.returnRate;
+      const q2Value = q1Value * creator.returnRate;
+      const q3Return = q2Value * creator.returnRate - q2Value;
       return {
         id: String(index + 14),
         type: 'earning',
@@ -168,10 +164,10 @@ const generateRealisticData = () => {
     }),
     // Quarterly earnings - Q4
     ...creators.map((creator, index) => {
-      const q1Value = investmentPerCreator * (creator.returnRate / 100);
-      const q2Value = q1Value * (creator.returnRate / 100);
-      const q3Value = q2Value * (creator.returnRate / 100);
-      const q4Return = q3Value * (creator.returnRate / 100) - q3Value;
+      const q1Value = investmentPerCreator * creator.returnRate;
+      const q2Value = q1Value * creator.returnRate;
+      const q3Value = q2Value * creator.returnRate;
+      const q4Return = q3Value * creator.returnRate - q3Value;
       return {
         id: String(index + 18),
         type: 'earning',
