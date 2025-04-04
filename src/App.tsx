@@ -22,6 +22,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import Legal from "./pages/Legal";
+import Examples from "./pages/Examples";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/affiliation" element={<Affiliation />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/examples" element={<Examples />} />
             
             {/* Legal Pages */}
             <Route path="/terms" element={<Terms />} />
