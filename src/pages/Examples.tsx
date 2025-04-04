@@ -17,9 +17,11 @@ import Navbar from '@/components/layout/Navbar';
 import GradientButton from '@/components/ui/GradientButton';
 import { useAuth } from '@/utils/auth';
 import { Separator } from '@/components/ui/separator';
+import { getCreatorProfile } from '@/utils/creatorProfiles';
+import CreatorCard from '@/components/ui/CreatorCard';
 
 // Generating random example data - no real database connection
-const generateMonthlyData = (months = 12, baseValue = 1000, growth = 0.05, volatility = 0.2) => {
+const generateMonthlyData = (months = 12, baseValue = 50, growth = 0.03, volatility = 0.1) => {
   const data = [];
   let value = baseValue;
 
@@ -43,54 +45,52 @@ const generateMonthlyData = (months = 12, baseValue = 1000, growth = 0.05, volat
   return data;
 };
 
-const generateCreatorData = (count = 5) => {
-  const creators = [];
-  const names = [
-    'Sophia Dubois', 'Emma Martin', 'Julie Leroy', 
-    'Camille Bernard', 'Léa Petit', 'Manon Thomas',
-    'Clara Durand', 'Chloé Moreau', 'Jade Lefebvre'
+// Top performing creators based on our mock data
+const getTopCreators = (count = 3) => {
+  const creators = [
+    {
+      id: 'creator1',
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/k/ke/kei/keiep1nsav9m2m3e7l0ynbcttg9cfoez1657600220/186389633/avatar.jpg',
+      category: 'Fitness',
+      investorsCount: 42,
+      totalInvested: 80,
+      monthlyRevenue: 3200,
+      rank: 1
+    },
+    {
+      id: 'creator2',
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
+      category: 'Photographie',
+      investorsCount: 38,
+      totalInvested: 70,
+      monthlyRevenue: 2800,
+      rank: 2
+    },
+    {
+      id: 'creator5',
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/6/6f/6ff/6ffsabyn44okaxnazykunwo0x5zw1kmd1739911134/355023516/avatar.jpg',
+      category: 'Mode',
+      investorsCount: 32,
+      totalInvested: 50,
+      monthlyRevenue: 2500,
+      rank: 3
+    }
   ];
-  
-  const domains = [
-    'Mode et beauté', 'Fitness', 'Lifestyle', 'Voyage', 
-    'Gastronomie', 'Art et design', 'Bien-être'
-  ];
-  
-  for (let i = 0; i < count; i++) {
-    const randomName = names[Math.floor(Math.random() * names.length)];
-    const randomDomain = domains[Math.floor(Math.random() * domains.length)];
-    const randomFollowers = Math.floor(Math.random() * 900000) + 100000;
-    const randomInvestment = (Math.floor(Math.random() * 45) + 5) * 100;
-    const randomReturn = randomInvestment * (1 + (Math.random() * 0.5 + 0.2));
-    
-    creators.push({
-      id: `creator-${i+1}`,
-      name: randomName,
-      domain: randomDomain,
-      followers: randomFollowers,
-      invested: randomInvestment,
-      returns: Math.round(randomReturn),
-      roi: Math.round((randomReturn / randomInvestment - 1) * 100) 
-    });
-  }
   
   return creators;
 };
 
-const generateReferralData = (count = 8) => {
+const generateReferralData = (count = 3) => {
   const referrals = [];
   const names = [
-    'Thomas D.', 'Nicolas L.', 'Alexandre M.', 
-    'Julien P.', 'Hugo B.', 'Antoine R.',
-    'Mathieu F.', 'Lucas K.', 'Gabriel S.',
-    'Maxime T.', 'Romain G.', 'Simon H.'
+    'Thomas D.', 'Nicolas L.', 'Alexandre M.'
   ];
   
   for (let i = 0; i < count; i++) {
-    const randomName = names[Math.floor(Math.random() * names.length)];
+    const randomName = names[i];
     const randomDate = new Date();
     randomDate.setDate(randomDate.getDate() - Math.floor(Math.random() * 60));
-    const randomInvestment = Math.random() > 0.3 ? (Math.floor(Math.random() * 20) + 5) * 100 : 0;
+    const randomInvestment = Math.random() > 0.3 ? (Math.floor(Math.random() * 10) + 2) * 10 : 0;
     const randomStatus = randomInvestment > 0 ? 'Actif' : 'En attente';
     const randomCommission = randomInvestment * 0.08;
     
@@ -107,12 +107,11 @@ const generateReferralData = (count = 8) => {
   return referrals;
 };
 
-// Pie chart data for portfolio allocation
+// Pie chart data for portfolio allocation - adjusted to sum up to 200€
 const portfolioData = [
-  { name: 'Mode & Beauté', value: 35 },
-  { name: 'Fitness', value: 25 },
-  { name: 'Lifestyle', value: 20 },
-  { name: 'Autres', value: 20 },
+  { name: 'Mode & Beauté', value: 80 },
+  { name: 'Fitness', value: 70 },
+  { name: 'Lifestyle', value: 50 },
 ];
 
 // Color palette for charts
@@ -121,17 +120,17 @@ const COLORS = ['#8B5CF6', '#A78BFA', '#C4B5FD', '#DDD6FE', '#EDE9FE'];
 const Examples = () => {
   const { isAuthenticated } = useAuth();
   const monthlyData = generateMonthlyData();
-  const yearlyData = generateMonthlyData(5, 12000, 0.08, 0.15);
-  const creatorData = generateCreatorData();
+  const yearlyData = generateMonthlyData(5, 40, 0.08, 0.15);
+  const topCreators = getTopCreators();
   const referralData = generateReferralData();
   
-  // Random key figures
-  const totalInvestment = 16500;
-  const totalEarnings = 21450;
+  // Key figures based on 200€ total investment
+  const totalInvestment = 200;
+  const totalEarnings = 248; // 24% return on 200€
   const totalReturn = Math.round((totalEarnings / totalInvestment - 1) * 100);
-  const activeCreators = 7;
-  const totalReferrals = 14;
-  const activeReferrals = 8;
+  const activeCreators = 3;
+  const totalReferrals = 3;
+  const activeReferrals = 2;
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
@@ -227,6 +226,25 @@ const Examples = () => {
           </Card>
         </div>
         
+        {/* Top Créatrices */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">Vos créatrices les plus performantes</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {topCreators.map((creator) => (
+              <CreatorCard 
+                key={creator.id}
+                id={creator.id}
+                imageUrl={creator.imageUrl}
+                category={creator.category}
+                investorsCount={creator.investorsCount}
+                totalInvested={creator.totalInvested}
+                monthlyRevenue={creator.monthlyRevenue}
+                rank={creator.rank}
+              />
+            ))}
+          </div>
+        </div>
+
         {/* Charts section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Monthly earnings chart */}
@@ -298,18 +316,18 @@ const Examples = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => [`${value}%`, 'Répartition']} />
+                    <Tooltip formatter={(value) => [`${value}€`, 'Montant']} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+              <div className="grid grid-cols-3 gap-4 mt-4 w-full">
                 {portfolioData.map((entry, index) => (
                   <div key={`legend-${index}`} className="flex items-center">
                     <div 
                       className="w-3 h-3 mr-2" 
                       style={{backgroundColor: COLORS[index % COLORS.length]}}
                     />
-                    <span className="text-sm">{entry.name}</span>
+                    <span className="text-sm">{entry.name}: {entry.value}€</span>
                   </div>
                 ))}
               </div>
@@ -403,33 +421,38 @@ const Examples = () => {
                 <TableRow>
                   <TableHead>Créatrice</TableHead>
                   <TableHead>Domaine</TableHead>
-                  <TableHead>Abonnés</TableHead>
                   <TableHead>Investissement</TableHead>
                   <TableHead>Rendement</TableHead>
                   <TableHead>ROI</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {creatorData.map((creator) => (
-                  <TableRow key={creator.id}>
-                    <TableCell className="font-medium">{creator.name}</TableCell>
-                    <TableCell>{creator.domain}</TableCell>
-                    <TableCell>{creator.followers.toLocaleString('fr-FR')}</TableCell>
-                    <TableCell>{creator.invested} €</TableCell>
-                    <TableCell>{creator.returns} €</TableCell>
-                    <TableCell className={creator.roi > 0 ? 'text-green-500' : 'text-red-500'}>
-                      {creator.roi > 0 ? `+${creator.roi}` : creator.roi}%
-                    </TableCell>
-                  </TableRow>
-                ))}
+                <TableRow>
+                  <TableCell className="font-medium">Emma *Asian #1*</TableCell>
+                  <TableCell>Fitness</TableCell>
+                  <TableCell>80 €</TableCell>
+                  <TableCell>96 €</TableCell>
+                  <TableCell className="text-green-500">+20%</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Maria 🤸🏻‍*</TableCell>
+                  <TableCell>Photographie</TableCell>
+                  <TableCell>70 €</TableCell>
+                  <TableCell>87 €</TableCell>
+                  <TableCell className="text-green-500">+24%</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Antonella ❤</TableCell>
+                  <TableCell>Mode</TableCell>
+                  <TableCell>50 €</TableCell>
+                  <TableCell>65 €</TableCell>
+                  <TableCell className="text-green-500">+30%</TableCell>
+                </TableRow>
                 <TableRow className="bg-gray-50 dark:bg-gray-800">
-                  <TableCell colSpan={3} className="font-bold">Total</TableCell>
-                  <TableCell className="font-bold">{creatorData.reduce((acc, creator) => acc + creator.invested, 0)} €</TableCell>
-                  <TableCell className="font-bold">{creatorData.reduce((acc, creator) => acc + creator.returns, 0)} €</TableCell>
-                  <TableCell className="font-bold text-green-500">
-                    +{Math.round((creatorData.reduce((acc, creator) => acc + creator.returns, 0) / 
-                    creatorData.reduce((acc, creator) => acc + creator.invested, 0) - 1) * 100)}%
-                  </TableCell>
+                  <TableCell colSpan={2} className="font-bold">Total</TableCell>
+                  <TableCell className="font-bold">{totalInvestment} €</TableCell>
+                  <TableCell className="font-bold">{totalEarnings} €</TableCell>
+                  <TableCell className="font-bold text-green-500">+{totalReturn}%</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -540,56 +563,6 @@ const Examples = () => {
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
-        
-        {/* FAQ */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Questions fréquentes</CardTitle>
-            <CardDescription>
-              Tout ce que vous devez savoir sur le fonctionnement de la plateforme
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Comment sont calculés les rendements ?</AccordionTrigger>
-                <AccordionContent>
-                  Les rendements sont calculés en fonction des revenus générés par les créatrices sur 
-                  leurs différentes plateformes. Nous prenons un pourcentage prédéterminé de leurs 
-                  revenus mensuels et le distribuons aux investisseurs proportionnellement à leur 
-                  investissement initial.
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="item-2">
-                <AccordionTrigger>Quelle est la durée minimale d'investissement ?</AccordionTrigger>
-                <AccordionContent>
-                  La durée minimale d'investissement est de 6 mois. Après cette période, vous pouvez 
-                  retirer vos fonds à tout moment avec un préavis de 30 jours.
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Comment fonctionne le programme d'affiliation ?</AccordionTrigger>
-                <AccordionContent>
-                  Vous recevez une commission de 8% sur tous les investissements réalisés par les 
-                  personnes que vous parrainez. Cette commission est versée mensuellement tant que 
-                  votre filleul maintient son investissement sur la plateforme.
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="item-4">
-                <AccordionTrigger>Les rendements sont-ils garantis ?</AccordionTrigger>
-                <AccordionContent>
-                  Les rendements présentés sont basés sur des performances historiques et des 
-                  projections, mais ne sont pas garantis. Comme tout investissement, il comporte 
-                  des risques. Cependant, nous sélectionnons rigoureusement les créatrices pour 
-                  maximiser les chances de succès.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
           </CardContent>
         </Card>
         
