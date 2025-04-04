@@ -11,89 +11,151 @@ import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
+import UserBalance from '@/components/UserBalance';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
-// Generate random data for the example dashboard
-const generateRandomData = () => {
-  // Generate performance data (monthly chart)
-  const performanceData = [
-    { month: 'Jan', value: Math.floor(Math.random() * 200) },
-    { month: 'Fév', value: Math.floor(Math.random() * 250) },
-    { month: 'Mar', value: Math.floor(Math.random() * 300) },
-    { month: 'Avr', value: Math.floor(Math.random() * 280) },
-    { month: 'Mai', value: Math.floor(Math.random() * 350) },
-    { month: 'Juin', value: Math.floor(Math.random() * 400) },
-    { month: 'Juil', value: Math.floor(Math.random() * 450) },
-    { month: 'Août', value: Math.floor(Math.random() * 420) },
-    { month: 'Sep', value: Math.floor(Math.random() * 380) },
-    { month: 'Oct', value: Math.floor(Math.random() * 420) },
-    { month: 'Nov', value: Math.floor(Math.random() * 460) },
-    { month: 'Déc', value: Math.floor(Math.random() * 500) },
-  ];
-  
-  // Initial investment amount
+// Generate realistic data for the example dashboard based on user investments
+const generateRealisticData = () => {
+  // Initial investment amount - 200€
   const initialInvestment = 200;
   
-  // Generate total earnings (10-25% of the investment)
-  const earningsPercent = 15 + Math.random() * 10;
-  const totalEarnings = Math.floor(initialInvestment * (earningsPercent / 100));
-  
-  // Generate random portfolio distribution
-  const creator1Amount = Math.floor(initialInvestment * 0.4);
-  const creator2Amount = Math.floor(initialInvestment * 0.3);
-  const notInvestedAmount = initialInvestment - creator1Amount - creator2Amount;
-  
-  const portfolioData = [
-    { name: 'Sophia Martinez', value: creator1Amount },
-    { name: 'Emma Wilson', value: creator2Amount },
-    { name: 'Non investi', value: notInvestedAmount },
+  // Four creators with their specific returns (130%, 120%, 115%, 125%)
+  // Each return is applied quarterly (every 3 months)
+  const creators = [
+    { name: 'Sophia Martinez', returnRate: 130, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' },
+    { name: 'Emma Wilson', returnRate: 120, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' },
+    { name: 'Kayla Smith', returnRate: 115, imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' },
+    { name: 'Lala Avi', returnRate: 125, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' }
   ];
   
-  // Generate random investments
-  const investments = [
-    {
-      id: '1',
-      creatorName: 'Sophia Martinez',
-      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg',
-      planName: 'Growth',
-      amount: creator1Amount,
-      returnRate: 12.5,
-      status: 'active'
-    },
-    {
-      id: '2',
-      creatorName: 'Emma Wilson',
-      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg',
-      planName: 'Premium',
-      amount: creator2Amount,
-      returnRate: 15,
-      status: 'active'
+  // Divide investment equally among creators
+  const investmentPerCreator = initialInvestment / 4;
+  
+  // Calculate returns for each creator after 12 months (4 quarters)
+  const portfolioData = creators.map(creator => {
+    // Calculate compound return over 4 quarters
+    // For example, 130% quarterly return means *1.30 each quarter
+    const returnMultiplier = creator.returnRate / 100;
+    let amount = investmentPerCreator;
+    
+    // Compound over 4 quarters
+    for (let i = 0; i < 4; i++) {
+      amount = amount * returnMultiplier;
     }
-  ];
-  
-  // Generate random transactions
-  const transactionTypes = ['deposit', 'investment', 'earning'];
-  const transactionStatus = ['completed', 'pending'];
-  
-  const transactions = Array.from({ length: 5 }, (_, index) => {
-    const type = transactionTypes[Math.floor(Math.random() * transactionTypes.length)];
-    const amount = type === 'investment' ? 
-      -Math.floor(Math.random() * 100 + 50) : 
-      Math.floor(Math.random() * 80 + 20);
     
     return {
-      id: String(index + 1),
-      type,
-      amount: type === 'investment' ? -amount : amount,
-      date: `${Math.floor(Math.random() * 28) + 1}/${Math.floor(Math.random() * 12) + 1}/2023`,
-      status: transactionStatus[Math.floor(Math.random() * transactionStatus.length)],
-      description: type === 'deposit' ? 'Dépôt de fonds' : 
-                 type === 'investment' ? `Investissement - ${investments[Math.floor(Math.random() * investments.length)].creatorName}` :
-                 `Gains - ${investments[Math.floor(Math.random() * investments.length)].creatorName}`
+      name: creator.name,
+      value: parseFloat(amount.toFixed(2)),
+      initial: investmentPerCreator,
+      imageUrl: creator.imageUrl,
+      returnRate: creator.returnRate
     };
   });
   
+  // Calculate total returns
+  const totalValue = portfolioData.reduce((sum, item) => sum + item.value, 0);
+  const totalEarnings = totalValue - initialInvestment;
+  
+  // Generate performance data (monthly growth)
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - 11); // Start 12 months ago
+  
+  const performanceData = [];
+  let cumulativeValue = initialInvestment;
+  
+  for (let i = 0; i < 12; i++) {
+    const currentDate = new Date(startDate);
+    currentDate.setMonth(currentDate.getMonth() + i);
+    
+    // Apply quarterly returns
+    if (i % 3 === 0 && i > 0) {
+      portfolioData.forEach(creator => {
+        const portion = (creator.initial / initialInvestment) * cumulativeValue;
+        const quarterlyReturn = portion * (creator.returnRate / 100 - 1);
+        cumulativeValue += quarterlyReturn;
+      });
+    }
+    
+    // Add some small random fluctuation for visual interest
+    const randomFluctuation = cumulativeValue * (Math.random() * 0.05 - 0.025);
+    const monthValue = cumulativeValue + randomFluctuation;
+    
+    performanceData.push({
+      month: currentDate.toLocaleString('default', { month: 'short' }),
+      value: parseFloat(monthValue.toFixed(2))
+    });
+  }
+  
+  // Generate investments list
+  const investments = portfolioData.map((item, index) => ({
+    id: String(index + 1),
+    creatorName: item.name,
+    creatorImage: item.imageUrl,
+    planName: index % 2 === 0 ? 'Growth' : 'Premium',
+    amount: parseFloat(item.value.toFixed(2)),
+    initial: item.initial,
+    returnRate: item.returnRate,
+    status: 'active'
+  }));
+  
+  // Generate random transactions based on the investment history
+  const transactionTypes = ['deposit', 'investment', 'earning'];
+  const transactions = [
+    // Initial deposit
+    {
+      id: '1',
+      type: 'deposit',
+      amount: initialInvestment,
+      date: '10/4/2024',
+      status: 'completed',
+      description: 'Dépôt initial'
+    },
+    // Initial investments
+    ...creators.map((creator, index) => ({
+      id: String(index + 2),
+      type: 'investment',
+      amount: -investmentPerCreator,
+      date: '12/4/2024',
+      status: 'completed',
+      description: `Investissement - ${creator.name}`
+    })),
+    // Some earnings
+    ...creators.map((creator, index) => ({
+      id: String(index + 6),
+      type: 'earning',
+      amount: parseFloat((investmentPerCreator * (creator.returnRate / 100 - 1)).toFixed(2)),
+      date: '15/7/2024',
+      status: 'completed',
+      description: `Gains T1 - ${creator.name}`
+    })),
+    ...creators.map((creator, index) => ({
+      id: String(index + 10),
+      type: 'earning',
+      amount: parseFloat((investmentPerCreator * (creator.returnRate / 100 - 1) * 1.1).toFixed(2)),
+      date: '15/10/2024',
+      status: 'completed',
+      description: `Gains T2 - ${creator.name}`
+    })),
+    ...creators.map((creator, index) => ({
+      id: String(index + 14),
+      type: 'earning',
+      amount: parseFloat((investmentPerCreator * (creator.returnRate / 100 - 1) * 1.2).toFixed(2)),
+      date: '15/1/2025',
+      status: 'completed',
+      description: `Gains T3 - ${creator.name}`
+    })),
+    {
+      id: '18',
+      type: 'earning',
+      amount: parseFloat((totalEarnings * 0.25).toFixed(2)),
+      date: '1/4/2025',
+      status: 'pending',
+      description: 'Gains T4 - Tous les créateurs'
+    }
+  ];
+  
   // Generate referral data
-  const totalReferrals = Math.floor(Math.random() * 5) + 1;
+  const totalReferrals = Math.floor(Math.random() * 3) + 1;
   const pendingReferrals = Math.floor(Math.random() * totalReferrals);
   const completedReferrals = totalReferrals - pendingReferrals;
   const referralEarnings = Math.floor(completedReferrals * 15 + Math.random() * 10);
@@ -106,8 +168,8 @@ const generateRandomData = () => {
     recentReferrals: []
   };
   
-  // Random balance (initial + earnings + some extra)
-  const balance = initialInvestment + totalEarnings + Math.floor(Math.random() * 100);
+  // Current balance is initial investment + total earnings
+  const balance = parseFloat((initialInvestment + totalEarnings).toFixed(2));
   
   return {
     performanceData,
@@ -117,13 +179,13 @@ const generateRandomData = () => {
     referralData,
     balance,
     totalInvested: initialInvestment,
-    totalEarnings,
-    COLORS: ['#0284c7', '#0ea5e9', '#e5e7eb']
+    totalEarnings: parseFloat(totalEarnings.toFixed(2)),
+    COLORS: ['#0284c7', '#0ea5e9', '#38bdf8', '#7dd3fc']
   };
 };
 
 const Examples = () => {
-  const data = generateRandomData();
+  const data = generateRealisticData();
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   
@@ -144,11 +206,11 @@ const Examples = () => {
               <FadeIn direction="up">
                 <h1 className="text-3xl font-bold mb-2">Exemple de tableau de bord</h1>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Ceci est un exemple de tableau de bord avec des données aléatoires.
+                  Ceci est un exemple de tableau de bord avec des données basées sur un investissement de 200€ réparti sur 4 créatrices.
                 </p>
                 <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
                   <p className="font-medium">Note importante</p>
-                  <p>Ceci est uniquement un exemple visuel avec des données aléatoires pour illustrer l'interface utilisateur.</p>
+                  <p>Ceci est un exemple illustratif basé sur un investissement de 200€ sur 12 mois avec des rendements trimestriels de 130%, 120%, 115% et 125%.</p>
                 </div>
               </FadeIn>
             </div>
@@ -156,24 +218,21 @@ const Examples = () => {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Balance</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600">
-                      <Wallet className="h-5 w-5" />
-                    </div>
-                  </div>
-                  <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.balance}€</span>
-                  </div>
-                  <button 
-                    onClick={() => setShowDepositModal(true)}
-                    className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Déposer des fonds
-                  </button>
-                </div>
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium text-black dark:text-white">Votre solde</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance} €</div>
+                    <button 
+                      onClick={() => setShowDepositModal(true)}
+                      className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Déposer des fonds
+                    </button>
+                  </CardContent>
+                </Card>
               </FadeIn>
               
               <FadeIn direction="up" delay={200} className="glass-card">
@@ -206,7 +265,7 @@ const Examples = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Depuis le début
+                    Sur 12 mois
                   </div>
                 </div>
               </FadeIn>
@@ -238,9 +297,9 @@ const Examples = () => {
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">Performance</h3>
                     <select className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2">
-                      <option>Cette année</option>
+                      <option>12 derniers mois</option>
                       <option>6 derniers mois</option>
-                      <option>30 derniers jours</option>
+                      <option>3 derniers mois</option>
                     </select>
                   </div>
                   <div className="h-72">
@@ -252,7 +311,7 @@ const Examples = () => {
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                         <XAxis dataKey="month" axisLine={false} tickLine={false} />
                         <YAxis axisLine={false} tickLine={false} />
-                        <Tooltip />
+                        <Tooltip formatter={(value) => `${value}€`} />
                         <Line
                           type="monotone"
                           dataKey="value"
@@ -303,7 +362,10 @@ const Examples = () => {
                           />
                           <span className="text-sm">{item.name}</span>
                         </div>
-                        <span className="text-sm font-medium">{item.value}€</span>
+                        <div>
+                          <span className="text-sm font-medium">{item.value}€</span>
+                          <span className="text-xs text-green-500 ml-2">+{item.returnRate}%</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -345,7 +407,7 @@ const Examples = () => {
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Plan {investment.planName}
+                                Initial: {investment.initial}€
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
@@ -392,7 +454,7 @@ const Examples = () => {
                   
                   {data.transactions.length > 0 ? (
                     <div className="space-y-4">
-                      {data.transactions.map((transaction) => (
+                      {data.transactions.slice(0, 5).map((transaction) => (
                         <div 
                           key={transaction.id}
                           className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
@@ -509,7 +571,7 @@ const Examples = () => {
                   <div className="text-gray-400 mb-3">
                     <UserPlus className="h-12 w-12 mx-auto opacity-30" />
                   </div>
-                  <h4 className="text-lg font-medium mb-2">Exemples de parrainages</h4>
+                  <h4 className="text-lg font-medium mb-2">Invitez vos amis</h4>
                   <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
                     Invitez vos amis et gagnez des commissions sur leurs investissements.
                   </p>
