@@ -16,59 +16,78 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 // Generate realistic data for the example dashboard based on user investments
 const generateRealisticData = () => {
-  // Initial investment amount - 200€ (100€ for each of the two creators)
-  const initialInvestment = 200;
+  // Initial investment amount - 100€ for Emma Wilson
+  const initialInvestment = 100;
   
-  // Investment date
-  const startInvestmentDate = new Date('2024-10-10');
+  // Investment and withdrawal dates
+  const startInvestmentDate = new Date('2024-06-10'); // June 10, 2024
+  const withdrawalDate = new Date('2024-12-15'); // December 15, 2024
+  const withdrawalAmount = 200;
   
-  // 2 creators with their specific returns
+  // Creator with their specific returns
   const creators = [
     { 
-      name: 'Sophia Martinez', 
-      monthlyGain: 38, // 38€ per month
-      returnRate: 38, // Percentage for display
+      name: 'Emma Wilson', 
+      monthlyGain: 36.5, // 36.5€ per month
+      returnRate: 36.5, // Percentage for display
       invested: 100,
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
-    },
-    { 
-      name: 'Kayla Smith', 
-      monthlyGain: 36, // 36€ per month
-      returnRate: 36, // Percentage for display
-      invested: 100,
-      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
     }
   ];
   
-  // Generate 7 months of performance data
+  // Generate 12 months of performance data
   const performanceData = [];
   
-  // Start date 7 months ago from current date
+  // Start date 12 months ago from current date
   const currentDate = new Date();
   const startDate = new Date(currentDate);
-  startDate.setMonth(currentDate.getMonth() - 6); // Starting 7 months ago (0-indexed)
+  startDate.setMonth(currentDate.getMonth() - 11); // Starting 12 months ago (0-indexed)
   
   // Track total value over time
-  let totalValue = initialInvestment;
+  let totalValue = 0;
   
   // For each month
-  for (let i = 0; i <= 6; i++) { // 0 to 6 = 7 months
+  for (let i = 0; i <= 11; i++) { // 0 to 11 = 12 months
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
     
-    // Only start adding gains if we've passed the investment date
-    if (currentMonthDate >= startInvestmentDate) {
-      const monthsSinceInvestment = Math.floor(
-        (currentMonthDate.getTime() - startInvestmentDate.getTime()) / 
-        (30 * 24 * 60 * 60 * 1000) // Approximate month in milliseconds
-      );
+    // Only add investment if we've reached the investment date
+    if (i === 0 || currentMonthDate >= startInvestmentDate) {
+      if (i === 0 && currentMonthDate >= startInvestmentDate) {
+        // Add the initial investment if the first month is after or equal to investment date
+        totalValue += initialInvestment;
+      } else if (i > 0 && currentMonthDate.getMonth() === startInvestmentDate.getMonth() && 
+                 currentMonthDate.getFullYear() === startInvestmentDate.getFullYear()) {
+        // Add the initial investment on the exact month of investment
+        totalValue += initialInvestment;
+      }
+    }
+    
+    // Add monthly gains if after investment date
+    if (currentMonthDate > startInvestmentDate) {
+      // Calculate months since investment (including partial months)
+      const timeDiff = currentMonthDate.getTime() - startInvestmentDate.getTime();
+      const daysDiff = timeDiff / (1000 * 3600 * 24);
+      const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
       
-      if (monthsSinceInvestment > 0) {
-        // Add monthly gains for each creator
+      if (monthsDiff >= 1) {
+        // Add monthly gains for each full month that has passed
+        const fullMonthsPassed = Math.floor(monthsDiff);
         creators.forEach(creator => {
-          totalValue += creator.monthlyGain;
+          // Only add gains for the current month if it hasn't been withdrawn yet
+          if (currentMonthDate < withdrawalDate || 
+             (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
+              currentMonthDate.getFullYear() === withdrawalDate.getFullYear())) {
+            totalValue += creator.monthlyGain;
+          }
         });
       }
+    }
+    
+    // Subtract withdrawal amount if we've reached the withdrawal date
+    if (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
+        currentMonthDate.getFullYear() === withdrawalDate.getFullYear()) {
+      totalValue -= withdrawalAmount;
     }
     
     // Format the month for display
@@ -82,17 +101,23 @@ const generateRealisticData = () => {
   
   // Calculate current portfolio values for each creator
   const portfolioData = creators.map(creator => {
-    const monthsSinceInvestment = Math.floor(
-      (new Date().getTime() - startInvestmentDate.getTime()) / 
-      (30 * 24 * 60 * 60 * 1000)
+    const monthsSinceInvestment = Math.min(
+      Math.floor(
+        (new Date().getTime() - startInvestmentDate.getTime()) / 
+        (30 * 24 * 60 * 60 * 1000)
+      ),
+      Math.floor(
+        (withdrawalDate.getTime() - startInvestmentDate.getTime()) / 
+        (30 * 24 * 60 * 60 * 1000)
+      )
     );
     
-    // Calculate current value: initial investment + (monthly gain * months)
-    const currentValue = creator.invested + (creator.monthlyGain * Math.max(0, monthsSinceInvestment));
+    // Calculate current value: initial investment + (monthly gain * months) - withdrawal
+    const currentValue = creator.invested + (creator.monthlyGain * monthsSinceInvestment) - withdrawalAmount;
     
     return {
       name: creator.name,
-      value: Number(currentValue.toFixed(2)),
+      value: Number(Math.max(0, currentValue).toFixed(2)),
       initial: creator.invested,
       imageUrl: creator.imageUrl,
       returnRate: creator.returnRate
@@ -111,8 +136,14 @@ const generateRealisticData = () => {
     status: 'active'
   }));
   
-  // Calculate total earnings
-  const totalEarnings = portfolioData.reduce((sum, item) => sum + (item.value - item.initial), 0);
+  // Calculate total earnings before withdrawal
+  const earningsBeforeWithdrawal = creators.reduce((sum, creator) => {
+    const monthsBeforeWithdrawal = Math.floor(
+      (withdrawalDate.getTime() - startInvestmentDate.getTime()) / 
+      (30 * 24 * 60 * 60 * 1000)
+    );
+    return sum + (creator.monthlyGain * monthsBeforeWithdrawal);
+  }, 0);
   
   // Generate transactions
   const transactions = [
@@ -120,8 +151,8 @@ const generateRealisticData = () => {
     {
       id: '1',
       type: 'deposit',
-      amount: 200,
-      date: '10/10/2024',
+      amount: initialInvestment,
+      date: '10/06/2024',
       status: 'completed',
       description: 'Dépôt initial'
     },
@@ -129,32 +160,28 @@ const generateRealisticData = () => {
     {
       id: '2',
       type: 'investment',
-      amount: -100,
-      date: '10/10/2024',
+      amount: -initialInvestment,
+      date: '10/06/2024',
       status: 'completed',
       description: `Investissement - ${creators[0].name}`
-    },
-    {
-      id: '3',
-      type: 'investment',
-      amount: -100,
-      date: '10/10/2024',
-      status: 'completed',
-      description: `Investissement - ${creators[1].name}`
     }
   ];
   
   // Add monthly earnings
-  let transactionId = 4;
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
+  let transactionId = 3;
   
-  // Generate dates for past months
-  for (let i = 0; i < 6; i++) {
-    const transactionDate = new Date(currentYear, currentMonth - 5 + i, 10);
+  // Generate dates for past months after investment date
+  const startMonth = startInvestmentDate.getMonth();
+  const startYear = startInvestmentDate.getFullYear();
+  
+  for (let i = 0; i < 6; i++) { // Adding 6 months of earnings
+    const transactionDate = new Date(startYear, startMonth + i + 1, 10); // +1 to start from month after investment
     
     // Skip if before investment date
     if (transactionDate <= startInvestmentDate) continue;
+    
+    // Skip if after withdrawal date
+    if (transactionDate > withdrawalDate) continue;
     
     // Format date as MM/DD/YYYY
     const formattedDate = `${transactionDate.getMonth() + 1}/${transactionDate.getDate()}/${transactionDate.getFullYear()}`;
@@ -172,6 +199,16 @@ const generateRealisticData = () => {
     });
   }
   
+  // Add withdrawal transaction
+  transactions.push({
+    id: String(transactionId++),
+    type: 'withdrawal',
+    amount: -withdrawalAmount,
+    date: '15/12/2024',
+    status: 'completed',
+    description: 'Retrait de bénéfices'
+  });
+  
   // Generate referral data
   const referralData = {
     totalReferrals: 2,
@@ -181,7 +218,7 @@ const generateRealisticData = () => {
     recentReferrals: []
   };
   
-  // Calculate final balance
+  // Calculate final balance (current value)
   const balance = performanceData[performanceData.length - 1].value;
   
   return {
@@ -192,7 +229,7 @@ const generateRealisticData = () => {
     referralData,
     balance,
     totalInvested: initialInvestment,
-    totalEarnings: Number(totalEarnings.toFixed(2)),
+    totalEarnings: earningsBeforeWithdrawal,
     COLORS: ['#0284c7', '#0ea5e9']
   };
 };
@@ -201,7 +238,7 @@ const Examples = () => {
   const data = generateRealisticData();
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
-  const [timeRange, setTimeRange] = useState('7');
+  const [timeRange, setTimeRange] = useState('12');
   
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -220,11 +257,11 @@ const Examples = () => {
               <FadeIn direction="up">
                 <h1 className="text-3xl font-bold mb-2">Exemple de tableau de bord</h1>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Ceci est un exemple de tableau de bord avec des données basées sur un investissement de 200€ réparti sur 2 créatrices.
+                  Ceci est un exemple de tableau de bord avec des données basées sur un investissement de 100€ sur Emma Wilson.
                 </p>
                 <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
                   <p className="font-medium">Note importante</p>
-                  <p>Ceci est un exemple illustratif basé sur un investissement de 100€ sur Sophia Martinez (+38€/mois) et 100€ sur Kayla Smith (+36€/mois), tous deux à partir du 10 octobre.</p>
+                  <p>Ceci est un exemple illustratif basé sur un investissement de 100€ sur Emma Wilson (+36,5€/mois), démarré le 10 juin 2024, avec un retrait de 200€ effectué le 15 décembre 2024.</p>
                 </div>
               </FadeIn>
             </div>
@@ -261,7 +298,7 @@ const Examples = () => {
                     <span className="text-2xl font-bold">{data.totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {data.investments.length} créatrices
+                    Dans {data.investments.length} créatrice
                   </div>
                 </div>
               </FadeIn>
@@ -275,11 +312,11 @@ const Examples = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalEarnings}€</span>
+                    <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Depuis le 10 octobre
+                    Avant le retrait du 15 décembre
                   </div>
                 </div>
               </FadeIn>
@@ -315,7 +352,7 @@ const Examples = () => {
                       value={timeRange}
                       onChange={(e) => setTimeRange(e.target.value)}
                     >
-                      <option value="7">7 derniers mois</option>
+                      <option value="12">12 derniers mois</option>
                       <option value="6">6 derniers mois</option>
                       <option value="3">3 derniers mois</option>
                     </select>
