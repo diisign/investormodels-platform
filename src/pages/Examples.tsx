@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -13,41 +14,59 @@ import { cn } from '@/lib/utils';
 import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
+// Generate realistic data for the example dashboard based on user investments
 const generateRealisticData = () => {
+  // Initial investment amount - 200€
   const initialInvestment = 200;
   
+  // Four creators with their specific returns (230%, 220%, 215%, 225% every 3 months)
   const creators = [
     { 
       name: 'Sophia Martinez', 
-      returnRate: 2.30, 
+      // 2.30 every 3 months
+      returnRate: 2.30,
+      monthlyGrowth: 38, // 115-50 = 65€ / 3 months = ~21.67€ per month
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
     },
     { 
       name: 'Emma Wilson', 
-      returnRate: 2.20, 
+      // 2.20 every 3 months
+      returnRate: 2.20,
+      monthlyGrowth: 36.5, // 110-50 = 60€ / 3 months = ~20€ per month
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' 
     },
     { 
       name: 'Kayla Smith', 
-      returnRate: 2.15, 
+      // 2.15 every 3 months
+      returnRate: 2.15,
+      monthlyGrowth: 36, // 107.5-50 = 57.5€ / 3 months = ~19.17€ per month
       imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
     },
     { 
       name: 'Lala Avi', 
-      returnRate: 2.25, 
+      // 2.25 every 3 months
+      returnRate: 2.25,
+      monthlyGrowth: 37.5, // 112.5-50 = 62.5€ / 3 months = ~20.83€ per month
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' 
     }
   ];
   
-  const investmentPerCreator = initialInvestment / 4;
+  // Divide investment equally among creators
+  const investmentPerCreator = initialInvestment / 4; // 50€ per creator
   
+  // Calculate the portfolio data after 6 months
   const portfolioData = creators.map(creator => {
+    // Start with the initial investment
     let amount = investmentPerCreator;
-    for (let i = 0; i < 12; i++) {
-      if ((i + 1) % 3 === 0) {
+    
+    // Apply returns on a monthly basis for 6 months
+    // For each 3-month period, we apply the full return factor
+    for (let i = 0; i < 6; i++) {
+      if ((i + 1) % 3 === 0) { // Apply returns at month 3, 6
         amount = amount * creator.returnRate;
       }
     }
+    
     return {
       name: creator.name,
       value: parseFloat(amount.toFixed(2)),
@@ -57,26 +76,34 @@ const generateRealisticData = () => {
     };
   });
   
+  // Calculate total portfolio value and earnings
   const totalValue = portfolioData.reduce((sum, item) => sum + item.value, 0);
   const totalEarnings = totalValue - initialInvestment;
   
+  // Generate monthly performance data for 6 months
   const performanceData = [];
-  const creatorAmounts = creators.map(() => investmentPerCreator);
+  // Track each creator's amount separately for the performance chart
+  const creatorAmounts = creators.map(() => investmentPerCreator); 
   
+  // Start date 6 months ago
   const startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 11);
+  startDate.setMonth(startDate.getMonth() - 5); // -5 to get 6 months including current
   
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 6; i++) {
     const currentDate = new Date(startDate);
     currentDate.setMonth(currentDate.getMonth() + i);
     
+    // At every 3rd month, apply the quarterly return rates
     if ((i + 1) % 3 === 0) {
       creators.forEach((creator, index) => {
         creatorAmounts[index] = creatorAmounts[index] * creator.returnRate;
       });
     }
     
+    // Sum all creator amounts for this month
     const monthValue = creatorAmounts.reduce((sum, amount) => sum + amount, 0);
+    
+    // Small random fluctuation for visual interest
     const randomFluctuation = i === 0 ? 0 : monthValue * (Math.random() * 0.02 - 0.01);
     
     performanceData.push({
@@ -85,6 +112,7 @@ const generateRealisticData = () => {
     });
   }
   
+  // Generate investments list with updated values
   const investments = portfolioData.map((item, index) => ({
     id: String(index + 1),
     creatorName: item.name,
@@ -96,7 +124,9 @@ const generateRealisticData = () => {
     status: 'active'
   }));
   
+  // Generate transactions based on investment history
   const transactions = [
+    // Initial deposit
     {
       id: '1',
       type: 'deposit',
@@ -105,6 +135,7 @@ const generateRealisticData = () => {
       status: 'completed',
       description: 'Dépôt initial'
     },
+    // Initial investments
     ...creators.map((creator, index) => ({
       id: String(index + 2),
       type: 'investment',
@@ -115,19 +146,24 @@ const generateRealisticData = () => {
     })),
   ];
   
+  // Add quarterly earnings transactions
   let transactionId = transactions.length + 1;
-  const dates = ['12/7/2024', '12/10/2024', '12/1/2025', '12/4/2025'];
-  const quarters = ['T1', 'T2', 'T3', 'T4'];
+  const dates = ['12/7/2024', '12/10/2024'];
+  const quarters = ['T1', 'T2'];
   
-  for (let q = 0; q < 4; q++) {
-    const prevAmounts = creators.map((_, i) => {
+  // For each quarter (2 quarters in 6 months)
+  for (let q = 0; q < 2; q++) {
+    // Calculate each creator's amount before this quarter
+    let prevAmounts = creators.map((_, i) => {
       let amount = investmentPerCreator;
+      // Apply previous quarters' returns
       for (let prevQ = 0; prevQ < q; prevQ++) {
         amount = amount * creators[i].returnRate;
       }
       return amount;
     });
     
+    // For each creator
     creators.forEach((creator, creatorIndex) => {
       const prevAmount = prevAmounts[creatorIndex];
       const newAmount = prevAmount * creator.returnRate;
@@ -138,12 +174,13 @@ const generateRealisticData = () => {
         type: 'earning',
         amount: parseFloat(earning.toFixed(2)),
         date: dates[q],
-        status: q < 3 ? 'completed' : 'pending',
+        status: q < 1 ? 'completed' : 'pending',
         description: `Gains ${quarters[q]} - ${creator.name}`
       });
     });
   }
   
+  // Generate referral data
   const totalReferrals = Math.floor(Math.random() * 3) + 1;
   const pendingReferrals = Math.floor(Math.random() * totalReferrals);
   const completedReferrals = totalReferrals - pendingReferrals;
@@ -157,6 +194,7 @@ const generateRealisticData = () => {
     recentReferrals: []
   };
   
+  // Calculate final balance
   const balance = parseFloat(totalValue.toFixed(2));
   
   return {
@@ -197,11 +235,12 @@ const Examples = () => {
                 </p>
                 <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
                   <p className="font-medium">Note importante</p>
-                  <p>Ceci est un exemple illustratif basé sur un investissement de 200€ sur 12 mois avec des rendements trimestriels de 130%, 120%, 115% et 125%.</p>
+                  <p>Ceci est un exemple illustratif basé sur un investissement de 200€ sur 6 mois avec des rendements trimestriels de 130%, 120%, 115% et 125%.</p>
                 </div>
               </FadeIn>
             </div>
             
+            {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
                 <Card>
@@ -251,7 +290,7 @@ const Examples = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Sur 12 mois
+                    Sur 6 mois
                   </div>
                 </div>
               </FadeIn>
@@ -275,13 +314,14 @@ const Examples = () => {
               </FadeIn>
             </div>
             
+            {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Left Column - Performance Chart */}
               <FadeIn direction="up" className="glass-card lg:col-span-2">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">Performance</h3>
                     <select className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2">
-                      <option>12 derniers mois</option>
                       <option>6 derniers mois</option>
                       <option>3 derniers mois</option>
                     </select>
@@ -310,6 +350,7 @@ const Examples = () => {
                 </div>
               </FadeIn>
               
+              {/* Right Column - Portfolio Distribution */}
               <FadeIn direction="up" delay={100} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -356,7 +397,9 @@ const Examples = () => {
               </FadeIn>
             </div>
             
+            {/* Investments and Transactions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+              {/* Investments */}
               <FadeIn direction="up" className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -422,6 +465,7 @@ const Examples = () => {
                 </div>
               </FadeIn>
               
+              {/* Recent Transactions */}
               <FadeIn direction="up" delay={100} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -494,6 +538,7 @@ const Examples = () => {
               </FadeIn>
             </div>
             
+            {/* Referral Card */}
             <FadeIn direction="up" delay={500} className="glass-card mt-8">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -569,6 +614,7 @@ const Examples = () => {
         </section>
       </main>
       
+      {/* Deposit Modal */}
       {showDepositModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
