@@ -19,34 +19,30 @@ const generateRealisticData = () => {
   // Initial investment amount - 200€
   const initialInvestment = 200;
   
-  // Four creators with their specific returns (230%, 220%, 215%, 225% every 3 months)
+  // Four creators with their specific returns
   const creators = [
     { 
       name: 'Sophia Martinez', 
-      // 2.30 every 3 months
-      returnRate: 2.30,
+      returnRate: 2.30, // 2.30x every 3 months
       monthlyGrowth: 38, // 115-50 = 65€ / 3 months = ~21.67€ per month
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
     },
     { 
       name: 'Emma Wilson', 
-      // 2.20 every 3 months
-      returnRate: 2.20,
-      monthlyGrowth: 36.5, // 110-50 = 60€ / 3 months = ~20€ per month
+      returnRate: 2.20, // 2.20x every 3 months
+      monthlyGrowth: 36.5, // 110-50 = 60€ / 3 months = 20€ per month
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' 
     },
     { 
       name: 'Kayla Smith', 
-      // 2.15 every 3 months
-      returnRate: 2.15,
-      monthlyGrowth: 36, // 107.5-50 = 57.5€ / 3 months = ~19.17€ per month
+      returnRate: 2.15, // 2.15x every 3 months
+      monthlyGrowth: 36, // 107.5-50 = 57.5€ / 3 months = 19.17€ per month
       imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
     },
     { 
       name: 'Lala Avi', 
-      // 2.25 every 3 months
-      returnRate: 2.25,
-      monthlyGrowth: 37.5, // 112.5-50 = 62.5€ / 3 months = ~20.83€ per month
+      returnRate: 2.25, // 2.25x every 3 months
+      monthlyGrowth: 37.5, // 112.5-50 = 62.5€ / 3 months = 20.83€ per month
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' 
     }
   ];
@@ -54,65 +50,54 @@ const generateRealisticData = () => {
   // Divide investment equally among creators
   const investmentPerCreator = initialInvestment / 4; // 50€ per creator
   
-  // Calculate the portfolio data after 6 months
-  const portfolioData = creators.map(creator => {
-    // Start with the initial investment
-    let amount = investmentPerCreator;
-    
-    // Apply returns on a monthly basis for 6 months
-    // For each 3-month period, we apply the full return factor
-    for (let i = 0; i < 6; i++) {
-      if ((i + 1) % 3 === 0) { // Apply returns at month 3, 6
-        amount = amount * creator.returnRate;
-      }
-    }
-    
-    return {
-      name: creator.name,
-      value: parseFloat(amount.toFixed(2)),
-      initial: investmentPerCreator,
-      imageUrl: creator.imageUrl,
-      returnRate: Math.round((creator.returnRate - 1) * 100)
-    };
-  });
+  // Calculate monthly growth for all creators combined
+  const totalMonthlyGrowth = creators.reduce((sum, creator) => sum + creator.monthlyGrowth, 0); // Should be 148€ per month
   
-  // Calculate total portfolio value and earnings
-  const totalValue = portfolioData.reduce((sum, item) => sum + item.value, 0);
-  const totalEarnings = totalValue - initialInvestment;
-  
-  // Generate monthly performance data for 6 months
+  // Generate performance data (monthly growth)
   const performanceData = [];
-  // Track each creator's amount separately for the performance chart
-  const creatorAmounts = creators.map(() => investmentPerCreator); 
+  let currentTotal = initialInvestment;
   
   // Start date 6 months ago
   const startDate = new Date();
   startDate.setMonth(startDate.getMonth() - 5); // -5 to get 6 months including current
   
+  // Generate monthly data
   for (let i = 0; i < 6; i++) {
     const currentDate = new Date(startDate);
     currentDate.setMonth(currentDate.getMonth() + i);
     
-    // At every 3rd month, apply the quarterly return rates
-    if ((i + 1) % 3 === 0) {
-      creators.forEach((creator, index) => {
-        creatorAmounts[index] = creatorAmounts[index] * creator.returnRate;
-      });
+    // For the first month, just show the initial investment
+    if (i > 0) {
+      currentTotal += totalMonthlyGrowth;
     }
-    
-    // Sum all creator amounts for this month
-    const monthValue = creatorAmounts.reduce((sum, amount) => sum + amount, 0);
-    
-    // Small random fluctuation for visual interest
-    const randomFluctuation = i === 0 ? 0 : monthValue * (Math.random() * 0.02 - 0.01);
     
     performanceData.push({
       month: currentDate.toLocaleString('default', { month: 'short' }),
-      value: parseFloat((monthValue + randomFluctuation).toFixed(2))
+      value: parseFloat(currentTotal.toFixed(2))
     });
   }
   
-  // Generate investments list with updated values
+  // Calculate the value for each creator after 6 months
+  const portfolioData = creators.map(creator => {
+    // Start with the initial investment per creator (50€)
+    // After 6 months, each creator has grown by their monthlyGrowth * 6
+    const finalValue = investmentPerCreator + (creator.monthlyGrowth * 5); // 5 months of growth (excluding initial month)
+    
+    return {
+      name: creator.name,
+      value: parseFloat(finalValue.toFixed(2)),
+      initial: investmentPerCreator,
+      imageUrl: creator.imageUrl,
+      // Calculate percentage increase
+      returnRate: Math.round(((finalValue / investmentPerCreator) - 1) * 100)
+    };
+  });
+  
+  // Calculate total final value and earnings
+  const totalValue = portfolioData.reduce((sum, item) => sum + item.value, 0);
+  const totalEarnings = totalValue - initialInvestment;
+  
+  // Generate investments list
   const investments = portfolioData.map((item, index) => ({
     id: String(index + 1),
     creatorName: item.name,
@@ -124,7 +109,7 @@ const generateRealisticData = () => {
     status: 'active'
   }));
   
-  // Generate transactions based on investment history
+  // Generate transactions based on the investment history
   const transactions = [
     // Initial deposit
     {
@@ -146,36 +131,22 @@ const generateRealisticData = () => {
     })),
   ];
   
-  // Add quarterly earnings transactions
+  // Add monthly earnings transactions
   let transactionId = transactions.length + 1;
-  const dates = ['12/7/2024', '12/10/2024'];
-  const quarters = ['T1', 'T2'];
+  const dates = ['12/5/2024', '12/6/2024', '12/7/2024', '12/8/2024', '12/9/2024'];
+  const months = ['Mois 1', 'Mois 2', 'Mois 3', 'Mois 4', 'Mois 5'];
   
-  // For each quarter (2 quarters in 6 months)
-  for (let q = 0; q < 2; q++) {
-    // Calculate each creator's amount before this quarter
-    let prevAmounts = creators.map((_, i) => {
-      let amount = investmentPerCreator;
-      // Apply previous quarters' returns
-      for (let prevQ = 0; prevQ < q; prevQ++) {
-        amount = amount * creators[i].returnRate;
-      }
-      return amount;
-    });
-    
+  // For each month
+  for (let m = 0; m < 5; m++) {
     // For each creator
     creators.forEach((creator, creatorIndex) => {
-      const prevAmount = prevAmounts[creatorIndex];
-      const newAmount = prevAmount * creator.returnRate;
-      const earning = newAmount - prevAmount;
-      
       transactions.push({
         id: String(transactionId++),
         type: 'earning',
-        amount: parseFloat(earning.toFixed(2)),
-        date: dates[q],
-        status: q < 1 ? 'completed' : 'pending',
-        description: `Gains ${quarters[q]} - ${creator.name}`
+        amount: parseFloat(creator.monthlyGrowth.toFixed(2)),
+        date: dates[m],
+        status: m < 4 ? 'completed' : 'pending',
+        description: `Gains ${months[m]} - ${creator.name}`
       });
     });
   }
@@ -235,7 +206,13 @@ const Examples = () => {
                 </p>
                 <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
                   <p className="font-medium">Note importante</p>
-                  <p>Ceci est un exemple illustratif basé sur un investissement de 200€ sur 6 mois avec des rendements trimestriels de 130%, 120%, 115% et 125%.</p>
+                  <p>Ceci est un exemple illustratif basé sur un investissement de 200€ sur 6 mois avec une croissance mensuelle de 148€.</p>
+                  <ul className="mt-2 list-disc pl-5">
+                    <li>50€ × 2.30 = 115€ (croissance de 38€/mois)</li>
+                    <li>50€ × 2.20 = 110€ (croissance de 36.5€/mois)</li>
+                    <li>50€ × 2.15 = 107.5€ (croissance de 36€/mois)</li>
+                    <li>50€ × 2.25 = 112.5€ (croissance de 37.5€/mois)</li>
+                  </ul>
                 </div>
               </FadeIn>
             </div>
