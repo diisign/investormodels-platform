@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
 import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  PieChart, Pie, Cell, BarChart, Bar
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
@@ -13,27 +12,41 @@ import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
 // Generate realistic data for the example dashboard based on user investments
 const generateRealisticData = () => {
-  // Initial investment amount - 100€ for Emma Wilson
-  const initialInvestment = 100;
-  
-  // Investment and withdrawal dates
-  const startInvestmentDate = new Date('2024-06-10'); // June 10, 2024
-  const withdrawalDate = new Date('2024-12-15'); // December 15, 2024
-  const withdrawalAmount = 200;
-  
-  // Creator with their specific returns
-  const creators = [
+  // Initial investment amounts
+  const investments = [
     { 
       name: 'Emma Wilson', 
-      monthlyGain: 36.5, // 36.5€ per month
-      returnRate: 36.5, // Percentage for display
-      invested: 100,
+      date: new Date('2024-06-10'), 
+      amount: 100, 
+      monthlyGain: 36.5, 
+      returnRate: 36.5, 
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
+    },
+    { 
+      name: 'Sophia Martinez', 
+      date: new Date('2024-10-10'), 
+      amount: 100, 
+      monthlyGain: 38, 
+      returnRate: 38, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg' 
+    },
+    { 
+      name: 'Kayla Smith', 
+      date: new Date('2024-10-10'), 
+      amount: 100, 
+      monthlyGain: 36, 
+      returnRate: 36, 
+      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
     }
   ];
+  
+  // Withdrawal date
+  const withdrawalDate = new Date('2025-03-23');
+  const withdrawalAmount = 250;
   
   // Generate 12 months of performance data
   const performanceData = [];
@@ -45,46 +58,49 @@ const generateRealisticData = () => {
   
   // Track total value over time
   let totalValue = 0;
+  let totalInvested = 0;
   
   // For each month
   for (let i = 0; i <= 11; i++) { // 0 to 11 = 12 months
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
     
-    // Only add investment if we've reached the investment date
-    if (i === 0 || currentMonthDate >= startInvestmentDate) {
-      if (i === 0 && currentMonthDate >= startInvestmentDate) {
-        // Add the initial investment if the first month is after or equal to investment date
-        totalValue += initialInvestment;
-      } else if (i > 0 && currentMonthDate.getMonth() === startInvestmentDate.getMonth() && 
-                 currentMonthDate.getFullYear() === startInvestmentDate.getFullYear()) {
-        // Add the initial investment on the exact month of investment
-        totalValue += initialInvestment;
+    // Check for investments
+    investments.forEach(investment => {
+      if (i === 0 && currentMonthDate >= investment.date) {
+        // Add initial investments if the first month is after the investment date
+        totalValue += investment.amount;
+        totalInvested += investment.amount;
+      } else if (i > 0 && 
+                currentMonthDate.getMonth() === investment.date.getMonth() && 
+                currentMonthDate.getFullYear() === investment.date.getFullYear()) {
+        // Add investments on the month they were made
+        totalValue += investment.amount;
+        totalInvested += investment.amount;
       }
-    }
+    });
     
-    // Add monthly gains if after investment date
-    if (currentMonthDate > startInvestmentDate) {
-      // Calculate months since investment (including partial months)
-      const timeDiff = currentMonthDate.getTime() - startInvestmentDate.getTime();
-      const daysDiff = timeDiff / (1000 * 3600 * 24);
-      const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
-      
-      if (monthsDiff >= 1) {
-        // Add monthly gains for each full month that has passed
-        const fullMonthsPassed = Math.floor(monthsDiff);
-        creators.forEach(creator => {
-          // Only add gains for the current month if it hasn't been withdrawn yet
+    // Add monthly gains for existing investments
+    investments.forEach(investment => {
+      if (currentMonthDate > investment.date) {
+        // Calculate months since investment
+        const timeDiff = currentMonthDate.getTime() - investment.date.getTime();
+        const daysDiff = timeDiff / (1000 * 3600 * 24);
+        const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
+        
+        if (monthsDiff >= 1) {
+          // Add monthly gain if it's after the investment date and before withdrawal
+          const fullMonthsPassed = Math.floor(monthsDiff);
           if (currentMonthDate < withdrawalDate || 
-             (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
-              currentMonthDate.getFullYear() === withdrawalDate.getFullYear())) {
-            totalValue += creator.monthlyGain;
+              (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
+               currentMonthDate.getFullYear() === withdrawalDate.getFullYear())) {
+            totalValue += investment.monthlyGain;
           }
-        });
+        }
       }
-    }
+    });
     
-    // Subtract withdrawal amount if we've reached the withdrawal date
+    // Apply withdrawal
     if (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
         currentMonthDate.getFullYear() === withdrawalDate.getFullYear()) {
       totalValue -= withdrawalAmount;
@@ -100,32 +116,27 @@ const generateRealisticData = () => {
   }
   
   // Calculate current portfolio values for each creator
-  const portfolioData = creators.map(creator => {
-    const monthsSinceInvestment = Math.min(
-      Math.floor(
-        (new Date().getTime() - startInvestmentDate.getTime()) / 
-        (30 * 24 * 60 * 60 * 1000)
-      ),
-      Math.floor(
-        (withdrawalDate.getTime() - startInvestmentDate.getTime()) / 
-        (30 * 24 * 60 * 60 * 1000)
-      )
+  const portfolioData = investments.map(investment => {
+    const monthsSinceInvestment = Math.floor(
+      (new Date().getTime() - investment.date.getTime()) / 
+      (30 * 24 * 60 * 60 * 1000)
     );
     
-    // Calculate current value: initial investment + (monthly gain * months) - withdrawal
-    const currentValue = creator.invested + (creator.monthlyGain * monthsSinceInvestment) - withdrawalAmount;
+    // Calculate current value: initial investment + (monthly gain * months)
+    const currentValue = investment.amount + (investment.monthlyGain * monthsSinceInvestment);
+    const afterWithdrawal = currentValue - (withdrawalAmount / investments.length);
     
     return {
-      name: creator.name,
-      value: Number(Math.max(0, currentValue).toFixed(2)),
-      initial: creator.invested,
-      imageUrl: creator.imageUrl,
-      returnRate: creator.returnRate
+      name: investment.name,
+      value: Number(Math.max(0, afterWithdrawal).toFixed(2)),
+      initial: investment.amount,
+      imageUrl: investment.imageUrl,
+      returnRate: investment.returnRate
     };
   });
   
-  // Generate investments list
-  const investments = portfolioData.map((item, index) => ({
+  // Generate investments list for display
+  const investmentsList = portfolioData.map((item, index) => ({
     id: String(index + 1),
     creatorName: item.name,
     creatorImage: item.imageUrl,
@@ -137,100 +148,117 @@ const generateRealisticData = () => {
   }));
   
   // Calculate total earnings before withdrawal
-  const earningsBeforeWithdrawal = creators.reduce((sum, creator) => {
+  const totalEarnings = investments.reduce((sum, investment) => {
     const monthsBeforeWithdrawal = Math.floor(
-      (withdrawalDate.getTime() - startInvestmentDate.getTime()) / 
+      (withdrawalDate.getTime() - investment.date.getTime()) / 
       (30 * 24 * 60 * 60 * 1000)
     );
-    return sum + (creator.monthlyGain * monthsBeforeWithdrawal);
+    return sum + (investment.monthlyGain * monthsBeforeWithdrawal);
   }, 0);
   
-  // Generate transactions
-  const transactions = [
-    // Initial deposits
-    {
-      id: '1',
-      type: 'deposit',
-      amount: initialInvestment,
-      date: '10/06/2024',
-      status: 'completed',
-      description: 'Dépôt initial'
-    },
-    // Initial investments
-    {
-      id: '2',
-      type: 'investment',
-      amount: -initialInvestment,
-      date: '10/06/2024',
-      status: 'completed',
-      description: `Investissement - ${creators[0].name}`
-    }
-  ];
+  // Generate transactions: deposits, investments, and withdrawal only
+  const transactions = [];
+  let transactionId = 1;
   
-  // Add monthly earnings
-  let transactionId = 3;
+  // Add Emma Wilson deposit and investment
+  transactions.push({
+    id: String(transactionId++),
+    type: 'deposit',
+    amount: investments[0].amount,
+    date: '10/06/2024',
+    status: 'completed',
+    description: 'Dépôt initial'
+  });
   
-  // Generate dates for past months after investment date
-  const startMonth = startInvestmentDate.getMonth();
-  const startYear = startInvestmentDate.getFullYear();
+  transactions.push({
+    id: String(transactionId++),
+    type: 'investment',
+    amount: -investments[0].amount,
+    date: '10/06/2024',
+    status: 'completed',
+    description: `Investissement - ${investments[0].name}`
+  });
   
-  for (let i = 0; i < 6; i++) { // Adding 6 months of earnings
-    const transactionDate = new Date(startYear, startMonth + i + 1, 10); // +1 to start from month after investment
-    
-    // Skip if before investment date
-    if (transactionDate <= startInvestmentDate) continue;
-    
-    // Skip if after withdrawal date
-    if (transactionDate > withdrawalDate) continue;
-    
-    // Format date as MM/DD/YYYY
-    const formattedDate = `${transactionDate.getMonth() + 1}/${transactionDate.getDate()}/${transactionDate.getFullYear()}`;
-    
-    // Add earning for each creator
-    creators.forEach(creator => {
-      transactions.push({
-        id: String(transactionId++),
-        type: 'earning',
-        amount: creator.monthlyGain,
-        date: formattedDate,
-        status: 'completed',
-        description: `Gains mensuels - ${creator.name}`
-      });
-    });
-  }
+  // Add Sophia and Kayla deposits and investments
+  transactions.push({
+    id: String(transactionId++),
+    type: 'deposit',
+    amount: investments[1].amount + investments[2].amount,
+    date: '10/10/2024',
+    status: 'completed',
+    description: 'Dépôt'
+  });
+  
+  transactions.push({
+    id: String(transactionId++),
+    type: 'investment',
+    amount: -investments[1].amount,
+    date: '10/10/2024',
+    status: 'completed',
+    description: `Investissement - ${investments[1].name}`
+  });
+  
+  transactions.push({
+    id: String(transactionId++),
+    type: 'investment',
+    amount: -investments[2].amount,
+    date: '10/10/2024',
+    status: 'completed',
+    description: `Investissement - ${investments[2].name}`
+  });
   
   // Add withdrawal transaction
   transactions.push({
     id: String(transactionId++),
     type: 'withdrawal',
     amount: -withdrawalAmount,
-    date: '15/12/2024',
+    date: '23/03/2025',
     status: 'completed',
     description: 'Retrait de bénéfices'
   });
   
-  // Generate referral data
+  // Enhanced referral data
   const referralData = {
-    totalReferrals: 2,
-    pendingReferrals: 1,
-    completedReferrals: 1,
-    earnings: 15,
-    recentReferrals: []
+    totalReferrals: 8,
+    pendingReferrals: 3,
+    completedReferrals: 5,
+    earnings: 120,
+    recentReferrals: [
+      { name: 'Marie L.', date: '15/02/2025', status: 'completed', reward: 25 },
+      { name: 'Thomas B.', date: '28/02/2025', status: 'completed', reward: 25 },
+      { name: 'Claire D.', date: '05/03/2025', status: 'pending', reward: 25 }
+    ],
+    tierProgress: 68,
+    currentTier: 'Silver',
+    nextTier: 'Gold',
+    nextTierRequirement: 10,
+    availableRewards: [
+      { name: 'Cashback Bonus', description: '5% cashback on next investment', available: true },
+      { name: 'Priority Support', description: 'Access to dedicated support', available: true },
+      { name: 'Reduced Fees', description: '50% reduction on withdrawal fees', available: false }
+    ]
   };
   
   // Calculate final balance (current value)
   const balance = performanceData[performanceData.length - 1].value;
   
+  // Monthly performance data for the chart
+  const monthlyChartData = performanceData.map(item => ({
+    month: item.month,
+    invested: totalInvested,
+    return: item.value - totalInvested
+  }));
+  
   return {
     performanceData,
     portfolioData,
-    investments,
+    investments: investmentsList,
     transactions,
     referralData,
     balance,
-    totalInvested: initialInvestment,
-    totalEarnings: earningsBeforeWithdrawal,
-    COLORS: ['#0284c7', '#0ea5e9']
+    totalInvested,
+    totalEarnings: Number(totalEarnings.toFixed(2)),
+    monthlyChartData
   };
 };
 
@@ -257,11 +285,17 @@ const Examples = () => {
               <FadeIn direction="up">
                 <h1 className="text-3xl font-bold mb-2">Exemple de tableau de bord</h1>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Ceci est un exemple de tableau de bord avec des données basées sur un investissement de 100€ sur Emma Wilson.
+                  Ceci est un exemple de tableau de bord avec des données basées sur plusieurs investissements.
                 </p>
                 <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
                   <p className="font-medium">Note importante</p>
-                  <p>Ceci est un exemple illustratif basé sur un investissement de 100€ sur Emma Wilson (+36,5€/mois), démarré le 10 juin 2024, avec un retrait de 200€ effectué le 15 décembre 2024.</p>
+                  <p>Ceci est un exemple illustratif basé sur les investissements suivants :</p>
+                  <ul className="list-disc ml-5 mt-1">
+                    <li>100€ sur Emma Wilson (+36,5€/mois) le 10 juin 2024</li>
+                    <li>100€ sur Sophia Martinez (+38€/mois) le 10 octobre 2024</li>
+                    <li>100€ sur Kayla Smith (+36€/mois) le 10 octobre 2024</li>
+                    <li>Retrait de 250€ effectué le 23 mars 2025</li>
+                  </ul>
                 </div>
               </FadeIn>
             </div>
@@ -298,7 +332,7 @@ const Examples = () => {
                     <span className="text-2xl font-bold">{data.totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {data.investments.length} créatrice
+                    Dans {data.investments.length} créatrices
                   </div>
                 </div>
               </FadeIn>
@@ -316,7 +350,7 @@ const Examples = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Avant le retrait du 15 décembre
+                    Avant le retrait du 23 mars 2025
                   </div>
                 </div>
               </FadeIn>
@@ -342,8 +376,8 @@ const Examples = () => {
             
             {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column - Performance Chart */}
-              <FadeIn direction="up" className="glass-card lg:col-span-2">
+              {/* Performance Chart */}
+              <FadeIn direction="up" className="glass-card lg:col-span-3">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">Performance</h3>
@@ -382,48 +416,33 @@ const Examples = () => {
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
-                </div>
-              </FadeIn>
-              
-              {/* Right Column - Portfolio Distribution */}
-              <FadeIn direction="up" delay={100} className="glass-card">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold">Répartition du portefeuille</h3>
-                  </div>
-                  <div className="h-64 flex justify-center">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={data.portfolioData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={80}
-                          paddingAngle={5}
-                          dataKey="value"
-                        >
-                          {data.portfolioData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={data.COLORS[index % data.COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip formatter={(value) => `${value}€`} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="mt-4 space-y-2">
-                    {data.portfolioData.map((item, index) => (
-                      <div key={index} className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div
-                            className="h-3 w-3 rounded-full mr-2"
-                            style={{ backgroundColor: data.COLORS[index % data.COLORS.length] }}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    {data.investments.map((investment, index) => (
+                      <div 
+                        key={investment.id}
+                        className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
+                      >
+                        <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                          <img 
+                            src={investment.creatorImage} 
+                            alt={investment.creatorName} 
+                            className="h-full w-full object-cover"
                           />
-                          <span className="text-sm">{item.name}</span>
                         </div>
-                        <div>
-                          <span className="text-sm font-medium">{item.value}€</span>
-                          <span className="text-xs text-green-500 ml-2">+{item.returnRate}%</span>
+                        <div className="flex-grow">
+                          <div className="flex justify-between items-center">
+                            <h4 className="font-medium text-sm">{investment.creatorName}</h4>
+                            <span className="text-sm font-semibold">{investment.amount.toFixed(2)}€</span>
+                          </div>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              Initial: {investment.initial}€
+                            </span>
+                            <span className="text-xs font-medium text-green-500 flex items-center">
+                              <TrendingUp className="h-3 w-3 mr-1" />
+                              {investment.returnRate}%
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -431,6 +450,16 @@ const Examples = () => {
                 </div>
               </FadeIn>
             </div>
+
+            {/* Market Performance Chart */}
+            <FadeIn direction="up" delay={200} className="glass-card mt-8">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold mb-4">Performance du marché</h3>
+                <div className="h-[350px]">
+                  <OnlyfansRevenueChart data={data.monthlyChartData} />
+                </div>
+              </div>
+            </FadeIn>
             
             {/* Investments and Transactions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
@@ -462,7 +491,7 @@ const Examples = () => {
                           <div className="flex-grow">
                             <div className="flex justify-between items-center">
                               <h4 className="font-medium text-sm">{investment.creatorName}</h4>
-                              <span className="text-sm font-semibold">{investment.amount}€</span>
+                              <span className="text-sm font-semibold">{investment.amount.toFixed(2)}€</span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -513,7 +542,7 @@ const Examples = () => {
                   
                   {data.transactions.length > 0 ? (
                     <div className="space-y-4">
-                      {data.transactions.slice(0, 5).map((transaction) => (
+                      {data.transactions.map((transaction) => (
                         <div 
                           key={transaction.id}
                           className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
@@ -522,13 +551,11 @@ const Examples = () => {
                             "h-10 w-10 rounded-full flex items-center justify-center mr-3",
                             transaction.type === 'deposit' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
                             transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
-                            transaction.type === 'investment' ? "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400" :
-                            "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+                            "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
                           )}>
                             {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
                             {transaction.type === 'withdrawal' && <Minus className="h-5 w-5" />}
                             {transaction.type === 'investment' && <ArrowUpRight className="h-5 w-5" />}
-                            {transaction.type === 'earning' && <TrendingUp className="h-5 w-5" />}
                           </div>
                           <div className="flex-grow">
                             <div className="flex justify-between items-center">
@@ -573,8 +600,8 @@ const Examples = () => {
               </FadeIn>
             </div>
             
-            {/* Referral Card - Moved to bottom */}
-            <FadeIn direction="up" delay={500} className="glass-card mt-8">
+            {/* Enhanced Referral Card */}
+            <FadeIn direction="up" delay={200} className="glass-card mt-8">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold">Programme de parrainage</h3>
@@ -626,20 +653,84 @@ const Examples = () => {
                   </div>
                 </div>
                 
-                <div className="text-center py-8">
-                  <div className="text-gray-400 mb-3">
-                    <UserPlus className="h-12 w-12 mx-auto opacity-30" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {/* Recent Referrals */}
+                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                    <h4 className="font-semibold mb-3">Parrainages récents</h4>
+                    <div className="space-y-3">
+                      {data.referralData.recentReferrals.map((referral, index) => (
+                        <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
+                          <div>
+                            <div className="font-medium text-sm">{referral.name}</div>
+                            <div className="text-xs text-gray-500">{referral.date}</div>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <span className="text-sm font-semibold text-green-500">+{referral.reward}€</span>
+                            <span className={cn(
+                              "text-xs px-2 py-0.5 rounded-full mt-1",
+                              referral.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                              "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                            )}>
+                              {referral.status === 'completed' ? 'Complété' : 'En attente'}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <h4 className="text-lg font-medium mb-2">Invitez vos amis</h4>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
-                    Invitez vos amis et gagnez des commissions sur leurs investissements.
-                  </p>
+                  
+                  {/* Tier progress */}
+                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                    <h4 className="font-semibold mb-3">Niveau du programme</h4>
+                    <div className="mb-2 flex justify-between">
+                      <span className="text-sm font-medium">{data.referralData.currentTier}</span>
+                      <span className="text-sm font-medium">{data.referralData.nextTier}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mb-4 dark:bg-gray-700">
+                      <div 
+                        className="bg-investment-600 h-2 rounded-full" 
+                        style={{ width: `${data.referralData.tierProgress}%` }}
+                      ></div>
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">
+                      <span className="font-medium">
+                        {data.referralData.completedReferrals}/{data.referralData.nextTierRequirement}
+                      </span> parrainages pour atteindre le niveau {data.referralData.nextTier}
+                    </div>
+                  </div>
+                  
+                  {/* Available rewards */}
+                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                    <h4 className="font-semibold mb-3">Récompenses disponibles</h4>
+                    <div className="space-y-3">
+                      {data.referralData.availableRewards.map((reward, index) => (
+                        <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
+                          <div>
+                            <div className="font-medium text-sm">{reward.name}</div>
+                            <div className="text-xs text-gray-500">{reward.description}</div>
+                          </div>
+                          <div>
+                            <span className={cn(
+                              "text-xs px-2 py-1 rounded-full",
+                              reward.available ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                              "bg-gray-100 text-gray-600 dark:bg-gray-700/50 dark:text-gray-400"
+                            )}>
+                              {reward.available ? 'Disponible' : 'Niveau supérieur'}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-center py-6">
                   <GradientButton
-                    size="sm"
+                    size="md"
                     className="from-teal-400 to-blue-500 text-white"
                   >
                     <Link to="/affiliation">
-                      Inviter des amis
+                      Inviter des amis et gagner des récompenses
                     </Link>
                   </GradientButton>
                 </div>

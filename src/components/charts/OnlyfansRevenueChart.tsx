@@ -12,8 +12,8 @@ import {
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
-// Yearly OnlyFans revenue data (in billions/millions USD)
-const revenueData = [
+// Default yearly OnlyFans revenue data (in billions/millions USD)
+const defaultRevenueData = [
   { year: '2019', revenue: 0.12 },  // 120 millions
   { year: '2020', revenue: 0.375 }, // 375 millions
   { year: '2021', revenue: 0.932 }, // 932 millions
@@ -30,76 +30,176 @@ const chartConfig = {
       light: "#8B5CF6",
       dark: "#9B87F5"
     }
+  },
+  invested: {
+    label: "Investissement (€)",
+    theme: {
+      light: "#0ea5e9",
+      dark: "#38bdf8"
+    }
+  },
+  return: {
+    label: "Rendement (€)",
+    theme: {
+      light: "#22c55e",
+      dark: "#4ade80"
+    }
   }
 };
 
-const OnlyfansRevenueChart = () => {
-  const formatTooltipValue = (value: number) => {
-    return value < 1 ? `${Math.round(value * 1000)}M $` : `${value}B $`;
+interface OnlyfansRevenueChartProps {
+  data?: { month: string; invested: number; return: number; }[];
+}
+
+const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => {
+  // Determine if we should use monthly investment data or default yearly revenue data
+  const isMonthlyData = !!data && data.length > 0;
+  const chartData = isMonthlyData ? data : defaultRevenueData;
+  
+  const formatTooltipValue = (value: number, name: string) => {
+    if (!isMonthlyData) {
+      // For yearly data, format as billions or millions
+      return value < 1 ? `${Math.round(value * 1000)}M $` : `${value}B $`;
+    } else {
+      // For monthly data, format as euros
+      return `${value}€`;
+    }
   };
 
   return (
     <div className="relative w-full h-full">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-investment-500 to-investment-600 rounded-2xl blur opacity-30 animate-pulse-light"></div>
       <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 p-2 sm:p-4 h-full">
-        <h3 className="text-lg font-semibold mb-1 sm:mb-2">Croissance du Chiffre d'Affaires OnlyFans</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-4">Évolution annuelle (2019-2024)</p>
+        <h3 className="text-lg font-semibold mb-1 sm:mb-2">
+          {isMonthlyData ? "Évolution de l'Investissement" : "Croissance du Chiffre d'Affaires OnlyFans"}
+        </h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-4">
+          {isMonthlyData ? "Performance mensuelle (investissement vs rendement)" : "Évolution annuelle (2019-2024)"}
+        </p>
 
         <ChartContainer className="aspect-[5/4] h-[240px] sm:h-[320px]" config={chartConfig}>
-          <AreaChart 
-            data={revenueData} 
-            margin={{ top: 5, right: 15, left: 15, bottom: 5 }}
-          >
-            <defs>
-              <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-            <XAxis 
-              dataKey="year" 
-              tick={{ fill: 'var(--foreground)', fontSize: 10 }}
-              tickLine={{ stroke: 'var(--border)' }} 
-              padding={{ left: 25, right: 20 }}
-              tickMargin={5}
-            />
-            <YAxis 
-              tick={{ fill: 'var(--foreground)', fontSize: 10 }} 
-              tickLine={{ stroke: 'var(--border)' }}
-              tickFormatter={(value) => value < 1 ? `${value * 1000}M` : `${value}B`}
-              width={40}
-              dx={3}
-            />
-            <ChartTooltip
-              content={({ active, payload, label }) => {
-                if (active && payload?.length) {
-                  return (
-                    <ChartTooltipContent
-                      active={active}
-                      payload={payload}
-                      label={label}
-                      formatter={formatTooltipValue}
-                    />
-                  );
-                }
-                return null;
-              }}
-            />
-            <Area 
-              type="monotone" 
-              dataKey="revenue" 
-              stroke="#8B5CF6" 
-              fillOpacity={1} 
-              fill="url(#revenueGradient)" 
-              name="Chiffre d'affaires"
-            />
-            <Legend />
-          </AreaChart>
+          {isMonthlyData ? (
+            // Monthly investment chart
+            <AreaChart 
+              data={chartData} 
+              margin={{ top: 5, right: 15, left: 15, bottom: 5 }}
+            >
+              <defs>
+                <linearGradient id="investedGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0.1}/>
+                </linearGradient>
+                <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+              <XAxis 
+                dataKey="month" 
+                tick={{ fill: 'var(--foreground)', fontSize: 10 }}
+                tickLine={{ stroke: 'var(--border)' }} 
+                padding={{ left: 25, right: 20 }}
+                tickMargin={5}
+              />
+              <YAxis 
+                tick={{ fill: 'var(--foreground)', fontSize: 10 }} 
+                tickLine={{ stroke: 'var(--border)' }}
+                width={40}
+                dx={3}
+              />
+              <ChartTooltip
+                content={({ active, payload, label }) => {
+                  if (active && payload?.length) {
+                    return (
+                      <ChartTooltipContent
+                        active={active}
+                        payload={payload}
+                        label={label}
+                        formatter={formatTooltipValue}
+                      />
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Area 
+                type="monotone" 
+                dataKey="invested" 
+                stroke="#0ea5e9" 
+                fillOpacity={1} 
+                fill="url(#investedGradient)" 
+                name="Investissement"
+                stackId="1"
+              />
+              <Area 
+                type="monotone" 
+                dataKey="return" 
+                stroke="#22c55e" 
+                fillOpacity={1} 
+                fill="url(#returnGradient)" 
+                name="Rendement"
+                stackId="1"
+              />
+              <Legend />
+            </AreaChart>
+          ) : (
+            // Yearly OnlyFans revenue chart
+            <AreaChart 
+              data={chartData} 
+              margin={{ top: 5, right: 15, left: 15, bottom: 5 }}
+            >
+              <defs>
+                <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+              <XAxis 
+                dataKey="year" 
+                tick={{ fill: 'var(--foreground)', fontSize: 10 }}
+                tickLine={{ stroke: 'var(--border)' }} 
+                padding={{ left: 25, right: 20 }}
+                tickMargin={5}
+              />
+              <YAxis 
+                tick={{ fill: 'var(--foreground)', fontSize: 10 }} 
+                tickLine={{ stroke: 'var(--border)' }}
+                tickFormatter={(value) => value < 1 ? `${value * 1000}M` : `${value}B`}
+                width={40}
+                dx={3}
+              />
+              <ChartTooltip
+                content={({ active, payload, label }) => {
+                  if (active && payload?.length) {
+                    return (
+                      <ChartTooltipContent
+                        active={active}
+                        payload={payload}
+                        label={label}
+                        formatter={formatTooltipValue}
+                      />
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Area 
+                type="monotone" 
+                dataKey="revenue" 
+                stroke="#8B5CF6" 
+                fillOpacity={1} 
+                fill="url(#revenueGradient)" 
+                name="Chiffre d'affaires"
+              />
+              <Legend />
+            </AreaChart>
+          )}
         </ChartContainer>
 
         <div className="mt-2 sm:mt-4 text-xs text-gray-500 dark:text-gray-400">
-          Source: Rapports financiers publics OnlyFans 2019-2024
+          Source: {isMonthlyData ? "Données de votre portefeuille" : "Rapports financiers publics OnlyFans 2019-2024"}
         </div>
       </div>
     </div>
