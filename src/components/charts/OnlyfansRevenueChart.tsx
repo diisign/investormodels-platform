@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   ResponsiveContainer, 
@@ -62,7 +61,20 @@ interface OnlyfansRevenueChartProps {
 const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => {
   // Determine if we should use monthly investment data or default yearly revenue data
   const isMonthlyData = !!data && data.length > 0;
-  const chartData = isMonthlyData ? data : defaultRevenueData;
+  
+  // Process the chart data to ensure returns continue to increase after withdrawal
+  const chartData = isMonthlyData ? data.map((item, index, array) => {
+    // Keep the original data properties
+    const newItem = { ...item };
+    
+    // Return values shouldn't be reduced after withdrawal
+    if (index > 0 && 'withdrawal' in array[index - 1] && array[index - 1].withdrawal) {
+      // Ensure the return value keeps increasing even after withdrawal
+      newItem.return = Math.max(array[index - 1].return, item.return);
+    }
+    
+    return newItem;
+  }) : defaultRevenueData;
   
   // Find withdrawal point if exists
   const withdrawalPoint = isMonthlyData ? 
@@ -102,10 +114,6 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                   <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0.1}/>
                 </linearGradient>
                 <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
-                </linearGradient>
-                <linearGradient id="withdrawalGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
                   <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
                 </linearGradient>
@@ -155,7 +163,6 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 fillOpacity={1} 
                 fill="url(#returnGradient)" 
                 name="Rendement"
-                stackId="1"
               />
               {withdrawalPoint >= 0 && (
                 <ReferenceLine 
