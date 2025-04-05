@@ -16,157 +16,173 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 // Generate realistic data for the example dashboard based on user investments
 const generateRealisticData = () => {
-  // Initial investment amount - 200€
+  // Initial investment amount - 200€ (100€ for each of the two creators)
   const initialInvestment = 200;
   
-  // Four creators with their specific returns
+  // Investment date
+  const startInvestmentDate = new Date('2024-10-10');
+  
+  // 2 creators with their specific returns
   const creators = [
     { 
       name: 'Sophia Martinez', 
-      returnRate: 2.30, // 2.30x every 3 months
-      monthlyGrowth: 38, // 115-50 = 65€ / 3 months = ~21.67€ per month
+      monthlyGain: 38, // 38€ per month
+      returnRate: 38, // Percentage for display
+      invested: 100,
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
     },
     { 
-      name: 'Emma Wilson', 
-      returnRate: 2.20, // 2.20x every 3 months
-      monthlyGrowth: 36.5, // 110-50 = 60€ / 3 months = 20€ per month
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' 
-    },
-    { 
       name: 'Kayla Smith', 
-      returnRate: 2.15, // 2.15x every 3 months
-      monthlyGrowth: 36, // 107.5-50 = 57.5€ / 3 months = 19.17€ per month
+      monthlyGain: 36, // 36€ per month
+      returnRate: 36, // Percentage for display
+      invested: 100,
       imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
-    },
-    { 
-      name: 'Lala Avi', 
-      returnRate: 2.25, // 2.25x every 3 months
-      monthlyGrowth: 37.5, // 112.5-50 = 62.5€ / 3 months = 20.83€ per month
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' 
     }
   ];
   
-  // Divide investment equally among creators
-  const investmentPerCreator = initialInvestment / 4; // 50€ per creator
-  
-  // Calculate monthly growth for all creators combined
-  const totalMonthlyGrowth = creators.reduce((sum, creator) => sum + creator.monthlyGrowth, 0); // Should be 148€ per month
-  
-  // Generate performance data (monthly growth)
+  // Generate 7 months of performance data
   const performanceData = [];
-  let currentTotal = initialInvestment;
   
-  // Start date 6 months ago
-  const startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 5); // -5 to get 6 months including current
+  // Start date 7 months ago from current date
+  const currentDate = new Date();
+  const startDate = new Date(currentDate);
+  startDate.setMonth(currentDate.getMonth() - 6); // Starting 7 months ago (0-indexed)
   
-  // Generate monthly data
-  for (let i = 0; i < 6; i++) {
-    const currentDate = new Date(startDate);
-    currentDate.setMonth(currentDate.getMonth() + i);
+  // Track total value over time
+  let totalValue = initialInvestment;
+  
+  // For each month
+  for (let i = 0; i <= 6; i++) { // 0 to 6 = 7 months
+    const currentMonthDate = new Date(startDate);
+    currentMonthDate.setMonth(startDate.getMonth() + i);
     
-    // For the first month, just show the initial investment
-    if (i > 0) {
-      currentTotal += totalMonthlyGrowth;
+    // Only start adding gains if we've passed the investment date
+    if (currentMonthDate >= startInvestmentDate) {
+      const monthsSinceInvestment = Math.floor(
+        (currentMonthDate.getTime() - startInvestmentDate.getTime()) / 
+        (30 * 24 * 60 * 60 * 1000) // Approximate month in milliseconds
+      );
+      
+      if (monthsSinceInvestment > 0) {
+        // Add monthly gains for each creator
+        creators.forEach(creator => {
+          totalValue += creator.monthlyGain;
+        });
+      }
     }
     
+    // Format the month for display
+    const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
+    
     performanceData.push({
-      month: currentDate.toLocaleString('default', { month: 'short' }),
-      value: parseFloat(currentTotal.toFixed(2))
+      month: monthName,
+      value: Number(totalValue.toFixed(2))
     });
   }
   
-  // Calculate the value for each creator after 6 months
+  // Calculate current portfolio values for each creator
   const portfolioData = creators.map(creator => {
-    // Start with the initial investment per creator (50€)
-    // After 6 months, each creator has grown by their monthlyGrowth * 6
-    const finalValue = investmentPerCreator + (creator.monthlyGrowth * 5); // 5 months of growth (excluding initial month)
+    const monthsSinceInvestment = Math.floor(
+      (new Date().getTime() - startInvestmentDate.getTime()) / 
+      (30 * 24 * 60 * 60 * 1000)
+    );
+    
+    // Calculate current value: initial investment + (monthly gain * months)
+    const currentValue = creator.invested + (creator.monthlyGain * Math.max(0, monthsSinceInvestment));
     
     return {
       name: creator.name,
-      value: parseFloat(finalValue.toFixed(2)),
-      initial: investmentPerCreator,
+      value: Number(currentValue.toFixed(2)),
+      initial: creator.invested,
       imageUrl: creator.imageUrl,
-      // Calculate percentage increase
-      returnRate: Math.round(((finalValue / investmentPerCreator) - 1) * 100)
+      returnRate: creator.returnRate
     };
   });
-  
-  // Calculate total final value and earnings
-  const totalValue = portfolioData.reduce((sum, item) => sum + item.value, 0);
-  const totalEarnings = totalValue - initialInvestment;
   
   // Generate investments list
   const investments = portfolioData.map((item, index) => ({
     id: String(index + 1),
     creatorName: item.name,
     creatorImage: item.imageUrl,
-    planName: index % 2 === 0 ? 'Growth' : 'Premium',
-    amount: parseFloat(item.value.toFixed(2)),
+    planName: 'Growth',
+    amount: item.value,
     initial: item.initial,
     returnRate: item.returnRate,
     status: 'active'
   }));
   
-  // Generate transactions based on the investment history
+  // Calculate total earnings
+  const totalEarnings = portfolioData.reduce((sum, item) => sum + (item.value - item.initial), 0);
+  
+  // Generate transactions
   const transactions = [
-    // Initial deposit
+    // Initial deposits
     {
       id: '1',
       type: 'deposit',
-      amount: initialInvestment,
-      date: '10/4/2024',
+      amount: 200,
+      date: '10/10/2024',
       status: 'completed',
       description: 'Dépôt initial'
     },
     // Initial investments
-    ...creators.map((creator, index) => ({
-      id: String(index + 2),
+    {
+      id: '2',
       type: 'investment',
-      amount: -investmentPerCreator,
-      date: '12/4/2024',
+      amount: -100,
+      date: '10/10/2024',
       status: 'completed',
-      description: `Investissement - ${creator.name}`
-    })),
+      description: `Investissement - ${creators[0].name}`
+    },
+    {
+      id: '3',
+      type: 'investment',
+      amount: -100,
+      date: '10/10/2024',
+      status: 'completed',
+      description: `Investissement - ${creators[1].name}`
+    }
   ];
   
-  // Add monthly earnings transactions
-  let transactionId = transactions.length + 1;
-  const dates = ['12/5/2024', '12/6/2024', '12/7/2024', '12/8/2024', '12/9/2024'];
-  const months = ['Mois 1', 'Mois 2', 'Mois 3', 'Mois 4', 'Mois 5'];
+  // Add monthly earnings
+  let transactionId = 4;
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
   
-  // For each month
-  for (let m = 0; m < 5; m++) {
-    // For each creator
-    creators.forEach((creator, creatorIndex) => {
+  // Generate dates for past months
+  for (let i = 0; i < 6; i++) {
+    const transactionDate = new Date(currentYear, currentMonth - 5 + i, 10);
+    
+    // Skip if before investment date
+    if (transactionDate <= startInvestmentDate) continue;
+    
+    // Format date as MM/DD/YYYY
+    const formattedDate = `${transactionDate.getMonth() + 1}/${transactionDate.getDate()}/${transactionDate.getFullYear()}`;
+    
+    // Add earning for each creator
+    creators.forEach(creator => {
       transactions.push({
         id: String(transactionId++),
         type: 'earning',
-        amount: parseFloat(creator.monthlyGrowth.toFixed(2)),
-        date: dates[m],
-        status: m < 4 ? 'completed' : 'pending',
-        description: `Gains ${months[m]} - ${creator.name}`
+        amount: creator.monthlyGain,
+        date: formattedDate,
+        status: 'completed',
+        description: `Gains mensuels - ${creator.name}`
       });
     });
   }
   
   // Generate referral data
-  const totalReferrals = Math.floor(Math.random() * 3) + 1;
-  const pendingReferrals = Math.floor(Math.random() * totalReferrals);
-  const completedReferrals = totalReferrals - pendingReferrals;
-  const referralEarnings = Math.floor(completedReferrals * 15 + Math.random() * 10);
-  
   const referralData = {
-    totalReferrals,
-    pendingReferrals,
-    completedReferrals,
-    earnings: referralEarnings,
+    totalReferrals: 2,
+    pendingReferrals: 1,
+    completedReferrals: 1,
+    earnings: 15,
     recentReferrals: []
   };
   
   // Calculate final balance
-  const balance = parseFloat(totalValue.toFixed(2));
+  const balance = performanceData[performanceData.length - 1].value;
   
   return {
     performanceData,
@@ -176,8 +192,8 @@ const generateRealisticData = () => {
     referralData,
     balance,
     totalInvested: initialInvestment,
-    totalEarnings: parseFloat(totalEarnings.toFixed(2)),
-    COLORS: ['#0284c7', '#0ea5e9', '#38bdf8', '#7dd3fc']
+    totalEarnings: Number(totalEarnings.toFixed(2)),
+    COLORS: ['#0284c7', '#0ea5e9']
   };
 };
 
@@ -185,6 +201,7 @@ const Examples = () => {
   const data = generateRealisticData();
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
+  const [timeRange, setTimeRange] = useState('7');
   
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -193,6 +210,7 @@ const Examples = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
       <Navbar isLoggedIn={true} onLogout={() => {}} />
       
       <main className="flex-grow pt-20">
@@ -202,17 +220,11 @@ const Examples = () => {
               <FadeIn direction="up">
                 <h1 className="text-3xl font-bold mb-2">Exemple de tableau de bord</h1>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Ceci est un exemple de tableau de bord avec des données basées sur un investissement de 200€ réparti sur 4 créatrices.
+                  Ceci est un exemple de tableau de bord avec des données basées sur un investissement de 200€ réparti sur 2 créatrices.
                 </p>
                 <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
                   <p className="font-medium">Note importante</p>
-                  <p>Ceci est un exemple illustratif basé sur un investissement de 200€ sur 6 mois avec une croissance mensuelle de 148€.</p>
-                  <ul className="mt-2 list-disc pl-5">
-                    <li>50€ × 2.30 = 115€ (croissance de 38€/mois)</li>
-                    <li>50€ × 2.20 = 110€ (croissance de 36.5€/mois)</li>
-                    <li>50€ × 2.15 = 107.5€ (croissance de 36€/mois)</li>
-                    <li>50€ × 2.25 = 112.5€ (croissance de 37.5€/mois)</li>
-                  </ul>
+                  <p>Ceci est un exemple illustratif basé sur un investissement de 100€ sur Sophia Martinez (+38€/mois) et 100€ sur Kayla Smith (+36€/mois), tous deux à partir du 10 octobre.</p>
                 </div>
               </FadeIn>
             </div>
@@ -249,7 +261,7 @@ const Examples = () => {
                     <span className="text-2xl font-bold">{data.totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {data.investments.length} créateurs
+                    Dans {data.investments.length} créatrices
                   </div>
                 </div>
               </FadeIn>
@@ -267,7 +279,7 @@ const Examples = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Sur 6 mois
+                    Depuis le 10 octobre
                   </div>
                 </div>
               </FadeIn>
@@ -275,7 +287,7 @@ const Examples = () => {
               <FadeIn direction="up" delay={400} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Créateurs suivis</h3>
+                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Créatrices suivies</h3>
                     <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
                       <Users className="h-5 w-5" />
                     </div>
@@ -298,27 +310,36 @@ const Examples = () => {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">Performance</h3>
-                    <select className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2">
-                      <option>6 derniers mois</option>
-                      <option>3 derniers mois</option>
+                    <select 
+                      className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2"
+                      value={timeRange}
+                      onChange={(e) => setTimeRange(e.target.value)}
+                    >
+                      <option value="7">7 derniers mois</option>
+                      <option value="6">6 derniers mois</option>
+                      <option value="3">3 derniers mois</option>
                     </select>
                   </div>
                   <div className="h-72">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart
-                        data={data.performanceData}
+                        data={data.performanceData.slice(-parseInt(timeRange))}
                         margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                         <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                        <YAxis axisLine={false} tickLine={false} />
+                        <YAxis 
+                          axisLine={false} 
+                          tickLine={false} 
+                          domain={['dataMin - 10', 'dataMax + 10']}
+                        />
                         <Tooltip formatter={(value) => `${value}€`} />
                         <Line
                           type="monotone"
                           dataKey="value"
                           stroke="#0ea5e9"
                           strokeWidth={3}
-                          dot={{ r: 0 }}
+                          dot={{ r: 3 }}
                           activeDot={{ r: 6, strokeWidth: 0 }}
                         />
                       </LineChart>
@@ -515,7 +536,7 @@ const Examples = () => {
               </FadeIn>
             </div>
             
-            {/* Referral Card */}
+            {/* Referral Card - Moved to bottom */}
             <FadeIn direction="up" delay={500} className="glass-card mt-8">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -630,26 +651,22 @@ const Examples = () => {
                     required
                   >
                     <option value="">Sélectionner une méthode</option>
-                    <option value="card">Carte bancaire</option>
-                    <option value="transfer">Virement bancaire</option>
-                    <option value="paypal">PayPal</option>
+                    <option value="credit-card">Carte bancaire</option>
+                    <option value="bank-transfer">Virement bancaire</option>
                   </select>
                 </div>
                 
-                <div className="flex space-x-3 pt-3">
-                  <button 
-                    type="button" 
+                <div className="pt-4 flex justify-end space-x-3">
+                  <button
+                    type="button"
                     onClick={() => setShowDepositModal(false)}
-                    className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
                     Annuler
                   </button>
-                  <button 
-                    type="submit" 
-                    className="flex-1 py-2 px-4 bg-gradient-to-r from-investment-500 to-investment-600 text-white rounded-lg hover:from-investment-600 hover:to-investment-700 transition-colors"
-                  >
+                  <GradientButton type="submit">
                     Déposer
-                  </button>
+                  </GradientButton>
                 </div>
               </div>
             </form>
