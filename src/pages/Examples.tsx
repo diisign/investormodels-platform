@@ -18,26 +18,48 @@ const generateRealisticData = () => {
   // Initial investment amount - 200€
   const initialInvestment = 200;
   
-  // Four creators with their specific returns (130%, 120%, 115%, 125%)
-  // Each return is applied quarterly (every 3 months)
+  // Four creators with their specific returns (230%, 220%, 215%, 225% every 3 months)
+  // We'll update them monthly, so we need to calculate the monthly equivalent rate
   const creators = [
-    { name: 'Sophia Martinez', returnRate: 1.30, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' },
-    { name: 'Emma Wilson', returnRate: 1.20, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' },
-    { name: 'Kayla Smith', returnRate: 1.15, imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' },
-    { name: 'Lala Avi', returnRate: 1.25, imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' }
+    { 
+      name: 'Sophia Martinez', 
+      // 2.30 every 3 months (monthly updated)
+      returnRate: 2.30, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
+    },
+    { 
+      name: 'Emma Wilson', 
+      // 2.20 every 3 months (monthly updated)
+      returnRate: 2.20, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tu/tue/tues2azi6vxj6yrmdec7g9vrol66frbj1731104096/445225187/avatar.jpg' 
+    },
+    { 
+      name: 'Kayla Smith', 
+      // 2.15 every 3 months (monthly updated)
+      returnRate: 2.15, 
+      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
+    },
+    { 
+      name: 'Lala Avi', 
+      // 2.25 every 3 months (monthly updated)
+      returnRate: 2.25, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg' 
+    }
   ];
   
   // Divide investment equally among creators
   const investmentPerCreator = initialInvestment / 4; // 50€ per creator
   
-  // Calculate returns for each creator after 12 months (4 quarters)
+  // Calculate returns for each creator after 12 months with monthly updates but quarterly actual returns
   const portfolioData = creators.map(creator => {
-    // Calculate quarterly returns
+    // Start with initial investment per creator
     let amount = investmentPerCreator;
     
-    // Apply compound quarterly return over 4 quarters
-    for (let i = 0; i < 4; i++) {
-      amount = amount * creator.returnRate;
+    // Apply returns on a monthly basis, but actual returns happen every 3 months
+    for (let i = 0; i < 12; i++) {
+      if ((i + 1) % 3 === 0) { // Only apply return at month 3, 6, 9, 12
+        amount = amount * creator.returnRate;
+      }
     }
     
     return {
@@ -45,7 +67,8 @@ const generateRealisticData = () => {
       value: parseFloat(amount.toFixed(2)),
       initial: investmentPerCreator,
       imageUrl: creator.imageUrl,
-      returnRate: Math.round((creator.returnRate - 1) * 100) // Convert back to percentage for display
+      // Convert factor to percentage for display
+      returnRate: Math.round((creator.returnRate - 1) * 100)
     };
   });
   
@@ -55,7 +78,7 @@ const generateRealisticData = () => {
   
   // Generate performance data (monthly growth)
   const performanceData = [];
-  let cumulativeValue = initialInvestment;
+  const creatorAmounts = creators.map(() => investmentPerCreator); // Track each creator's amount separately
   
   // Start date 12 months ago
   const startDate = new Date();
@@ -65,29 +88,22 @@ const generateRealisticData = () => {
     const currentDate = new Date(startDate);
     currentDate.setMonth(currentDate.getMonth() + i);
     
-    // Apply quarterly returns at months 3, 6, 9, and 12
-    if (i % 3 === 2) { // Month indices 2, 5, 8, 11 (representing months 3, 6, 9, 12)
-      let newCumulativeValue = 0;
-      
-      // Apply each creator's quarterly return to their portion of the investment
+    // At every 3rd month, apply the quarterly return rates
+    if ((i + 1) % 3 === 0) {
       creators.forEach((creator, index) => {
-        const creatorPortion = i === 0 ? 
-          investmentPerCreator : 
-          (portfolioData[index].initial / initialInvestment) * cumulativeValue;
-          
-        newCumulativeValue += creatorPortion * creator.returnRate;
+        creatorAmounts[index] = creatorAmounts[index] * creator.returnRate;
       });
-      
-      cumulativeValue = newCumulativeValue;
     }
     
+    // Sum all creator amounts for this month
+    const monthValue = creatorAmounts.reduce((sum, amount) => sum + amount, 0);
+    
     // Add small random fluctuation for visual interest (smaller now for more realistic curve)
-    const randomFluctuation = cumulativeValue * (Math.random() * 0.03 - 0.015);
-    const monthValue = cumulativeValue + randomFluctuation;
+    const randomFluctuation = i === 0 ? 0 : monthValue * (Math.random() * 0.02 - 0.01);
     
     performanceData.push({
       month: currentDate.toLocaleString('default', { month: 'short' }),
-      value: parseFloat(monthValue.toFixed(2))
+      value: parseFloat((monthValue + randomFluctuation).toFixed(2))
     });
   }
   
@@ -123,61 +139,41 @@ const generateRealisticData = () => {
       status: 'completed',
       description: `Investissement - ${creator.name}`
     })),
-    // Quarterly earnings - Q1
-    ...creators.map((creator, index) => {
-      const q1Return = investmentPerCreator * creator.returnRate - investmentPerCreator;
-      return {
-        id: String(index + 6),
-        type: 'earning',
-        amount: parseFloat(q1Return.toFixed(2)),
-        date: '12/7/2024',
-        status: 'completed',
-        description: `Gains T1 - ${creator.name}`
-      };
-    }),
-    // Quarterly earnings - Q2
-    ...creators.map((creator, index) => {
-      const q1Value = investmentPerCreator * creator.returnRate;
-      const q2Return = q1Value * creator.returnRate - q1Value;
-      return {
-        id: String(index + 10),
-        type: 'earning',
-        amount: parseFloat(q2Return.toFixed(2)),
-        date: '12/10/2024',
-        status: 'completed',
-        description: `Gains T2 - ${creator.name}`
-      };
-    }),
-    // Quarterly earnings - Q3
-    ...creators.map((creator, index) => {
-      const q1Value = investmentPerCreator * creator.returnRate;
-      const q2Value = q1Value * creator.returnRate;
-      const q3Return = q2Value * creator.returnRate - q2Value;
-      return {
-        id: String(index + 14),
-        type: 'earning',
-        amount: parseFloat(q3Return.toFixed(2)),
-        date: '12/1/2025',
-        status: 'completed',
-        description: `Gains T3 - ${creator.name}`
-      };
-    }),
-    // Quarterly earnings - Q4
-    ...creators.map((creator, index) => {
-      const q1Value = investmentPerCreator * creator.returnRate;
-      const q2Value = q1Value * creator.returnRate;
-      const q3Value = q2Value * creator.returnRate;
-      const q4Return = q3Value * creator.returnRate - q3Value;
-      return {
-        id: String(index + 18),
-        type: 'earning',
-        amount: parseFloat(q4Return.toFixed(2)),
-        date: '12/4/2025',
-        status: 'pending',
-        description: `Gains T4 - ${creator.name}`
-      };
-    })
   ];
+  
+  // Add quarterly earnings for each creator
+  let transactionId = transactions.length + 1;
+  const dates = ['12/7/2024', '12/10/2024', '12/1/2025', '12/4/2025'];
+  const quarters = ['T1', 'T2', 'T3', 'T4'];
+  
+  // For each quarter
+  for (let q = 0; q < 4; q++) {
+    // Calculate each creator's amount before this quarter
+    let prevAmounts = creators.map((_, i) => {
+      let amount = investmentPerCreator;
+      // Apply previous quarters' returns
+      for (let prevQ = 0; prevQ < q; prevQ++) {
+        amount = amount * creators[i].returnRate;
+      }
+      return amount;
+    });
+    
+    // For each creator
+    creators.forEach((creator, creatorIndex) => {
+      const prevAmount = prevAmounts[creatorIndex];
+      const newAmount = prevAmount * creator.returnRate;
+      const earning = newAmount - prevAmount;
+      
+      transactions.push({
+        id: String(transactionId++),
+        type: 'earning',
+        amount: parseFloat(earning.toFixed(2)),
+        date: dates[q],
+        status: q < 3 ? 'completed' : 'pending',
+        description: `Gains ${quarters[q]} - ${creator.name}`
+      });
+    });
+  }
   
   // Generate referral data
   const totalReferrals = Math.floor(Math.random() * 3) + 1;
@@ -654,33 +650,4 @@ const Examples = () => {
                     required
                   >
                     <option value="">Sélectionner une méthode</option>
-                    <option value="card">Carte bancaire</option>
-                    <option value="transfer">Virement bancaire</option>
-                    <option value="paypal">PayPal</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer des fonds
-                  </GradientButton>
-                </div>
-              </div>
-            </form>
-          </FadeIn>
-        </div>
-      )}
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Examples;
+                    <option value
