@@ -44,11 +44,18 @@ const chartConfig = {
       light: "#22c55e",
       dark: "#4ade80"
     }
+  },
+  withdrawal: {
+    label: "Retrait (€)",
+    theme: {
+      light: "#ef4444",
+      dark: "#f87171"
+    }
   }
 };
 
 interface OnlyfansRevenueChartProps {
-  data?: { month: string; invested: number; return: number; }[];
+  data?: { month: string; invested: number; return: number; withdrawal?: number; }[];
 }
 
 const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => {
@@ -74,7 +81,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
           {isMonthlyData ? "Évolution de l'Investissement" : "Croissance du Chiffre d'Affaires OnlyFans"}
         </h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-4">
-          {isMonthlyData ? "Performance mensuelle (investissement vs rendement)" : "Évolution annuelle (2019-2024)"}
+          {isMonthlyData ? "Performance mensuelle (investissement, rendement, retraits)" : "Évolution annuelle (2019-2024)"}
         </p>
 
         <ChartContainer className="aspect-[5/4] h-[240px] sm:h-[320px]" config={chartConfig}>
@@ -92,6 +99,10 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
                   <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
+                </linearGradient>
+                <linearGradient id="withdrawalGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -141,6 +152,18 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 name="Rendement"
                 stackId="1"
               />
+              {/* Only show withdrawal area if it exists in the data */}
+              {chartData.some(item => 'withdrawal' in item) && (
+                <Area 
+                  type="monotone" 
+                  dataKey="withdrawal" 
+                  stroke="#ef4444" 
+                  fillOpacity={1} 
+                  fill="url(#withdrawalGradient)" 
+                  name="Retrait"
+                  stackId="1"
+                />
+              )}
               <Legend />
             </AreaChart>
           ) : (

@@ -1,806 +1,477 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
+import React from 'react';
 import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
-} from 'recharts';
-import GradientButton from '@/components/ui/GradientButton';
-import FadeIn from '@/components/animations/FadeIn';
+  ArrowDownFromLine, 
+  ArrowUpFromLine, 
+  CircleDollarSign, 
+  Users,
+  BadgeDollarSign,
+  Gift,
+  MoveRight,
+  CheckCircle2,
+} from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { cn } from '@/lib/utils';
-import UserBalance from '@/components/UserBalance';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-
-// Generate realistic data for the example dashboard based on user investments
-const generateRealisticData = () => {
-  // Initial investment amounts
-  const investments = [
-    { 
-      name: 'Emma Wilson', 
-      date: new Date('2024-06-10'), 
-      amount: 100, 
-      monthlyGain: 36.5, 
-      returnRate: 36.5, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
-    },
-    { 
-      name: 'Sophia Martinez', 
-      date: new Date('2024-10-10'), 
-      amount: 100, 
-      monthlyGain: 38, 
-      returnRate: 38, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg' 
-    },
-    { 
-      name: 'Kayla Smith', 
-      date: new Date('2024-10-10'), 
-      amount: 100, 
-      monthlyGain: 36, 
-      returnRate: 36, 
-      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
-    }
-  ];
-  
-  // Withdrawal date
-  const withdrawalDate = new Date('2025-03-23');
-  const withdrawalAmount = 250;
-  
-  // Generate 12 months of performance data
-  const performanceData = [];
-  
-  // Start date 12 months ago from current date
-  const currentDate = new Date();
-  const startDate = new Date(currentDate);
-  startDate.setMonth(currentDate.getMonth() - 11); // Starting 12 months ago (0-indexed)
-  
-  // Track total value over time
-  let totalValue = 0;
-  let totalInvested = 0;
-  
-  // For each month
-  for (let i = 0; i <= 11; i++) { // 0 to 11 = 12 months
-    const currentMonthDate = new Date(startDate);
-    currentMonthDate.setMonth(startDate.getMonth() + i);
-    
-    // Check for investments
-    investments.forEach(investment => {
-      if (i === 0 && currentMonthDate >= investment.date) {
-        // Add initial investments if the first month is after the investment date
-        totalValue += investment.amount;
-        totalInvested += investment.amount;
-      } else if (i > 0 && 
-                currentMonthDate.getMonth() === investment.date.getMonth() && 
-                currentMonthDate.getFullYear() === investment.date.getFullYear()) {
-        // Add investments on the month they were made
-        totalValue += investment.amount;
-        totalInvested += investment.amount;
-      }
-    });
-    
-    // Add monthly gains for existing investments
-    investments.forEach(investment => {
-      if (currentMonthDate > investment.date) {
-        // Calculate months since investment
-        const timeDiff = currentMonthDate.getTime() - investment.date.getTime();
-        const daysDiff = timeDiff / (1000 * 3600 * 24);
-        const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
-        
-        if (monthsDiff >= 1) {
-          // Add monthly gain if it's after the investment date and before withdrawal
-          const fullMonthsPassed = Math.floor(monthsDiff);
-          if (currentMonthDate < withdrawalDate || 
-              (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
-               currentMonthDate.getFullYear() === withdrawalDate.getFullYear())) {
-            totalValue += investment.monthlyGain;
-          }
-        }
-      }
-    });
-    
-    // Apply withdrawal
-    if (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
-        currentMonthDate.getFullYear() === withdrawalDate.getFullYear()) {
-      totalValue -= withdrawalAmount;
-    }
-    
-    // Format the month for display
-    const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
-    
-    performanceData.push({
-      month: monthName,
-      value: Number(totalValue.toFixed(2))
-    });
-  }
-  
-  // Calculate current portfolio values for each creator
-  const portfolioData = investments.map(investment => {
-    const monthsSinceInvestment = Math.floor(
-      (new Date().getTime() - investment.date.getTime()) / 
-      (30 * 24 * 60 * 60 * 1000)
-    );
-    
-    // Calculate current value: initial investment + (monthly gain * months)
-    const currentValue = investment.amount + (investment.monthlyGain * monthsSinceInvestment);
-    const afterWithdrawal = currentValue - (withdrawalAmount / investments.length);
-    
-    return {
-      name: investment.name,
-      value: Number(Math.max(0, afterWithdrawal).toFixed(2)),
-      initial: investment.amount,
-      imageUrl: investment.imageUrl,
-      returnRate: investment.returnRate
-    };
-  });
-  
-  // Generate investments list for display
-  const investmentsList = portfolioData.map((item, index) => ({
-    id: String(index + 1),
-    creatorName: item.name,
-    creatorImage: item.imageUrl,
-    planName: 'Growth',
-    amount: item.value,
-    initial: item.initial,
-    returnRate: item.returnRate,
-    status: 'active'
-  }));
-  
-  // Calculate total earnings before withdrawal
-  const totalEarnings = investments.reduce((sum, investment) => {
-    const monthsBeforeWithdrawal = Math.floor(
-      (withdrawalDate.getTime() - investment.date.getTime()) / 
-      (30 * 24 * 60 * 60 * 1000)
-    );
-    return sum + (investment.monthlyGain * monthsBeforeWithdrawal);
-  }, 0);
-  
-  // Generate transactions: deposits, investments, and withdrawal only
-  const transactions = [];
-  let transactionId = 1;
-  
-  // Add Emma Wilson deposit and investment
-  transactions.push({
-    id: String(transactionId++),
-    type: 'deposit',
-    amount: investments[0].amount,
-    date: '10/06/2024',
-    status: 'completed',
-    description: 'Dépôt initial'
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[0].amount,
-    date: '10/06/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[0].name}`
-  });
-  
-  // Add Sophia and Kayla deposits and investments
-  transactions.push({
-    id: String(transactionId++),
-    type: 'deposit',
-    amount: investments[1].amount + investments[2].amount,
-    date: '10/10/2024',
-    status: 'completed',
-    description: 'Dépôt'
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[1].amount,
-    date: '10/10/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[1].name}`
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[2].amount,
-    date: '10/10/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[2].name}`
-  });
-  
-  // Add withdrawal transaction
-  transactions.push({
-    id: String(transactionId++),
-    type: 'withdrawal',
-    amount: -withdrawalAmount,
-    date: '23/03/2025',
-    status: 'completed',
-    description: 'Retrait de bénéfices'
-  });
-  
-  // Enhanced referral data
-  const referralData = {
-    totalReferrals: 8,
-    pendingReferrals: 3,
-    completedReferrals: 5,
-    earnings: 120,
-    recentReferrals: [
-      { name: 'Marie L.', date: '15/02/2025', status: 'completed', reward: 25 },
-      { name: 'Thomas B.', date: '28/02/2025', status: 'completed', reward: 25 },
-      { name: 'Claire D.', date: '05/03/2025', status: 'pending', reward: 25 }
-    ],
-    tierProgress: 68,
-    currentTier: 'Silver',
-    nextTier: 'Gold',
-    nextTierRequirement: 10,
-    availableRewards: [
-      { name: 'Cashback Bonus', description: '5% cashback on next investment', available: true },
-      { name: 'Priority Support', description: 'Access to dedicated support', available: true },
-      { name: 'Reduced Fees', description: '50% reduction on withdrawal fees', available: false }
-    ]
-  };
-  
-  // Calculate final balance (current value)
-  const balance = performanceData[performanceData.length - 1].value;
-  
-  // Monthly performance data for the chart
-  const monthlyChartData = performanceData.map(item => ({
-    month: item.month,
-    invested: totalInvested,
-    return: item.value - totalInvested
-  }));
-  
-  return {
-    performanceData,
-    portfolioData,
-    investments: investmentsList,
-    transactions,
-    referralData,
-    balance,
-    totalInvested,
-    totalEarnings: Number(totalEarnings.toFixed(2)),
-    monthlyChartData
-  };
-};
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Examples = () => {
-  const data = generateRealisticData();
-  const [showDepositModal, setShowDepositModal] = useState(false);
-  const [depositAmount, setDepositAmount] = useState('');
-  const [timeRange, setTimeRange] = useState('12');
-  
-  const handleDeposit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowDepositModal(false);
+  // Sample investment data for the performance chart
+  const investmentData = [
+    { month: 'Jan 2024', invested: 100, return: 20 },
+    { month: 'Fév 2024', invested: 0, return: 40 },
+    { month: 'Mars 2024', invested: 0, return: 45 },
+    { month: 'Avr 2024', invested: 0, return: 50 },
+    { month: 'Mai 2024', invested: 0, return: 55 },
+    { month: 'Juin 2024', invested: 100, return: 36.5 },
+    { month: 'Juil 2024', invested: 0, return: 92 },
+    { month: 'Août 2024', invested: 0, return: 93 },
+    { month: 'Sept 2024', invested: 0, return: 95 },
+    { month: 'Oct 2024', invested: 200, return: 74 },
+    { month: 'Nov 2024', invested: 0, return: 110 },
+    { month: 'Déc 2024', invested: 0, return: 115 },
+    { month: 'Jan 2025', invested: 0, return: 120 },
+    { month: 'Fév 2025', invested: 0, return: 125 },
+    { month: 'Mars 2025', invested: 0, return: 130, withdrawal: 250 }
+  ];
+
+  // Sample recent transactions
+  const recentTransactions = [
+    {
+      id: 'tx7',
+      date: '23/03/2025',
+      type: 'withdrawal',
+      amount: 250,
+      description: 'Retrait vers compte bancaire'
+    },
+    {
+      id: 'tx6',
+      date: '10/10/2024',
+      type: 'investment',
+      amount: 100,
+      description: 'Investissement - Kayla Smith'
+    },
+    {
+      id: 'tx5',
+      date: '10/10/2024',
+      type: 'investment',
+      amount: 100,
+      description: 'Investissement - Sophia Martinez'
+    },
+    {
+      id: 'tx4',
+      date: '10/06/2024',
+      type: 'investment',
+      amount: 100,
+      description: 'Investissement - Emma Wilson'
+    },
+    {
+      id: 'tx3',
+      date: '15/05/2024',
+      type: 'deposit',
+      amount: 200,
+      description: 'Dépôt via carte bancaire'
+    },
+    {
+      id: 'tx2',
+      date: '02/02/2024',
+      type: 'deposit',
+      amount: 150,
+      description: 'Dépôt via carte bancaire'
+    },
+    {
+      id: 'tx1',
+      date: '15/01/2024',
+      type: 'deposit',
+      amount: 100,
+      description: 'Dépôt initial'
+    }
+  ];
+
+  // Sample referral data
+  const referralData = {
+    referralCode: 'JEAN750',
+    referralLink: 'https://onlyfunds.invest/ref/JEAN750',
+    totalReferrals: 5,
+    activeReferrals: 3,
+    pendingReferrals: 2,
+    totalEarned: 250,
+    bonusTiers: [
+      { count: 1, reward: '50€ de bonus', achieved: true },
+      { count: 3, reward: '150€ de bonus', achieved: true },
+      { count: 5, reward: '250€ de bonus', achieved: true },
+      { count: 10, reward: '600€ de bonus', achieved: false },
+      { count: 25, reward: '2000€ de bonus', achieved: false },
+      { count: 50, reward: '5000€ de bonus', achieved: false }
+    ],
+    referralHistory: [
+      { name: 'Sophie L.', date: '12/02/2024', status: 'actif', reward: 50 },
+      { name: 'Thomas M.', date: '25/02/2024', status: 'actif', reward: 50 },
+      { name: 'Julie R.', date: '10/03/2024', status: 'actif', reward: 50 },
+      { name: 'Marc D.', date: '15/03/2024', status: 'en attente', reward: 0 },
+      { name: 'Laura B.', date: '22/03/2024', status: 'en attente', reward: 0 },
+    ]
   };
-  
+
+  // Portfolio summary
+  const portfolioSummary = {
+    totalInvested: 400,
+    totalPortfolioValue: 845,
+    totalReturn: 445,
+    roiPercentage: 111.25,
+    monthlyIncome: 110.5
+  };
+
+  // Investment distribution
+  const investments = [
+    { creator: 'Emma Wilson', invested: 100, monthlyReturn: 36.5, roi: 2.20 },
+    { creator: 'Sophia Martinez', invested: 100, monthlyReturn: 38, roi: 2.28 },
+    { creator: 'Kayla Smith', invested: 100, monthlyReturn: 36, roi: 2.15 },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
-      <Navbar isLoggedIn={true} onLogout={() => {}} />
+      <Navbar isLoggedIn={true} />
       
-      <main className="flex-grow pt-20">
-        <section className="py-8 md:py-12">
-          <div className="container mx-auto px-4">
-            <div className="mb-8">
-              <FadeIn direction="up">
-                <h1 className="text-3xl font-bold mb-2">Exemple de tableau de bord</h1>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Ceci est un exemple de tableau de bord avec des données basées sur plusieurs investissements.
-                </p>
-                <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
-                  <p className="font-medium">Note importante</p>
-                  <p>Ceci est un exemple illustratif basé sur les investissements suivants :</p>
-                  <ul className="list-disc ml-5 mt-1">
-                    <li>100€ sur Emma Wilson (+36,5€/mois) le 10 juin 2024</li>
-                    <li>100€ sur Sophia Martinez (+38€/mois) le 10 octobre 2024</li>
-                    <li>100€ sur Kayla Smith (+36€/mois) le 10 octobre 2024</li>
-                    <li>Retrait de 250€ effectué le 23 mars 2025</li>
-                  </ul>
-                </div>
-              </FadeIn>
-            </div>
-            
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <FadeIn direction="up" delay={100} className="glass-card">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium text-black dark:text-white">Votre solde</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance} €</div>
-                    <button 
-                      onClick={() => setShowDepositModal(true)}
-                      className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
-                    >
-                      <Plus className="h-4 w-4 mr-1" />
-                      Déposer des fonds
-                    </button>
-                  </CardContent>
-                </Card>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={200} className="glass-card">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total investi</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600">
-                      <CircleDollarSign className="h-5 w-5" />
-                    </div>
-                  </div>
-                  <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalInvested}€</span>
-                  </div>
-                  <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {data.investments.length} créatrices
-                  </div>
-                </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={300} className="glass-card">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
-                      <TrendingUp className="h-5 w-5" />
-                    </div>
-                  </div>
-                  <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
-                    <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
-                  </div>
-                  <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Avant le retrait du 23 mars 2025
-                  </div>
-                </div>
-              </FadeIn>
-              
-              <FadeIn direction="up" delay={400} className="glass-card">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Créatrices suivies</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
-                      <Users className="h-5 w-5" />
-                    </div>
-                  </div>
-                  <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.investments.length}</span>
-                  </div>
-                  <Link to="/creators" className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
-                    <Plus className="h-4 w-4 mr-1" />
-                    Découvrir plus de créatrices
-                  </Link>
-                </div>
-              </FadeIn>
-            </div>
-            
-            {/* Main Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Performance Chart */}
-              <FadeIn direction="up" className="glass-card lg:col-span-3">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold">Performance</h3>
-                    <select 
-                      className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2"
-                      value={timeRange}
-                      onChange={(e) => setTimeRange(e.target.value)}
-                    >
-                      <option value="12">12 derniers mois</option>
-                      <option value="6">6 derniers mois</option>
-                      <option value="3">3 derniers mois</option>
-                    </select>
-                  </div>
-                  <div className="h-72">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={data.performanceData.slice(-parseInt(timeRange))}
-                        margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                        <YAxis 
-                          axisLine={false} 
-                          tickLine={false} 
-                          domain={['dataMin - 10', 'dataMax + 10']}
-                        />
-                        <Tooltip formatter={(value) => `${value}€`} />
-                        <Line
-                          type="monotone"
-                          dataKey="value"
-                          stroke="#0ea5e9"
-                          strokeWidth={3}
-                          dot={{ r: 3 }}
-                          activeDot={{ r: 6, strokeWidth: 0 }}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    {data.investments.map((investment, index) => (
-                      <div 
-                        key={investment.id}
-                        className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
-                      >
-                        <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                          <img 
-                            src={investment.creatorImage} 
-                            alt={investment.creatorName} 
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-grow">
-                          <div className="flex justify-between items-center">
-                            <h4 className="font-medium text-sm">{investment.creatorName}</h4>
-                            <span className="text-sm font-semibold">{investment.amount.toFixed(2)}€</span>
-                          </div>
-                          <div className="flex justify-between items-center mt-1">
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Initial: {investment.initial}€
-                            </span>
-                            <span className="text-xs font-medium text-green-500 flex items-center">
-                              <TrendingUp className="h-3 w-3 mr-1" />
-                              {investment.returnRate}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </FadeIn>
-            </div>
-
-            {/* Market Performance Chart */}
-            <FadeIn direction="up" delay={200} className="glass-card mt-8">
-              <div className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Performance du marché</h3>
-                <div className="h-[350px]">
-                  <OnlyfansRevenueChart data={data.monthlyChartData} />
+      <main className="flex-grow">
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold mb-8">Exemple de tableau de bord</h1>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card className="p-6">
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">Valeur du portefeuille</h3>
+                <div className="text-3xl font-bold">{portfolioSummary.totalPortfolioValue}€</div>
+                <div className="flex items-center text-sm text-green-600">
+                  <ArrowUpFromLine className="h-4 w-4 mr-1" />
+                  <span>+{portfolioSummary.roiPercentage}% ({portfolioSummary.totalReturn}€)</span>
                 </div>
               </div>
-            </FadeIn>
+            </Card>
             
-            {/* Investments and Transactions */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              {/* Investments */}
-              <FadeIn direction="up" className="glass-card">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold">Mes investissements</h3>
-                    <Link to="/investments" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
-                      <span>Voir tout</span>
-                      <ArrowRight className="h-4 w-4 ml-1" />
-                    </Link>
-                  </div>
-                  
-                  {data.investments && data.investments.length > 0 ? (
-                    <div className="space-y-4">
-                      {data.investments.map((investment) => (
-                        <div 
-                          key={investment.id}
-                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        >
-                          <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                            <img 
-                              src={investment.creatorImage} 
-                              alt={investment.creatorName} 
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                          <div className="flex-grow">
-                            <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-sm">{investment.creatorName}</h4>
-                              <span className="text-sm font-semibold">{investment.amount.toFixed(2)}€</span>
-                            </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {investment.initial}€
-                              </span>
-                              <span className="text-xs font-medium text-green-500 flex items-center">
-                                <TrendingUp className="h-3 w-3 mr-1" />
-                                {investment.returnRate}%
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
-                      <div className="text-gray-400 mb-3">
-                        <CircleDollarSign className="h-12 w-12 mx-auto opacity-30" />
-                      </div>
-                      <h4 className="text-lg font-medium mb-2">Aucun investissement</h4>
-                      <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
-                        Vous n'avez pas encore investi dans des créateurs.
-                      </p>
-                      <Link to="/creators">
-                        <GradientButton 
-                          size="sm"
-                          gradientDirection="to-r"
-                          className="from-teal-400 to-blue-500 text-white"
-                        >
-                          Découvrir des créatrices
-                        </GradientButton>
-                      </Link>
-                    </div>
-                  )}
+            <Card className="p-6">
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">Revenu mensuel</h3>
+                <div className="text-3xl font-bold">{portfolioSummary.monthlyIncome}€</div>
+                <div className="flex items-center text-sm text-gray-500">
+                  <CircleDollarSign className="h-4 w-4 mr-1" />
+                  <span>Généré par 3 créatrices</span>
                 </div>
-              </FadeIn>
-              
-              {/* Recent Transactions */}
-              <FadeIn direction="up" delay={100} className="glass-card">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold">Transactions récentes</h3>
-                    <button className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 flex items-center">
-                      <Filter className="h-4 w-4 mr-1" />
-                      <span>Filtrer</span>
-                    </button>
-                  </div>
-                  
-                  {data.transactions.length > 0 ? (
-                    <div className="space-y-4">
-                      {data.transactions.map((transaction) => (
-                        <div 
-                          key={transaction.id}
-                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
-                        >
-                          <div className={cn(
-                            "h-10 w-10 rounded-full flex items-center justify-center mr-3",
-                            transaction.type === 'deposit' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
-                            transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
-                            "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
-                          )}>
-                            {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
-                            {transaction.type === 'withdrawal' && <Minus className="h-5 w-5" />}
-                            {transaction.type === 'investment' && <ArrowUpRight className="h-5 w-5" />}
-                          </div>
-                          <div className="flex-grow">
-                            <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-sm">{transaction.description}</h4>
-                              <span className={cn(
-                                "text-sm font-semibold",
-                                transaction.amount > 0 ? "text-green-500" : "text-red-500"
-                              )}>
-                                {transaction.amount > 0 ? '+' : ''}{transaction.amount}€
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {transaction.date}
-                              </span>
-                              <span className={cn(
-                                "text-xs px-2 py-0.5 rounded-full",
-                                transaction.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
-                                transaction.status === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" :
-                                "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                              )}>
-                                {transaction.status === 'completed' ? 'Terminé' :
-                                 transaction.status === 'pending' ? 'En attente' : 'Échoué'}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
-                      <div className="text-gray-400 mb-3">
-                        <Wallet className="h-12 w-12 mx-auto opacity-30" />
-                      </div>
-                      <h4 className="text-lg font-medium mb-2">Aucune transaction</h4>
-                      <p className="text-gray-500 dark:text-gray-400 text-sm">
-                        Vous n'avez pas encore effectué de transactions.
-                      </p>
-                    </div>
-                  )}
+              </div>
+            </Card>
+            
+            <Card className="p-6">
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">Total investi</h3>
+                <div className="text-3xl font-bold">{portfolioSummary.totalInvested}€</div>
+                <div className="flex items-center text-sm text-gray-500">
+                  <Users className="h-4 w-4 mr-1" />
+                  <span>À travers 3 créatrices</span>
                 </div>
-              </FadeIn>
+              </div>
+            </Card>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div className="lg:col-span-2">
+              <Card className="p-6 h-full">
+                <h2 className="text-xl font-bold mb-4">Performance</h2>
+                <div className="h-72">
+                  <OnlyfansRevenueChart data={investmentData} />
+                </div>
+              </Card>
             </div>
             
-            {/* Enhanced Referral Card */}
-            <FadeIn direction="up" delay={200} className="glass-card mt-8">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold">Programme de parrainage</h3>
-                  <Link to="/affiliation" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
-                    <span>Voir tout</span>
-                    <ArrowRight className="h-4 w-4 ml-1" />
-                  </Link>
+            <div>
+              <Card className="p-6 h-full">
+                <h2 className="text-xl font-bold mb-4">Investissements</h2>
+                <div className="space-y-6">
+                  {investments.map((investment, index) => (
+                    <div key={index} className="flex flex-col space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-medium">{investment.creator}</h3>
+                        <span className="text-sm text-gray-500">{investment.invested}€ investis</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded overflow-hidden">
+                        <div 
+                          className="h-full bg-investment-600 rounded"
+                          style={{ width: `${Math.min(100, investment.roi * 30)}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-green-600">+{investment.monthlyReturn}€/mois</span>
+                        <span className="font-medium">{investment.roi}x</span>
+                      </div>
+                      {index < investments.length - 1 && <hr className="dark:border-gray-800" />}
+                    </div>
+                  ))}
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total parrainages</h4>
-                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-investment-100 dark:bg-investment-900/30 text-investment-600">
-                        <UserPlus className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <div className="text-2xl font-bold">{data.referralData.totalReferrals}</div>
+              </Card>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <Card>
+                <Tabs defaultValue="all">
+                  <div className="p-6 pb-3 flex items-center justify-between">
+                    <h2 className="text-xl font-bold">Transactions récentes</h2>
+                    <TabsList>
+                      <TabsTrigger value="all">Toutes</TabsTrigger>
+                      <TabsTrigger value="deposits">Dépôts</TabsTrigger>
+                      <TabsTrigger value="withdrawals">Retraits</TabsTrigger>
+                      <TabsTrigger value="investments">Investissements</TabsTrigger>
+                    </TabsList>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">En attente</h4>
-                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600">
-                        <Users className="h-4 w-4" />
+                  <TabsContent value="all" className="p-0">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-50 dark:bg-gray-800/50">
+                          <tr>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th className="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                          {recentTransactions.map((transaction) => (
+                            <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                              <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.date}</td>
+                              <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.description}</td>
+                              <td className="py-4 px-6 text-sm whitespace-nowrap text-right">
+                                <span className={`flex items-center justify-end ${
+                                  transaction.type === 'deposit' || transaction.type === 'referral_bonus' 
+                                    ? 'text-green-600 dark:text-green-500'
+                                    : transaction.type === 'withdrawal' 
+                                    ? 'text-red-600 dark:text-red-500'
+                                    : 'text-investment-600 dark:text-investment-500'
+                                }`}>
+                                  {transaction.type === 'deposit' || transaction.type === 'referral_bonus' ? (
+                                    <ArrowDownFromLine className="h-4 w-4 mr-1" />
+                                  ) : transaction.type === 'withdrawal' ? (
+                                    <ArrowUpFromLine className="h-4 w-4 mr-1" />
+                                  ) : (
+                                    <CircleDollarSign className="h-4 w-4 mr-1" />
+                                  )}
+                                  {transaction.type === 'withdrawal' ? '-' : '+'}
+                                  {transaction.amount}€
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="deposits" className="p-0">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-50 dark:bg-gray-800/50">
+                          <tr>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th className="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                          {recentTransactions
+                            .filter(tx => tx.type === 'deposit' || tx.type === 'referral_bonus')
+                            .map((transaction) => (
+                              <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.date}</td>
+                                <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.description}</td>
+                                <td className="py-4 px-6 text-sm whitespace-nowrap text-right">
+                                  <span className="flex items-center justify-end text-green-600 dark:text-green-500">
+                                    <ArrowDownFromLine className="h-4 w-4 mr-1" />
+                                    +{transaction.amount}€
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="withdrawals" className="p-0">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-50 dark:bg-gray-800/50">
+                          <tr>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th className="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                          {recentTransactions
+                            .filter(tx => tx.type === 'withdrawal')
+                            .map((transaction) => (
+                              <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.date}</td>
+                                <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.description}</td>
+                                <td className="py-4 px-6 text-sm whitespace-nowrap text-right">
+                                  <span className="flex items-center justify-end text-red-600 dark:text-red-500">
+                                    <ArrowUpFromLine className="h-4 w-4 mr-1" />
+                                    -{transaction.amount}€
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="investments" className="p-0">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-50 dark:bg-gray-800/50">
+                          <tr>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th className="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                          {recentTransactions
+                            .filter(tx => tx.type === 'investment')
+                            .map((transaction) => (
+                              <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.date}</td>
+                                <td className="py-4 px-6 text-sm whitespace-nowrap">{transaction.description}</td>
+                                <td className="py-4 px-6 text-sm whitespace-nowrap text-right">
+                                  <span className="flex items-center justify-end text-investment-600 dark:text-investment-500">
+                                    <CircleDollarSign className="h-4 w-4 mr-1" />
+                                    +{transaction.amount}€
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </Card>
+            </div>
+            
+            <div>
+              <Card className="p-6">
+                <h2 className="text-xl font-bold mb-4">Programme de parrainage</h2>
+                <div className="space-y-6">
+                  <div className="bg-investment-50 dark:bg-investment-950/50 p-4 rounded-lg">
+                    <div className="flex items-center mb-3">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 mr-3">
+                        <BadgeDollarSign className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <div className="font-medium">Votre code de parrainage</div>
+                        <div className="text-sm text-gray-500">{referralData.referralCode}</div>
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{data.referralData.pendingReferrals}</div>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Copier le lien
+                    </Button>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Complétés</h4>
-                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 text-green-600">
-                        <Award className="h-4 w-4" />
-                      </div>
+                  <div>
+                    <div className="flex justify-between mb-3">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Total de parrainages</span>
+                      <span className="font-bold">{referralData.totalReferrals}</span>
                     </div>
-                    <div className="text-2xl font-bold">{data.referralData.completedReferrals}</div>
+                    
+                    <div className="flex justify-between mb-3">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Parrainages actifs</span>
+                      <span className="font-bold text-green-600">{referralData.activeReferrals}</span>
+                    </div>
+                    
+                    <div className="flex justify-between mb-3">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">En attente</span>
+                      <span className="font-bold text-amber-600">{referralData.pendingReferrals}</span>
+                    </div>
+                    
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Gains totaux</span>
+                      <span className="font-bold text-investment-600">{referralData.totalEarned}€</span>
+                    </div>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Gains totaux</h4>
-                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600">
-                        <Gift className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <div className="text-2xl font-bold">{data.referralData.earnings}€</div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {/* Recent Referrals */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Parrainages récents</h4>
+                  <div>
+                    <h3 className="font-medium mb-3">Programme de récompenses</h3>
                     <div className="space-y-3">
-                      {data.referralData.recentReferrals.map((referral, index) => (
-                        <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
+                      {referralData.bonusTiers.map((tier, index) => (
+                        <div key={index} className="flex items-center">
+                          <div className={`h-6 w-6 rounded-full flex items-center justify-center mr-2 ${
+                            tier.achieved 
+                              ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' 
+                              : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
+                          }`}>
+                            {tier.achieved ? (
+                              <CheckCircle2 className="h-4 w-4" />
+                            ) : (
+                              <span className="text-xs">{tier.count}</span>
+                            )}
+                          </div>
+                          <div className="text-sm flex-grow">
+                            <span className={tier.achieved ? 'line-through text-gray-500' : ''}>
+                              {tier.count} parrainage{tier.count > 1 ? 's' : ''}
+                            </span>
+                          </div>
+                          <div className={`text-sm font-medium ${
+                            tier.achieved ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'
+                          }`}>
+                            {tier.reward}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-medium mb-3">Historique des parrainages</h3>
+                    <div className="space-y-3">
+                      {referralData.referralHistory.map((referral, index) => (
+                        <div key={index} className="flex items-start justify-between text-sm">
                           <div>
-                            <div className="font-medium text-sm">{referral.name}</div>
+                            <div className="font-medium">{referral.name}</div>
                             <div className="text-xs text-gray-500">{referral.date}</div>
                           </div>
-                          <div className="flex flex-col items-end">
-                            <span className="text-sm font-semibold text-green-500">+{referral.reward}€</span>
-                            <span className={cn(
-                              "text-xs px-2 py-0.5 rounded-full mt-1",
-                              referral.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
-                              "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                            )}>
-                              {referral.status === 'completed' ? 'Complété' : 'En attente'}
-                            </span>
+                          <div className="text-right">
+                            <div className={referral.status === 'actif' 
+                              ? 'text-green-600 dark:text-green-400' 
+                              : 'text-amber-600 dark:text-amber-400'}>
+                              {referral.status}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {referral.status === 'actif' ? `+${referral.reward}€` : 'En attente'}
+                            </div>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
                   
-                  {/* Tier progress */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Niveau du programme</h4>
-                    <div className="mb-2 flex justify-between">
-                      <span className="text-sm font-medium">{data.referralData.currentTier}</span>
-                      <span className="text-sm font-medium">{data.referralData.nextTier}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mb-4 dark:bg-gray-700">
-                      <div 
-                        className="bg-investment-600 h-2 rounded-full" 
-                        style={{ width: `${data.referralData.tierProgress}%` }}
-                      ></div>
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">
-                        {data.referralData.completedReferrals}/{data.referralData.nextTierRequirement}
-                      </span> parrainages pour atteindre le niveau {data.referralData.nextTier}
-                    </div>
-                  </div>
-                  
-                  {/* Available rewards */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Récompenses disponibles</h4>
-                    <div className="space-y-3">
-                      {data.referralData.availableRewards.map((reward, index) => (
-                        <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
-                          <div>
-                            <div className="font-medium text-sm">{reward.name}</div>
-                            <div className="text-xs text-gray-500">{reward.description}</div>
-                          </div>
-                          <div>
-                            <span className={cn(
-                              "text-xs px-2 py-1 rounded-full",
-                              reward.available ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
-                              "bg-gray-100 text-gray-600 dark:bg-gray-700/50 dark:text-gray-400"
-                            )}>
-                              {reward.available ? 'Disponible' : 'Niveau supérieur'}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="pt-2">
+                    <Button className="w-full flex items-center justify-center gap-2 bg-investment-600 hover:bg-investment-700 text-white">
+                      <Gift className="h-4 w-4" />
+                      <span>Parrainer des amis</span>
+                      <MoveRight className="h-4 w-4" />
+                    </Button>
+                    <p className="mt-2 text-xs text-center text-gray-500 dark:text-gray-400">
+                      Minimum 50€ de bonus par parrainage validé
+                    </p>
                   </div>
                 </div>
-                
-                <div className="text-center py-6">
-                  <GradientButton
-                    size="md"
-                    className="from-teal-400 to-blue-500 text-white"
-                  >
-                    <Link to="/affiliation">
-                      Inviter des amis et gagner des récompenses
-                    </Link>
-                  </GradientButton>
-                </div>
-              </div>
-            </FadeIn>
+              </Card>
+            </div>
           </div>
-        </section>
-      </main>
-      
-      {/* Deposit Modal */}
-      {showDepositModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
-            <form onSubmit={handleDeposit}>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Montant (€)
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={depositAmount}
-                      onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10"
-                      step="10"
-                      className="input-field pl-10"
-                      placeholder="100"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
-                  </label>
-                  <select 
-                    id="payment-method" 
-                    className="input-field"
-                    required
-                  >
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer
-                  </GradientButton>
-                </div>
-              </div>
-            </form>
-          </FadeIn>
         </div>
-      )}
+      </main>
       
       <Footer />
     </div>
