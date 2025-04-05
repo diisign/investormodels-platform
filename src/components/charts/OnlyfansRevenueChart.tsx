@@ -8,7 +8,8 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  Legend 
+  Legend,
+  ReferenceLine
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
@@ -44,17 +45,28 @@ const chartConfig = {
       light: "#22c55e",
       dark: "#4ade80"
     }
+  },
+  withdrawal: {
+    label: "Retrait (€)",
+    theme: {
+      light: "#ef4444",
+      dark: "#f87171"
+    }
   }
 };
 
 interface OnlyfansRevenueChartProps {
-  data?: { month: string; invested: number; return: number; }[];
+  data?: { month: string; invested: number; return: number; withdrawal?: number }[];
 }
 
 const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => {
   // Determine if we should use monthly investment data or default yearly revenue data
   const isMonthlyData = !!data && data.length > 0;
   const chartData = isMonthlyData ? data : defaultRevenueData;
+  
+  // Find withdrawal point if exists
+  const withdrawalPoint = isMonthlyData ? 
+    chartData.findIndex(item => item.withdrawal && item.withdrawal > 0) : -1;
   
   const formatTooltipValue = (value: number, name: string) => {
     if (!isMonthlyData) {
@@ -92,6 +104,10 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
                   <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
+                </linearGradient>
+                <linearGradient id="withdrawalGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -141,6 +157,20 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 name="Rendement"
                 stackId="1"
               />
+              {withdrawalPoint >= 0 && (
+                <ReferenceLine 
+                  x={chartData[withdrawalPoint].month}
+                  stroke="#ef4444" 
+                  strokeDasharray="3 3"
+                  strokeWidth={2}
+                  label={{ 
+                    value: "Retrait", 
+                    position: 'top', 
+                    fill: "#ef4444",
+                    fontSize: 10
+                  }} 
+                />
+              )}
               <Legend />
             </AreaChart>
           ) : (

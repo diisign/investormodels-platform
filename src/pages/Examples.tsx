@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
 import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
 } from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
@@ -109,9 +109,14 @@ const generateRealisticData = () => {
     // Format the month for display
     const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
     
+    // Check if this is the withdrawal month
+    const hasWithdrawal = currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
+                         currentMonthDate.getFullYear() === withdrawalDate.getFullYear();
+    
     performanceData.push({
       month: monthName,
-      value: Number(totalValue.toFixed(2))
+      value: Number(totalValue.toFixed(2)),
+      withdrawal: hasWithdrawal ? withdrawalAmount : undefined
     });
   }
   
@@ -222,21 +227,16 @@ const generateRealisticData = () => {
     totalReferrals: 8,
     pendingReferrals: 3,
     completedReferrals: 5,
-    earnings: 120,
+    earnings: 250,
     recentReferrals: [
-      { name: 'Marie L.', date: '15/02/2025', status: 'completed', reward: 25 },
-      { name: 'Thomas B.', date: '28/02/2025', status: 'completed', reward: 25 },
-      { name: 'Claire D.', date: '05/03/2025', status: 'pending', reward: 25 }
+      { name: 'Marie L.', date: '15/02/2025', status: 'completed', reward: 50 },
+      { name: 'Thomas B.', date: '28/02/2025', status: 'completed', reward: 50 },
+      { name: 'Claire D.', date: '05/03/2025', status: 'pending', reward: 50 }
     ],
     tierProgress: 68,
     currentTier: 'Silver',
     nextTier: 'Gold',
-    nextTierRequirement: 10,
-    availableRewards: [
-      { name: 'Cashback Bonus', description: '5% cashback on next investment', available: true },
-      { name: 'Priority Support', description: 'Access to dedicated support', available: true },
-      { name: 'Reduced Fees', description: '50% reduction on withdrawal fees', available: false }
-    ]
+    nextTierRequirement: 10
   };
   
   // Calculate final balance (current value)
@@ -246,7 +246,8 @@ const generateRealisticData = () => {
   const monthlyChartData = performanceData.map(item => ({
     month: item.month,
     invested: totalInvested,
-    return: item.value - totalInvested
+    return: item.value - totalInvested,
+    withdrawal: item.withdrawal
   }));
   
   return {
@@ -273,10 +274,13 @@ const Examples = () => {
     setShowDepositModal(false);
   };
   
+  // Find withdrawal point in performance data
+  const withdrawalPoint = data.performanceData.findIndex(item => item.withdrawal);
+  
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navbar */}
-      <Navbar isLoggedIn={true} onLogout={() => {}} />
+      <Navbar isLoggedIn={true} />
       
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
@@ -413,6 +417,20 @@ const Examples = () => {
                           dot={{ r: 3 }}
                           activeDot={{ r: 6, strokeWidth: 0 }}
                         />
+                        {withdrawalPoint >= 0 && (
+                          <ReferenceLine 
+                            x={data.performanceData[withdrawalPoint].month}
+                            stroke="#ef4444" 
+                            strokeDasharray="3 3"
+                            strokeWidth={2}
+                            label={{ 
+                              value: "Retrait: 250€", 
+                              position: 'top', 
+                              fill: "#ef4444",
+                              fontSize: 12
+                            }} 
+                          />
+                        )}
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -450,16 +468,6 @@ const Examples = () => {
                 </div>
               </FadeIn>
             </div>
-
-            {/* Market Performance Chart */}
-            <FadeIn direction="up" delay={200} className="glass-card mt-8">
-              <div className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Performance du marché</h3>
-                <div className="h-[350px]">
-                  <OnlyfansRevenueChart data={data.monthlyChartData} />
-                </div>
-              </div>
-            </FadeIn>
             
             {/* Investments and Transactions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
@@ -653,7 +661,7 @@ const Examples = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Recent Referrals */}
                   <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <h4 className="font-semibold mb-3">Parrainages récents</h4>
@@ -697,29 +705,12 @@ const Examples = () => {
                         {data.referralData.completedReferrals}/{data.referralData.nextTierRequirement}
                       </span> parrainages pour atteindre le niveau {data.referralData.nextTier}
                     </div>
-                  </div>
-                  
-                  {/* Available rewards */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Récompenses disponibles</h4>
-                    <div className="space-y-3">
-                      {data.referralData.availableRewards.map((reward, index) => (
-                        <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
-                          <div>
-                            <div className="font-medium text-sm">{reward.name}</div>
-                            <div className="text-xs text-gray-500">{reward.description}</div>
-                          </div>
-                          <div>
-                            <span className={cn(
-                              "text-xs px-2 py-1 rounded-full",
-                              reward.available ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
-                              "bg-gray-100 text-gray-600 dark:bg-gray-700/50 dark:text-gray-400"
-                            )}>
-                              {reward.available ? 'Disponible' : 'Niveau supérieur'}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
+                    
+                    <div className="mt-6 text-center">
+                      <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                        <span className="font-medium">Récompense minimale par parrainage:</span>
+                      </div>
+                      <div className="text-xl font-bold text-investment-600">50€</div>
                     </div>
                   </div>
                 </div>
