@@ -49,8 +49,8 @@ const chartConfig = {
   withdrawal: {
     label: "Retrait (€)",
     theme: {
-      light: "#ef4444",
-      dark: "#f87171"
+      light: "#22c55e",
+      dark: "#4ade80"
     }
   }
 };
@@ -66,7 +66,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
   
   // Find withdrawal point if exists
   const withdrawalPoint = isMonthlyData ? 
-    chartData.findIndex(item => item.withdrawal && item.withdrawal > 0) : -1;
+    chartData.findIndex(item => 'withdrawal' in item && item.withdrawal && item.withdrawal > 0) : -1;
   
   const formatTooltipValue = (value: number, name: string) => {
     if (!isMonthlyData) {
@@ -106,8 +106,8 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                   <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
                 </linearGradient>
                 <linearGradient id="withdrawalGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
+                  <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -159,14 +159,14 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
               />
               {withdrawalPoint >= 0 && (
                 <ReferenceLine 
-                  x={chartData[withdrawalPoint].month}
-                  stroke="#ef4444" 
+                  x={(chartData[withdrawalPoint] as any).month}
+                  stroke="#22c55e" 
                   strokeDasharray="3 3"
                   strokeWidth={2}
                   label={{ 
                     value: "Retrait", 
                     position: 'top', 
-                    fill: "#ef4444",
+                    fill: "#22c55e",
                     fontSize: 10
                   }} 
                 />

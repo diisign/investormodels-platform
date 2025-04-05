@@ -44,8 +44,8 @@ const generateRealisticData = () => {
     }
   ];
   
-  // Withdrawal date
-  const withdrawalDate = new Date('2025-03-23');
+  // Withdrawal date - updated to January 23, 2025
+  const withdrawalDate = new Date('2025-01-23');
   const withdrawalAmount = 250;
   
   // Generate 12 months of performance data
@@ -212,17 +212,17 @@ const generateRealisticData = () => {
     description: `Investissement - ${investments[2].name}`
   });
   
-  // Add withdrawal transaction
+  // Add withdrawal transaction - updated to January 23, 2025
   transactions.push({
     id: String(transactionId++),
     type: 'withdrawal',
-    amount: -withdrawalAmount,
-    date: '23/03/2025',
+    amount: withdrawalAmount,
+    date: '23/01/2025',
     status: 'completed',
     description: 'Retrait de bénéfices'
   });
   
-  // Enhanced referral data
+  // Enhanced referral data with 5 completed and 3 pending referrals
   const referralData = {
     totalReferrals: 8,
     pendingReferrals: 3,
@@ -231,7 +231,12 @@ const generateRealisticData = () => {
     recentReferrals: [
       { name: 'Marie L.', date: '15/02/2025', status: 'completed', reward: 50 },
       { name: 'Thomas B.', date: '28/02/2025', status: 'completed', reward: 50 },
-      { name: 'Claire D.', date: '05/03/2025', status: 'pending', reward: 50 }
+      { name: 'Claire D.', date: '05/03/2025', status: 'completed', reward: 50 },
+      { name: 'François M.', date: '12/03/2025', status: 'completed', reward: 50 },
+      { name: 'Sophie R.', date: '18/03/2025', status: 'completed', reward: 50 },
+      { name: 'Julien K.', date: '22/03/2025', status: 'pending', reward: 50 },
+      { name: 'Amélie P.', date: '25/03/2025', status: 'pending', reward: 50 },
+      { name: 'Lucas T.', date: '28/03/2025', status: 'pending', reward: 50 }
     ],
     tierProgress: 68,
     currentTier: 'Silver',
@@ -285,25 +290,6 @@ const Examples = () => {
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            <div className="mb-8">
-              <FadeIn direction="up">
-                <h1 className="text-3xl font-bold mb-2">Exemple de tableau de bord</h1>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Ceci est un exemple de tableau de bord avec des données basées sur plusieurs investissements.
-                </p>
-                <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
-                  <p className="font-medium">Note importante</p>
-                  <p>Ceci est un exemple illustratif basé sur les investissements suivants :</p>
-                  <ul className="list-disc ml-5 mt-1">
-                    <li>100€ sur Emma Wilson (+36,5€/mois) le 10 juin 2024</li>
-                    <li>100€ sur Sophia Martinez (+38€/mois) le 10 octobre 2024</li>
-                    <li>100€ sur Kayla Smith (+36€/mois) le 10 octobre 2024</li>
-                    <li>Retrait de 250€ effectué le 23 mars 2025</li>
-                  </ul>
-                </div>
-              </FadeIn>
-            </div>
-            
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
@@ -354,7 +340,7 @@ const Examples = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Avant le retrait du 23 mars 2025
+                    Avant le retrait du 23 janvier 2025
                   </div>
                 </div>
               </FadeIn>
@@ -420,13 +406,13 @@ const Examples = () => {
                         {withdrawalPoint >= 0 && (
                           <ReferenceLine 
                             x={data.performanceData[withdrawalPoint].month}
-                            stroke="#ef4444" 
+                            stroke="#22c55e" 
                             strokeDasharray="3 3"
                             strokeWidth={2}
                             label={{ 
                               value: "Retrait: 250€", 
                               position: 'top', 
-                              fill: "#ef4444",
+                              fill: "#22c55e",
                               fontSize: 12
                             }} 
                           />
@@ -557,8 +543,8 @@ const Examples = () => {
                         >
                           <div className={cn(
                             "h-10 w-10 rounded-full flex items-center justify-center mr-3",
-                            transaction.type === 'deposit' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
-                            transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
+                            transaction.type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
+                            transaction.type === 'withdrawal' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
                             "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
                           )}>
                             {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
@@ -570,9 +556,12 @@ const Examples = () => {
                               <h4 className="font-medium text-sm">{transaction.description}</h4>
                               <span className={cn(
                                 "text-sm font-semibold",
-                                transaction.amount > 0 ? "text-green-500" : "text-red-500"
+                                transaction.type === 'deposit' ? "text-blue-500" : 
+                                transaction.type === 'withdrawal' ? "text-green-500" : 
+                                "text-red-500"
                               )}>
-                                {transaction.amount > 0 ? '+' : ''}{transaction.amount}€
+                                {transaction.type === 'deposit' ? '+' : ''}
+                                {transaction.amount}€
                               </span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
@@ -662,10 +651,10 @@ const Examples = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Recent Referrals */}
+                  {/* Recent Referrals - updated to show all referrals */}
                   <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <h4 className="font-semibold mb-3">Parrainages récents</h4>
-                    <div className="space-y-3">
+                    <div className="space-y-3 max-h-72 overflow-y-auto">
                       {data.referralData.recentReferrals.map((referral, index) => (
                         <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
                           <div>
@@ -708,7 +697,7 @@ const Examples = () => {
                     
                     <div className="mt-6 text-center">
                       <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                        <span className="font-medium">Récompense minimale par parrainage:</span>
+                        <span className="font-medium">Récompense par parrainage validé:</span>
                       </div>
                       <div className="text-xl font-bold text-investment-600">50€</div>
                     </div>
@@ -717,7 +706,7 @@ const Examples = () => {
                 
                 <div className="text-center py-6">
                   <GradientButton
-                    size="md"
+                    size="default"
                     className="from-teal-400 to-blue-500 text-white"
                   >
                     <Link to="/affiliation">
