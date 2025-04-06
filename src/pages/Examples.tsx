@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -44,7 +43,7 @@ const generateRealisticData = () => {
     }
   ];
   
-  // Withdrawal date - updated to January 23, 2025
+  // Withdrawal date - January 23, 2025
   const withdrawalDate = new Date('2025-01-23');
   const withdrawalAmount = 250;
   
@@ -59,6 +58,7 @@ const generateRealisticData = () => {
   // Track total value over time
   let totalValue = 0;
   let totalInvested = 0;
+  let monthlyReturns = 0;
   
   // For each month
   for (let i = 0; i <= 11; i++) { // 0 to 11 = 12 months
@@ -80,7 +80,7 @@ const generateRealisticData = () => {
       }
     });
     
-    // Add monthly gains for existing investments
+    // Add monthly gains for existing investments - THIS IS THE CORRECTED PART
     investments.forEach(investment => {
       if (currentMonthDate > investment.date) {
         // Calculate months since investment
@@ -89,34 +89,32 @@ const generateRealisticData = () => {
         const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
         
         if (monthsDiff >= 1) {
-          // Add monthly gain if it's after the investment date and before withdrawal
+          // IMPORTANT: For each month that passes, add the monthly gain regardless of withdrawals
+          // This ensures gains continue after withdrawals
           const fullMonthsPassed = Math.floor(monthsDiff);
-          if (currentMonthDate < withdrawalDate || 
-              (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
-               currentMonthDate.getFullYear() === withdrawalDate.getFullYear())) {
+          if (fullMonthsPassed > 0) {
             totalValue += investment.monthlyGain;
+            monthlyReturns += investment.monthlyGain;
           }
         }
       }
     });
     
-    // Apply withdrawal
+    // Apply withdrawal but don't affect the ongoing generation of returns
+    let withdrawal = undefined;
     if (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
         currentMonthDate.getFullYear() === withdrawalDate.getFullYear()) {
       totalValue -= withdrawalAmount;
+      withdrawal = withdrawalAmount;
     }
     
     // Format the month for display
     const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
     
-    // Check if this is the withdrawal month
-    const hasWithdrawal = currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
-                         currentMonthDate.getFullYear() === withdrawalDate.getFullYear();
-    
     performanceData.push({
       month: monthName,
       value: Number(totalValue.toFixed(2)),
-      withdrawal: hasWithdrawal ? withdrawalAmount : undefined
+      withdrawal: withdrawal
     });
   }
   
@@ -129,11 +127,10 @@ const generateRealisticData = () => {
     
     // Calculate current value: initial investment + (monthly gain * months)
     const currentValue = investment.amount + (investment.monthlyGain * monthsSinceInvestment);
-    const afterWithdrawal = currentValue - (withdrawalAmount / investments.length);
     
     return {
       name: investment.name,
-      value: Number(Math.max(0, afterWithdrawal).toFixed(2)),
+      value: Number(Math.max(0, currentValue).toFixed(2)),
       initial: investment.amount,
       imageUrl: investment.imageUrl,
       returnRate: investment.returnRate
@@ -152,14 +149,8 @@ const generateRealisticData = () => {
     status: 'active'
   }));
   
-  // Calculate total earnings before withdrawal
-  const totalEarnings = investments.reduce((sum, investment) => {
-    const monthsBeforeWithdrawal = Math.floor(
-      (withdrawalDate.getTime() - investment.date.getTime()) / 
-      (30 * 24 * 60 * 60 * 1000)
-    );
-    return sum + (investment.monthlyGain * monthsBeforeWithdrawal);
-  }, 0);
+  // Calculate total earnings (this is cumulative returns before any withdrawal)
+  const totalEarnings = monthlyReturns;
   
   // Generate transactions: deposits, investments, and withdrawal only
   const transactions = [];
@@ -247,13 +238,18 @@ const generateRealisticData = () => {
   // Calculate final balance (current value)
   const balance = performanceData[performanceData.length - 1].value;
   
-  // Monthly performance data for the chart
-  const monthlyChartData = performanceData.map(item => ({
-    month: item.month,
-    invested: totalInvested,
-    return: item.value - totalInvested,
-    withdrawal: item.withdrawal
-  }));
+  // Monthly performance data for the chart - UPDATED TO HANDLE RETURNS BETTER
+  const monthlyChartData = performanceData.map(item => {
+    // Calculate how much of the value is from investment vs returns
+    const returns = Math.max(0, item.value - totalInvested);
+    
+    return {
+      month: item.month,
+      invested: totalInvested,
+      return: returns,
+      withdrawal: item.withdrawal
+    };
+  });
   
   return {
     performanceData,
