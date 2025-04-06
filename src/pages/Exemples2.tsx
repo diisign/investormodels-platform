@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -14,24 +13,27 @@ import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
-// Generate realistic data for the example dashboard based on single investment at 2.30x return
+// Generate realistic data for the example dashboard with compound interest
 const generateRealisticData = () => {
-  // Initial investment amount with one creator
-  const investment = { 
+  // Initial investment amount with one creator in April 2024
+  const initialInvestment = { 
     name: 'Elena 💎', 
     date: new Date('2024-04-15'), 
     amount: 500, 
-    monthlyGain: 95.83, // ~1150/12 (2.3 times 500 = 1150, divided by 12 months)
-    returnRate: 230, // 2.30x = 230%
+    monthlyGain: 43.33, // 43% annualized monthly return (230% / 12 months = ~19.17% per month)
+    returnRate: 43, // 43% effective return rate to display
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
   };
   
-  // Calculate correct total invested
-  const correctTotalInvested = investment.amount;
+  // Reinvestment in July 2024 (initial 500 + 650 from 3 months of gains)
+  const reinvestment = {
+    date: new Date('2024-07-15'),
+    amount: 650 // Additional amount from gains to reinvest
+  };
   
-  // Withdrawal date - April 15, 2025 (one year after investment)
+  // Withdrawal date - April 15, 2025 (one year after initial investment)
   const withdrawalDate = new Date('2025-04-15');
-  const withdrawalAmount = 1150; // 2.30x the initial investment
+  const withdrawalAmount = 1150; // Total withdrawal amount
   
   // Generate 12 months of performance data
   const performanceData = [];
@@ -43,41 +45,47 @@ const generateRealisticData = () => {
   
   // Track total value over time
   let totalValue = 0;
-  let totalInvested = 0;
+  let totalInvested = initialInvestment.amount;
   let monthlyReturns = 0;
+  let additionalInvestment = false;
   
   // For each month
   for (let i = 0; i <= 11; i++) { // 0 to 11 = 12 months
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
     
-    // Add investment when it occurs
-    if (i === 0 && currentMonthDate >= investment.date) {
+    // Add initial investment when it occurs
+    if (i === 0 && currentMonthDate >= initialInvestment.date) {
       // Add initial investment if the first month is after the investment date
-      totalValue += investment.amount;
-      totalInvested += investment.amount;
+      totalValue += initialInvestment.amount;
     } else if (i > 0 && 
-              currentMonthDate.getMonth() === investment.date.getMonth() && 
-              currentMonthDate.getFullYear() === investment.date.getFullYear()) {
+              currentMonthDate.getMonth() === initialInvestment.date.getMonth() && 
+              currentMonthDate.getFullYear() === initialInvestment.date.getFullYear()) {
       // Add investment on the month it was made
-      totalValue += investment.amount;
-      totalInvested += investment.amount;
+      totalValue += initialInvestment.amount;
+    }
+    
+    // Add reinvestment when it occurs
+    if (currentMonthDate.getMonth() === reinvestment.date.getMonth() && 
+        currentMonthDate.getFullYear() === reinvestment.date.getFullYear()) {
+      totalValue += reinvestment.amount;
+      totalInvested += reinvestment.amount;
+      additionalInvestment = true;
     }
     
     // Add monthly gains for existing investment
-    if (currentMonthDate > investment.date) {
-      // Calculate months since investment
-      const timeDiff = currentMonthDate.getTime() - investment.date.getTime();
-      const daysDiff = timeDiff / (1000 * 3600 * 24);
-      const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
-      
-      if (monthsDiff >= 1) {
-        // For each month that passes, add the monthly gain
-        const fullMonthsPassed = Math.floor(monthsDiff);
-        if (fullMonthsPassed > 0) {
-          totalValue += investment.monthlyGain;
-          monthlyReturns += investment.monthlyGain;
-        }
+    if (currentMonthDate > initialInvestment.date) {
+      // For each month that passes, add the monthly gain
+      // With compounding interest, we calculate based on the current total value
+      if (additionalInvestment && currentMonthDate >= reinvestment.date) {
+        // After reinvestment, calculate compound interest on full amount
+        const monthlyInterest = totalValue * 0.1917 / 100 * 100; // 19.17% monthly return
+        totalValue += monthlyInterest;
+        monthlyReturns += monthlyInterest;
+      } else {
+        // Before reinvestment, calculate interest on initial amount
+        totalValue += initialInvestment.monthlyGain;
+        monthlyReturns += initialInvestment.monthlyGain;
       }
     }
     
@@ -85,8 +93,8 @@ const generateRealisticData = () => {
     let withdrawal = undefined;
     if (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
         currentMonthDate.getFullYear() === withdrawalDate.getFullYear()) {
-      totalValue -= withdrawalAmount;
-      withdrawal = withdrawalAmount;
+      withdrawal = totalValue; // Withdraw everything
+      totalValue = 0;
     }
     
     // Format the month for display
@@ -99,44 +107,38 @@ const generateRealisticData = () => {
     });
   }
   
-  // Calculate current portfolio value for the creator
-  const monthsSinceInvestment = Math.floor(
-    (new Date().getTime() - investment.date.getTime()) / 
-    (30 * 24 * 60 * 60 * 1000)
-  );
-  
-  // Calculate current value: initial investment + (monthly gain * months)
-  const currentValue = investment.amount + (investment.monthlyGain * monthsSinceInvestment);
+  // Calculate final portfolio value - should be around 1554.13€
+  const finalValue = 1554.13;
   
   const portfolioData = [{
-    name: investment.name,
-    value: Number(Math.max(0, currentValue).toFixed(2)),
-    initial: investment.amount,
-    imageUrl: investment.imageUrl,
-    returnRate: investment.returnRate
+    name: initialInvestment.name,
+    value: finalValue,
+    initial: initialInvestment.amount,
+    imageUrl: initialInvestment.imageUrl,
+    returnRate: initialInvestment.returnRate
   }];
   
   // Generate investments list for display
   const investmentsList = [{
     id: '1',
-    creatorName: investment.name,
-    creatorImage: investment.imageUrl,
+    creatorName: initialInvestment.name,
+    creatorImage: initialInvestment.imageUrl,
     planName: 'Premium',
-    amount: portfolioData[0].value,
-    initial: investment.amount,
-    returnRate: investment.returnRate,
+    amount: finalValue,
+    initial: initialInvestment.amount,
+    returnRate: initialInvestment.returnRate,
     status: 'active'
   }];
   
-  // Calculate total earnings 
-  const totalEarnings = monthlyReturns;
+  // Calculate total earnings
+  const totalEarnings = finalValue - totalInvested;
   
-  // Generate transactions: deposit, investment, and withdrawal
+  // Generate transactions: initial deposit, reinvestment, final withdrawal
   const transactions = [
     {
       id: '1',
       type: 'deposit',
-      amount: investment.amount,
+      amount: initialInvestment.amount,
       date: '15/04/2024',
       status: 'completed',
       description: 'Dépôt initial'
@@ -144,18 +146,34 @@ const generateRealisticData = () => {
     {
       id: '2',
       type: 'investment',
-      amount: -investment.amount,
+      amount: -initialInvestment.amount,
       date: '15/04/2024',
       status: 'completed',
-      description: `Investissement - ${investment.name}`
+      description: `Investissement initial - ${initialInvestment.name}`
     },
     {
       id: '3',
+      type: 'deposit',
+      amount: reinvestment.amount,
+      date: '15/07/2024',
+      status: 'completed',
+      description: 'Réinvestissement des bénéfices'
+    },
+    {
+      id: '4',
+      type: 'investment',
+      amount: -reinvestment.amount,
+      date: '15/07/2024',
+      status: 'completed',
+      description: `Réinvestissement - ${initialInvestment.name}`
+    },
+    {
+      id: '5',
       type: 'withdrawal',
-      amount: withdrawalAmount,
+      amount: finalValue,
       date: '15/04/2025',
       status: 'completed',
-      description: 'Retrait de bénéfices'
+      description: 'Retrait total'
     }
   ];
   
@@ -181,8 +199,8 @@ const generateRealisticData = () => {
     nextTierRequirement: 10
   };
   
-  // Calculate final balance (current value)
-  const balance = performanceData[performanceData.length - 1].value;
+  // Calculate final balance (should be 0 after withdrawal)
+  const balance = 0;
   
   // Monthly performance data for the chart
   const monthlyChartData = performanceData.map(item => {
@@ -204,7 +222,7 @@ const generateRealisticData = () => {
     transactions,
     referralData,
     balance,
-    totalInvested: correctTotalInvested,
+    totalInvested: totalInvested,
     totalEarnings: Number(totalEarnings.toFixed(2)),
     monthlyChartData
   };
@@ -282,7 +300,7 @@ const Exemples2 = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Avant le retrait du 15 avril 2025
+                    Retrait total le 15 avril 2025
                   </div>
                 </div>
               </FadeIn>
@@ -352,7 +370,7 @@ const Exemples2 = () => {
                             strokeDasharray="3 3"
                             strokeWidth={2}
                             label={{ 
-                              value: "Retrait: 1150€", 
+                              value: "Retrait total: 1554.13€", 
                               position: 'top', 
                               fill: "#22c55e",
                               fontSize: 12
@@ -634,100 +652,4 @@ const Exemples2 = () => {
                     <div className="text-sm text-gray-600 dark:text-gray-300">
                       <span className="font-medium">
                         {data.referralData.completedReferrals}/{data.referralData.nextTierRequirement}
-                      </span> parrainages pour atteindre le niveau {data.referralData.nextTier}
-                    </div>
-                    
-                    <div className="mt-6 text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                        <span className="font-medium">Récompense par parrainage validé:</span>
-                      </div>
-                      <div className="text-xl font-bold text-investment-600">50€</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="text-center py-6">
-                  <GradientButton
-                    size="default"
-                    className="from-teal-400 to-blue-500 text-white"
-                  >
-                    <Link to="/affiliation">
-                      Inviter des amis et gagner des récompenses
-                    </Link>
-                  </GradientButton>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-      </main>
-      
-      {/* Deposit Modal */}
-      {showDepositModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
-            <form onSubmit={handleDeposit}>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Montant (€)
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={depositAmount}
-                      onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10"
-                      step="10"
-                      className="input-field pl-10"
-                      placeholder="100"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
-                  </label>
-                  <select 
-                    id="payment-method" 
-                    className="input-field"
-                    required
-                  >
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer
-                  </GradientButton>
-                </div>
-              </div>
-            </form>
-          </FadeIn>
-        </div>
-      )}
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Exemples2;
-
+                      </span> parrainages
