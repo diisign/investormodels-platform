@@ -13,39 +13,42 @@ import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
-// Generate realistic data for the example dashboard based on user investments
+// Generate realistic data for the example dashboard based on user investments - Alternative version
 const generateRealisticData = () => {
-  // Initial investment amounts
+  // Initial investment amounts with different creators
   const investments = [
     { 
-      name: 'Emma Wilson', 
-      date: new Date('2024-06-10'), 
-      amount: 100, 
-      monthlyGain: 36.5, 
-      returnRate: 36.5, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
+      name: 'Victoria 💋', 
+      date: new Date('2024-05-15'), 
+      amount: 150, 
+      monthlyGain: 48.5, 
+      returnRate: 32.3, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/n/nl/nl7/nl7ujr6gpao7riitqgeul2kuvclb7snl1724680176/344510725/avatar.jpg' 
     },
     { 
-      name: 'Sophia Martinez', 
-      date: new Date('2024-10-10'), 
-      amount: 100, 
-      monthlyGain: 38, 
-      returnRate: 38, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg' 
+      name: 'Nina 💜', 
+      date: new Date('2024-08-23'), 
+      amount: 120, 
+      monthlyGain: 39.6, 
+      returnRate: 33, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/z/zr/zrj/zrjivxcnygnbhjjpnvalhffjejnk5emb1707238486/9376223/avatar.jpg' 
     },
     { 
-      name: 'Kayla Smith', 
-      date: new Date('2024-10-10'), 
-      amount: 100, 
-      monthlyGain: 36, 
-      returnRate: 36, 
-      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
+      name: 'Zoe 🌹', 
+      date: new Date('2024-09-10'), 
+      amount: 180, 
+      monthlyGain: 57.6, 
+      returnRate: 32, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
     }
   ];
   
-  // Withdrawal date - January 23, 2025
-  const withdrawalDate = new Date('2025-01-23');
-  const withdrawalAmount = 250;
+  // Calculate correct total invested
+  const correctTotalInvested = investments.reduce((total, investment) => total + investment.amount, 0);
+  
+  // Withdrawal date - March 15, 2025
+  const withdrawalDate = new Date('2025-03-15');
+  const withdrawalAmount = 350;
   
   // Generate 12 months of performance data
   const performanceData = [];
@@ -80,7 +83,7 @@ const generateRealisticData = () => {
       }
     });
     
-    // Add monthly gains for existing investments - THIS IS THE CORRECTED PART
+    // Add monthly gains for existing investments
     investments.forEach(investment => {
       if (currentMonthDate > investment.date) {
         // Calculate months since investment
@@ -89,8 +92,7 @@ const generateRealisticData = () => {
         const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
         
         if (monthsDiff >= 1) {
-          // IMPORTANT: For each month that passes, add the monthly gain regardless of withdrawals
-          // This ensures gains continue after withdrawals
+          // For each month that passes, add the monthly gain regardless of withdrawals
           const fullMonthsPassed = Math.floor(monthsDiff);
           if (fullMonthsPassed > 0) {
             totalValue += investment.monthlyGain;
@@ -142,26 +144,26 @@ const generateRealisticData = () => {
     id: String(index + 1),
     creatorName: item.name,
     creatorImage: item.imageUrl,
-    planName: 'Growth',
+    planName: 'Premium',
     amount: item.value,
     initial: item.initial,
     returnRate: item.returnRate,
     status: 'active'
   }));
   
-  // Calculate total earnings (this is cumulative returns before any withdrawal)
+  // Calculate total earnings 
   const totalEarnings = monthlyReturns;
   
   // Generate transactions: deposits, investments, and withdrawal only
   const transactions = [];
   let transactionId = 1;
   
-  // Add Emma Wilson deposit and investment
+  // Add Victoria deposit and investment
   transactions.push({
     id: String(transactionId++),
     type: 'deposit',
     amount: investments[0].amount,
-    date: '10/06/2024',
+    date: '15/05/2024',
     status: 'completed',
     description: 'Dépôt initial'
   });
@@ -170,17 +172,17 @@ const generateRealisticData = () => {
     id: String(transactionId++),
     type: 'investment',
     amount: -investments[0].amount,
-    date: '10/06/2024',
+    date: '15/05/2024',
     status: 'completed',
     description: `Investissement - ${investments[0].name}`
   });
   
-  // Add Sophia and Kayla deposits and investments
+  // Add Nina deposit and investment
   transactions.push({
     id: String(transactionId++),
     type: 'deposit',
-    amount: investments[1].amount + investments[2].amount,
-    date: '10/10/2024',
+    amount: investments[1].amount,
+    date: '23/08/2024',
     status: 'completed',
     description: 'Dépôt'
   });
@@ -189,56 +191,70 @@ const generateRealisticData = () => {
     id: String(transactionId++),
     type: 'investment',
     amount: -investments[1].amount,
-    date: '10/10/2024',
+    date: '23/08/2024',
     status: 'completed',
     description: `Investissement - ${investments[1].name}`
+  });
+  
+  // Add Zoe deposit and investment
+  transactions.push({
+    id: String(transactionId++),
+    type: 'deposit',
+    amount: investments[2].amount,
+    date: '10/09/2024',
+    status: 'completed',
+    description: 'Dépôt'
   });
   
   transactions.push({
     id: String(transactionId++),
     type: 'investment',
     amount: -investments[2].amount,
-    date: '10/10/2024',
+    date: '10/09/2024',
     status: 'completed',
     description: `Investissement - ${investments[2].name}`
   });
   
-  // Add withdrawal transaction - updated to January 23, 2025
+  // Add withdrawal transaction
   transactions.push({
     id: String(transactionId++),
     type: 'withdrawal',
     amount: withdrawalAmount,
-    date: '23/01/2025',
+    date: '15/03/2025',
     status: 'completed',
     description: 'Retrait de bénéfices'
   });
   
-  // Enhanced referral data with 5 completed and 3 pending referrals
+  // Enhanced referral data with different numbers
   const referralData = {
-    totalReferrals: 8,
-    pendingReferrals: 3,
-    completedReferrals: 5,
-    earnings: 250,
+    totalReferrals: 12,
+    pendingReferrals: 4,
+    completedReferrals: 8,
+    earnings: 400,
     recentReferrals: [
-      { name: 'Marie L.', date: '15/02/2025', status: 'completed', reward: 50 },
-      { name: 'Thomas B.', date: '28/02/2025', status: 'completed', reward: 50 },
-      { name: 'Claire D.', date: '05/03/2025', status: 'completed', reward: 50 },
-      { name: 'François M.', date: '12/03/2025', status: 'completed', reward: 50 },
-      { name: 'Sophie R.', date: '18/03/2025', status: 'completed', reward: 50 },
-      { name: 'Julien K.', date: '22/03/2025', status: 'pending', reward: 50 },
-      { name: 'Amélie P.', date: '25/03/2025', status: 'pending', reward: 50 },
-      { name: 'Lucas T.', date: '28/03/2025', status: 'pending', reward: 50 }
+      { name: 'Nicolas P.', date: '10/01/2025', status: 'completed', reward: 50 },
+      { name: 'Emilie S.', date: '22/01/2025', status: 'completed', reward: 50 },
+      { name: 'Antoine R.', date: '05/02/2025', status: 'completed', reward: 50 },
+      { name: 'Camille M.', date: '18/02/2025', status: 'completed', reward: 50 },
+      { name: 'Julien D.', date: '28/02/2025', status: 'completed', reward: 50 },
+      { name: 'Laura V.', date: '07/03/2025', status: 'completed', reward: 50 },
+      { name: 'Mathieu L.', date: '15/03/2025', status: 'completed', reward: 50 },
+      { name: 'Sarah T.', date: '23/03/2025', status: 'completed', reward: 50 },
+      { name: 'Alexandre G.', date: '27/03/2025', status: 'pending', reward: 50 },
+      { name: 'Charlotte B.', date: '29/03/2025', status: 'pending', reward: 50 },
+      { name: 'Maxime N.', date: '30/03/2025', status: 'pending', reward: 50 },
+      { name: 'Elodie F.', date: '31/03/2025', status: 'pending', reward: 50 }
     ],
-    tierProgress: 68,
-    currentTier: 'Silver',
-    nextTier: 'Gold',
-    nextTierRequirement: 10
+    tierProgress: 80,
+    currentTier: 'Gold',
+    nextTier: 'Platinum',
+    nextTierRequirement: 15
   };
   
   // Calculate final balance (current value)
   const balance = performanceData[performanceData.length - 1].value;
   
-  // Monthly performance data for the chart - UPDATED TO HANDLE RETURNS BETTER
+  // Monthly performance data for the chart
   const monthlyChartData = performanceData.map(item => {
     // Calculate how much of the value is from investment vs returns
     const returns = Math.max(0, item.value - totalInvested);
@@ -258,13 +274,13 @@ const generateRealisticData = () => {
     transactions,
     referralData,
     balance,
-    totalInvested,
+    totalInvested: correctTotalInvested,
     totalEarnings: Number(totalEarnings.toFixed(2)),
     monthlyChartData
   };
 };
 
-const Examples = () => {
+const Exemples2 = () => {
   const data = generateRealisticData();
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
@@ -336,7 +352,7 @@ const Examples = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Avant le retrait du 23 janvier 2025
+                    Avant le retrait du 15 mars 2025
                   </div>
                 </div>
               </FadeIn>
@@ -406,7 +422,7 @@ const Examples = () => {
                             strokeDasharray="3 3"
                             strokeWidth={2}
                             label={{ 
-                              value: "Retrait: 250€", 
+                              value: "Retrait: 350€", 
                               position: 'top', 
                               fill: "#22c55e",
                               fontSize: 12
@@ -647,7 +663,7 @@ const Examples = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Recent Referrals - updated to show all referrals */}
+                  {/* Recent Referrals */}
                   <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <h4 className="font-semibold mb-3">Parrainages récents</h4>
                     <div className="space-y-3 max-h-72 overflow-y-auto">
@@ -783,4 +799,4 @@ const Examples = () => {
   );
 };
 
-export default Examples;
+export default Exemples2;
