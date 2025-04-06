@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -182,9 +183,9 @@ const generateRealisticData = () => {
   const balance = 0;
   
   // Monthly performance data for the chart
-  const monthlyChartData = performanceData.map(item => {
+  const monthlyChartData = performanceData.map((item, index) => {
     // Calculate how much of the value is from investment vs returns
-    const investedAmount = i < 3 ? initialAmount : (initialAmount + reinvestmentAmount);
+    const investedAmount = index < 3 ? initialAmount : (initialAmount + reinvestmentAmount);
     const returns = Math.max(0, item.value - investedAmount);
     
     return {
