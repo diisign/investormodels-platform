@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -16,35 +15,35 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
 // Generate realistic data for the example dashboard with compound interest
 const generateRealisticData = () => {
-  // Initial investment amount with one creator in April 2024
+  // Initial investment amount with one creator in July 2024
   const initialInvestment = { 
     name: 'Elena 💎', 
-    date: new Date('2024-04-15'), 
+    date: new Date('2024-07-15'), 
     amount: 500, 
     monthlyGain: 0.43, // 43% monthly return
     returnRate: 43, // 43% effective return rate to display
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
   };
   
-  // Calculate growth from April to July (3 months of compounding)
+  // Calculate growth from July to October (3 months of compounding)
   // Initial value: 500€
   // After 3 months at 43% monthly return: 500 * (1 + 0.43)^3 ≈ 1,467.59€
-  // So reinvestment in July is 500 + 650 = 1,150€ (rounded down for simplicity)
-  const reinvestmentDate = new Date('2024-07-15');
+  // So reinvestment in October is 500 + 650 = 1,150€ (rounded down for simplicity)
+  const reinvestmentDate = new Date('2024-10-15');
   
-  // Withdrawal date - April 15, 2025 (one year after initial investment)
+  // Withdrawal date - April 15, 2025 (9 months after initial investment)
   const withdrawalDate = new Date('2025-04-15');
   
   // Generate 12 months of performance data
   const performanceData = [];
   
-  // Start date from April 2024
+  // Start date from April 2024 to show a few months before investment
   const startDate = new Date('2024-04-01');
   
   // Track total value over time
   let totalValue = 0;
   let initialAmount = initialInvestment.amount;
-  let reinvestmentAmount = 650; // From April to July growth
+  let reinvestmentAmount = 650; // From July to October growth
   
   // For each month from April 2024 to April 2025 (13 months total to include April 2025)
   for (let i = 0; i <= 12; i++) {
@@ -54,22 +53,22 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    // Add initial investment in April 2024
-    if (i === 0) {
+    // Initial investment happens in July 2024 (month index 3)
+    if (i === 3) {
       totalValue = initialAmount;
     }
     
     // Apply monthly returns (compound interest)
-    else if (i > 0) {
-      if (i <= 3) {
-        // April to July: compound on initial 500€
-        totalValue = initialAmount * Math.pow(1 + initialInvestment.monthlyGain, i);
-      } else if (i === 3) {
-        // July: reinvestment (keep the same value, just explaining the new deposit)
+    else if (i > 3) {
+      if (i <= 6) {
+        // July to October: compound on initial 500€
+        totalValue = initialAmount * Math.pow(1 + initialInvestment.monthlyGain, i - 3);
+      } else if (i === 6) {
+        // October: reinvestment (keep the same value, just explaining the new deposit)
         totalValue = 1150; // Reinvestment of initial 500€ + 650€ gains
-      } else if (i > 3 && i <= 12) {
-        // After July: compound on 1150€
-        const monthsSinceReinvestment = i - 3;
+      } else if (i > 6 && i <= 12) {
+        // After October: compound on 1150€
+        const monthsSinceReinvestment = i - 6;
         totalValue = 1150 * Math.pow(1 + initialInvestment.monthlyGain, monthsSinceReinvestment);
       }
     }
@@ -119,7 +118,7 @@ const generateRealisticData = () => {
       id: '1',
       type: 'deposit',
       amount: initialInvestment.amount,
-      date: '15/04/2024',
+      date: '15/07/2024',
       status: 'completed',
       description: 'Dépôt initial'
     },
@@ -127,7 +126,7 @@ const generateRealisticData = () => {
       id: '2',
       type: 'investment',
       amount: -initialInvestment.amount,
-      date: '15/04/2024',
+      date: '15/07/2024',
       status: 'completed',
       description: `Investissement initial - ${initialInvestment.name}`
     },
@@ -135,7 +134,7 @@ const generateRealisticData = () => {
       id: '3',
       type: 'deposit',
       amount: reinvestmentAmount,
-      date: '15/07/2024',
+      date: '15/10/2024',
       status: 'completed',
       description: 'Réinvestissement des bénéfices'
     },
@@ -143,7 +142,7 @@ const generateRealisticData = () => {
       id: '4',
       type: 'investment',
       amount: -reinvestmentAmount,
-      date: '15/07/2024',
+      date: '15/10/2024',
       status: 'completed',
       description: `Réinvestissement - ${initialInvestment.name}`
     },
@@ -185,7 +184,17 @@ const generateRealisticData = () => {
   // Monthly performance data for the chart
   const monthlyChartData = performanceData.map((item, index) => {
     // Calculate how much of the value is from investment vs returns
-    const investedAmount = index < 3 ? initialAmount : (initialAmount + reinvestmentAmount);
+    const month = parseInt(item.month.split(' ')[1]);
+    
+    let investedAmount = 0;
+    if (index >= 3) { // After July
+      investedAmount = initialAmount;
+      
+      if (index >= 6) { // After October
+        investedAmount += reinvestmentAmount;
+      }
+    }
+    
     const returns = Math.max(0, item.value - investedAmount);
     
     return {
