@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -13,42 +14,24 @@ import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
-// Generate realistic data for the example dashboard based on user investments - Alternative version
+// Generate realistic data for the example dashboard based on single investment at 2.30x return
 const generateRealisticData = () => {
-  // Initial investment amounts with different creators
-  const investments = [
-    { 
-      name: 'Victoria 💋', 
-      date: new Date('2024-05-15'), 
-      amount: 150, 
-      monthlyGain: 48.5, 
-      returnRate: 32.3, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/n/nl/nl7/nl7ujr6gpao7riitqgeul2kuvclb7snl1724680176/344510725/avatar.jpg' 
-    },
-    { 
-      name: 'Nina 💜', 
-      date: new Date('2024-08-23'), 
-      amount: 120, 
-      monthlyGain: 39.6, 
-      returnRate: 33, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/z/zr/zrj/zrjivxcnygnbhjjpnvalhffjejnk5emb1707238486/9376223/avatar.jpg' 
-    },
-    { 
-      name: 'Zoe 🌹', 
-      date: new Date('2024-09-10'), 
-      amount: 180, 
-      monthlyGain: 57.6, 
-      returnRate: 32, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
-    }
-  ];
+  // Initial investment amount with one creator
+  const investment = { 
+    name: 'Elena 💎', 
+    date: new Date('2024-04-15'), 
+    amount: 500, 
+    monthlyGain: 95.83, // ~1150/12 (2.3 times 500 = 1150, divided by 12 months)
+    returnRate: 230, // 2.30x = 230%
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
+  };
   
   // Calculate correct total invested
-  const correctTotalInvested = investments.reduce((total, investment) => total + investment.amount, 0);
+  const correctTotalInvested = investment.amount;
   
-  // Withdrawal date - March 15, 2025
-  const withdrawalDate = new Date('2025-03-15');
-  const withdrawalAmount = 350;
+  // Withdrawal date - April 15, 2025 (one year after investment)
+  const withdrawalDate = new Date('2025-04-15');
+  const withdrawalAmount = 1150; // 2.30x the initial investment
   
   // Generate 12 months of performance data
   const performanceData = [];
@@ -68,41 +51,37 @@ const generateRealisticData = () => {
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
     
-    // Check for investments
-    investments.forEach(investment => {
-      if (i === 0 && currentMonthDate >= investment.date) {
-        // Add initial investments if the first month is after the investment date
-        totalValue += investment.amount;
-        totalInvested += investment.amount;
-      } else if (i > 0 && 
-                currentMonthDate.getMonth() === investment.date.getMonth() && 
-                currentMonthDate.getFullYear() === investment.date.getFullYear()) {
-        // Add investments on the month they were made
-        totalValue += investment.amount;
-        totalInvested += investment.amount;
-      }
-    });
+    // Add investment when it occurs
+    if (i === 0 && currentMonthDate >= investment.date) {
+      // Add initial investment if the first month is after the investment date
+      totalValue += investment.amount;
+      totalInvested += investment.amount;
+    } else if (i > 0 && 
+              currentMonthDate.getMonth() === investment.date.getMonth() && 
+              currentMonthDate.getFullYear() === investment.date.getFullYear()) {
+      // Add investment on the month it was made
+      totalValue += investment.amount;
+      totalInvested += investment.amount;
+    }
     
-    // Add monthly gains for existing investments
-    investments.forEach(investment => {
-      if (currentMonthDate > investment.date) {
-        // Calculate months since investment
-        const timeDiff = currentMonthDate.getTime() - investment.date.getTime();
-        const daysDiff = timeDiff / (1000 * 3600 * 24);
-        const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
-        
-        if (monthsDiff >= 1) {
-          // For each month that passes, add the monthly gain regardless of withdrawals
-          const fullMonthsPassed = Math.floor(monthsDiff);
-          if (fullMonthsPassed > 0) {
-            totalValue += investment.monthlyGain;
-            monthlyReturns += investment.monthlyGain;
-          }
+    // Add monthly gains for existing investment
+    if (currentMonthDate > investment.date) {
+      // Calculate months since investment
+      const timeDiff = currentMonthDate.getTime() - investment.date.getTime();
+      const daysDiff = timeDiff / (1000 * 3600 * 24);
+      const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
+      
+      if (monthsDiff >= 1) {
+        // For each month that passes, add the monthly gain
+        const fullMonthsPassed = Math.floor(monthsDiff);
+        if (fullMonthsPassed > 0) {
+          totalValue += investment.monthlyGain;
+          monthlyReturns += investment.monthlyGain;
         }
       }
-    });
+    }
     
-    // Apply withdrawal but don't affect the ongoing generation of returns
+    // Apply withdrawal
     let withdrawal = undefined;
     if (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
         currentMonthDate.getFullYear() === withdrawalDate.getFullYear()) {
@@ -120,135 +99,86 @@ const generateRealisticData = () => {
     });
   }
   
-  // Calculate current portfolio values for each creator
-  const portfolioData = investments.map(investment => {
-    const monthsSinceInvestment = Math.floor(
-      (new Date().getTime() - investment.date.getTime()) / 
-      (30 * 24 * 60 * 60 * 1000)
-    );
-    
-    // Calculate current value: initial investment + (monthly gain * months)
-    const currentValue = investment.amount + (investment.monthlyGain * monthsSinceInvestment);
-    
-    return {
-      name: investment.name,
-      value: Number(Math.max(0, currentValue).toFixed(2)),
-      initial: investment.amount,
-      imageUrl: investment.imageUrl,
-      returnRate: investment.returnRate
-    };
-  });
+  // Calculate current portfolio value for the creator
+  const monthsSinceInvestment = Math.floor(
+    (new Date().getTime() - investment.date.getTime()) / 
+    (30 * 24 * 60 * 60 * 1000)
+  );
+  
+  // Calculate current value: initial investment + (monthly gain * months)
+  const currentValue = investment.amount + (investment.monthlyGain * monthsSinceInvestment);
+  
+  const portfolioData = [{
+    name: investment.name,
+    value: Number(Math.max(0, currentValue).toFixed(2)),
+    initial: investment.amount,
+    imageUrl: investment.imageUrl,
+    returnRate: investment.returnRate
+  }];
   
   // Generate investments list for display
-  const investmentsList = portfolioData.map((item, index) => ({
-    id: String(index + 1),
-    creatorName: item.name,
-    creatorImage: item.imageUrl,
+  const investmentsList = [{
+    id: '1',
+    creatorName: investment.name,
+    creatorImage: investment.imageUrl,
     planName: 'Premium',
-    amount: item.value,
-    initial: item.initial,
-    returnRate: item.returnRate,
+    amount: portfolioData[0].value,
+    initial: investment.amount,
+    returnRate: investment.returnRate,
     status: 'active'
-  }));
+  }];
   
   // Calculate total earnings 
   const totalEarnings = monthlyReturns;
   
-  // Generate transactions: deposits, investments, and withdrawal only
-  const transactions = [];
-  let transactionId = 1;
+  // Generate transactions: deposit, investment, and withdrawal
+  const transactions = [
+    {
+      id: '1',
+      type: 'deposit',
+      amount: investment.amount,
+      date: '15/04/2024',
+      status: 'completed',
+      description: 'Dépôt initial'
+    },
+    {
+      id: '2',
+      type: 'investment',
+      amount: -investment.amount,
+      date: '15/04/2024',
+      status: 'completed',
+      description: `Investissement - ${investment.name}`
+    },
+    {
+      id: '3',
+      type: 'withdrawal',
+      amount: withdrawalAmount,
+      date: '15/04/2025',
+      status: 'completed',
+      description: 'Retrait de bénéfices'
+    }
+  ];
   
-  // Add Victoria deposit and investment
-  transactions.push({
-    id: String(transactionId++),
-    type: 'deposit',
-    amount: investments[0].amount,
-    date: '15/05/2024',
-    status: 'completed',
-    description: 'Dépôt initial'
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[0].amount,
-    date: '15/05/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[0].name}`
-  });
-  
-  // Add Nina deposit and investment
-  transactions.push({
-    id: String(transactionId++),
-    type: 'deposit',
-    amount: investments[1].amount,
-    date: '23/08/2024',
-    status: 'completed',
-    description: 'Dépôt'
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[1].amount,
-    date: '23/08/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[1].name}`
-  });
-  
-  // Add Zoe deposit and investment
-  transactions.push({
-    id: String(transactionId++),
-    type: 'deposit',
-    amount: investments[2].amount,
-    date: '10/09/2024',
-    status: 'completed',
-    description: 'Dépôt'
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[2].amount,
-    date: '10/09/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[2].name}`
-  });
-  
-  // Add withdrawal transaction
-  transactions.push({
-    id: String(transactionId++),
-    type: 'withdrawal',
-    amount: withdrawalAmount,
-    date: '15/03/2025',
-    status: 'completed',
-    description: 'Retrait de bénéfices'
-  });
-  
-  // Enhanced referral data with different numbers
+  // Enhanced referral data
   const referralData = {
-    totalReferrals: 12,
-    pendingReferrals: 4,
-    completedReferrals: 8,
-    earnings: 400,
+    totalReferrals: 8,
+    pendingReferrals: 3,
+    completedReferrals: 5,
+    earnings: 250,
     recentReferrals: [
-      { name: 'Nicolas P.', date: '10/01/2025', status: 'completed', reward: 50 },
-      { name: 'Emilie S.', date: '22/01/2025', status: 'completed', reward: 50 },
-      { name: 'Antoine R.', date: '05/02/2025', status: 'completed', reward: 50 },
-      { name: 'Camille M.', date: '18/02/2025', status: 'completed', reward: 50 },
-      { name: 'Julien D.', date: '28/02/2025', status: 'completed', reward: 50 },
-      { name: 'Laura V.', date: '07/03/2025', status: 'completed', reward: 50 },
-      { name: 'Mathieu L.', date: '15/03/2025', status: 'completed', reward: 50 },
-      { name: 'Sarah T.', date: '23/03/2025', status: 'completed', reward: 50 },
-      { name: 'Alexandre G.', date: '27/03/2025', status: 'pending', reward: 50 },
-      { name: 'Charlotte B.', date: '29/03/2025', status: 'pending', reward: 50 },
-      { name: 'Maxime N.', date: '30/03/2025', status: 'pending', reward: 50 },
-      { name: 'Elodie F.', date: '31/03/2025', status: 'pending', reward: 50 }
+      { name: 'Thomas R.', date: '20/02/2025', status: 'completed', reward: 50 },
+      { name: 'Marie L.', date: '01/03/2025', status: 'completed', reward: 50 },
+      { name: 'Julien D.', date: '15/03/2025', status: 'completed', reward: 50 },
+      { name: 'Sophie B.', date: '25/03/2025', status: 'completed', reward: 50 },
+      { name: 'Lucas M.', date: '01/04/2025', status: 'completed', reward: 50 },
+      { name: 'Emma C.', date: '03/04/2025', status: 'pending', reward: 50 },
+      { name: 'Hugo P.', date: '05/04/2025', status: 'pending', reward: 50 },
+      { name: 'Léa T.', date: '06/04/2025', status: 'pending', reward: 50 }
     ],
-    tierProgress: 80,
-    currentTier: 'Gold',
-    nextTier: 'Platinum',
-    nextTierRequirement: 15
+    tierProgress: 50,
+    currentTier: 'Silver',
+    nextTier: 'Gold',
+    nextTierRequirement: 10
   };
   
   // Calculate final balance (current value)
@@ -334,7 +264,7 @@ const Exemples2 = () => {
                     <span className="text-2xl font-bold">{data.totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {data.investments.length} créatrices
+                    Dans {data.investments.length} créatrice
                   </div>
                 </div>
               </FadeIn>
@@ -352,7 +282,7 @@ const Exemples2 = () => {
                     <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Avant le retrait du 15 mars 2025
+                    Avant le retrait du 15 avril 2025
                   </div>
                 </div>
               </FadeIn>
@@ -422,7 +352,7 @@ const Exemples2 = () => {
                             strokeDasharray="3 3"
                             strokeWidth={2}
                             label={{ 
-                              value: "Retrait: 350€", 
+                              value: "Retrait: 1150€", 
                               position: 'top', 
                               fill: "#22c55e",
                               fontSize: 12
@@ -800,3 +730,4 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
+
