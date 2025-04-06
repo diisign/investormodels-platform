@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -43,6 +42,9 @@ const generateRealisticData = () => {
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
     }
   ];
+  
+  // Calculate correct total invested
+  const correctTotalInvested = investments.reduce((total, investment) => total + investment.amount, 0);
   
   // Withdrawal date - March 15, 2025
   const withdrawalDate = new Date('2025-03-15');
@@ -272,7 +274,7 @@ const generateRealisticData = () => {
     transactions,
     referralData,
     balance,
-    totalInvested,
+    totalInvested: correctTotalInvested,
     totalEarnings: Number(totalEarnings.toFixed(2)),
     monthlyChartData
   };
