@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   ResponsiveContainer, 
@@ -91,18 +90,35 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
     }
   };
 
-  // Helper for nice round Y-axis ticks
+  // Updated helper for nice round Y-axis ticks
   const getNiceRoundNumbers = (min: number, max: number, count = 5) => {
-    const range = max - min;
-    let step = Math.pow(10, Math.floor(Math.log10(range)));
-    if (range / step < count) step = step / 2;
-    else if (range / step > count * 2) step = step * 2;
+    // Ensure min is 0 to start from zero
+    min = 0;
     
-    const start = Math.ceil(min / step) * step;
-    const result = [];
-    for (let i = 0; i < count && start + i * step <= max; i++) {
-      result.push(start + i * step);
+    // Calculate a nice round step size
+    const range = max - min;
+    let magnitude = Math.pow(10, Math.floor(Math.log10(range)));
+    
+    // Determine appropriate step size based on magnitude
+    let step;
+    if (range / magnitude < 2) {
+      step = 0.2 * magnitude;
+    } else if (range / magnitude < 5) {
+      step = 0.5 * magnitude;
+    } else {
+      step = magnitude;
     }
+    
+    // Round up the max to ensure we cover the full data range
+    const roundedMax = Math.ceil(max / step) * step;
+    
+    // Generate ticks at even intervals
+    const result = [];
+    for (let i = 0; i <= Math.ceil(roundedMax / step); i++) {
+      const value = Math.round(min + i * step);
+      result.push(value);
+    }
+    
     return result;
   };
 
@@ -148,7 +164,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 tickLine={{ stroke: 'var(--border)' }}
                 width={40}
                 dx={3}
-                tickFormatter={(value) => Math.round(value).toString()}
+                tickFormatter={(value) => value.toString()}
                 ticks={getNiceRoundNumbers(0, Math.max(...chartData.map(item => 
                   Math.max(item.invested || 0, item.return || 0)
                 )))}
