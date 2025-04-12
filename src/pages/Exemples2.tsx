@@ -13,39 +13,28 @@ import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
-// Generate realistic data for the example dashboard with compound interest
 const generateRealisticData = () => {
-  // Initial investment amount with one creator in July 2024
   const initialInvestment = { 
     name: 'Elena 💎', 
     date: new Date('2024-07-15'), 
     amount: 500, 
-    monthlyGain: 0.43, // 43% monthly return
-    returnRate: 43, // 43% effective return rate to display
+    monthlyGain: 0.43, 
+    returnRate: 43, 
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
   };
   
-  // Calculate growth from July to October (3 months of compounding)
-  // Initial value: 500€
-  // After 3 months at 43% monthly return: 500 * (1 + 0.43)^3 ≈ 1,467.59€
-  // So reinvestment in October is 500 + 650 = 1,150€ (rounded down for simplicity)
   const reinvestmentDate = new Date('2024-10-15');
   
-  // Withdrawal date - April 15, 2025 (9 months after initial investment)
   const withdrawalDate = new Date('2025-04-15');
   
-  // Generate 12 months of performance data
   const performanceData = [];
   
-  // Start date from April 2024 to show a few months before investment
   const startDate = new Date('2024-04-01');
   
-  // Track total value over time
   let totalValue = 0;
   let initialAmount = initialInvestment.amount;
-  let reinvestmentAmount = 650; // From July to October growth
+  let reinvestmentAmount = 650;
   
-  // For each month from April 2024 to April 2025 (13 months total to include April 2025)
   for (let i = 0; i <= 12; i++) {
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
@@ -53,27 +42,21 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    // Initial investment happens in July 2024 (month index 3)
     if (i === 3) {
       totalValue = initialAmount;
     }
     
-    // Apply monthly returns (compound interest)
     else if (i > 3) {
       if (i <= 6) {
-        // July to October: compound on initial 500€
         totalValue = initialAmount * Math.pow(1 + initialInvestment.monthlyGain, i - 3);
       } else if (i === 6) {
-        // October: reinvestment (keep the same value, just explaining the new deposit)
-        totalValue = 1150; // Reinvestment of initial 500€ + 650€ gains
+        totalValue = 1150;
       } else if (i > 6 && i <= 12) {
-        // After October: compound on 1150€
         const monthsSinceReinvestment = i - 6;
         totalValue = 1150 * Math.pow(1 + initialInvestment.monthlyGain, monthsSinceReinvestment);
       }
     }
     
-    // Apply withdrawal in April 2025
     let withdrawal = undefined;
     if (i === 12) {
       withdrawal = totalValue;
@@ -86,10 +69,8 @@ const generateRealisticData = () => {
     });
   }
   
-  // Final portfolio value (April 2025)
   const finalValue = performanceData[performanceData.length - 1].value;
   
-  // Calculate total percentage return
   const totalPercentageReturn = ((finalValue - initialAmount - reinvestmentAmount) / (initialAmount + reinvestmentAmount) * 100).toFixed(1);
   
   const portfolioData = [{
@@ -98,10 +79,9 @@ const generateRealisticData = () => {
     initial: initialInvestment.amount,
     imageUrl: initialInvestment.imageUrl,
     returnRate: initialInvestment.returnRate,
-    totalReturn: totalPercentageReturn // Add total return percentage
+    totalReturn: totalPercentageReturn
   }];
   
-  // Investment list
   const investmentsList = [{
     id: '1',
     creatorName: initialInvestment.name,
@@ -110,14 +90,12 @@ const generateRealisticData = () => {
     amount: finalValue,
     initial: initialInvestment.amount,
     returnRate: initialInvestment.returnRate,
-    totalReturn: totalPercentageReturn, // Add total return percentage
+    totalReturn: totalPercentageReturn,
     status: 'active'
   }];
   
-  // Calculate total earnings
   const totalEarnings = finalValue - initialAmount - reinvestmentAmount;
   
-  // Generate transactions: initial deposit, reinvestment, final withdrawal
   const transactions = [
     {
       id: '1',
@@ -161,7 +139,6 @@ const generateRealisticData = () => {
     }
   ];
   
-  // Enhanced referral data
   const referralData = {
     totalReferrals: 8,
     pendingReferrals: 3,
@@ -183,12 +160,9 @@ const generateRealisticData = () => {
     nextTierRequirement: 10
   };
   
-  // Calculate final balance (should be 0 after withdrawal)
   const balance = 0;
   
-  // Monthly performance data for the chart
   const monthlyChartData = performanceData.map((item) => {
-    // Calculate how much of the value is from investment vs returns
     const investedAmount = item.month.includes('juil.') ? initialAmount : 
                          (item.month.includes('oct.') || item.month > 'oct.') ? initialAmount + reinvestmentAmount : 0;
     
@@ -212,7 +186,7 @@ const generateRealisticData = () => {
     totalInvested: initialAmount + reinvestmentAmount,
     totalEarnings: Number(totalEarnings.toFixed(2)),
     monthlyChartData,
-    totalPercentageReturn  // Add total return percentage to the returned data
+    totalPercentageReturn
   };
 };
 
@@ -227,18 +201,15 @@ const Exemples2 = () => {
     setShowDepositModal(false);
   };
   
-  // Find withdrawal point in performance data
   const withdrawalPoint = data.performanceData.findIndex(item => item.withdrawal);
   
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={true} />
       
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
                 <Card>
@@ -312,9 +283,7 @@ const Exemples2 = () => {
               </FadeIn>
             </div>
             
-            {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Performance Chart */}
               <FadeIn direction="up" className="glass-card lg:col-span-3">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -405,9 +374,7 @@ const Exemples2 = () => {
               </FadeIn>
             </div>
             
-            {/* Investments and Transactions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              {/* Investments */}
               <FadeIn direction="up" className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -473,7 +440,6 @@ const Exemples2 = () => {
                 </div>
               </FadeIn>
               
-              {/* Recent Transactions */}
               <FadeIn direction="up" delay={100} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -547,7 +513,6 @@ const Exemples2 = () => {
               </FadeIn>
             </div>
             
-            {/* Enhanced Referral Card */}
             <FadeIn direction="up" delay={200} className="glass-card mt-8">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -601,7 +566,6 @@ const Exemples2 = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Recent Referrals */}
                   <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <h4 className="font-semibold mb-3">Parrainages récents</h4>
                     <div className="space-y-3 max-h-72 overflow-y-auto">
@@ -626,7 +590,6 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   
-                  {/* Tier progress */}
                   <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <h4 className="font-semibold mb-3">Niveau du programme</h4>
                     <div className="mb-2 flex justify-between">
@@ -642,4 +605,80 @@ const Exemples2 = () => {
                     <div className="text-sm text-gray-600 dark:text-gray-300">
                       <span className="font-medium">
                         {data.referralData.completedReferrals}/{data.referralData.nextTierRequirement}
-                      </span> parrainages nécessaires pour débloquer le niveau {data.
+                      </span> parrainages nécessaires pour débloquer le niveau {data.referralData.nextTier}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+      </main>
+      
+      {showDepositModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
+            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
+            <form onSubmit={handleDeposit}>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Montant (€)
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="number"
+                      id="amount"
+                      value={depositAmount}
+                      onChange={(e) => setDepositAmount(e.target.value)}
+                      min="10"
+                      step="10"
+                      className="input-field pl-10"
+                      placeholder="100"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Méthode de paiement
+                  </label>
+                  <select 
+                    id="payment-method" 
+                    className="input-field"
+                    required
+                  >
+                    <option value="">Sélectionner une méthode</option>
+                    <option value="credit-card">Carte bancaire</option>
+                    <option value="bank-transfer">Virement bancaire</option>
+                  </select>
+                </div>
+                
+                <div className="pt-4 flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowDepositModal(false)}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    Annuler
+                  </button>
+                  <GradientButton type="submit">
+                    Déposer
+                  </GradientButton>
+                </div>
+              </div>
+            </form>
+          </FadeIn>
+        </div>
+      )}
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Exemples2;
