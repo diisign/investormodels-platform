@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   ResponsiveContainer, 
@@ -90,6 +91,21 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
     }
   };
 
+  // Helper for nice round Y-axis ticks
+  const getNiceRoundNumbers = (min: number, max: number, count = 5) => {
+    const range = max - min;
+    let step = Math.pow(10, Math.floor(Math.log10(range)));
+    if (range / step < count) step = step / 2;
+    else if (range / step > count * 2) step = step * 2;
+    
+    const start = Math.ceil(min / step) * step;
+    const result = [];
+    for (let i = 0; i < count && start + i * step <= max; i++) {
+      result.push(start + i * step);
+    }
+    return result;
+  };
+
   return (
     <div className="relative w-full h-full">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-investment-500 to-investment-600 rounded-2xl blur opacity-30 animate-pulse-light"></div>
@@ -125,12 +141,17 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 tickLine={{ stroke: 'var(--border)' }} 
                 padding={{ left: 25, right: 20 }}
                 tickMargin={5}
+                interval={0}
               />
               <YAxis 
                 tick={{ fill: 'var(--foreground)', fontSize: 10 }} 
                 tickLine={{ stroke: 'var(--border)' }}
                 width={40}
                 dx={3}
+                tickFormatter={(value) => Math.round(value)}
+                ticks={getNiceRoundNumbers(0, Math.max(...chartData.map(item => 
+                  Math.max(item.invested || 0, item.return || 0)
+                )))}
               />
               <ChartTooltip
                 content={({ active, payload, label }) => {
@@ -206,6 +227,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 tickFormatter={(value) => value < 1 ? `${value * 1000}M` : `${value}B`}
                 width={40}
                 dx={3}
+                ticks={[0, 0.4, 0.8, 1.2, 1.6]}
               />
               <ChartTooltip
                 content={({ active, payload, label }) => {

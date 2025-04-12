@@ -210,6 +210,7 @@ const Exemples2 = () => {
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
                 <Card>
@@ -311,6 +312,7 @@ const Exemples2 = () => {
                           tickLine={false}
                           padding={{ left: 10, right: 10 }}
                           tick={{ fontSize: 10 }}
+                          interval={0}
                         />
                         <YAxis 
                           axisLine={false} 
@@ -346,6 +348,7 @@ const Exemples2 = () => {
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                     {data.investments.map((investment, index) => (
                       <div 
