@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -342,7 +343,7 @@ const Exemples2 = () => {
                           tickLine={false} 
                           domain={['dataMin - 10', 'dataMax + 10']}
                           tickCount={5}
-                          tickFormatter={(value) => Math.round(value)}
+                          tickFormatter={(value) => Math.round(value).toString()}
                         />
                         <Tooltip formatter={(value) => `${value}€`} />
                         <Line
