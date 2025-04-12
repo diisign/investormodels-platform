@@ -102,40 +102,41 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
     }
   };
   
-  // Fonction pour générer des graduations parfaitement arrondies
+  // Fonction pour générer des graduations parfaitement arrondies aux centaines/milliers
   const generateNiceRoundTicks = (maxValue: number) => {
-    // Trouver la bonne échelle (dizaines, centaines, milliers)
-    let scale = 10;
-    if (maxValue > 10000) {
-      scale = 5000;
-    } else if (maxValue > 5000) {
-      scale = 2000;
-    } else if (maxValue > 2000) {
-      scale = 1000;
-    } else if (maxValue > 1000) {
-      scale = 500;
-    } else if (maxValue > 500) {
-      scale = 250;
-    } else if (maxValue > 100) {
-      scale = 100;
-    } else if (maxValue > 50) {
-      scale = 25;
+    let roundBase;
+    let numSteps = 5; // Nombre d'étapes idéal
+    
+    // Déterminer la base d'arrondi selon l'ordre de grandeur
+    if (maxValue <= 100) {
+      roundBase = 20; // Pour des petites valeurs, arrondir aux 20
+    } else if (maxValue <= 500) {
+      roundBase = 100; // Pour des valeurs moyennes, arrondir aux 100
+    } else if (maxValue <= 1000) {
+      roundBase = 200; // Arrondir aux 200
+    } else if (maxValue <= 5000) {
+      roundBase = 1000; // Arrondir aux 1000
+    } else if (maxValue <= 10000) {
+      roundBase = 2000; // Arrondir aux 2000
+    } else {
+      // Pour des valeurs très grandes
+      const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
+      roundBase = magnitude / 2; // Utiliser une fraction de l'ordre de grandeur
     }
     
-    // Arrondir le maximum à la prochaine valeur de l'échelle
-    const roundedMax = Math.ceil(maxValue / scale) * scale;
+    // Arrondir le maximum à la valeur de base supérieure
+    const roundedMax = Math.ceil(maxValue / roundBase) * roundBase;
     
-    // Définir le nombre d'étapes souhaité (4-6 est souvent idéal pour la lisibilité)
-    const steps = Math.min(6, Math.max(4, Math.floor(roundedMax / scale)));
-    const stepSize = Math.ceil(roundedMax / steps / scale) * scale;
+    // Calculer la taille du pas
+    const stepSize = Math.max(roundBase, Math.ceil(roundedMax / numSteps / roundBase) * roundBase);
     
-    // Générer des graduations parfaitement arrondies
+    // Générer les graduations
     const ticks = [];
     for (let i = 0; i <= roundedMax; i += stepSize) {
       ticks.push(i);
     }
     
-    // S'assurer que la dernière valeur est incluse
+    // S'assurer que la dernière valeur est incluse si nécessaire
     if (ticks[ticks.length - 1] < roundedMax) {
       ticks.push(roundedMax);
     }
