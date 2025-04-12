@@ -91,33 +91,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
     }
   };
 
-  // Calculate nice round ticks for Y-axis
-  const calculateRoundTicks = (max: number) => {
-    // Determine the right "round" increment based on the max value
-    let increment;
-    if (max <= 1000) {
-      increment = 200;
-    } else if (max <= 5000) {
-      increment = 1000; 
-    } else if (max <= 10000) {
-      increment = 2500;
-    } else {
-      increment = 5000;
-    }
-    
-    // Round max up to the next increment
-    const roundedMax = Math.ceil(max / increment) * increment;
-    
-    // Generate ticks from 0 to roundedMax with the determined increment
-    const ticks = [];
-    for (let i = 0; i <= roundedMax; i += increment) {
-      ticks.push(i);
-    }
-    
-    return ticks;
-  };
-
-  // Calculate max value for Y-axis
+  // Fonction pour calculer les valeurs maximales pour l'axe Y
   const getMaxValue = () => {
     if (isMonthlyData) {
       return Math.max(...chartData.map(item => 
@@ -127,9 +101,42 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
       return Math.max(...chartData.map(item => item.revenue));
     }
   };
+  
+  // Fonction pour générer des graduations parfaitement rondes
+  const generateNiceRoundTicks = (maxValue: number) => {
+    // Déterminer la meilleure base d'arrondi
+    let base;
+    if (maxValue <= 1000) {
+      base = 100;
+    } else if (maxValue <= 5000) {
+      base = 500;
+    } else if (maxValue <= 10000) {
+      base = 1000;
+    } else if (maxValue <= 50000) {
+      base = 5000;
+    } else {
+      base = 10000;
+    }
+    
+    // Arrondir le maximum à la prochaine valeur de base
+    const roundedMax = Math.ceil(maxValue / base) * base;
+    
+    // Calculer le nombre d'étapes (entre 4 et 10)
+    const idealStepCount = 5;
+    const stepSize = Math.max(base, Math.floor(roundedMax / idealStepCount));
+    
+    // Générer les graduations
+    const ticks = [];
+    for (let i = 0; i <= roundedMax; i += stepSize) {
+      ticks.push(i);
+    }
+    
+    return ticks;
+  };
 
-  // Generate round ticks for the Y-axis
-  const yAxisTicks = calculateRoundTicks(getMaxValue());
+  // Générer les valeurs d'axe Y
+  const maxValue = getMaxValue();
+  const roundTicks = generateNiceRoundTicks(maxValue);
 
   return (
     <div className="relative w-full h-full">
@@ -173,7 +180,9 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 tickLine={{ stroke: 'var(--border)' }}
                 width={40}
                 dx={3}
-                ticks={yAxisTicks}
+                domain={[0, 'dataMax']}
+                allowDecimals={false}
+                ticks={roundTicks}
               />
               <ChartTooltip
                 content={({ active, payload, label }) => {
