@@ -90,32 +90,19 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
     }
   };
 
-  // Updated helper for nice round Y-axis ticks
+  // Updated helper for nice round Y-axis ticks with 500 increments
   const getNiceRoundNumbers = (min: number, max: number, count = 5) => {
     // Ensure min is 0 to start from zero
     min = 0;
     
-    // Calculate a nice round step size
-    const range = max - min;
-    let magnitude = Math.pow(10, Math.floor(Math.log10(range)));
+    // Find the maximum value and round up to the nearest 500
+    const maxValue = Math.ceil(max / 500) * 500;
     
-    // Determine appropriate step size based on magnitude
-    let step;
-    if (range / magnitude < 2) {
-      step = 0.2 * magnitude;
-    } else if (range / magnitude < 5) {
-      step = 0.5 * magnitude;
-    } else {
-      step = magnitude;
-    }
-    
-    // Round up the max to ensure we cover the full data range
-    const roundedMax = Math.ceil(max / step) * step;
-    
-    // Generate ticks at even intervals
+    // Create an array with increments of 500
     const result = [];
-    for (let i = 0; i <= Math.ceil(roundedMax / step); i++) {
-      const value = Math.round(min + i * step);
+    const step = 500; // Using 500 as the increment for round numbers
+    
+    for (let value = 0; value <= maxValue; value += step) {
       result.push(value);
     }
     
