@@ -148,7 +148,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 tickLine={{ stroke: 'var(--border)' }}
                 width={40}
                 dx={3}
-                tickFormatter={(value) => Math.round(value)}
+                tickFormatter={(value) => Math.round(value).toString()}
                 ticks={getNiceRoundNumbers(0, Math.max(...chartData.map(item => 
                   Math.max(item.invested || 0, item.return || 0)
                 )))}
