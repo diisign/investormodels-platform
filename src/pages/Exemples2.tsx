@@ -89,12 +89,16 @@ const generateRealisticData = () => {
   // Final portfolio value (April 2025)
   const finalValue = performanceData[performanceData.length - 1].value;
   
+  // Calculate total percentage return
+  const totalPercentageReturn = ((finalValue - initialAmount - reinvestmentAmount) / (initialAmount + reinvestmentAmount) * 100).toFixed(1);
+  
   const portfolioData = [{
     name: initialInvestment.name,
     value: finalValue,
     initial: initialInvestment.amount,
     imageUrl: initialInvestment.imageUrl,
-    returnRate: initialInvestment.returnRate
+    returnRate: initialInvestment.returnRate,
+    totalReturn: totalPercentageReturn // Add total return percentage
   }];
   
   // Investment list
@@ -106,18 +110,19 @@ const generateRealisticData = () => {
     amount: finalValue,
     initial: initialInvestment.amount,
     returnRate: initialInvestment.returnRate,
+    totalReturn: totalPercentageReturn, // Add total return percentage
     status: 'active'
   }];
   
   // Calculate total earnings
-  const totalEarnings = finalValue - initialInvestment.amount - reinvestmentAmount;
+  const totalEarnings = finalValue - initialAmount - reinvestmentAmount;
   
   // Generate transactions: initial deposit, reinvestment, final withdrawal
   const transactions = [
     {
       id: '1',
       type: 'deposit',
-      amount: initialInvestment.amount,
+      amount: initialAmount,
       date: '15/07/2024',
       status: 'completed',
       description: 'Dépôt initial'
@@ -125,7 +130,7 @@ const generateRealisticData = () => {
     {
       id: '2',
       type: 'investment',
-      amount: -initialInvestment.amount,
+      amount: -initialAmount,
       date: '15/07/2024',
       status: 'completed',
       description: `Investissement initial - ${initialInvestment.name}`
@@ -182,18 +187,10 @@ const generateRealisticData = () => {
   const balance = 0;
   
   // Monthly performance data for the chart
-  const monthlyChartData = performanceData.map((item, index) => {
+  const monthlyChartData = performanceData.map((item) => {
     // Calculate how much of the value is from investment vs returns
-    const month = parseInt(item.month.split(' ')[1]);
-    
-    let investedAmount = 0;
-    if (index >= 3) { // After July
-      investedAmount = initialAmount;
-      
-      if (index >= 6) { // After October
-        investedAmount += reinvestmentAmount;
-      }
-    }
+    const investedAmount = item.month.includes('juil.') ? initialAmount : 
+                         (item.month.includes('oct.') || item.month > 'oct.') ? initialAmount + reinvestmentAmount : 0;
     
     const returns = Math.max(0, item.value - investedAmount);
     
@@ -214,7 +211,8 @@ const generateRealisticData = () => {
     balance,
     totalInvested: initialAmount + reinvestmentAmount,
     totalEarnings: Number(totalEarnings.toFixed(2)),
-    monthlyChartData
+    monthlyChartData,
+    totalPercentageReturn  // Add total return percentage to the returned data
   };
 };
 
@@ -287,7 +285,7 @@ const Exemples2 = () => {
                   </div>
                   <div className="flex items-end">
                     <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
-                    <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
+                    <span className="ml-2 text-sm text-green-500">+{data.totalPercentageReturn}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                     Retrait total le 15 avril 2025
@@ -335,7 +333,7 @@ const Exemples2 = () => {
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart
                         data={data.performanceData.slice(-parseInt(timeRange))}
-                        margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                        margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                         <XAxis dataKey="month" axisLine={false} tickLine={false} />
@@ -343,6 +341,8 @@ const Exemples2 = () => {
                           axisLine={false} 
                           tickLine={false} 
                           domain={['dataMin - 10', 'dataMax + 10']}
+                          tickCount={5}
+                          tickFormatter={(value) => Math.round(value)}
                         />
                         <Tooltip formatter={(value) => `${value}€`} />
                         <Line
@@ -394,7 +394,7 @@ const Exemples2 = () => {
                             </span>
                             <span className="text-xs font-medium text-green-500 flex items-center">
                               <TrendingUp className="h-3 w-3 mr-1" />
-                              {investment.returnRate}%
+                              {investment.totalReturn}%
                             </span>
                           </div>
                         </div>
@@ -443,7 +443,7 @@ const Exemples2 = () => {
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
-                                {investment.returnRate}%
+                                {investment.totalReturn}%
                               </span>
                             </div>
                           </div>
