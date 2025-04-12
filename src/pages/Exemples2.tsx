@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -643,19 +642,4 @@ const Exemples2 = () => {
                     <div className="text-sm text-gray-600 dark:text-gray-300">
                       <span className="font-medium">
                         {data.referralData.completedReferrals}/{data.referralData.nextTierRequirement}
-                      </span> parrainages nécessaires pour débloquer le niveau {data.referralData.nextTier}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-      </main>
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Exemples2;
+                      </span> parrainages nécessaires pour débloquer le niveau {data.
