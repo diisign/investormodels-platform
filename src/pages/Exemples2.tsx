@@ -305,13 +305,20 @@ const Exemples2 = () => {
                         margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                        <XAxis 
+                          dataKey="month" 
+                          axisLine={false} 
+                          tickLine={false}
+                          padding={{ left: 10, right: 10 }}
+                          tick={{ fontSize: 10 }}
+                        />
                         <YAxis 
                           axisLine={false} 
                           tickLine={false} 
                           domain={['dataMin - 10', 'dataMax + 10']}
                           tickCount={5}
                           tickFormatter={(value) => Math.round(value).toString()}
+                          width={40}
                         />
                         <Tooltip formatter={(value) => `${value}€`} />
                         <Line
