@@ -102,33 +102,42 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
     }
   };
   
-  // Fonction pour générer des graduations parfaitement rondes
+  // Fonction pour générer des graduations parfaitement arrondies
   const generateNiceRoundTicks = (maxValue: number) => {
-    // Déterminer la meilleure base d'arrondi
-    let base;
-    if (maxValue <= 1000) {
-      base = 100;
-    } else if (maxValue <= 5000) {
-      base = 500;
-    } else if (maxValue <= 10000) {
-      base = 1000;
-    } else if (maxValue <= 50000) {
-      base = 5000;
-    } else {
-      base = 10000;
+    // Trouver la bonne échelle (dizaines, centaines, milliers)
+    let scale = 10;
+    if (maxValue > 10000) {
+      scale = 5000;
+    } else if (maxValue > 5000) {
+      scale = 2000;
+    } else if (maxValue > 2000) {
+      scale = 1000;
+    } else if (maxValue > 1000) {
+      scale = 500;
+    } else if (maxValue > 500) {
+      scale = 250;
+    } else if (maxValue > 100) {
+      scale = 100;
+    } else if (maxValue > 50) {
+      scale = 25;
     }
     
-    // Arrondir le maximum à la prochaine valeur de base
-    const roundedMax = Math.ceil(maxValue / base) * base;
+    // Arrondir le maximum à la prochaine valeur de l'échelle
+    const roundedMax = Math.ceil(maxValue / scale) * scale;
     
-    // Calculer le nombre d'étapes (entre 4 et 10)
-    const idealStepCount = 5;
-    const stepSize = Math.max(base, Math.floor(roundedMax / idealStepCount));
+    // Définir le nombre d'étapes souhaité (4-6 est souvent idéal pour la lisibilité)
+    const steps = Math.min(6, Math.max(4, Math.floor(roundedMax / scale)));
+    const stepSize = Math.ceil(roundedMax / steps / scale) * scale;
     
-    // Générer les graduations
+    // Générer des graduations parfaitement arrondies
     const ticks = [];
     for (let i = 0; i <= roundedMax; i += stepSize) {
       ticks.push(i);
+    }
+    
+    // S'assurer que la dernière valeur est incluse
+    if (ticks[ticks.length - 1] < roundedMax) {
+      ticks.push(roundedMax);
     }
     
     return ticks;
@@ -180,7 +189,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({ data }) => 
                 tickLine={{ stroke: 'var(--border)' }}
                 width={40}
                 dx={3}
-                domain={[0, 'dataMax']}
+                domain={[0, 'auto']}
                 allowDecimals={false}
                 ticks={roundTicks}
               />
