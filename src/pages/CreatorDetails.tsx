@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
+import ActiveInvestors from '@/components/ui/ActiveInvestors';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
@@ -210,6 +211,10 @@ const CreatorDetails = () => {
                   </div>
                 </div>
               </FadeIn>
+            </div>
+            
+            <div className="mt-6">
+              <ActiveInvestors creatorId={creatorId || ''} />
             </div>
           </div>
         </section>
