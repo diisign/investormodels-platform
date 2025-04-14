@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -21,8 +20,8 @@ const Legal = () => {
               Le site CréatorInvest est édité par la société CréatorInvest SAS, société par actions simplifiée au capital de 10 000 euros, immatriculée au Registre du Commerce et des Sociétés de Paris sous le numéro 123 456 789, dont le siège social est situé au 60 rue François 1er, 75008 Paris, France.
             </p>
             <p>
-              Numéro de TVA intracommunautaire : FR 12 345 678 901<br />
-              Directeur de la publication : John Doe
+              Numéro de TVA intracommunautaire : FR 83 456 789 123<br />
+              Directeur de la publication : Sophie Martin
             </p>
           </section>
           
