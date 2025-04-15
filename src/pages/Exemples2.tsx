@@ -53,10 +53,11 @@ const generateRealisticData = () => {
   const currentDate = new Date('2025-04-06');
   
   const performanceData = [];
-  let totalValue = 0;
-  
   const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
     (currentDate.getMonth() - startDate.getMonth());
+  
+  let totalValue = 0;
+  const initialAmount = 2000; // Total initial investment
   
   for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
@@ -66,7 +67,7 @@ const generateRealisticData = () => {
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
     if (i === 0) {
-      totalValue = 2000;
+      totalValue = initialAmount;
     } else {
       totalValue = creators.reduce((acc, creator) => {
         return acc + (creator.amount * Math.pow(1 + creator.monthlyGain, i));
@@ -80,8 +81,6 @@ const generateRealisticData = () => {
   }
   
   const finalValue = performanceData[performanceData.length - 1].value;
-  const initialAmount = 2000;
-  
   const totalPercentageReturn = ((finalValue - initialAmount) / initialAmount * 100).toFixed(1);
   
   const portfolioData = creators.map(creator => {
@@ -154,20 +153,8 @@ const generateRealisticData = () => {
     nextTierRequirement: 10
   };
   
-  const balance = 0;
-  
-  const monthlyChartData = performanceData.map((item) => {
-    const investedAmount = item.month.includes('nov.') ? initialAmount : 0;
-    const returns = Math.max(0, item.value - investedAmount);
-    
-    return {
-      month: item.month,
-      invested: investedAmount,
-      return: returns
-    };
-  });
-  
   const totalEarnings = finalValue - initialAmount;
+  const balance = finalValue + referralData.earnings;
   
   return {
     performanceData,
@@ -178,7 +165,10 @@ const generateRealisticData = () => {
     balance,
     totalInvested: initialAmount,
     totalEarnings: Number(totalEarnings.toFixed(2)),
-    monthlyChartData,
+    monthlyChartData: performanceData.map(item => ({
+      month: item.month,
+      value: item.value
+    })),
     totalPercentageReturn
   };
 };
