@@ -24,28 +24,28 @@ const generateRealisticData = () => {
       imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
     },
     {
-      name: 'Sofia 🌟',
+      name: 'Kayla',
+      date: new Date('2023-10-15'),
+      amount: 500,
+      monthlyGain: 0.36,
+      returnRate: 36,
+      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp'
+    },
+    {
+      name: 'Maria 🌟',
       date: new Date('2023-10-15'),
       amount: 500,
       monthlyGain: 0.38,
       returnRate: 38,
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/9/9z/9zj/9zjpde6dcz7ktvpgaizrtbwcwpf7g4ub1710950276/avatar.jpg'
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg'
     },
     {
-      name: 'Luna ✨',
-      date: new Date('2023-10-15'),
-      amount: 500,
-      monthlyGain: 0.45,
-      returnRate: 45,
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/s/si/sim/simk4pfqmdkrqcdqhfnknewvoqhfj1dk1710604651/avatar.jpg'
-    },
-    {
-      name: 'Victoria 💫',
+      name: 'Melani 💫',
       date: new Date('2023-10-15'),
       amount: 500,
       monthlyGain: 0.41,
       returnRate: 41,
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/c/cj/cjn/cjnkhrjbygqurzvpqsmevxyzcvtbxyhh1710777680/avatar.jpg'
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/s/sn/snk/snknlldkypeays71iobp4qqamgmyx83m1730686874/345711625/avatar.jpg'
     }
   ];
   
@@ -629,51 +629,4 @@ const Exemples2 = () => {
                       id="amount"
                       value={depositAmount}
                       onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10"
-                      step="10"
-                      className="input-field pl-10"
-                      placeholder="100"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
-                  </label>
-                  <select 
-                    id="payment-method" 
-                    className="input-field"
-                    required
-                  >
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer
-                  </GradientButton>
-                </div>
-              </div>
-            </form>
-          </FadeIn>
-        </div>
-      )}
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Exemples2;
+                      min="10
