@@ -14,129 +14,115 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 
 const generateRealisticData = () => {
-  const initialInvestment = { 
-    name: 'Elena 💎', 
-    date: new Date('2024-07-15'), 
-    amount: 500, 
-    monthlyGain: 0.43, 
-    returnRate: 43, 
-    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
-  };
+  const creators = [
+    { 
+      name: 'Elena 💎', 
+      date: new Date('2023-10-15'), 
+      amount: 500, 
+      monthlyGain: 0.43, 
+      returnRate: 43, 
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
+    },
+    {
+      name: 'Sofia 🌟',
+      date: new Date('2023-10-15'),
+      amount: 500,
+      monthlyGain: 0.38,
+      returnRate: 38,
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/9/9z/9zj/9zjpde6dcz7ktvpgaizrtbwcwpf7g4ub1710950276/avatar.jpg'
+    },
+    {
+      name: 'Luna ✨',
+      date: new Date('2023-10-15'),
+      amount: 500,
+      monthlyGain: 0.45,
+      returnRate: 45,
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/s/si/sim/simk4pfqmdkrqcdqhfnknewvoqhfj1dk1710604651/avatar.jpg'
+    },
+    {
+      name: 'Victoria 💫',
+      date: new Date('2023-10-15'),
+      amount: 500,
+      monthlyGain: 0.41,
+      returnRate: 41,
+      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/c/cj/cjn/cjnkhrjbygqurzvpqsmevxyzcvtbxyhh1710777680/avatar.jpg'
+    }
+  ];
   
-  const reinvestmentDate = new Date('2024-10-15');
-  
-  const withdrawalDate = new Date('2025-04-15');
-  
+  const startDate = new Date('2023-10-15');
   const performanceData = [];
-  
-  const startDate = new Date('2024-04-01');
-  
   let totalValue = 0;
-  let initialAmount = initialInvestment.amount;
-  let reinvestmentAmount = 650;
   
-  for (let i = 0; i <= 12; i++) {
+  for (let i = 0; i <= 6; i++) {
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
     const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    if (i === 3) {
-      totalValue = initialAmount;
-    }
-    
-    else if (i > 3) {
-      if (i <= 6) {
-        totalValue = initialAmount * Math.pow(1 + initialInvestment.monthlyGain, i - 3);
-      } else if (i === 6) {
-        totalValue = 1150;
-      } else if (i > 6 && i <= 12) {
-        const monthsSinceReinvestment = i - 6;
-        totalValue = 1150 * Math.pow(1 + initialInvestment.monthlyGain, monthsSinceReinvestment);
-      }
-    }
-    
-    let withdrawal = undefined;
-    if (i === 12) {
-      withdrawal = totalValue;
+    if (i === 0) {
+      totalValue = 2000; // Initial investment
+    } else {
+      totalValue = creators.reduce((acc, creator) => {
+        return acc + (creator.amount * Math.pow(1 + creator.monthlyGain, i));
+      }, 0);
     }
     
     performanceData.push({
       month: monthLabel,
-      value: Number(totalValue.toFixed(2)),
-      withdrawal: withdrawal
+      value: Number(totalValue.toFixed(2))
     });
   }
   
   const finalValue = performanceData[performanceData.length - 1].value;
+  const initialAmount = 2000;
   
-  const totalPercentageReturn = ((finalValue - initialAmount - reinvestmentAmount) / (initialAmount + reinvestmentAmount) * 100).toFixed(1);
+  const totalPercentageReturn = ((finalValue - initialAmount) / initialAmount * 100).toFixed(1);
   
-  const portfolioData = [{
-    name: initialInvestment.name,
-    value: finalValue,
-    initial: initialInvestment.amount,
-    imageUrl: initialInvestment.imageUrl,
-    returnRate: initialInvestment.returnRate,
-    totalReturn: totalPercentageReturn
-  }];
+  const portfolioData = creators.map(creator => {
+    const currentValue = creator.amount * Math.pow(1 + creator.monthlyGain, 6);
+    return {
+      name: creator.name,
+      value: Number(currentValue.toFixed(2)),
+      initial: creator.amount,
+      imageUrl: creator.imageUrl,
+      returnRate: creator.returnRate,
+      totalReturn: ((currentValue - creator.amount) / creator.amount * 100).toFixed(1)
+    };
+  });
   
-  const investmentsList = [{
-    id: '1',
-    creatorName: initialInvestment.name,
-    creatorImage: initialInvestment.imageUrl,
-    planName: 'Premium',
-    amount: finalValue,
-    initial: initialInvestment.amount,
-    returnRate: initialInvestment.returnRate,
-    totalReturn: totalPercentageReturn,
-    status: 'active'
-  }];
-  
-  const totalEarnings = finalValue - initialAmount - reinvestmentAmount;
+  const investmentsList = creators.map((creator, index) => {
+    const currentValue = creator.amount * Math.pow(1 + creator.monthlyGain, 6);
+    return {
+      id: (index + 1).toString(),
+      creatorName: creator.name,
+      creatorImage: creator.imageUrl,
+      planName: 'Premium',
+      amount: Number(currentValue.toFixed(2)),
+      initial: creator.amount,
+      returnRate: creator.returnRate,
+      totalReturn: ((currentValue - creator.amount) / creator.amount * 100).toFixed(1),
+      status: 'active'
+    };
+  });
   
   const transactions = [
     {
       id: '1',
       type: 'deposit',
       amount: initialAmount,
-      date: '15/07/2024',
+      date: '15/10/2023',
       status: 'completed',
       description: 'Dépôt initial'
     },
-    {
-      id: '2',
+    ...creators.map((creator, index) => ({
+      id: (index + 2).toString(),
       type: 'investment',
-      amount: -initialAmount,
-      date: '15/07/2024',
+      amount: -creator.amount,
+      date: '15/10/2023',
       status: 'completed',
-      description: `Investissement initial - ${initialInvestment.name}`
-    },
-    {
-      id: '3',
-      type: 'deposit',
-      amount: reinvestmentAmount,
-      date: '15/10/2024',
-      status: 'completed',
-      description: 'Réinvestissement des bénéfices'
-    },
-    {
-      id: '4',
-      type: 'investment',
-      amount: -reinvestmentAmount,
-      date: '15/10/2024',
-      status: 'completed',
-      description: `Réinvestissement - ${initialInvestment.name}`
-    },
-    {
-      id: '5',
-      type: 'withdrawal',
-      amount: finalValue,
-      date: '15/04/2025',
-      status: 'completed',
-      description: 'Retrait total'
-    }
+      description: `Investissement initial - ${creator.name}`
+    }))
   ];
   
   const referralData = {
@@ -163,18 +149,17 @@ const generateRealisticData = () => {
   const balance = 0;
   
   const monthlyChartData = performanceData.map((item) => {
-    const investedAmount = item.month.includes('juil.') ? initialAmount : 
-                         (item.month.includes('oct.') || item.month > 'oct.') ? initialAmount : 0;
-    
+    const investedAmount = item.month.includes('oct.') ? initialAmount : 0;
     const returns = Math.max(0, item.value - investedAmount);
     
     return {
       month: item.month,
       invested: investedAmount,
-      return: returns,
-      withdrawal: item.withdrawal
+      return: returns
     };
   });
+  
+  const totalEarnings = finalValue - initialAmount;
   
   return {
     performanceData,
