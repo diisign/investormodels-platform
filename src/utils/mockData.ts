@@ -652,7 +652,7 @@ export const creators: Creator[] = [
     monthlyRevenue: 20000,
     followers: 420000,
     creationDate: '2020-07-15',
-    description: "Créatrice de contenu lifestyle. Mes revenus proviennent de mes partenariats avec des marques internationales et de mon contenu exclusif.",
+    description: "Cr��atrice de contenu lifestyle. Mes revenus proviennent de mes partenariats avec des marques internationales et de mon contenu exclusif.",
     plans: [
       {
         id: 'plan11-1',
@@ -681,17 +681,17 @@ export const creators: Creator[] = [
       },
       {
         id: 'plan11-3',
-        name: 'Globetrotter',
-        returnRate: 15.6,
-        minInvestment: 1300,
-        duration: 12,
-        benefits: [
-          'Rapports hebdomadaires',
-          'Consultation personnelle',
-          'Produits exclusifs',
-          'Appels privés'
-        ],
-        popularity: 'low'
+name: 'Globetrotter',
+returnRate: 15.6,
+minInvestment: 1300,
+duration: 12,
+benefits: [
+'Rapports hebdomadaires',
+'Consultation personnelle',
+'Produits exclusifs',
+'Appels privés'
+],
+popularity: 'low'
       }
     ]
   },

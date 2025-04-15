@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -18,7 +17,7 @@ const generateRealisticData = () => {
   const creators = [
     { 
       name: 'Elena 💎', 
-      date: new Date('2023-10-15'), 
+      date: new Date('2024-11-06'), 
       amount: 500, 
       monthlyGain: 0.43, 
       returnRate: 43, 
@@ -26,7 +25,7 @@ const generateRealisticData = () => {
     },
     {
       name: 'Kayla',
-      date: new Date('2023-10-15'),
+      date: new Date('2024-11-06'),
       amount: 500,
       monthlyGain: 0.36,
       returnRate: 36,
@@ -34,7 +33,7 @@ const generateRealisticData = () => {
     },
     {
       name: 'Maria 🌟',
-      date: new Date('2023-10-15'),
+      date: new Date('2024-11-06'),
       amount: 500,
       monthlyGain: 0.38,
       returnRate: 38,
@@ -42,7 +41,7 @@ const generateRealisticData = () => {
     },
     {
       name: 'Melani 💫',
-      date: new Date('2023-10-15'),
+      date: new Date('2024-11-06'),
       amount: 500,
       monthlyGain: 0.41,
       returnRate: 41,
@@ -50,11 +49,16 @@ const generateRealisticData = () => {
     }
   ];
   
-  const startDate = new Date('2023-10-15');
+  const startDate = new Date('2024-11-06');
+  const currentDate = new Date('2025-04-06');
+  
   const performanceData = [];
   let totalValue = 0;
   
-  for (let i = 0; i <= 6; i++) {
+  const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
+    (currentDate.getMonth() - startDate.getMonth());
+  
+  for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
     const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
@@ -62,7 +66,7 @@ const generateRealisticData = () => {
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
     if (i === 0) {
-      totalValue = 2000; // Initial investment
+      totalValue = 2000;
     } else {
       totalValue = creators.reduce((acc, creator) => {
         return acc + (creator.amount * Math.pow(1 + creator.monthlyGain, i));
@@ -81,7 +85,7 @@ const generateRealisticData = () => {
   const totalPercentageReturn = ((finalValue - initialAmount) / initialAmount * 100).toFixed(1);
   
   const portfolioData = creators.map(creator => {
-    const currentValue = creator.amount * Math.pow(1 + creator.monthlyGain, 6);
+    const currentValue = creator.amount * Math.pow(1 + creator.monthlyGain, monthsDiff);
     return {
       name: creator.name,
       value: Number(currentValue.toFixed(2)),
@@ -93,7 +97,7 @@ const generateRealisticData = () => {
   });
   
   const investmentsList = creators.map((creator, index) => {
-    const currentValue = creator.amount * Math.pow(1 + creator.monthlyGain, 6);
+    const currentValue = creator.amount * Math.pow(1 + creator.monthlyGain, monthsDiff);
     return {
       id: (index + 1).toString(),
       creatorName: creator.name,
@@ -112,7 +116,7 @@ const generateRealisticData = () => {
       id: '1',
       type: 'deposit',
       amount: initialAmount,
-      date: '15/10/2023',
+      date: '06/11/2024',
       status: 'completed',
       description: 'Dépôt initial'
     },
@@ -120,28 +124,31 @@ const generateRealisticData = () => {
       id: (index + 2).toString(),
       type: 'investment',
       amount: -creator.amount,
-      date: '15/10/2023',
+      date: '06/11/2024',
       status: 'completed',
       description: `Investissement initial - ${creator.name}`
     }))
   ];
   
   const referralData = {
-    totalReferrals: 8,
+    totalReferrals: 11,
     pendingReferrals: 3,
-    completedReferrals: 5,
-    earnings: 250,
+    completedReferrals: 8,
+    earnings: 1850,
     recentReferrals: [
-      { name: 'Thomas R.', date: '20/02/2025', status: 'completed', reward: 50 },
-      { name: 'Marie L.', date: '01/03/2025', status: 'completed', reward: 50 },
-      { name: 'Julien D.', date: '15/03/2025', status: 'completed', reward: 50 },
-      { name: 'Sophie B.', date: '25/03/2025', status: 'completed', reward: 50 },
-      { name: 'Lucas M.', date: '01/04/2025', status: 'completed', reward: 50 },
-      { name: 'Emma C.', date: '03/04/2025', status: 'pending', reward: 50 },
-      { name: 'Hugo P.', date: '05/04/2025', status: 'pending', reward: 50 },
-      { name: 'Léa T.', date: '06/04/2025', status: 'pending', reward: 50 }
+      { name: 'Thomas R.', date: '20/12/2024', status: 'completed', reward: 150 },
+      { name: 'Marie L.', date: '15/01/2025', status: 'completed', reward: 250 },
+      { name: 'Julien D.', date: '02/02/2025', status: 'completed', reward: 350 },
+      { name: 'Sophie B.', date: '20/02/2025', status: 'completed', reward: 200 },
+      { name: 'Lucas M.', date: '10/03/2025', status: 'completed', reward: 500 },
+      { name: 'Emma C.', date: '15/03/2025', status: 'completed', reward: 50 },
+      { name: 'Hugo P.', date: '25/03/2025', status: 'completed', reward: 150 },
+      { name: 'Léa T.', date: '01/04/2025', status: 'completed', reward: 200 },
+      { name: 'Elise M.', date: '02/04/2025', status: 'pending', reward: 100 },
+      { name: 'Antoine L.', date: '03/04/2025', status: 'pending', reward: 150 },
+      { name: 'Camille P.', date: '05/04/2025', status: 'pending', reward: 200 }
     ],
-    tierProgress: 50,
+    tierProgress: 80,
     currentTier: 'Silver',
     nextTier: 'Gold',
     nextTierRequirement: 10
@@ -150,7 +157,7 @@ const generateRealisticData = () => {
   const balance = 0;
   
   const monthlyChartData = performanceData.map((item) => {
-    const investedAmount = item.month.includes('oct.') ? initialAmount : 0;
+    const investedAmount = item.month.includes('nov.') ? initialAmount : 0;
     const returns = Math.max(0, item.value - investedAmount);
     
     return {
@@ -246,7 +253,7 @@ const Exemples2 = () => {
                     <span className="ml-2 text-sm text-green-500">+{data.totalPercentageReturn}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Retrait total le 15 avril 2025
+                    Retrait total le 06 avril 2025
                   </div>
                 </div>
               </FadeIn>
