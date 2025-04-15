@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -629,4 +630,51 @@ const Exemples2 = () => {
                       id="amount"
                       value={depositAmount}
                       onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10
+                      min="10"
+                      step="10"
+                      className="input-field pl-10"
+                      placeholder="100"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Méthode de paiement
+                  </label>
+                  <select 
+                    id="payment-method" 
+                    className="input-field"
+                    required
+                  >
+                    <option value="">Sélectionner une méthode</option>
+                    <option value="credit-card">Carte bancaire</option>
+                    <option value="bank-transfer">Virement bancaire</option>
+                  </select>
+                </div>
+                
+                <div className="pt-4 flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowDepositModal(false)}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    Annuler
+                  </button>
+                  <GradientButton type="submit">
+                    Déposer
+                  </GradientButton>
+                </div>
+              </div>
+            </form>
+          </FadeIn>
+        </div>
+      )}
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Exemples2;
