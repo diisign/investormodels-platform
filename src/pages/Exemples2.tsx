@@ -164,7 +164,7 @@ const generateRealisticData = () => {
   
   const monthlyChartData = performanceData.map((item) => {
     const investedAmount = item.month.includes('juil.') ? initialAmount : 
-                         (item.month.includes('oct.') || item.month > 'oct.') ? initialAmount + reinvestmentAmount : 0;
+                         (item.month.includes('oct.') || item.month > 'oct.') ? initialAmount : 0;
     
     const returns = Math.max(0, item.value - investedAmount);
     
@@ -183,7 +183,7 @@ const generateRealisticData = () => {
     transactions,
     referralData,
     balance,
-    totalInvested: initialAmount + reinvestmentAmount,
+    totalInvested: initialAmount,
     totalEarnings: Number(totalEarnings.toFixed(2)),
     monthlyChartData,
     totalPercentageReturn
