@@ -20,6 +20,79 @@ import {
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
 
+const trustpilotReviews = [
+  { 
+    id: 1, 
+    name: "Sophie M.", 
+    rating: 5, 
+    comment: "Une plateforme révolutionnaire ! J'ai diversifié mon portefeuille avec des rendements impressionnants.", 
+    style: "font-normal"
+  },
+  { 
+    id: 2, 
+    name: "Thomas L.", 
+    rating: 5, 
+    comment: "Interface intuitive et support client exceptionnel. Mes investissements ont augmenté de 120% en trois mois!!! INCROYABLE", 
+    style: "font-bold"
+  },
+  { 
+    id: 3, 
+    name: "Emma R.", 
+    rating: 4, 
+    comment: "Excellente plateforme pour investir dans un secteur innovant. Très satisfaite des résultats.", 
+    style: "italic"
+  },
+  { 
+    id: 4, 
+    name: "Lucas D.", 
+    rating: 5, 
+    comment: "Jamais je n'aurais pensé obtenir de tels rendements. Merci pour cette opportunité unique.", 
+    style: "font-light"
+  },
+  { 
+    id: 5, 
+    name: "Julien M.", 
+    rating: 5, 
+    comment: "J'ADORE!!! TOP TOP TOP! Des revenus ÉNORMES après seulement quelques mois! À découvrir ABSOLUMENT!", 
+    style: "uppercase text-sm"
+  },
+  { 
+    id: 6, 
+    name: "Marie-Claire R.", 
+    rating: 4, 
+    comment: "Après quelques hésitations, j'ai franchi le pas... et je ne regrette pas du tout mon choix. Des rendements solides et réguliers.", 
+    style: "font-serif"
+  },
+  { 
+    id: 7, 
+    name: "Alexandre P.", 
+    rating: 5, 
+    comment: "Plus que doublé ma mise en 3 mois seulement, je recommande fortement!!!", 
+    style: "tracking-tight"
+  },
+  { 
+    id: 8, 
+    name: "Nathalie T.", 
+    rating: 4, 
+    comment: "Service client réactif, plateforme sécurisée et rendements au rendez-vous. Que demander de plus?", 
+    style: "tracking-wide"
+  },
+  { 
+    id: 9, 
+    name: "Pierre B.", 
+    rating: 5, 
+    comment: "Un investissement intelligent qui a dépassé toutes mes attentes. Rentabilité remarquable en un temps record.", 
+    style: "font-medium"
+  },
+  { 
+    id: 10, 
+    name: "Clara M.", 
+    rating: 5, 
+    comment: "J'ai été impressionnée par la transparence et la performance. Un véritable coup de cœur pour cette plateforme innovante!", 
+    style: "italic"
+  }
+];
+
 const Index = () => {
   const { isAuthenticated } = useAuth();
   const creatorsRef = useRef<HTMLDivElement>(null);
@@ -67,65 +140,6 @@ const Index = () => {
     .slice(0, 10);
 
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
-
-  const trustpilotReviews = [
-    { 
-      id: 1, 
-      name: "Sophie M.", 
-      rating: 5, 
-      comment: "Une plateforme révolutionnaire ! J'ai diversifié mon portefeuille avec des rendements impressionnants.", 
-      style: "font-normal"
-    },
-    { 
-      id: 2, 
-      name: "Thomas L.", 
-      rating: 5, 
-      comment: "Interface intuitive et support client exceptionnel. Mes investissements ont augmenté de 120% en trois mois!!! INCROYABLE", 
-      style: "font-bold"
-    },
-    { 
-      id: 3, 
-      name: "Emma R.", 
-      rating: 4, 
-      comment: "Excellente plateforme pour investir dans un secteur innovant. Très satisfaite des résultats.", 
-      style: "italic"
-    },
-    { 
-      id: 4, 
-      name: "Lucas D.", 
-      rating: 5, 
-      comment: "Jamais je n'aurais pensé obtenir de tels rendements. Merci pour cette opportunité unique.", 
-      style: "font-light"
-    },
-    { 
-      id: 5, 
-      name: "Julien M.", 
-      rating: 5, 
-      comment: "J'ADORE!!! TOP TOP TOP! Des revenus ÉNORMES après seulement quelques mois! À découvrir ABSOLUMENT!", 
-      style: "uppercase text-sm"
-    },
-    { 
-      id: 6, 
-      name: "Marie-Claire R.", 
-      rating: 4, 
-      comment: "Après quelques hésitations, j'ai franchi le pas... et je ne regrette pas du tout mon choix. Des rendements solides et réguliers.", 
-      style: "font-serif"
-    },
-    { 
-      id: 7, 
-      name: "Alexandre P.", 
-      rating: 5, 
-      comment: "trés satisfait de mon investissement, j'ai recuperer ma mise en 8 semaines seulement, je recommande fortement!!!", 
-      style: "tracking-tight"
-    },
-    { 
-      id: 8, 
-      name: "Nathalie T.", 
-      rating: 4, 
-      comment: "Service client réactif, plateforme sécurisée et rendements au rendez-vous. Que demander de plus?", 
-      style: "tracking-wide"
-    },
-  ];
 
   return (
     <div className="min-h-screen flex flex-col">
