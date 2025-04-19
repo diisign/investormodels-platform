@@ -58,6 +58,12 @@ const App = () => (
               </RequireAuth>
             } />
             
+            <Route path="/profile" element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            } />
+            
             <Route path="/dashboard-affiliation" element={
               <RequireAuth>
                 <DashboardAffiliation />
