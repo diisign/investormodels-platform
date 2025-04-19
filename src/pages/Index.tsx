@@ -142,7 +142,7 @@ const Index = () => {
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={false} />
       
       <main className="flex-grow pt-16 md:pt-20">
@@ -161,7 +161,7 @@ const Index = () => {
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
                   Investissez dans les <span className="text-[#8B5CF6]">créatrices OnlyFans.</span>
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-white">
+                <p className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300">
                   Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leurs revenus. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
                 
@@ -219,7 +219,7 @@ const Index = () => {
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-[#8B5CF6]">
                   Top créatrices
                 </h2>
-                <p className="text-base md:text-lg text-white max-w-2xl">
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
                   Découvrez les créatrices avec les rendements prévus les plus élevés.
                 </p>
               </div>
@@ -280,28 +280,28 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="py-12 md:py-20 bg-background">
+        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center text-white">
-                Un Marché en <span className="text-primary">Pleine Expansion</span>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
+                Un Marché en <span className="text-investment-600">Pleine Expansion</span>
               </h2>
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-muted-foreground text-center">
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
                   OnlyFans connaît une croissance explosive depuis sa création, avec des revenus qui ont été multipliés par plus de 10 en seulement 4 ans.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
-                  <div className="bg-card p-4 rounded-lg text-center border border-border">
-                    <div className="text-2xl font-bold text-primary mb-1">4.5M+</div>
-                    <div className="text-sm text-muted-foreground">Créateurs actifs</div>
+                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-investment-600 mb-1">4.5M+</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Créateurs actifs</div>
                   </div>
-                  <div className="bg-card p-4 rounded-lg text-center border border-border">
-                    <div className="text-2xl font-bold text-primary mb-1">1.6B$</div>
-                    <div className="text-sm text-muted-foreground">CA en 2024</div>
+                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-investment-600 mb-1">1.6B$</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">CA en 2024</div>
                   </div>
-                  <div className="bg-card p-4 rounded-lg text-center border border-border">
-                    <div className="text-2xl font-bold text-primary mb-1">+150%</div>
-                    <div className="text-sm text-muted-foreground">Croissance annuelle</div>
+                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-investment-600 mb-1">+150%</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Croissance annuelle</div>
                   </div>
                 </div>
               </div>
@@ -313,7 +313,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section className="py-12 md:py-20 bg-background">
+        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-12" direction="up">
               <div className="flex items-center justify-center gap-1 mb-4">
@@ -381,7 +381,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section className="py-12 md:py-20 bg-background/50">
+        <section className="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-16" direction="up">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
@@ -393,58 +393,42 @@ const Index = () => {
             </FadeIn>
             
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-              <FadeIn 
-                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
-                direction="up" 
-                delay={100}
-              >
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <BarChart3 className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Rendements attractifs</h3>
-                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Rendements attractifs</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
                   Nos créatrices offrent des rendements moyens de 80% à 150% par trimestre.
                 </p>
               </FadeIn>
               
-              <FadeIn 
-                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
-                direction="up" 
-                delay={200}
-              >
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <Users className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Diversité des créatrices</h3>
-                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Diversité des créatrices</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
                   Plus de 250 créatrices de contenu avec statistique détaillé sur du long terme.
                 </p>
               </FadeIn>
               
-              <FadeIn 
-                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
-                direction="up" 
-                delay={300}
-              >
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <ShieldCheck className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Sécurité maximale</h3>
-                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
-                  Toutes les créatrices sont recrutés sous certains critères spéciaux pour vous proposer les plus performantes.
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Sécurité maximale</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
+                  Toutes les créatrices sont recrutés sous certains critère spéciaux pour vous proposez les plus performantes.
                 </p>
               </FadeIn>
               
-              <FadeIn 
-                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
-                direction="up" 
-                delay={400}
-              >
+              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <Zap className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Investissement facile</h3>
-                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Investissement facile</h3>
+                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
                   Interface intuitive et processus simplifié pour investir en quelques clics, même pour les débutants.
                 </p>
               </FadeIn>
