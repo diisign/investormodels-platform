@@ -285,6 +285,23 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
+          <div className="container mx-auto px-4">
+            <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
+                Croissance du <span className="text-investment-600">Chiffre d'Affaires OnlyFans</span>
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
+                Découvrez la croissance exceptionnelle de la plateforme OnlyFans depuis 2019.
+              </p>
+            </FadeIn>
+            
+            <FadeIn className="max-w-4xl mx-auto" direction="up" delay={100}>
+              <OnlyfansRevenueChart />
+            </FadeIn>
+          </div>
+        </section>
         
         <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
           <div className="container mx-auto px-4">
