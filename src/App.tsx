@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,6 +23,7 @@ import Cookies from "./pages/Cookies";
 import Legal from "./pages/Legal";
 import Examples from "./pages/Examples";
 import Exemples2 from "./pages/Exemples2";
+import DashboardAffiliation from "./pages/DashboardAffiliation";
 
 const queryClient = new QueryClient();
 
@@ -57,15 +57,9 @@ const App = () => (
               </RequireAuth>
             } />
             
-            <Route path="/deposit" element={
+            <Route path="/dashboard-affiliation" element={
               <RequireAuth>
-                <Deposit />
-              </RequireAuth>
-            } />
-            
-            <Route path="/profile" element={
-              <RequireAuth>
-                <Profile />
+                <DashboardAffiliation />
               </RequireAuth>
             } />
             
