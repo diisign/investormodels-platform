@@ -6,7 +6,7 @@ import FadeIn from '@/components/animations/FadeIn';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
-import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, PiggyBank, UserPlus, Rocket, Copy } from 'lucide-react';
+import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, PiggyBank, UserPlus, Rocket } from 'lucide-react';
 import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,6 +15,7 @@ import AffiliationStats from '@/components/affiliations/AffiliationStats';
 
 const Affiliation = () => {
   const { isAuthenticated, user } = useAuth();
+  const [copied, setCopied] = useState(false);
   const { isMobile } = useScreenSize();
   
   const affiliationCode = isAuthenticated && user 
@@ -23,14 +24,11 @@ const Affiliation = () => {
   
   const affiliationLink = `${window.location.origin}/register?ref=${affiliationCode}`;
   
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(affiliationLink);
-      toast.success("Lien d'affiliation copié !");
-    } catch (error) {
-      console.error("Erreur lors de la copie:", error);
-      toast.error("Impossible de copier le lien");
-    }
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(affiliationLink);
+    setCopied(true);
+    toast.success("Lien d'affiliation copié !");
+    setTimeout(() => setCopied(false), 2000);
   };
   
   const handleShare = async () => {
@@ -70,52 +68,64 @@ const Affiliation = () => {
             </div>
             
             <div className="max-w-4xl mx-auto">
-              <Card className="bg-white shadow-xl border-0 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
-                <CardContent className="p-6">
-                  <div className="flex flex-col items-center space-y-4">
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
-                      <BadgeDollarSign className="h-6 w-6 text-[#8B5CF6]" />
+              <div className="mb-4">
+                <Card className="bg-white shadow-xl border-0 relative">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
+                  <div className="p-3 md:p-4 flex flex-col items-center">
+                    <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-2 md:mb-3">
+                      <BadgeDollarSign className="h-5 w-5 md:h-6 md:w-6 text-[#8B5CF6]" />
                     </div>
                     
-                    <h2 className="text-xl font-bold text-gray-800">
-                      Votre Lien de Parrainage
+                    <h2 className="text-sm md:text-base font-bold text-center mb-2 md:mb-3 text-gray-800">
+                      Programme Partenaire
                     </h2>
                     
-                    <div className="w-full max-w-md bg-gray-50 p-3 rounded-lg flex items-center justify-between gap-2">
-                      <div className="truncate text-sm text-gray-600">
-                        {affiliationLink}
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleCopyLink}
-                        className="flex-shrink-0"
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
+                    <div className="text-center mb-2">
+                      <p className="text-sm text-gray-700 font-medium">
+                        Invitez vos amis à rejoindre CréatorInvest.
+                      </p>
                     </div>
                     
-                    <div className="flex gap-2">
-                      <GradientButton 
-                        onClick={handleCopyLink}
-                        gradientDirection="to-r"
-                        className="from-teal-400 to-blue-500"
-                      >
-                        Copier
-                      </GradientButton>
-                      
-                      <GradientButton 
-                        onClick={handleShare}
-                        gradientDirection="to-r"
-                        className="from-purple-400 to-pink-500"
-                      >
-                        Partager
-                      </GradientButton>
+                    <div className="flex justify-center">
+                      <div className="flex items-center gap-1 text-teal-600">
+                        <span className="font-semibold text-xs md:text-sm">Sans limite</span>
+                        <Rocket size={isMobile ? 12 : 14} className="text-[#8B5CF6]" />
+                      </div>
                     </div>
+                    
+                    {!isAuthenticated && (
+                      <div className="pt-2 md:pt-3 w-full">
+                        <Link to="/login">
+                          <GradientButton 
+                            gradientDirection="to-r" 
+                            fullWidth 
+                            size="sm"
+                            className="from-teal-400 to-blue-500 text-white text-xs py-1 h-8"
+                          >
+                            Me connecter
+                          </GradientButton>
+                        </Link>
+                      </div>
+                    )}
+                    
+                    {isAuthenticated && (
+                      <div className="pt-2 md:pt-3 w-full">
+                        <GradientButton 
+                          onClick={handleShare}
+                          size="sm"
+                          gradientDirection="to-r"
+                          fullWidth
+                          icon={<Share2 className="h-3 w-3" />}
+                          iconPosition="left"
+                          className="from-teal-400 to-blue-500 text-white text-xs h-8 px-2"
+                        >
+                          Partager
+                        </GradientButton>
+                      </div>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
+                </Card>
+              </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <Card className="bg-gray-50 border-gray-200 shadow-md overflow-hidden">
