@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ArrowDownAZ, TrendingUp, Users } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
@@ -50,13 +51,12 @@ const Creators = () => {
       const profile = getCreatorProfile(creator.id);
       combinedCreators.push({
         id: creator.id,
-        name: creator.name,
+        name: profile.name, // Utiliser le nom du profil pour assurer la cohérence
         imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
         category: creator.category,
         investorsCount: creator.investorsCount,
-        // Utiliser la valeur d'investissement déjà existante
         totalInvested: creator.totalInvested,
-        monthlyRevenue: creator.monthlyRevenue,
+        monthlyRevenue: profile.monthlyRevenue, // Utiliser le revenu du profil pour assurer la cohérence
         returnRate: profile.returnRate
       });
     });

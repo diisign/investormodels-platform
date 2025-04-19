@@ -78,7 +78,7 @@ const CreatorCard = ({
                 <CircleDollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-500" />
                 <span className="text-xs sm:text-sm">Revenu mensuel</span>
               </div>
-              <span className="text-xs sm:text-sm font-medium">{(monthlyRevenue || creatorProfile.monthlyRevenue).toLocaleString()}€</span>
+              <span className="text-xs sm:text-sm font-medium">{monthlyRevenue.toLocaleString()}€</span>
             </div>
             
             <div className="flex items-center justify-between">
