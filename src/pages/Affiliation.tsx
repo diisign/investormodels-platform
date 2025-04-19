@@ -138,7 +138,7 @@ const Affiliation = () => {
                       <span className="text-gray-600 text-xs ml-1">bonus</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      Chaque filleul reçoit un bonus de 50€ à utiliser sur la plateforme.
+                      Recevez 50€ pour chaque ami qui investit 100€ ou plus.
                     </p>
                   </div>
                 </Card>
@@ -154,7 +154,7 @@ const Affiliation = () => {
                       <span className="text-gray-600 text-xs ml-1">des gains</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      Recevez 50% des gains générés par vos filleuls.
+                      Recevez 50% des gains de vos filleuls
                     </p>
                   </div>
                 </Card>
@@ -182,7 +182,7 @@ const Affiliation = () => {
                     <div className="text-center sm:text-left">
                       <h3 className="text-lg font-semibold mb-2 text-gray-900">Bonus généreux</h3>
                       <p className="text-gray-600 text-sm">
-                        Recevez 50€ pour chaque ami qui investit 100€ ou plus.
+                        Recevez 50% des gains de votre filleuls
                       </p>
                     </div>
                   </div>
@@ -250,7 +250,7 @@ const Affiliation = () => {
                     <div>
                       <h4 className="font-medium text-gray-900">Quand vais-je recevoir mon bonus ?</h4>
                       <p className="text-gray-600 text-sm mt-1">
-                        Le bonus de 50€ est crédité sur votre compte dès que votre filleul a effectué son premier investissement de 100€ ou plus.
+                        Le bonus de 50€ est crédité sur votre compte dès que votre premier investissement (100€ min)
                       </p>
                     </div>
                     <div>
