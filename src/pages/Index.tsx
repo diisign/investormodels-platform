@@ -161,7 +161,7 @@ const Index = () => {
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
                   Investissez dans les <span className="text-[#8B5CF6]">créatrices OnlyFans.</span>
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300">
+                <p className="text-base md:text-lg lg:text-xl text-white">
                   Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leurs revenus. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
                 
@@ -219,7 +219,7 @@ const Index = () => {
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-[#8B5CF6]">
                   Top créatrices
                 </h2>
-                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
+                <p className="text-base md:text-lg text-white max-w-2xl">
                   Découvrez les créatrices avec les rendements prévus les plus élevés.
                 </p>
               </div>
@@ -283,7 +283,7 @@ const Index = () => {
         <section className="py-12 md:py-20 bg-background">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center text-black dark:text-white">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center text-white">
                 Un Marché en <span className="text-primary">Pleine Expansion</span>
               </h2>
               <div className="space-y-6">
