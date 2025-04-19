@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -64,7 +65,8 @@ const Dashboard = () => {
   
   const handleInviteFriends = () => {
     const affiliationCode = user?.id ? `${user.id.substring(0, 8)}` : 'DEMO2024';
-    const affiliationLink = `https://creatorinvests.com/register?ref=${affiliationCode}`;
+    // Update to use the correct URL structure with window.location.origin
+    const affiliationLink = `${window.location.origin}/register?ref=${affiliationCode}`;
     
     navigator.clipboard.writeText(affiliationLink);
     toast({
