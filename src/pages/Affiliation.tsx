@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -23,8 +22,7 @@ const Affiliation = () => {
     ? `${user.id.substring(0, 8)}` 
     : 'DEMO2024';
   
-  // Update to use the correct URL structure with the ref parameter
-  const affiliationLink = `${window.location.origin}/register?ref=${affiliationCode}`;
+  const affiliationLink = `https://creatorinvests.com/register?ref=${affiliationCode}`;
   
   const handleCopyLink = () => {
     navigator.clipboard.writeText(affiliationLink);
