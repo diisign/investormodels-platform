@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import AffiliationStats from '@/components/affiliations/AffiliationStats';
 
 const Affiliation = () => {
   const { isAuthenticated, user } = useAuth();
@@ -165,7 +166,7 @@ const Affiliation = () => {
 
         <div className="max-w-4xl mx-auto">
           {isAuthenticated && (
-            <div className="mt-8">
+            <div className="mt-8 px-4">
               <AffiliationStats />
             </div>
           )}

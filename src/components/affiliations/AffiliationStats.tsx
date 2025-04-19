@@ -11,15 +11,14 @@ const AffiliationStats = () => {
   const { data: affiliations, isLoading } = useQuery({
     queryKey: ['affiliations'],
     queryFn: async () => {
+      // Fix the query to properly join the profiles table
       const { data, error } = await supabase
         .from('affiliations')
         .select(`
           *,
-          referred:profiles!referred_id(
-            name,
-            email
-          )
+          referred:profiles(name, email)
         `)
+        .eq('referrer_id', supabase.auth.getSession().then(res => res.data.session?.user.id))
         .order('created_at', { ascending: false });
         
       if (error) throw error;
