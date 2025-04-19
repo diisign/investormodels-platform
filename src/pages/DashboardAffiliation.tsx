@@ -9,6 +9,17 @@ import { fr } from 'date-fns/locale';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
+// Define types for the joined data
+type AffiliationWithProfiles = {
+  id: string;
+  created_at: string;
+  first_investment_amount: number | null;
+  status: string;
+  total_earnings: number | null;
+  referrer: { name: string | null } | null;
+  referred: { name: string | null } | null;
+};
+
 const DashboardAffiliation = () => {
   const { data: affiliations, isLoading } = useQuery({
     queryKey: ['all-affiliations'],
@@ -23,7 +34,7 @@ const DashboardAffiliation = () => {
         .order('created_at', { ascending: false });
         
       if (error) throw error;
-      return data;
+      return data as AffiliationWithProfiles[];
     },
   });
 
@@ -33,7 +44,7 @@ const DashboardAffiliation = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar isLoggedIn={true} />
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <Card className="p-4">
