@@ -163,6 +163,14 @@ const Affiliation = () => {
           </div>
         </section>
 
+        <div className="max-w-4xl mx-auto">
+          {isAuthenticated && (
+            <div className="mt-8">
+              <AffiliationStats />
+            </div>
+          )}
+        </div>
+
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="text-center mb-8">
@@ -250,7 +258,7 @@ const Affiliation = () => {
                     <div>
                       <h4 className="font-medium text-gray-900">Quand vais-je recevoir mon bonus ?</h4>
                       <p className="text-gray-600 text-sm mt-1">
-                        Le bonus de 50€ est crédité sur votre compte dès que votre premier investissement (100€ min)
+                        Le bonus de 50€ est crédité sur votre compte dès votre premier investissement (minimum 100€).
                       </p>
                     </div>
                     <div>

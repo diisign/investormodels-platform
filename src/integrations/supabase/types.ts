@@ -9,12 +9,50 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      affiliations: {
+        Row: {
+          created_at: string | null
+          first_investment_amount: number | null
+          first_investment_date: string | null
+          id: string
+          referred_at: string | null
+          referred_id: string
+          referrer_id: string
+          status: string
+          total_earnings: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          first_investment_amount?: number | null
+          first_investment_date?: string | null
+          id?: string
+          referred_at?: string | null
+          referred_id: string
+          referrer_id: string
+          status?: string
+          total_earnings?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          first_investment_amount?: number | null
+          first_investment_date?: string | null
+          id?: string
+          referred_at?: string | null
+          referred_id?: string
+          referrer_id?: string
+          status?: string
+          total_earnings?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string
           id: string
           name: string | null
+          total_referral_earnings: number | null
+          total_referrals: number | null
           updated_at: string
         }
         Insert: {
@@ -22,6 +60,8 @@ export type Database = {
           created_at?: string
           id: string
           name?: string | null
+          total_referral_earnings?: number | null
+          total_referrals?: number | null
           updated_at?: string
         }
         Update: {
@@ -29,6 +69,8 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string | null
+          total_referral_earnings?: number | null
+          total_referrals?: number | null
           updated_at?: string
         }
         Relationships: []
