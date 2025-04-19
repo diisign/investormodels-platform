@@ -193,16 +193,16 @@ const Index = () => {
                   )}
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-6 md:gap-8 pt-4 md:pt-6">
-                  <div className="flex flex-col">
+                <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 pt-4 md:pt-6">
+                  <div className="flex flex-col items-center">
                     <span className="text-2xl md:text-3xl font-bold text-investment-600">250+</span>
                     <span className="text-sm text-gray-500">Créatrices</span>
                   </div>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col items-center">
                     <span className="text-2xl md:text-3xl font-bold text-investment-600">20K+</span>
                     <span className="text-sm text-gray-500">Investisseurs</span>
                   </div>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col items-center">
                     <span className="text-2xl md:text-3xl font-bold text-investment-600">7M €</span>
                     <span className="text-sm text-gray-500">Investis</span>
                   </div>
@@ -307,7 +307,7 @@ const Index = () => {
               </div>
             </FadeIn>
             
-            <FadeIn className="max-w-4xl mx-auto" direction="up" delay={100}>
+            <FadeIn className="w-fit mx-auto" direction="up" delay={100}>
               <OnlyfansRevenueChart />
             </FadeIn>
           </div>
