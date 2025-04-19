@@ -153,7 +153,7 @@ const Index = () => {
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+            <div className="max-w-3xl mx-auto text-center">
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 <div className="inline-block rounded-full bg-investment-50 dark:bg-investment-900/20 px-3 py-1 text-sm font-medium text-purple-600 dark:text-purple-400 mb-3 md:mb-4">
                   <span className="text-[#8B5CF6]">Nouvelle façon d'investir</span>
@@ -161,7 +161,7 @@ const Index = () => {
                 <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
                   Investissez dans les <span className="text-[#8B5CF6]">créatrices OnlyFans.</span>
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
+                <p className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300">
                   Notre plateforme vous permet d'investir directement dans les créatrices de contenu et de partager leurs revenus. Diversifiez votre portefeuille avec une nouvelle classe d'actifs <span className="font-bold text-investment-600">très rentable</span>.
                 </p>
                 
@@ -206,12 +206,6 @@ const Index = () => {
                     <span className="text-2xl md:text-3xl font-bold text-investment-600">7M €</span>
                     <span className="text-sm text-gray-500">Investis</span>
                   </div>
-                </div>
-              </FadeIn>
-              
-              <FadeIn className="flex justify-center lg:justify-end mt-8 lg:mt-0" direction="up" delay={200}>
-                <div className="w-full max-w-md lg:max-w-lg mx-auto">
-                  <OnlyfansRevenueChart />
                 </div>
               </FadeIn>
             </div>
@@ -290,11 +284,27 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
-                Croissance du <span className="text-investment-600">Chiffre d'Affaires OnlyFans</span>
+                Un Marché en <span className="text-investment-600">Pleine Expansion</span>
               </h2>
-              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
-                Découvrez la croissance exceptionnelle de la plateforme OnlyFans depuis 2019.
-              </p>
+              <div className="space-y-6">
+                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
+                  OnlyFans connaît une croissance explosive depuis sa création, avec des revenus qui ont été multipliés par plus de 10 en seulement 4 ans.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
+                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-investment-600 mb-1">4.5M+</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Créateurs actifs</div>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-investment-600 mb-1">1.6B$</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">CA en 2024</div>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-investment-600 mb-1">+150%</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Croissance annuelle</div>
+                  </div>
+                </div>
+              </div>
             </FadeIn>
             
             <FadeIn className="max-w-4xl mx-auto" direction="up" delay={100}>
