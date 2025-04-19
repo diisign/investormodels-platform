@@ -9,15 +9,11 @@ import { fr } from 'date-fns/locale';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
-// Define types for the joined data with proper typing for potential error cases
+// Define types for the joined data
 type AffiliationWithProfiles = {
   id: string;
   created_at: string;
   first_investment_amount: number | null;
-  first_investment_date?: string | null;
-  referred_at?: string | null;
-  referred_id?: string;
-  referrer_id?: string;
   status: string;
   total_earnings: number | null;
   referrer: { name: string | null } | null;
@@ -38,9 +34,7 @@ const DashboardAffiliation = () => {
         .order('created_at', { ascending: false });
         
       if (error) throw error;
-      
-      // Use type assertion with a safer approach by first casting to unknown
-      return (data as unknown) as AffiliationWithProfiles[];
+      return data as AffiliationWithProfiles[];
     },
   });
 
