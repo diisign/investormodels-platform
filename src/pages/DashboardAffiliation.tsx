@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
@@ -9,7 +8,7 @@ import { fr } from 'date-fns/locale';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
-// Define types for the joined data
+// Define types for the joined data - updated to match actual response structure
 type AffiliationWithProfiles = {
   id: string;
   created_at: string;
@@ -18,6 +17,11 @@ type AffiliationWithProfiles = {
   total_earnings: number | null;
   referrer: { name: string | null } | null;
   referred: { name: string | null } | null;
+  // Include additional fields that might be in the response
+  referred_id?: string;
+  referrer_id?: string;
+  first_investment_date?: string | null;
+  referred_at?: string | null;
 };
 
 const DashboardAffiliation = () => {
@@ -34,7 +38,8 @@ const DashboardAffiliation = () => {
         .order('created_at', { ascending: false });
         
       if (error) throw error;
-      return data as AffiliationWithProfiles[];
+      // Cast the data to the correct type
+      return data as unknown as AffiliationWithProfiles[];
     },
   });
 
