@@ -64,7 +64,7 @@ const Dashboard = () => {
   
   const handleInviteFriends = () => {
     const affiliationCode = user?.id ? `${user.id.substring(0, 8)}` : 'DEMO2024';
-    const affiliationLink = `https://creatorinvest.com/register?ref=${affiliationCode}`;
+    const affiliationLink = `https://creatorinvests.com/register?ref=${affiliationCode}`;
     
     navigator.clipboard.writeText(affiliationLink);
     toast({

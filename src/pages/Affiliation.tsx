@@ -22,7 +22,7 @@ const Affiliation = () => {
     ? `${user.id.substring(0, 8)}` 
     : 'DEMO2024';
   
-  const affiliationLink = `https://creatorinvest.com/register?ref=${affiliationCode}`;
+  const affiliationLink = `https://creatorinvests.com/register?ref=${affiliationCode}`;
   
   const handleCopyLink = () => {
     navigator.clipboard.writeText(affiliationLink);
