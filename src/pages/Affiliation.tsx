@@ -6,7 +6,7 @@ import FadeIn from '@/components/animations/FadeIn';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
-import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, PiggyBank, UserPlus, Rocket } from 'lucide-react';
+import { BadgeDollarSign, Users, Gift, Share2, HeartHandshake, Sparkles, PiggyBank, UserPlus, Rocket, Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
@@ -22,30 +22,13 @@ const Affiliation = () => {
     ? `${user.id.substring(0, 8)}` 
     : 'DEMO2024';
   
-  const affiliationLink = `${window.location.origin}/register?ref=${affiliationCode}`;
+  const affiliationLink = `https://creatorinvest.com/register?ref=${affiliationCode}`;
   
   const handleCopyLink = () => {
     navigator.clipboard.writeText(affiliationLink);
     setCopied(true);
     toast.success("Lien d'affiliation copié !");
     setTimeout(() => setCopied(false), 2000);
-  };
-  
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Rejoignez CréatorInvest',
-          text: 'Recevez 50€ en crédit lorsque vous investissez 100€ avec mon lien de parrainage !',
-          url: affiliationLink
-        });
-        toast.success("Merci d'avoir partagé !");
-      } catch (error) {
-        console.error("Erreur lors du partage:", error);
-      }
-    } else {
-      handleCopyLink();
-    }
   };
 
   return (
@@ -111,15 +94,15 @@ const Affiliation = () => {
                     {isAuthenticated && (
                       <div className="pt-2 md:pt-3 w-full">
                         <GradientButton 
-                          onClick={handleShare}
+                          onClick={handleCopyLink}
                           size="sm"
                           gradientDirection="to-r"
                           fullWidth
-                          icon={<Share2 className="h-3 w-3" />}
+                          icon={<Copy className="h-3 w-3" />}
                           iconPosition="left"
                           className="from-teal-400 to-blue-500 text-white text-xs h-8 px-2"
                         >
-                          Partager
+                          Inviter des amis
                         </GradientButton>
                       </div>
                     )}
