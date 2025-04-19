@@ -142,7 +142,7 @@ const Index = () => {
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar isLoggedIn={false} />
       
       <main className="flex-grow pt-16 md:pt-20">
@@ -280,28 +280,28 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
+        <section className="py-12 md:py-20 bg-background">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
-                Un Marché en <span className="text-investment-600">Pleine Expansion</span>
+                Un Marché en <span className="text-primary">Pleine Expansion</span>
               </h2>
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
+                <p className="text-base md:text-lg text-muted-foreground text-center">
                   OnlyFans connaît une croissance explosive depuis sa création, avec des revenus qui ont été multipliés par plus de 10 en seulement 4 ans.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">4.5M+</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Créateurs actifs</div>
+                  <div className="bg-card p-4 rounded-lg text-center border border-border">
+                    <div className="text-2xl font-bold text-primary mb-1">4.5M+</div>
+                    <div className="text-sm text-muted-foreground">Créateurs actifs</div>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">1.6B$</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">CA en 2024</div>
+                  <div className="bg-card p-4 rounded-lg text-center border border-border">
+                    <div className="text-2xl font-bold text-primary mb-1">1.6B$</div>
+                    <div className="text-sm text-muted-foreground">CA en 2024</div>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">+150%</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Croissance annuelle</div>
+                  <div className="bg-card p-4 rounded-lg text-center border border-border">
+                    <div className="text-2xl font-bold text-primary mb-1">+150%</div>
+                    <div className="text-sm text-muted-foreground">Croissance annuelle</div>
                   </div>
                 </div>
               </div>
@@ -313,7 +313,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
+        <section className="py-12 md:py-20 bg-background">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-12" direction="up">
               <div className="flex items-center justify-center gap-1 mb-4">
@@ -381,7 +381,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section className="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
+        <section className="py-12 md:py-20 bg-background/50">
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-16" direction="up">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
