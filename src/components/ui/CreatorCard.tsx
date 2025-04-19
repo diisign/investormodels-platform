@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Users, TrendingUp, CircleDollarSign } from 'lucide-react';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
@@ -28,7 +27,14 @@ const CreatorCard = ({
   className = '',
   rank 
 }: CreatorCardProps) => {
+  const navigate = useNavigate();
   const creatorProfile = getCreatorProfile(id);
+  
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(`/creator/${id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   
   return (
     <motion.div 
@@ -41,7 +47,7 @@ const CreatorCard = ({
           {rank}
         </div>
       )}
-      <Link to={`/creator/${id}`} className="block h-full">
+      <div onClick={handleClick} className="block h-full cursor-pointer">
         <div className="relative p-2 sm:p-4">
           <div className="flex flex-col items-center mb-2 sm:mb-4">
             <Avatar className="h-16 w-16 sm:h-24 sm:w-24 border-4 border-white dark:border-gray-700 shadow-lg mb-2 sm:mb-3">
@@ -99,7 +105,7 @@ const CreatorCard = ({
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </motion.div>
   );
 };
