@@ -1,35 +1,25 @@
 @layer base {
   :root {
     --background: 265 30% 11%;
-    --foreground: 0 0% 98%;
-
+    --foreground: 0 0% 95%;
     --card: 265 30% 13%;
     --card-foreground: 0 0% 98%;
-
     --popover: 265 30% 13%;
     --popover-foreground: 0 0% 98%;
-
     --primary: 265 80% 70%;
-    --primary-foreground: 265 30% 11%;
-
+    --primary-foreground: 0 0% 95%;
     --secondary: 265 30% 16%;
-    --secondary-foreground: 0 0% 98%;
-
+    --secondary-foreground: 0 0% 90%;
     --muted: 265 30% 16%;
-    --muted-foreground: 215 20% 80%;
-
+    --muted-foreground: 0 0% 85%;
     --accent: 265 70% 60%;
     --accent-foreground: 0 0% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-
     --border: 265 30% 16%;
     --input: 265 30% 16%;
     --ring: 265 80% 70%;
-
     --radius: 0.75rem;
-
     --sidebar-background: 265 35% 9%;
     --sidebar-foreground: 215 15% 85%;
     --sidebar-primary: 265 75% 65%;
@@ -38,15 +28,11 @@
     --sidebar-accent-foreground: 215 15% 90%;
     --sidebar-border: 265 35% 16%;
     --sidebar-ring: 265 75% 65%;
-
     --creator-gradient-from: 265 30% 40%;
     --creator-gradient-to: 265 30% 35%;
-    
     --hero-gradient-from: 265 40% 25%;
     --hero-gradient-to: 265 50% 20%;
-    
     --hero-icon-color: 265 85% 30%;
-
     --affiliation-gradient-from: 265 40% 25%;
     --affiliation-gradient-to: 265 50% 20%;
   }

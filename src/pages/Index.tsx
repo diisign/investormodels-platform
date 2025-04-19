@@ -283,7 +283,7 @@ const Index = () => {
         <section className="py-12 md:py-20 bg-background">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center text-black dark:text-white">
                 Un Marché en <span className="text-primary">Pleine Expansion</span>
               </h2>
               <div className="space-y-6">
@@ -393,42 +393,58 @@ const Index = () => {
             </FadeIn>
             
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
+              <FadeIn 
+                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
+                direction="up" 
+                delay={100}
+              >
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <BarChart3 className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Rendements attractifs</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Rendements attractifs</h3>
+                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
                   Nos créatrices offrent des rendements moyens de 80% à 150% par trimestre.
                 </p>
               </FadeIn>
               
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
+              <FadeIn 
+                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
+                direction="up" 
+                delay={200}
+              >
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <Users className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Diversité des créatrices</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Diversité des créatrices</h3>
+                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
                   Plus de 250 créatrices de contenu avec statistique détaillé sur du long terme.
                 </p>
               </FadeIn>
               
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
+              <FadeIn 
+                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
+                direction="up" 
+                delay={300}
+              >
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <ShieldCheck className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Sécurité maximale</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
-                  Toutes les créatrices sont recrutés sous certains critère spéciaux pour vous proposez les plus performantes.
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Sécurité maximale</h3>
+                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
+                  Toutes les créatrices sont recrutés sous certains critères spéciaux pour vous proposer les plus performantes.
                 </p>
               </FadeIn>
               
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
+              <FadeIn 
+                className="bg-white dark:bg-gray-800/50 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700/30 backdrop-blur-lg" 
+                direction="up" 
+                delay={400}
+              >
                 <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
                   <Zap className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Investissement facile</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
+                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3 text-black dark:text-white">Investissement facile</h3>
+                <p className="text-xs md:text-base text-gray-700 dark:text-gray-200">
                   Interface intuitive et processus simplifié pour investir en quelques clics, même pour les débutants.
                 </p>
               </FadeIn>
