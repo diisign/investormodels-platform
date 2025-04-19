@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -14,13 +13,13 @@ import { cn } from '@/lib/utils';
 import { mockUserData } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import UserBalance from '@/components/UserBalance';
+import { toast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   
-  // Updated chart data with all values set to 0
   const performanceData = [
     { month: 'Jan', value: 0 },
     { month: 'Fév', value: 0 },
@@ -49,7 +48,6 @@ const Dashboard = () => {
   const totalInvested = user?.investments.reduce((total, inv) => total + inv.amount, 0) || 0;
   const totalEarnings = user?.investments.reduce((total, inv) => total + inv.earnings, 0) || 0;
   
-  // Updated referral data to show zeros
   const referralData = {
     totalReferrals: 0,
     pendingReferrals: 0,
@@ -61,14 +59,22 @@ const Dashboard = () => {
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowDepositModal(false);
-    // In a real app, this would trigger an API call to deposit funds
-    // For now, just show a toast message
     alert(`Dépôt simulé de ${depositAmount}€ effectué avec succès!`);
+  };
+  
+  const handleInviteFriends = () => {
+    const affiliationCode = user?.id ? `${user.id.substring(0, 8)}` : 'DEMO2024';
+    const affiliationLink = `https://creatorinvest.com/register?ref=${affiliationCode}`;
+    
+    navigator.clipboard.writeText(affiliationLink);
+    toast({
+      title: "Lien copié !",
+      description: "Le lien d'affiliation a été copié dans votre presse-papiers.",
+    });
   };
   
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={true} onLogout={logout} />
       
       <main className="flex-grow pt-20">
@@ -83,7 +89,6 @@ const Dashboard = () => {
               </FadeIn>
             </div>
             
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
                 <UserBalance />
@@ -150,9 +155,7 @@ const Dashboard = () => {
               </FadeIn>
             </div>
             
-            {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column - Performance Chart */}
               <FadeIn direction="up" className="glass-card lg:col-span-2">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -187,7 +190,6 @@ const Dashboard = () => {
                 </div>
               </FadeIn>
               
-              {/* Right Column - Portfolio Distribution */}
               <FadeIn direction="up" delay={100} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -231,9 +233,7 @@ const Dashboard = () => {
               </FadeIn>
             </div>
             
-            {/* Investments and Transactions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              {/* Investments */}
               <FadeIn direction="up" className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -299,7 +299,6 @@ const Dashboard = () => {
                 </div>
               </FadeIn>
               
-              {/* Recent Transactions */}
               <FadeIn direction="up" delay={100} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -372,7 +371,6 @@ const Dashboard = () => {
               </FadeIn>
             </div>
             
-            {/* Referral Card - Moved to bottom */}
             <FadeIn direction="up" delay={500} className="glass-card mt-8">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -434,12 +432,11 @@ const Dashboard = () => {
                     Vous n'avez pas encore parrainé d'amis.
                   </p>
                   <GradientButton
+                    onClick={handleInviteFriends}
                     size="sm"
                     className="from-teal-400 to-blue-500 text-white"
                   >
-                    <Link to="/affiliation">
-                      Inviter des amis
-                    </Link>
+                    Inviter des amis
                   </GradientButton>
                 </div>
               </div>
@@ -448,7 +445,6 @@ const Dashboard = () => {
         </section>
       </main>
       
-      {/* Deposit Modal */}
       {showDepositModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
