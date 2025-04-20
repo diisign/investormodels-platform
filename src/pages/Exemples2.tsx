@@ -16,48 +16,24 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 const generateRealisticData = () => {
   const creators = [
     { 
-      name: 'Elena 💎', 
-      date: new Date('2024-11-06'), 
-      amount: 500, 
-      monthlyGain: 0.43, 
-      returnRate: 43, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mv/mvl/mvlhwxzldrtpzkdcyqzgrr5i8atwqvot1711117694/403859232/avatar.jpg' 
-    },
-    {
-      name: 'Kayla',
-      date: new Date('2024-11-06'),
-      amount: 500,
-      monthlyGain: 0.36,
-      returnRate: 36,
-      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp'
-    },
-    {
-      name: 'Maria 🌟',
-      date: new Date('2024-11-06'),
-      amount: 500,
-      monthlyGain: 0.38,
-      returnRate: 38,
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg'
-    },
-    {
-      name: 'Melani 💫',
-      date: new Date('2024-11-06'),
-      amount: 500,
-      monthlyGain: 0.41,
-      returnRate: 41,
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/s/sn/snk/snknlldkypeays71iobp4qqamgmyx83m1730686874/345711625/avatar.jpg'
+      name: 'Votre Investissement', 
+      date: new Date('2023-10-03'), 
+      amount: 800, 
+      monthlyGain: 0.612, 
+      returnRate: 120, 
+      imageUrl: 'https://placeholder.co/100' 
     }
   ];
   
-  const startDate = new Date('2024-11-06');
-  const currentDate = new Date('2025-04-06');
+  const startDate = new Date('2023-10-03');
+  const currentDate = new Date('2024-01-03');
   
   const performanceData = [];
   const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
     (currentDate.getMonth() - startDate.getMonth());
   
   let totalValue = 0;
-  const initialAmount = 2000; // Total initial investment
+  const initialAmount = 800;
   
   for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
@@ -101,7 +77,7 @@ const generateRealisticData = () => {
       id: (index + 1).toString(),
       creatorName: creator.name,
       creatorImage: creator.imageUrl,
-      planName: 'Premium',
+      planName: 'Investissement personnalisé',
       amount: Number(currentValue.toFixed(2)),
       initial: creator.amount,
       returnRate: creator.returnRate,
@@ -115,46 +91,26 @@ const generateRealisticData = () => {
       id: '1',
       type: 'deposit',
       amount: initialAmount,
-      date: '06/11/2024',
+      date: '03/10/2023',
       status: 'completed',
-      description: 'Dépôt initial'
-    },
-    ...creators.map((creator, index) => ({
-      id: (index + 2).toString(),
-      type: 'investment',
-      amount: -creator.amount,
-      date: '06/11/2024',
-      status: 'completed',
-      description: `Investissement initial - ${creator.name}`
-    }))
+      description: 'Investissement initial personnalisé'
+    }
   ];
   
   const referralData = {
-    totalReferrals: 11,
-    pendingReferrals: 3,
-    completedReferrals: 8,
-    earnings: 1850,
-    recentReferrals: [
-      { name: 'Thomas R.', date: '20/12/2024', status: 'completed', reward: 150 },
-      { name: 'Marie L.', date: '15/01/2025', status: 'completed', reward: 250 },
-      { name: 'Julien D.', date: '02/02/2025', status: 'completed', reward: 350 },
-      { name: 'Sophie B.', date: '20/02/2025', status: 'completed', reward: 200 },
-      { name: 'Lucas M.', date: '10/03/2025', status: 'completed', reward: 500 },
-      { name: 'Emma C.', date: '15/03/2025', status: 'completed', reward: 50 },
-      { name: 'Hugo P.', date: '25/03/2025', status: 'completed', reward: 150 },
-      { name: 'Léa T.', date: '01/04/2025', status: 'completed', reward: 200 },
-      { name: 'Elise M.', date: '02/04/2025', status: 'pending', reward: 100 },
-      { name: 'Antoine L.', date: '03/04/2025', status: 'pending', reward: 150 },
-      { name: 'Camille P.', date: '05/04/2025', status: 'pending', reward: 200 }
-    ],
-    tierProgress: 80,
-    currentTier: 'Silver',
-    nextTier: 'Gold',
-    nextTierRequirement: 10
+    totalReferrals: 0,
+    pendingReferrals: 0,
+    completedReferrals: 0,
+    earnings: 0,
+    recentReferrals: [],
+    tierProgress: 0,
+    currentTier: 'Starter',
+    nextTier: 'Bronze',
+    nextTierRequirement: 5
   };
   
   const totalEarnings = finalValue - initialAmount;
-  const balance = finalValue + referralData.earnings;
+  const balance = finalValue;
   
   return {
     performanceData,
