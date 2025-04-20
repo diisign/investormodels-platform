@@ -84,8 +84,46 @@ export const mockUserData = {
   email: 'john@example.com',
   balance: 2500,
   investments: [
+    {
+      id: 'inv1',
+      creatorId: 'creator2',
+      creatorName: 'Maria 🤸🏻‍*',
+      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
+      planId: 'plan2-2',
+      planName: 'Professionnel',
+      amount: 800,
+      returnRate: 120,
+      startDate: '2024-10-03',
+      endDate: '2025-01-03',
+      status: 'completed',
+      earnings: 960
+    }
   ],
   transactions: [
+    {
+      id: 'trans1',
+      type: 'deposit',
+      amount: 800,
+      date: '2024-10-03',
+      status: 'completed',
+      description: 'Dépôt initial'
+    },
+    {
+      id: 'trans2',
+      type: 'investment',
+      amount: 800,
+      date: '2024-10-03',
+      status: 'completed',
+      description: 'Investissement - Maria 🤸🏻‍*'
+    },
+    {
+      id: 'trans3',
+      type: 'earning',
+      amount: 960,
+      date: '2025-01-03',
+      status: 'completed',
+      description: 'Rendement - Maria 🤸🏻‍*'
+    }
   ]
 };
 
@@ -267,7 +305,7 @@ export const creators: Creator[] = [
     monthlyRevenue: 12000,
     followers: 280000,
     creationDate: '2020-09-03',
-    description: "Chef cuisinier proposant des recettes faciles à réaliser chez soi. Mes revenus sont générés par mon livre de cuisine, mes cours en ligne et mes partenariats avec des marques d'ustensiles de cuisine et d'ingrédients premium.",
+    description: "Chef cuisinier proposant des recettes faciles à réaliser chez soi. Mes revenus sont générés par mon livre de cuisine, mes cours en ligne et mes partenariats avec des marques d'ustensils de cuisine et d'ingrédients premium.",
     plans: [
       {
         id: 'plan4-1',
