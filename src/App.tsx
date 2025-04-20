@@ -81,6 +81,9 @@ const App = () => (
             <Route path="/creators" element={<Creators />} />
             <Route path="/creator/:creatorId" element={<CreatorDetails />} />
             
+            {/* Route explicite pour 404 */}
+            <Route path="/404" element={<NotFound />} />
+            
             {/* Route par défaut */}
             <Route path="*" element={<NotFound />} />
           </Routes>
