@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -16,27 +15,29 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { creators } from '@/utils/mockData';
 
 const generateRealisticData = () => {
-  // Configuration de l'investissement
-  const creator = creators.find(c => c.id === 'creator2'); // Maria
-  const creatorData = { 
-    name: creator?.name || 'Maria 🤸🏻‍*', 
+  // Configuration spécifique de l'investissement
+  const creator = {
+    id: 'creator_maria',
+    name: 'Maria 🤸🏻‍*', 
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg'
+  };
+  
+  const investmentDetails = { 
     date: new Date('2024-10-03'), 
     amount: 800, 
-    monthlyGain: 320, // 120% sur 3 mois = 40% par mois = 320€ par mois
-    returnRate: 120, 
-    imageUrl: creator?.imageUrl || 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg' 
+    monthlyGain: 612.8, // Calculé à 120% sur 3 mois
+    returnRate: 120,
+    withdrawalAmount: 0
   };
   
   const startDate = new Date('2024-10-03');
   const currentDate = new Date('2025-04-20'); // Aujourd'hui
-  const endInvestmentDate = new Date('2025-01-03'); // Fin après 3 mois
   
   const performanceData = [];
   const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
     (currentDate.getMonth() - startDate.getMonth());
   
-  let totalValue = 0;
-  const initialAmount = creatorData.amount;
+  let totalValue = investmentDetails.amount;
   
   for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
@@ -45,21 +46,8 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    if (i === 0) {
-      // Investissement initial
-      totalValue = initialAmount;
-    } else if (i <= 3) {
-      // Gains mensuels pendant les 3 premiers mois (oct, nov, déc)
-      totalValue += creatorData.monthlyGain;
-    } else if (i === 4) {
-      // Retrait total en janvier
-      const withdrawal = totalValue;
-      performanceData.push({
-        month: monthLabel,
-        value: 0,
-        withdrawal: withdrawal
-      });
-      continue;
+    if (i > 0 && i <= 3) {
+      totalValue += investmentDetails.monthlyGain;
     }
     
     performanceData.push({
@@ -68,27 +56,25 @@ const generateRealisticData = () => {
     });
   }
   
-  const finalValue = performanceData[3]?.value || initialAmount + (creatorData.monthlyGain * 3); // Valeur à la fin des 3 mois
-  const totalPercentageReturn = 120; // 120% de rendement
+  const finalValue = performanceData[performanceData.length - 1].value;
   
   const portfolioData = [{
-    name: creatorData.name,
+    name: creator.name,
     value: finalValue,
-    initial: initialAmount,
-    imageUrl: creatorData.imageUrl,
-    returnRate: creatorData.returnRate,
-    totalReturn: totalPercentageReturn
+    initial: investmentDetails.amount,
+    imageUrl: creator.imageUrl,
+    returnRate: investmentDetails.returnRate
   }];
   
   const investmentsList = [{
     id: '1',
-    creatorName: creatorData.name,
-    creatorImage: creatorData.imageUrl,
+    creatorName: creator.name,
+    creatorImage: creator.imageUrl,
     planName: 'Professionnel',
     amount: finalValue,
-    initial: initialAmount,
-    returnRate: creatorData.returnRate,
-    totalReturn: totalPercentageReturn,
+    initial: investmentDetails.amount,
+    returnRate: investmentDetails.returnRate,
+    totalReturn: 120,
     status: 'completed'
   }];
   
@@ -96,7 +82,7 @@ const generateRealisticData = () => {
     {
       id: '1',
       type: 'deposit',
-      amount: initialAmount,
+      amount: investmentDetails.amount,
       date: '03/10/2024',
       status: 'completed',
       description: 'Dépôt initial'
@@ -104,18 +90,10 @@ const generateRealisticData = () => {
     {
       id: '2',
       type: 'investment',
-      amount: -initialAmount,
+      amount: -investmentDetails.amount,
       date: '03/10/2024',
       status: 'completed',
-      description: `Investissement - ${creatorData.name}`
-    },
-    {
-      id: '3',
-      type: 'withdrawal',
-      amount: finalValue,
-      date: '03/01/2025',
-      status: 'completed',
-      description: 'Retrait total'
+      description: `Investissement - ${creator.name}`
     }
   ];
   
@@ -131,23 +109,20 @@ const generateRealisticData = () => {
     nextTierRequirement: 5
   };
   
-  const totalEarnings = finalValue - initialAmount;
-  const balance = 0; // Après retrait, le solde est à 0
-  
   return {
     performanceData,
     portfolioData,
     investments: investmentsList,
     transactions,
     referralData,
-    balance,
-    totalInvested: initialAmount,
-    totalEarnings: Number(totalEarnings.toFixed(2)),
+    balance: 0,
+    totalInvested: investmentDetails.amount,
+    totalEarnings: Number((finalValue - investmentDetails.amount).toFixed(2)),
     monthlyChartData: performanceData.map(item => ({
       month: item.month,
       value: item.value
     })),
-    totalPercentageReturn
+    totalPercentageReturn: 120
   };
 };
 
