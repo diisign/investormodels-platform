@@ -28,11 +28,11 @@ const generateRealisticData = () => {
     monthlyGain: 344,
     returnRate: 43,
     withdrawalDate: new Date('2025-01-23'),
-    withdrawalAmount: 1000
+    withdrawalAmount: 1832
   };
   
   const secondInvestment = {
-    date: new Date('2025-01-23'),
+    date: new Date('2025-01-25'),
     amount: 1000,
     monthlyGain: 430,
     returnRate: 43
@@ -54,18 +54,15 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    // Add first investment gains
     if (i > 0 && currentMonthDate < firstInvestment.withdrawalDate) {
       totalValue += firstInvestment.monthlyGain;
     }
     
-    // Handle withdrawal and second investment
     if (currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() && 
         currentMonthDate.getFullYear() === firstInvestment.withdrawalDate.getFullYear()) {
-      totalValue = secondInvestment.amount; // Reset to second investment amount
+      totalValue = secondInvestment.amount; // Reset to second investment amount after withdrawal
     }
     
-    // Add second investment gains
     if (currentMonthDate > secondInvestment.date) {
       totalValue += secondInvestment.monthlyGain;
     }
@@ -74,7 +71,7 @@ const generateRealisticData = () => {
       month: monthLabel,
       value: Number(totalValue.toFixed(2)),
       withdrawal: currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() ? 
-                 firstInvestment.withdrawalAmount : undefined
+                 firstInvestment.withdrawalAmount - secondInvestment.amount : undefined
     });
   }
   
@@ -118,24 +115,16 @@ const generateRealisticData = () => {
     {
       id: '3',
       type: 'withdrawal',
-      amount: firstInvestment.withdrawalAmount,
+      amount: firstInvestment.withdrawalAmount - secondInvestment.amount, // Only the withdrawn amount (832€)
       date: '23/01/2025',
       status: 'completed',
-      description: 'Retrait total'
+      description: 'Retrait partiel'
     },
     {
       id: '4',
-      type: 'deposit',
-      amount: secondInvestment.amount,
-      date: '23/01/2025',
-      status: 'completed',
-      description: 'Nouveau dépôt'
-    },
-    {
-      id: '5',
       type: 'investment',
       amount: -secondInvestment.amount,
-      date: '23/01/2025',
+      date: '25/01/2025',
       status: 'completed',
       description: `Réinvestissement - ${creator.name}`
     }
