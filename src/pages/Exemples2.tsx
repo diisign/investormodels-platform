@@ -22,22 +22,30 @@ const generateRealisticData = () => {
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg'
   };
   
-  const investmentDetails = { 
+  const firstInvestment = { 
     date: new Date('2024-10-03'), 
     amount: 800, 
-    monthlyGain: 612.8, // Calculé à 120% sur 3 mois
-    returnRate: 120,
-    withdrawalAmount: 0
+    monthlyGain: 344,
+    returnRate: 43,
+    withdrawalDate: new Date('2025-01-23'),
+    withdrawalAmount: 1000
+  };
+  
+  const secondInvestment = {
+    date: new Date('2025-01-23'),
+    amount: 1000,
+    monthlyGain: 430,
+    returnRate: 43
   };
   
   const startDate = new Date('2024-10-03');
-  const currentDate = new Date('2025-04-20'); // Aujourd'hui
+  const currentDate = new Date('2025-04-20');
   
   const performanceData = [];
   const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
     (currentDate.getMonth() - startDate.getMonth());
   
-  let totalValue = investmentDetails.amount;
+  let totalValue = firstInvestment.amount;
   
   for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
@@ -46,24 +54,36 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    if (i > 0 && i <= 3) {
-      totalValue += investmentDetails.monthlyGain;
+    // Add first investment gains
+    if (i > 0 && currentMonthDate < firstInvestment.withdrawalDate) {
+      totalValue += firstInvestment.monthlyGain;
+    }
+    
+    // Handle withdrawal and second investment
+    if (currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() && 
+        currentMonthDate.getFullYear() === firstInvestment.withdrawalDate.getFullYear()) {
+      totalValue = secondInvestment.amount; // Reset to second investment amount
+    }
+    
+    // Add second investment gains
+    if (currentMonthDate > secondInvestment.date) {
+      totalValue += secondInvestment.monthlyGain;
     }
     
     performanceData.push({
       month: monthLabel,
-      value: Number(totalValue.toFixed(2))
+      value: Number(totalValue.toFixed(2)),
+      withdrawal: currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() ? 
+                 firstInvestment.withdrawalAmount : undefined
     });
   }
   
-  const finalValue = performanceData[performanceData.length - 1].value;
-  
   const portfolioData = [{
     name: creator.name,
-    value: finalValue,
-    initial: investmentDetails.amount,
+    value: performanceData[performanceData.length - 1].value,
+    initial: secondInvestment.amount,
     imageUrl: creator.imageUrl,
-    returnRate: investmentDetails.returnRate
+    returnRate: secondInvestment.returnRate
   }];
   
   const investmentsList = [{
@@ -71,10 +91,10 @@ const generateRealisticData = () => {
     creatorName: creator.name,
     creatorImage: creator.imageUrl,
     planName: 'Professionnel',
-    amount: finalValue,
-    initial: investmentDetails.amount,
-    returnRate: investmentDetails.returnRate,
-    totalReturn: 120,
+    amount: portfolioData[0].value,
+    initial: secondInvestment.amount,
+    returnRate: secondInvestment.returnRate,
+    totalReturn: 43,
     status: 'completed'
   }];
   
@@ -82,7 +102,7 @@ const generateRealisticData = () => {
     {
       id: '1',
       type: 'deposit',
-      amount: investmentDetails.amount,
+      amount: firstInvestment.amount,
       date: '03/10/2024',
       status: 'completed',
       description: 'Dépôt initial'
@@ -90,10 +110,34 @@ const generateRealisticData = () => {
     {
       id: '2',
       type: 'investment',
-      amount: -investmentDetails.amount,
+      amount: -firstInvestment.amount,
       date: '03/10/2024',
       status: 'completed',
       description: `Investissement - ${creator.name}`
+    },
+    {
+      id: '3',
+      type: 'withdrawal',
+      amount: firstInvestment.withdrawalAmount,
+      date: '23/01/2025',
+      status: 'completed',
+      description: 'Retrait total'
+    },
+    {
+      id: '4',
+      type: 'deposit',
+      amount: secondInvestment.amount,
+      date: '23/01/2025',
+      status: 'completed',
+      description: 'Nouveau dépôt'
+    },
+    {
+      id: '5',
+      type: 'investment',
+      amount: -secondInvestment.amount,
+      date: '23/01/2025',
+      status: 'completed',
+      description: `Réinvestissement - ${creator.name}`
     }
   ];
   
@@ -115,14 +159,14 @@ const generateRealisticData = () => {
     investments: investmentsList,
     transactions,
     referralData,
-    balance: 0,
-    totalInvested: investmentDetails.amount,
-    totalEarnings: Number((finalValue - investmentDetails.amount).toFixed(2)),
+    balance: Number(totalValue.toFixed(2)),
+    totalInvested: secondInvestment.amount,
+    totalEarnings: Number((totalValue - secondInvestment.amount).toFixed(2)),
     monthlyChartData: performanceData.map(item => ({
       month: item.month,
       value: item.value
     })),
-    totalPercentageReturn: 120
+    totalPercentageReturn: 43
   };
 };
 
