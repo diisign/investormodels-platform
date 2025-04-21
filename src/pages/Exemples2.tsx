@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -179,22 +178,21 @@ const Exemples2 = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
-  
+
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowDepositModal(false);
   };
-  
+
   const withdrawalPoint = data.performanceData.findIndex(item => item.withdrawal);
-  
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={true} />
-      
+
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
                 <Card>
@@ -241,7 +239,9 @@ const Exemples2 = () => {
                   </div>
                   <div className="flex items-end">
                     <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
-                    <span className="ml-2 text-sm text-green-500">+{data.totalPercentageReturn}%</span>
+                    <span className="ml-2 text-sm text-green-500">
+                      +{data.totalPercentageReturn}%
+                    </span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                     Retrait total le 06 avril 2025
@@ -676,4 +676,3 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
-
