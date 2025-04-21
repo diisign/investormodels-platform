@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -80,7 +81,7 @@ const generateRealisticData = () => {
     value: performanceData[performanceData.length - 1].value,
     initial: secondInvestment.amount,
     imageUrl: creator.imageUrl,
-    returnRate: secondInvestment.returnRate
+    returnRate: secondInvestment.returnRate * 6  // multiplication by 6 months to display 258%
   }];
 
   // Calculate months invested for secondInvestment to calculate cumulative return
@@ -104,7 +105,7 @@ const generateRealisticData = () => {
     planName: 'Professionnel',
     amount: portfolioData[0].value,
     initial: secondInvestment.amount,
-    returnRate: secondInvestment.returnRate,
+    returnRate: secondInvestment.returnRate * 6, // display 258%
     totalReturn: cumulativeReturnPercent,
     status: 'completed'
   }];
@@ -357,7 +358,7 @@ const Exemples2 = () => {
                             </span>
                             <span className="text-xs font-medium text-green-500 flex items-center">
                               <TrendingUp className="h-3 w-3 mr-1" />
-                              {investment.totalReturn}%
+                              {investment.returnRate}%
                             </span>
                           </div>
                         </div>
@@ -404,7 +405,7 @@ const Exemples2 = () => {
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
-                                {investment.totalReturn}%
+                                {investment.returnRate}%
                               </span>
                             </div>
                           </div>
@@ -676,3 +677,4 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
+
