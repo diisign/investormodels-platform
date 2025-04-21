@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -82,7 +83,21 @@ const generateRealisticData = () => {
     imageUrl: creator.imageUrl,
     returnRate: secondInvestment.returnRate
   }];
-  
+
+  // Calculate months invested for secondInvestment to calculate cumulative return
+  const monthsInvested = (() => {
+    const start = secondInvestment.date;
+    const end = new Date('2025-04-20');
+    let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+    if (end.getDate() < start.getDate()) {
+      months -= 1; // Partial month doesn't count fully
+    }
+    return months > 0 ? months : 0;
+  })();
+
+  // Total cumulative return = monthsInvested * monthly return rate (43%)
+  const cumulativeReturnPercent = monthsInvested * secondInvestment.returnRate;
+
   const investmentsList = [{
     id: '1',
     creatorName: creator.name,
@@ -91,7 +106,7 @@ const generateRealisticData = () => {
     amount: portfolioData[0].value,
     initial: secondInvestment.amount,
     returnRate: secondInvestment.returnRate,
-    totalReturn: 43,
+    totalReturn: cumulativeReturnPercent,
     status: 'completed'
   }];
   
@@ -155,7 +170,7 @@ const generateRealisticData = () => {
       month: item.month,
       value: item.value
     })),
-    totalPercentageReturn: 43
+    totalPercentageReturn: cumulativeReturnPercent
   };
 };
 
@@ -661,3 +676,4 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
+
