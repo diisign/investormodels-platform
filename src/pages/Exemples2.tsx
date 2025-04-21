@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -175,8 +176,8 @@ const generateRealisticData = () => {
     transactions,
     referralData,
     balance,
-    totalInvested: secondInvestment.amount,
-    totalEarnings: Number((totalValue - secondInvestment.amount).toFixed(2)),
+    totalInvested: 800,  // changed from secondInvestment.amount 1000 to 800
+    totalEarnings: Number((totalValue - 800).toFixed(2)),  // adjusted accordingly
     monthlyChartData: performanceData.map(item => ({
       month: item.month,
       value: item.value
@@ -233,7 +234,7 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalInvested}€</span>
+                    <span className="text-2xl font-bold">800€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                     Dans {data.investments.length} créatrice
