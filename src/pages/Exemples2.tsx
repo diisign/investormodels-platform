@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -146,7 +145,7 @@ const generateRealisticData = () => {
     totalReferrals: 9,
     pendingReferrals: 3,
     completedReferrals: 6,
-    earnings: 125+200+75+250+150+75, // total des gains complétés = 875
+    earnings: 125 + 200 + 75 + 250 + 150 + 75, // 875 total from completed
     recentReferrals: [
       { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
       { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
@@ -158,16 +157,17 @@ const generateRealisticData = () => {
       { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 260 },
       { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 120 },
     ],
-    tierProgress: Math.round((6 / 9) * 100), // 6 sur 9
+    tierProgress: Math.round((6 / 9) * 100),
     currentTier: 'Starter',
     nextTier: 'Bronze',
-    nextTierRequirement: 9 // 9 total pour débloquer bronze
+    nextTierRequirement: 9
   };
-  
-  const referralEarnings = referralData.earnings; // 875€
-  
+
+  const updatedReferralEarnings = referralData.earnings;
+  const totalEarningsValue = 2340;
+
   const balanceWithoutReferral = Number(totalValue.toFixed(2));
-  const balance = balanceWithoutReferral + referralEarnings;
+  const balance = balanceWithoutReferral + updatedReferralEarnings;
 
   return {
     performanceData,
@@ -176,8 +176,8 @@ const generateRealisticData = () => {
     transactions,
     referralData,
     balance,
-    totalInvested: 800,  // changed from secondInvestment.amount 1000 to 800
-    totalEarnings: Number((totalValue - 800).toFixed(2)),  // adjusted accordingly
+    totalInvested: 800,
+    totalEarnings: totalEarningsValue,
     monthlyChartData: performanceData.map(item => ({
       month: item.month,
       value: item.value
@@ -251,7 +251,7 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
+                    <span className="text-2xl font-bold">2340€</span>
                     <span className="ml-2 text-sm text-green-500">
                       +258%
                     </span>
