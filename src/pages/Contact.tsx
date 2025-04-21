@@ -32,7 +32,7 @@ const Contact = () => {
           <div className="space-y-4 mb-8">
             <div>
               <h3 className="font-medium">Adresse</h3>
-              <p className="text-sm text-muted-foreground">60 rue François 1er<br />75008 Paris, France</p>
+              <p className="text-sm text-muted-foreground">1234 Elm Street<br />San Francisco, CA 94102, USA</p>
             </div>
             
             <div>
@@ -111,3 +111,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

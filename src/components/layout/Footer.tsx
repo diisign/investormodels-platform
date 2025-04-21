@@ -126,10 +126,10 @@ const Footer: React.FC = () => {
               <li className="flex items-start">
                 <Mail className="h-5 w-5 text-creator-500 mr-2 mt-0.5" />
                 <a 
-                  href="mailto:contact@creatorinvest.com" 
+                  href="mailto:creatorinvest@outlook.fr" 
                   className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
-                  contact@creatorinvest.com
+                  creatorinvest@outlook.fr
                 </a>
               </li>
               <li>
@@ -165,3 +165,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
