@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -241,7 +240,7 @@ const Exemples2 = () => {
                   <div className="flex items-end">
                     <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
                     <span className="ml-2 text-sm text-green-500">
-                      +{data.totalPercentageReturn}%
+                      +258%
                     </span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
@@ -677,4 +676,3 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
-
