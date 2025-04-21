@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -154,9 +153,9 @@ const generateRealisticData = () => {
       { name: 'Karine B.', date: '17/04/2025', status: 'completed', reward: 250 },
       { name: 'Charles N.', date: '18/04/2025', status: 'completed', reward: 150 },
       { name: 'Lina F.', date: '19/04/2025', status: 'completed', reward: 75 },
-      { name: 'Inès D.', date: '20/04/2025', status: 'pending', reward: 50 },
-      { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 50 },
-      { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 50 },
+      { name: 'Inès D.', date: '20/04/2025', status: 'pending', reward: 180 },
+      { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 260 },
+      { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 120 },
     ],
     tierProgress: Math.round((6 / 9) * 100), // 6 sur 9
     currentTier: 'Starter',
@@ -689,4 +688,3 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
-
