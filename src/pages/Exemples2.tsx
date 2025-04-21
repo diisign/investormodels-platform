@@ -15,7 +15,6 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { creators } from '@/utils/mockData';
 
 const generateRealisticData = () => {
-  // Configuration spécifique de l'investissement
   const creator = {
     id: 'creator_maria',
     name: 'Maria 🤸🏻‍*', 
@@ -83,7 +82,6 @@ const generateRealisticData = () => {
     returnRate: secondInvestment.returnRate * 6  // multiplication by 6 months to display 258%
   }];
 
-  // Calculate months invested for secondInvestment to calculate cumulative return
   const monthsInvested = (() => {
     const start = secondInvestment.date;
     const end = new Date('2025-04-20');
@@ -94,7 +92,6 @@ const generateRealisticData = () => {
     return months > 0 ? months : 0;
   })();
 
-  // Total cumulative return = monthsInvested * monthly return rate (43%)
   const cumulativeReturnPercent = monthsInvested * secondInvestment.returnRate;
 
   const investmentsList = [{
@@ -145,15 +142,25 @@ const generateRealisticData = () => {
   ];
   
   const referralData = {
-    totalReferrals: 0,
-    pendingReferrals: 0,
-    completedReferrals: 0,
-    earnings: 0,
-    recentReferrals: [],
-    tierProgress: 0,
+    totalReferrals: 9,
+    pendingReferrals: 3,
+    completedReferrals: 6,
+    earnings: 125+200+75+250+150+75, // total des gains complétés = 875
+    recentReferrals: [
+      { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
+      { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
+      { name: 'Alan P.', date: '16/04/2025', status: 'completed', reward: 75 },
+      { name: 'Karine B.', date: '17/04/2025', status: 'completed', reward: 250 },
+      { name: 'Charles N.', date: '18/04/2025', status: 'completed', reward: 150 },
+      { name: 'Lina F.', date: '19/04/2025', status: 'completed', reward: 75 },
+      { name: 'Inès D.', date: '20/04/2025', status: 'pending', reward: 50 },
+      { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 50 },
+      { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 50 },
+    ],
+    tierProgress: Math.round((6 / 9) * 100), // 6 sur 9
     currentTier: 'Starter',
     nextTier: 'Bronze',
-    nextTierRequirement: 5
+    nextTierRequirement: 9 // 9 total pour débloquer bronze
   };
   
   return {
@@ -570,7 +577,7 @@ const Exemples2 = () => {
                             <div className="text-xs text-gray-500">{referral.date}</div>
                           </div>
                           <div className="flex flex-col items-end">
-                            <span className="text-sm font-semibold text-green-500">+{referral.reward}€</span>
+                            <span className="text-sm font-semibold text-green-500">{referral.status === "completed" ? `+${referral.reward}€` : `+${referral.reward}€`}</span>
                             <span className={cn(
                               "text-xs px-2 py-0.5 rounded-full mt-1",
                               referral.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
