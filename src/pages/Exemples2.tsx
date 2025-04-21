@@ -163,13 +163,18 @@ const generateRealisticData = () => {
     nextTierRequirement: 9 // 9 total pour débloquer bronze
   };
   
+  const referralEarnings = referralData.earnings; // 875€
+
+  const balanceWithoutReferral = Number(totalValue.toFixed(2));
+  const balance = balanceWithoutReferral + referralEarnings;
+
   return {
     performanceData,
     portfolioData,
     investments: investmentsList,
     transactions,
     referralData,
-    balance: Number(totalValue.toFixed(2)),
+    balance,
     totalInvested: secondInvestment.amount,
     totalEarnings: Number((totalValue - secondInvestment.amount).toFixed(2)),
     monthlyChartData: performanceData.map(item => ({
@@ -207,7 +212,7 @@ const Exemples2 = () => {
                     <CardTitle className="text-sm font-medium text-black dark:text-white">Votre solde</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance} €</div>
+                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance.toFixed(2)} €</div>
                     <button 
                       onClick={() => setShowDepositModal(true)}
                       className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
