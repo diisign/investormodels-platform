@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -164,7 +165,7 @@ const generateRealisticData = () => {
   };
   
   const referralEarnings = referralData.earnings; // 875€
-
+  
   const balanceWithoutReferral = Number(totalValue.toFixed(2));
   const balance = balanceWithoutReferral + referralEarnings;
 
@@ -256,7 +257,7 @@ const Exemples2 = () => {
                     </span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Retrait total le 06 avril 2025
+                    {/* Retrait total le 06 avril 2025 --> removed as requested */}
                   </div>
                 </div>
               </FadeIn>
@@ -688,3 +689,4 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
+
