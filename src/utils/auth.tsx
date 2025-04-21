@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
@@ -21,7 +20,7 @@ type AuthContextType = {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (email: string, name: string, password: string) => Promise<boolean>;
+  register: (email: string, password: string, name: string) => Promise<boolean>;
   logout: () => Promise<void>;
 };
 
@@ -154,7 +153,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Login successful:', data);
       toast.success("Connexion réussie");
       
-      // Fix: Create a valid User object from data.user
       if (data.user) {
         const userData: User = {
           id: data.user.id,
@@ -178,10 +176,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (email: string, name: string, password: string): Promise<boolean> => {
+  const register = async (email: string, password: string, name: string): Promise<boolean> => {
     try {
       console.log('Attempting registration with:', email, name);
       setIsLoading(true);
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
