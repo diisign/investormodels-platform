@@ -3,10 +3,8 @@ import React, { useState } from 'react';
 import { useAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import UserBalance from '@/components/UserBalance';
-import UserInvestments from '@/components/UserInvestments';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { PlusCircle, LogOut, CircleDollarSign, TrendingUp, Users, Wallet } from "lucide-react";
+import { PlusCircle, LogOut, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift, ArrowRight, ArrowUpRight } from "lucide-react";
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import FadeIn from '@/components/animations/FadeIn';
@@ -14,6 +12,16 @@ import GradientButton from '@/components/ui/GradientButton';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceLine,
+} from 'recharts';
 
 const Dashboard = () => {
   const { logout, user } = useAuth();
@@ -21,6 +29,22 @@ const Dashboard = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
+
+  const { data: userTransactions = [], isLoading: isTransactionsLoading } = useQuery({
+    queryKey: ['userTransactions', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user,
+  });
 
   const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery({
     queryKey: ['userInvestments'],
@@ -36,31 +60,37 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const { data: transactions = [] } = useQuery({
-    queryKey: ['userTransactions'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('transactions')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data || [];
-    },
-    enabled: !!user,
-  });
-
+  // Calculate total invested and returns
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => {
     const monthlyReturn = (Number(inv.amount) * Number(inv.return_rate)) / 100;
     return sum + monthlyReturn;
   }, 0);
 
+  // Generate performance data for the chart
+  const performanceData = userTransactions.map(transaction => ({
+    month: new Date(transaction.created_at).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }),
+    value: transaction.amount,
+    withdrawal: transaction.type === 'withdrawal' ? transaction.amount : undefined
+  }));
+
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowDepositModal(false);
     navigate('/deposit');
+  };
+
+  // Referral mock data - you can replace this with real data later
+  const referralData = {
+    totalReferrals: 0,
+    pendingReferrals: 0,
+    completedReferrals: 0,
+    earnings: 0,
+    recentReferrals: [],
+    tierProgress: 0,
+    currentTier: 'Starter',
+    nextTier: 'Bronze',
+    nextTierRequirement: 5
   };
 
   return (
@@ -79,7 +109,9 @@ const Dashboard = () => {
                     <CardTitle className="text-sm font-medium">Votre solde</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <UserBalance />
+                    <div className="text-2xl font-bold">
+                      {userTransactions.reduce((sum, t) => sum + Number(t.amount), 0).toFixed(2)}€
+                    </div>
                     <button 
                       onClick={() => navigate('/deposit')}
                       className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
@@ -149,6 +181,91 @@ const Dashboard = () => {
               </FadeIn>
             </div>
 
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+              <FadeIn direction="up" className="glass-card lg:col-span-3">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-semibold">Performance</h3>
+                    <select 
+                      className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2"
+                      value={timeRange}
+                      onChange={(e) => setTimeRange(e.target.value)}
+                    >
+                      <option value="12">12 derniers mois</option>
+                      <option value="6">6 derniers mois</option>
+                      <option value="3">3 derniers mois</option>
+                    </select>
+                  </div>
+                  <div className="h-72">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        data={performanceData}
+                        margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                        <XAxis 
+                          dataKey="month" 
+                          axisLine={false} 
+                          tickLine={false}
+                          padding={{ left: 10, right: 10 }}
+                          tick={{ fontSize: 10 }}
+                        />
+                        <YAxis 
+                          axisLine={false} 
+                          tickLine={false} 
+                          domain={['dataMin - 10', 'dataMax + 10']}
+                          tickCount={5}
+                          tickFormatter={(value) => Math.round(value).toString()}
+                          width={40}
+                        />
+                        <Tooltip formatter={(value) => `${value}€`} />
+                        <Line
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#0ea5e9"
+                          strokeWidth={3}
+                          dot={{ r: 3 }}
+                          activeDot={{ r: 6, strokeWidth: 0 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    {investments.map((investment) => (
+                      <div 
+                        key={investment.id}
+                        className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
+                      >
+                        <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                          <img 
+                            src={investment.creator_image || 'https://via.placeholder.com/40'} 
+                            alt={investment.creator_name} 
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-grow">
+                          <div className="flex justify-between items-center">
+                            <h4 className="font-medium text-sm">{investment.creator_name}</h4>
+                            <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                          </div>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              Initial: {Number(investment.initial_amount || investment.amount).toFixed(2)}€
+                            </span>
+                            <span className="text-xs font-medium text-green-500 flex items-center">
+                              <TrendingUp className="h-3 w-3 mr-1" />
+                              {investment.return_rate}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </FadeIn>
+            </div>
+            
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               <FadeIn direction="up" className="glass-card">
                 <div className="p-6">
@@ -159,45 +276,105 @@ const Dashboard = () => {
                       className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
                     >
                       Voir tout
+                      <ArrowRight className="h-4 w-4 ml-1" />
                     </button>
                   </div>
-                  <UserInvestments />
+                  
+                  {investments.length > 0 ? (
+                    <div className="space-y-4">
+                      {investments.map((investment) => (
+                        <div 
+                          key={investment.id}
+                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                            <img 
+                              src={investment.creator_image || 'https://via.placeholder.com/40'} 
+                              alt={investment.creator_name} 
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-grow">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-medium text-sm">{investment.creator_name}</h4>
+                              <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                            </div>
+                            <div className="flex justify-between items-center mt-1">
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                Initial: {Number(investment.initial_amount || investment.amount).toFixed(2)}€
+                              </span>
+                              <span className="text-xs font-medium text-green-500 flex items-center">
+                                <TrendingUp className="h-3 w-3 mr-1" />
+                                {investment.return_rate}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <div className="text-gray-400 mb-3">
+                        <CircleDollarSign className="h-12 w-12 mx-auto opacity-30" />
+                      </div>
+                      <h4 className="text-lg font-medium mb-2">Aucun investissement</h4>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
+                        Vous n'avez pas encore investi dans des créateurs.
+                      </p>
+                      <GradientButton 
+                        onClick={() => navigate('/creators')}
+                        size="sm"
+                        className="from-teal-400 to-blue-500 text-white"
+                      >
+                        Découvrir des créatrices
+                      </GradientButton>
+                    </div>
+                  )}
                 </div>
               </FadeIn>
-
+              
               <FadeIn direction="up" delay={100} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">Transactions récentes</h3>
-                    <button className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-                      Filtrer
+                    <button className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 flex items-center">
+                      <Filter className="h-4 w-4 mr-1" />
+                      <span>Filtrer</span>
                     </button>
                   </div>
-
-                  {transactions.length > 0 ? (
+                  
+                  {userTransactions.length > 0 ? (
                     <div className="space-y-4">
-                      {transactions.map((transaction) => (
+                      {userTransactions.map((transaction) => (
                         <div 
                           key={transaction.id}
                           className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
                         >
                           <div className={cn(
                             "h-10 w-10 rounded-full flex items-center justify-center mr-3",
-                            transaction.status === 'completed' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
-                            "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400"
+                            transaction.type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
+                            transaction.type === 'withdrawal' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
+                            "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
                           )}>
-                            <Wallet className="h-5 w-5" />
+                            {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
+                            {transaction.type === 'withdrawal' && <Minus className="h-5 w-5" />}
+                            {transaction.type === 'investment' && <ArrowUpRight className="h-5 w-5" />}
                           </div>
                           <div className="flex-grow">
                             <div className="flex justify-between items-center">
                               <h4 className="font-medium text-sm">
-                                {transaction.payment_method === 'card' ? 'Paiement par carte' : 'Virement bancaire'}
+                                {transaction.type === 'deposit' ? 'Dépôt' : 
+                                 transaction.type === 'withdrawal' ? 'Retrait' : 
+                                 'Investissement'}
                               </h4>
                               <span className={cn(
                                 "text-sm font-semibold",
-                                transaction.status === 'completed' ? "text-green-500" : "text-yellow-500"
+                                transaction.type === 'deposit' ? "text-blue-500" : 
+                                transaction.type === 'withdrawal' ? "text-green-500" : 
+                                "text-investment-500"
                               )}>
-                                {transaction.amount}€
+                                {transaction.type === 'deposit' ? '+' : ''}
+                                {Number(transaction.amount).toFixed(2)}€
                               </span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
@@ -206,7 +383,8 @@ const Dashboard = () => {
                               </span>
                               <span className={cn(
                                 "text-xs px-2 py-0.5 rounded-full",
-                                transaction.status === 'completed' ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                                transaction.status === 'completed' ? "bg-green-100 text-green-800" : 
+                                "bg-yellow-100 text-yellow-800"
                               )}>
                                 {transaction.status === 'completed' ? 'Terminé' : 'En cours'}
                               </span>
@@ -230,6 +408,82 @@ const Dashboard = () => {
               </FadeIn>
             </div>
             
+            <FadeIn direction="up" delay={200} className="glass-card mt-8">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold">Programme de parrainage</h3>
+                  <button
+                    onClick={() => navigate('/affiliation')}
+                    className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
+                  >
+                    <span>Voir tout</span>
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total parrainages</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-investment-100 dark:bg-investment-900/30 text-investment-600">
+                        <UserPlus className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.totalReferrals}</div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">En attente</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600">
+                        <Users className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.pendingReferrals}</div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Complétés</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 text-green-600">
+                        <Award className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.completedReferrals}</div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Gains totaux</h4>
+                      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600">
+                        <Gift className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold">{referralData.earnings}€</div>
+                  </div>
+                </div>
+                
+                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                  <h4 className="font-semibold mb-3">Niveau du programme</h4>
+                  <div className="mb-2 flex justify-between">
+                    <span className="text-sm font-medium">{referralData.currentTier}</span>
+                    <span className="text-sm font-medium">{referralData.nextTier}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mb-4 dark:bg-gray-700">
+                    <div 
+                      className="bg-investment-600 h-2 rounded-full" 
+                      style={{ width: `${referralData.tierProgress}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300">
+                    <span className="font-medium">
+                      {referralData.completedReferrals}/{referralData.nextTierRequirement}
+                    </span> parrainages nécessaires pour débloquer le niveau {referralData.nextTier}
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+            
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
               <Button 
                 onClick={() => navigate('/deposit')} 
@@ -250,6 +504,67 @@ const Dashboard = () => {
           </div>
         </section>
       </main>
+      
+      {showDepositModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
+            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
+            <form onSubmit={handleDeposit}>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Montant (€)
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="number"
+                      id="amount"
+                      value={depositAmount}
+                      onChange={(e) => setDepositAmount(e.target.value)}
+                      min="10"
+                      step="10"
+                      className="input-field pl-10"
+                      placeholder="100"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Méthode de paiement
+                  </label>
+                  <select 
+                    id="payment-method" 
+                    className="input-field"
+                    required
+                  >
+                    <option value="">Sélectionner une méthode</option>
+                    <option value="credit-card">Carte bancaire</option>
+                    <option value="bank-transfer">Virement bancaire</option>
+                  </select>
+                </div>
+                
+                <div className="pt-4 flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowDepositModal(false)}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    Annuler
+                  </button>
+                  <GradientButton type="submit">
+                    Déposer
+                  </GradientButton>
+                </div>
+              </div>
+            </form>
+          </FadeIn>
+        </div>
+      )}
       
       <Footer />
     </div>
