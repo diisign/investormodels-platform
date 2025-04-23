@@ -23,20 +23,25 @@ import {
   ReferenceLine,
 } from 'recharts';
 import { creators } from '@/utils/mockData';
+import { Database } from '@/integrations/supabase/types';
+
+// Define database table types
+type Transaction = Database['public']['Tables']['transactions']['Row'];
+type Investment = Database['public']['Tables']['investments']['Row'];
 
 // Define extended types for our database data with visual fields
-interface ExtendedTransaction extends Tables<"transactions"> {
+interface ExtendedTransaction extends Transaction {
   type: 'deposit' | 'withdrawal' | 'investment';
 }
 
-interface ExtendedInvestment extends Tables<"investments"> {
+interface ExtendedInvestment extends Investment {
   creator_name: string;
   creator_image: string;
   initial_amount: number;
 }
 
 // Helper function to add visual properties to transactions
-const enhanceTransaction = (transaction: Tables<"transactions">): ExtendedTransaction => {
+const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
   // Determine transaction type based on amount and other properties
   let type: 'deposit' | 'withdrawal' | 'investment' = 'deposit';
   
@@ -53,7 +58,7 @@ const enhanceTransaction = (transaction: Tables<"transactions">): ExtendedTransa
 };
 
 // Helper function to add creator details to investments
-const enhanceInvestment = (investment: Tables<"investments">): ExtendedInvestment => {
+const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
   // Find creator details from mockData based on creator_id
   const creator = creators.find(c => c.id === investment.creator_id) || {
     name: "Créatrice",
