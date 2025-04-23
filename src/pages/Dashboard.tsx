@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  AreaChart,
+  Area
 } from 'recharts';
 import { creators } from '@/utils/mockData';
 import { Database } from '@/integrations/supabase/types';
@@ -35,8 +38,11 @@ interface ExtendedInvestment extends Investment {
   creator_name: string;
   creator_image: string;
   initial_amount: number;
+  monthly_return: number;
+  total_return: number;
 }
 
+// Helper function to enhance transaction with type
 const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
   let type: 'deposit' | 'withdrawal' | 'investment' = 'deposit';
   
@@ -54,18 +60,47 @@ const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
   };
 };
 
+// Helper function to enhance investment with creator info and return calculations
 const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
   const creator = creators.find(c => c.id === investment.creator_id) || {
     name: "Créatrice",
     imageUrl: "https://via.placeholder.com/40"
   };
   
+  // Calculate monthly return rate (total return rate divided by 3 months)
+  const monthlyReturnRate = Number(investment.return_rate) / 3;
+  
+  // Calculate monthly return amount
+  const monthlyReturn = (Number(investment.amount) * monthlyReturnRate) / 100;
+  
+  // Calculate total return after 3 months
+  const totalReturn = Number(investment.amount) * (Number(investment.return_rate) / 100);
+  
   return {
     ...investment,
     creator_name: creator.name,
     creator_image: creator.imageUrl,
-    initial_amount: investment.amount
+    initial_amount: Number(investment.amount),
+    monthly_return: monthlyReturn,
+    total_return: totalReturn
   };
+};
+
+// Generate last 12 months data from June 2024 to May 2025
+const generateLastTwelveMonths = () => {
+  const months = [];
+  // Start with June 2024
+  let date = new Date(2024, 5, 1); // June is month 5 (zero-indexed)
+  
+  for (let i = 0; i < 12; i++) {
+    // Format the month and year
+    const monthLabel = new Date(date).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
+    months.push(monthLabel);
+    // Move to next month
+    date.setMonth(date.getMonth() + 1);
+  }
+  
+  return months;
 };
 
 const Dashboard = () => {
@@ -91,6 +126,7 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
+  // Enhanced transactions with type information
   const userTransactions: ExtendedTransaction[] = rawTransactions.map(enhanceTransaction);
 
   const { data: rawInvestments = [], isLoading: isInvestmentsLoading } = useQuery({
@@ -108,37 +144,52 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
+  // Enhanced investments with creator info and return calculations
   const investments: ExtendedInvestment[] = rawInvestments.map(enhanceInvestment);
 
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
-  const totalReturn = investments.reduce((sum, inv) => {
-    const monthlyReturn = (Number(inv.amount) * Number(inv.return_rate)) / 100;
-    return sum + monthlyReturn;
-  }, 0);
+  const totalReturn = investments.reduce((sum, inv) => sum + inv.monthly_return, 0);
 
-  const generateLastTwelveMonths = () => {
-    const months = [];
-    let date = new Date(2024, 5);
-    for (let i = 0; i < 12; i++) {
-      months.unshift(new Date(date).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }));
-      date.setMonth(date.getMonth() + 1);
-    }
-    return months;
-  };
-
+  // Generate performance data for the chart
   const generatePerformanceData = () => {
     const months = generateLastTwelveMonths();
-    return months.map(month => {
-      const monthTransactions = userTransactions.filter(t => 
-        new Date(t.created_at).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }) === month
-      );
-      
-      return {
-        month,
-        value: monthTransactions.reduce((sum, t) => sum + Number(t.amount), 0),
-        withdrawal: monthTransactions.find(t => t.type === 'withdrawal')?.amount
-      };
-    });
+    
+    // Create base data with months and zero values
+    const baseData = months.map(month => ({
+      month,
+      invested: 0,
+      return: 0
+    }));
+    
+    // If we have investments, populate their data into the chart
+    if (investments.length > 0) {
+      // For each investment, calculate its contribution to each month
+      investments.forEach(investment => {
+        // Simplification: assume all investments start from the first month in our chart
+        // In a real app, you'd use actual investment dates to determine which months to affect
+        
+        // We only show the investment amount, not the total account balance
+        // For the first month, add the initial investment amount
+        if (baseData.length > 0) {
+          baseData[0].invested += investment.initial_amount;
+        }
+        
+        // For each month, calculate returns
+        for (let i = 0; i < baseData.length; i++) {
+          // Add cumulative returns for each month (43.3% per month, simplified)
+          const monthsElapsed = i + 1;
+          if (monthsElapsed <= 3) { // Returns only accumulate for 3 months
+            const monthlyReturn = investment.initial_amount * (Number(investment.return_rate) / 3 / 100) * monthsElapsed;
+            baseData[i].return = monthlyReturn;
+          } else {
+            // After 3 months, return stays constant
+            baseData[i].return = investment.initial_amount * (Number(investment.return_rate) / 100);
+          }
+        }
+      });
+    }
+    
+    return baseData;
   };
 
   const performanceData = generatePerformanceData();
@@ -266,10 +317,20 @@ const Dashboard = () => {
                   </div>
                   <div className="h-72">
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
+                      <AreaChart
                         data={performanceData}
                         margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
                       >
+                        <defs>
+                          <linearGradient id="investedGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0.1}/>
+                          </linearGradient>
+                          <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
+                          </linearGradient>
+                        </defs>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                         <XAxis 
                           dataKey="month" 
@@ -280,22 +341,31 @@ const Dashboard = () => {
                         />
                         <YAxis 
                           axisLine={false} 
-                          tickLine={false} 
-                          domain={[0, 'dataMax + 100']}
+                          tickLine={false}
+                          domain={[0, 'auto']}
                           tickCount={5}
                           tickFormatter={(value) => Math.round(value).toString()}
                           width={40}
                         />
                         <Tooltip formatter={(value) => `${value}€`} />
-                        <Line
-                          type="monotone"
-                          dataKey="value"
-                          stroke="#0ea5e9"
-                          strokeWidth={3}
-                          dot={{ r: 3 }}
-                          activeDot={{ r: 6, strokeWidth: 0 }}
+                        <Area
+                          type="monotone" 
+                          dataKey="invested" 
+                          name="Investissement"
+                          stroke="#0ea5e9" 
+                          fillOpacity={1} 
+                          fill="url(#investedGradient)"
+                          stackId="1"
                         />
-                      </LineChart>
+                        <Area 
+                          type="monotone" 
+                          dataKey="return" 
+                          name="Rendement"
+                          stroke="#22c55e" 
+                          fillOpacity={1} 
+                          fill="url(#returnGradient)"
+                        />
+                      </AreaChart>
                     </ResponsiveContainer>
                   </div>
                   
@@ -307,7 +377,7 @@ const Dashboard = () => {
                       >
                         <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                           <img 
-                            src={investment.creator_image || 'https://via.placeholder.com/40'} 
+                            src={investment.creator_image} 
                             alt={investment.creator_name} 
                             className="h-full w-full object-cover"
                           />
@@ -319,7 +389,7 @@ const Dashboard = () => {
                           </div>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Initial: {Number(investment.initial_amount || investment.amount).toFixed(2)}€
+                              Initial: {Number(investment.initial_amount).toFixed(2)}€
                             </span>
                             <span className="text-xs font-medium text-green-500 flex items-center">
                               <TrendingUp className="h-3 w-3 mr-1" />
@@ -357,7 +427,7 @@ const Dashboard = () => {
                         >
                           <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                             <img 
-                              src={investment.creator_image || 'https://via.placeholder.com/40'} 
+                              src={investment.creator_image} 
                               alt={investment.creator_name} 
                               className="h-full w-full object-cover"
                             />
@@ -369,7 +439,7 @@ const Dashboard = () => {
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {Number(investment.initial_amount || investment.amount).toFixed(2)}€
+                                Initial: {Number(investment.initial_amount).toFixed(2)}€
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
@@ -413,58 +483,83 @@ const Dashboard = () => {
                   
                   {userTransactions.length > 0 ? (
                     <div className="space-y-4">
-                      {userTransactions.map((transaction) => (
-                        <div 
-                          key={transaction.id}
-                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
-                        >
-                          <div className={cn(
-                            "h-10 w-10 rounded-full flex items-center justify-center mr-3",
-                            transaction.type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
-                            transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
-                            "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
-                          )}>
-                            {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
-                            {transaction.type === 'withdrawal' && <Minus className="h-5 w-5" />}
-                            {transaction.type === 'investment' && <ArrowUpRight className="h-5 w-5" />}
-                          </div>
-                          <div className="flex-grow">
-                            <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-sm">
-                                {transaction.type === 'deposit' ? 'Dépôt' : 
-                                 transaction.type === 'withdrawal' ? 'Retrait' : 
-                                 'Investissement'}
-                                {transaction.type === 'investment' && (
-                                  <span className="ml-2 text-gray-500">
-                                    - {creators.find(c => c.id === transaction.payment_id)?.name || 'Créatrice'}
-                                  </span>
-                                )}
-                              </h4>
-                              <span className={cn(
-                                "text-sm font-semibold",
-                                transaction.type === 'deposit' ? "text-blue-500" : 
-                                transaction.type === 'withdrawal' ? "text-red-500" : 
-                                "text-investment-500"
-                              )}>
-                                {transaction.type === 'withdrawal' ? '-' : '+'}
-                                {Math.abs(Number(transaction.amount)).toFixed(2)}€
-                              </span>
+                      {userTransactions.map((transaction) => {
+                        // For investment transactions, find the related creator info
+                        let creatorInfo = null;
+                        if (transaction.type === 'investment' && transaction.payment_id) {
+                          const creator = creators.find(c => c.id === transaction.payment_id);
+                          if (creator) {
+                            creatorInfo = {
+                              name: creator.name,
+                              image: creator.imageUrl
+                            };
+                          }
+                        }
+                        
+                        return (
+                          <div 
+                            key={transaction.id}
+                            className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
+                          >
+                            <div className={cn(
+                              "h-10 w-10 rounded-full flex items-center justify-center mr-3",
+                              transaction.type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
+                              transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
+                              "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
+                            )}>
+                              {/* Show creator image for investment transactions if available */}
+                              {transaction.type === 'investment' && creatorInfo ? (
+                                <img 
+                                  src={creatorInfo.image}
+                                  alt={creatorInfo.name}
+                                  className="h-full w-full object-cover rounded-full"
+                                />
+                              ) : (
+                                <>
+                                  {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
+                                  {transaction.type === 'withdrawal' && <Minus className="h-5 w-5" />}
+                                  {transaction.type === 'investment' && <ArrowUpRight className="h-5 w-5" />}
+                                </>
+                              )}
                             </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {new Date(transaction.created_at).toLocaleDateString('fr-FR')}
-                              </span>
-                              <span className={cn(
-                                "text-xs px-2 py-0.5 rounded-full",
-                                transaction.status === 'completed' ? "bg-green-100 text-green-800" : 
-                                "bg-yellow-100 text-yellow-800"
-                              )}>
-                                {transaction.status === 'completed' ? 'Terminé' : 'En cours'}
-                              </span>
+                            <div className="flex-grow">
+                              <div className="flex justify-between items-center">
+                                <h4 className="font-medium text-sm">
+                                  {transaction.type === 'deposit' ? 'Dépôt' : 
+                                  transaction.type === 'withdrawal' ? 'Retrait' : 
+                                  'Investissement'}
+                                  {transaction.type === 'investment' && creatorInfo && (
+                                    <span className="ml-2 text-gray-500">
+                                      - {creatorInfo.name}
+                                    </span>
+                                  )}
+                                </h4>
+                                <span className={cn(
+                                  "text-sm font-semibold",
+                                  transaction.type === 'deposit' ? "text-blue-500" : 
+                                  transaction.type === 'withdrawal' ? "text-red-500" : 
+                                  "text-investment-500"
+                                )}>
+                                  {transaction.type === 'withdrawal' ? '-' : '+'}
+                                  {Math.abs(Number(transaction.amount)).toFixed(2)}€
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center mt-1">
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  {new Date(transaction.created_at).toLocaleDateString('fr-FR')}
+                                </span>
+                                <span className={cn(
+                                  "text-xs px-2 py-0.5 rounded-full",
+                                  transaction.status === 'completed' ? "bg-green-100 text-green-800" : 
+                                  "bg-yellow-100 text-yellow-800"
+                                )}>
+                                  {transaction.status === 'completed' ? 'Terminé' : 'En cours'}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="text-center py-8">
