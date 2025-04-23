@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import UserBalance from '@/components/UserBalance';
 import UserInvestments from '@/components/UserInvestments';
+import { PlusCircle, LogOut } from "lucide-react";
 
 const Dashboard = () => {
   const { logout } = useAuth();
@@ -19,8 +20,23 @@ const Dashboard = () => {
         <UserInvestments />
       </div>
       
-      <Button onClick={() => navigate('/deposit')}>Déposer des fonds</Button>
-      <Button onClick={logout}>Se déconnecter</Button>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Button 
+          onClick={() => navigate('/deposit')} 
+          className="flex items-center gap-2"
+        >
+          <PlusCircle size={18} />
+          Déposer des fonds
+        </Button>
+        <Button 
+          onClick={logout} 
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <LogOut size={18} />
+          Se déconnecter
+        </Button>
+      </div>
     </div>
   );
 };
