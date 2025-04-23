@@ -15,8 +15,9 @@ import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
+import { createInvestment } from '@/utils/investments';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
@@ -26,6 +27,7 @@ const CreatorDetails = () => {
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
+  const queryClient = useQueryClient();
   
   const mockCreator = creators.find(c => c.id === creatorId);
   
@@ -143,14 +145,34 @@ const CreatorDetails = () => {
       toast.error("Veuillez entrer un montant valide");
       return;
     }
+
+    if (amount > userBalance) {
+      toast.error("Solde insuffisant pour cet investissement");
+      return;
+    }
     
     setLoading(true);
     
     try {
-      await investInCreator(creator.id, "default", amount);
+      // Get the creator's current return rate
+      const returnRate = creatorProfile?.returnRate || 0;
+      
+      await createInvestment(
+        creatorId || '',
+        amount,
+        returnRate
+      );
+      
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
+      
+      // Refresh the user's balance
+      queryClient.invalidateQueries({
+        queryKey: ['userBalance'],
+      });
+      
     } catch (error) {
+      console.error('Error during investment:', error);
       toast.error(error instanceof Error ? error.message : "Erreur lors de l'investissement");
     } finally {
       setLoading(false);
