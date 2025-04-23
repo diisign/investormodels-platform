@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,51 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
+import { creators } from '@/utils/mockData';
+
+// Define extended types for our database data with visual fields
+interface ExtendedTransaction extends Tables<"transactions"> {
+  type: 'deposit' | 'withdrawal' | 'investment';
+}
+
+interface ExtendedInvestment extends Tables<"investments"> {
+  creator_name: string;
+  creator_image: string;
+  initial_amount: number;
+}
+
+// Helper function to add visual properties to transactions
+const enhanceTransaction = (transaction: Tables<"transactions">): ExtendedTransaction => {
+  // Determine transaction type based on amount and other properties
+  let type: 'deposit' | 'withdrawal' | 'investment' = 'deposit';
+  
+  if (transaction.payment_method?.includes('investment') || transaction.payment_id?.includes('invest')) {
+    type = 'investment';
+  } else if (transaction.amount < 0 || transaction.payment_method === 'withdrawal') {
+    type = 'withdrawal';
+  }
+  
+  return {
+    ...transaction,
+    type
+  };
+};
+
+// Helper function to add creator details to investments
+const enhanceInvestment = (investment: Tables<"investments">): ExtendedInvestment => {
+  // Find creator details from mockData based on creator_id
+  const creator = creators.find(c => c.id === investment.creator_id) || {
+    name: "Créatrice",
+    imageUrl: "https://via.placeholder.com/40"
+  };
+  
+  return {
+    ...investment,
+    creator_name: creator.name,
+    creator_image: creator.imageUrl,
+    initial_amount: investment.amount // Use amount as initial amount if not specified
+  };
+};
 
 const Dashboard = () => {
   const { logout, user } = useAuth();
@@ -30,7 +75,7 @@ const Dashboard = () => {
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
 
-  const { data: userTransactions = [], isLoading: isTransactionsLoading } = useQuery({
+  const { data: rawTransactions = [], isLoading: isTransactionsLoading } = useQuery({
     queryKey: ['userTransactions', user?.id],
     queryFn: async () => {
       if (!user) return [];
@@ -46,9 +91,13 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery({
+  // Transform raw transactions to add the type property
+  const userTransactions: ExtendedTransaction[] = rawTransactions.map(enhanceTransaction);
+
+  const { data: rawInvestments = [], isLoading: isInvestmentsLoading } = useQuery({
     queryKey: ['userInvestments'],
     queryFn: async () => {
+      if (!user) return [];
       const { data, error } = await supabase
         .from('investments')
         .select('*')
@@ -59,6 +108,9 @@ const Dashboard = () => {
     },
     enabled: !!user,
   });
+
+  // Transform raw investments to add visual properties
+  const investments: ExtendedInvestment[] = rawInvestments.map(enhanceInvestment);
 
   // Calculate total invested and returns
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
