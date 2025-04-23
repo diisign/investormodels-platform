@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
@@ -25,11 +24,9 @@ import {
 import { creators } from '@/utils/mockData';
 import { Database } from '@/integrations/supabase/types';
 
-// Define database table types
 type Transaction = Database['public']['Tables']['transactions']['Row'];
 type Investment = Database['public']['Tables']['investments']['Row'];
 
-// Define extended types for our database data with visual fields
 interface ExtendedTransaction extends Transaction {
   type: 'deposit' | 'withdrawal' | 'investment';
 }
@@ -40,12 +37,12 @@ interface ExtendedInvestment extends Investment {
   initial_amount: number;
 }
 
-// Helper function to add visual properties to transactions
 const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
-  // Determine transaction type based on amount and other properties
   let type: 'deposit' | 'withdrawal' | 'investment' = 'deposit';
   
-  if (transaction.payment_method?.includes('investment') || transaction.payment_id?.includes('invest')) {
+  if (transaction.payment_method?.includes('investment') || 
+      transaction.payment_id?.includes('invest') || 
+      transaction.status === 'invested') {
     type = 'investment';
   } else if (transaction.amount < 0 || transaction.payment_method === 'withdrawal') {
     type = 'withdrawal';
@@ -57,9 +54,7 @@ const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
   };
 };
 
-// Helper function to add creator details to investments
 const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
-  // Find creator details from mockData based on creator_id
   const creator = creators.find(c => c.id === investment.creator_id) || {
     name: "Créatrice",
     imageUrl: "https://via.placeholder.com/40"
@@ -69,7 +64,7 @@ const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
     ...investment,
     creator_name: creator.name,
     creator_image: creator.imageUrl,
-    initial_amount: investment.amount // Use amount as initial amount if not specified
+    initial_amount: investment.amount
   };
 };
 
@@ -96,7 +91,6 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  // Transform raw transactions to add the type property
   const userTransactions: ExtendedTransaction[] = rawTransactions.map(enhanceTransaction);
 
   const { data: rawInvestments = [], isLoading: isInvestmentsLoading } = useQuery({
@@ -114,22 +108,40 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  // Transform raw investments to add visual properties
   const investments: ExtendedInvestment[] = rawInvestments.map(enhanceInvestment);
 
-  // Calculate total invested and returns
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => {
     const monthlyReturn = (Number(inv.amount) * Number(inv.return_rate)) / 100;
     return sum + monthlyReturn;
   }, 0);
 
-  // Generate performance data for the chart
-  const performanceData = userTransactions.map(transaction => ({
-    month: new Date(transaction.created_at).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }),
-    value: transaction.amount,
-    withdrawal: transaction.type === 'withdrawal' ? transaction.amount : undefined
-  }));
+  const generateLastTwelveMonths = () => {
+    const months = [];
+    let date = new Date(2024, 5);
+    for (let i = 0; i < 12; i++) {
+      months.unshift(new Date(date).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }));
+      date.setMonth(date.getMonth() + 1);
+    }
+    return months;
+  };
+
+  const generatePerformanceData = () => {
+    const months = generateLastTwelveMonths();
+    return months.map(month => {
+      const monthTransactions = userTransactions.filter(t => 
+        new Date(t.created_at).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }) === month
+      );
+      
+      return {
+        month,
+        value: monthTransactions.reduce((sum, t) => sum + Number(t.amount), 0),
+        withdrawal: monthTransactions.find(t => t.type === 'withdrawal')?.amount
+      };
+    });
+  };
+
+  const performanceData = generatePerformanceData();
 
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,7 +149,6 @@ const Dashboard = () => {
     navigate('/deposit');
   };
 
-  // Referral mock data - you can replace this with real data later
   const referralData = {
     totalReferrals: 0,
     pendingReferrals: 0,
@@ -270,7 +281,7 @@ const Dashboard = () => {
                         <YAxis 
                           axisLine={false} 
                           tickLine={false} 
-                          domain={['dataMin - 10', 'dataMax + 10']}
+                          domain={[0, 'dataMax + 100']}
                           tickCount={5}
                           tickFormatter={(value) => Math.round(value).toString()}
                           width={40}
@@ -410,7 +421,7 @@ const Dashboard = () => {
                           <div className={cn(
                             "h-10 w-10 rounded-full flex items-center justify-center mr-3",
                             transaction.type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
-                            transaction.type === 'withdrawal' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
+                            transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
                             "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
                           )}>
                             {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
@@ -423,15 +434,20 @@ const Dashboard = () => {
                                 {transaction.type === 'deposit' ? 'Dépôt' : 
                                  transaction.type === 'withdrawal' ? 'Retrait' : 
                                  'Investissement'}
+                                {transaction.type === 'investment' && (
+                                  <span className="ml-2 text-gray-500">
+                                    - {creators.find(c => c.id === transaction.payment_id)?.name || 'Créatrice'}
+                                  </span>
+                                )}
                               </h4>
                               <span className={cn(
                                 "text-sm font-semibold",
                                 transaction.type === 'deposit' ? "text-blue-500" : 
-                                transaction.type === 'withdrawal' ? "text-green-500" : 
+                                transaction.type === 'withdrawal' ? "text-red-500" : 
                                 "text-investment-500"
                               )}>
-                                {transaction.type === 'deposit' ? '+' : ''}
-                                {Number(transaction.amount).toFixed(2)}€
+                                {transaction.type === 'withdrawal' ? '-' : '+'}
+                                {Math.abs(Number(transaction.amount)).toFixed(2)}€
                               </span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
