@@ -141,8 +141,8 @@ const CreatorDetails = () => {
     }
     
     const amount = Number(investmentAmount);
-    if (isNaN(amount) || amount <= 0) {
-      toast.error("Veuillez entrer un montant valide");
+    if (isNaN(amount) || amount < 1) {
+      toast.error("Le montant minimum d'investissement est de 1€");
       return;
     }
 
@@ -154,7 +154,6 @@ const CreatorDetails = () => {
     setLoading(true);
     
     try {
-      // Get the creator's current return rate
       const returnRate = creatorProfile?.returnRate || 0;
       
       await createInvestment(
@@ -166,7 +165,6 @@ const CreatorDetails = () => {
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
       
-      // Refresh the user's balance
       queryClient.invalidateQueries({
         queryKey: ['userBalance'],
       });
@@ -461,14 +459,14 @@ const CreatorDetails = () => {
                       id="amount"
                       value={investmentAmount}
                       onChange={(e) => setInvestmentAmount(e.target.value)}
-                      min={50}
-                      step="10"
+                      min={1}
+                      step="1"
                       className="input-field pl-10"
                       required
                     />
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Montant minimum: 50€
+                    Montant minimum : 1€
                   </p>
                 </div>
                 
