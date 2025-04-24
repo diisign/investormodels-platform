@@ -1,6 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
+import { getCreatorProfile } from './creatorProfiles';
 
 export const createInvestment = async (
   creatorId: string,
@@ -30,8 +31,11 @@ export const createInvestment = async (
     throw investmentError;
   }
 
+  // Get creator info for the transaction description
+  const creator = getCreatorProfile(creatorId);
+  const creatorName = creator?.name || 'Créatrice';
+
   // Then, create a transaction record for this investment (negative amount)
-  // According to the database schema, 'description' is not a field in the transactions table
   const { data: transaction, error: transactionError } = await supabase
     .from('transactions')
     .insert({
@@ -40,7 +44,7 @@ export const createInvestment = async (
       status: 'completed',
       payment_method: 'investment',
       payment_id: creatorId, // Store creator ID in payment_id
-      currency: 'EUR' // Adding required currency field
+      currency: 'EUR' // Required currency field
     })
     .select()
     .single();
@@ -50,6 +54,7 @@ export const createInvestment = async (
     toast.error("Erreur lors de la mise à jour du solde");
   }
 
+  // Invalidate any cache for the user balance
   return investment;
 };
 
