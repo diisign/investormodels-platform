@@ -40,20 +40,29 @@ const UserInvestments = () => {
               const investmentDate = new Date(investment.created_at);
               return (
                 <div key={investment.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div>
-                    <p className="font-medium">{creator?.name || 'Créatrice'}</p>
-                    <p className="text-sm text-gray-500">Rendement: {investment.return_rate}%</p>
-                    <p className="text-xs text-gray-500">
-                      Bloqué jusqu'au {format(
-                        new Date(
-                          investmentDate.getFullYear(),
-                          investmentDate.getMonth() + 3,
-                          investmentDate.getDate()
-                        ),
-                        'dd MMMM yyyy',
-                        { locale: fr }
-                      )}
-                    </p>
+                  <div className="flex items-center">
+                    <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                      <img 
+                        src={creator?.imageUrl || 'https://via.placeholder.com/40'} 
+                        alt={creator?.name || 'Créatrice'} 
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-medium">{creator?.name || 'Créatrice'}</p>
+                      <p className="text-sm text-gray-500">Rendement: {investment.return_rate}%</p>
+                      <p className="text-xs text-gray-500">
+                        Bloqué jusqu'au {format(
+                          new Date(
+                            investmentDate.getFullYear(),
+                            investmentDate.getMonth() + 3,
+                            investmentDate.getDate()
+                          ),
+                          'dd MMMM yyyy',
+                          { locale: fr }
+                        )}
+                      </p>
+                    </div>
                   </div>
                   <div className="text-right">
                     <p className="font-bold">{investment.amount}€</p>
