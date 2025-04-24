@@ -46,6 +46,10 @@ const UserInvestments = () => {
                         src={creator?.imageUrl || 'https://via.placeholder.com/40'} 
                         alt={creator?.name || 'Créatrice'} 
                         className="h-full w-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                        }}
                       />
                     </div>
                     <div>

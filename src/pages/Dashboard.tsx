@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
@@ -60,10 +59,7 @@ const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
 };
 
 const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
-  const creator = creators.find(c => c.id === investment.creator_id) || {
-    name: "Créatrice",
-    imageUrl: "https://via.placeholder.com/40"
-  };
+  const creator = getCreatorProfile(investment.creator_id);
   
   const monthlyReturnRate = Number(investment.return_rate) / 3;
   
@@ -73,8 +69,8 @@ const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
   
   return {
     ...investment,
-    creator_name: creator.name,
-    creator_image: creator.imageUrl,
+    creator_name: creator?.name || "Créatrice",
+    creator_image: creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`,
     initial_amount: Number(investment.amount),
     monthly_return: monthlyReturn,
     total_return: totalReturn
@@ -358,35 +354,42 @@ const Dashboard = () => {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    {investments.map((investment) => (
-                      <div 
-                        key={investment.id}
-                        className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
-                      >
-                        <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                          <img 
-                            src={investment.creator_image} 
-                            alt={investment.creator_name} 
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-grow">
-                          <div className="flex justify-between items-center">
-                            <h4 className="font-medium text-sm">{investment.creator_name}</h4>
-                            <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                    {investments.map((investment) => {
+                      const creator = getCreatorProfile(investment.creator_id);
+                      return (
+                        <div 
+                          key={investment.id}
+                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                            <img 
+                              src={creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`}
+                              alt={creator?.name || 'Créatrice'} 
+                              className="h-full w-full object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                              }}
+                            />
                           </div>
-                          <div className="flex justify-between items-center mt-1">
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Initial: {Number(investment.initial_amount).toFixed(2)}€
-                            </span>
-                            <span className="text-xs font-medium text-green-500 flex items-center">
-                              <TrendingUp className="h-3 w-3 mr-1" />
-                              {investment.return_rate}%
-                            </span>
+                          <div className="flex-grow">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'}</h4>
+                              <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                            </div>
+                            <div className="flex justify-between items-center mt-1">
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                Initial: {Number(investment.initial_amount).toFixed(2)}€
+                              </span>
+                              <span className="text-xs font-medium text-green-500 flex items-center">
+                                <TrendingUp className="h-3 w-3 mr-1" />
+                                {investment.return_rate}%
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </FadeIn>
@@ -408,35 +411,42 @@ const Dashboard = () => {
                   
                   {investments.length > 0 ? (
                     <div className="space-y-4">
-                      {investments.map((investment) => (
-                        <div 
-                          key={investment.id}
-                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        >
-                          <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                            <img 
-                              src={investment.creator_image} 
-                              alt={investment.creator_name} 
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                          <div className="flex-grow">
-                            <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-sm">{investment.creator_name}</h4>
-                              <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                      {investments.map((investment) => {
+                        const creator = getCreatorProfile(investment.creator_id);
+                        return (
+                          <div 
+                            key={investment.id}
+                            className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          >
+                            <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                              <img 
+                                src={creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`}
+                                alt={creator?.name || 'Créatrice'} 
+                                className="h-full w-full object-cover"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                                }}
+                              />
                             </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {Number(investment.initial_amount).toFixed(2)}€
-                              </span>
-                              <span className="text-xs font-medium text-green-500 flex items-center">
-                                <TrendingUp className="h-3 w-3 mr-1" />
-                                {investment.return_rate}%
-                              </span>
+                            <div className="flex-grow">
+                              <div className="flex justify-between items-center">
+                                <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'}</h4>
+                                <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                              </div>
+                              <div className="flex justify-between items-center mt-1">
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  Initial: {Number(investment.initial_amount).toFixed(2)}€
+                                </span>
+                                <span className="text-xs font-medium text-green-500 flex items-center">
+                                  <TrendingUp className="h-3 w-3 mr-1" />
+                                  {investment.return_rate}%
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="text-center py-8">
@@ -474,11 +484,11 @@ const Dashboard = () => {
                       {userTransactions.map((transaction) => {
                         let creatorInfo = null;
                         if (transaction.type === 'investment' && transaction.payment_id) {
-                          const creator = creators.find(c => c.id === transaction.payment_id);
+                          const creator = getCreatorProfile(transaction.payment_id);
                           if (creator) {
                             creatorInfo = {
                               name: creator.name,
-                              image: creator.imageUrl
+                              image: creator.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${transaction.payment_id}`
                             };
                           }
                         }
@@ -499,6 +509,10 @@ const Dashboard = () => {
                                   src={creatorInfo.image}
                                   alt={creatorInfo.name}
                                   className="h-full w-full object-cover rounded-full"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${transaction.payment_id}`;
+                                  }}
                                 />
                               ) : (
                                 <>
@@ -526,7 +540,7 @@ const Dashboard = () => {
                                   transaction.type === 'withdrawal' ? "text-red-500" : 
                                   "text-investment-500"
                                 )}>
-                                  {transaction.type === 'withdrawal' ? '-' : '+'}
+                                  {transaction.amount < 0 ? '-' : '+'}
                                   {Math.abs(Number(transaction.amount)).toFixed(2)}€
                                 </span>
                               </div>
@@ -726,3 +740,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+function getCreatorProfile(id: string): any {
+  return creators.find(c => c.id === id);
+}
