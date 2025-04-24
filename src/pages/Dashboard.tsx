@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
@@ -42,7 +41,6 @@ interface ExtendedInvestment extends Investment {
   total_return: number;
 }
 
-// Helper function to enhance transaction with type
 const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
   let type: 'deposit' | 'withdrawal' | 'investment' = 'deposit';
   
@@ -60,20 +58,16 @@ const enhanceTransaction = (transaction: Transaction): ExtendedTransaction => {
   };
 };
 
-// Helper function to enhance investment with creator info and return calculations
 const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
   const creator = creators.find(c => c.id === investment.creator_id) || {
     name: "Créatrice",
     imageUrl: "https://via.placeholder.com/40"
   };
   
-  // Calculate monthly return rate (total return rate divided by 3 months)
   const monthlyReturnRate = Number(investment.return_rate) / 3;
   
-  // Calculate monthly return amount
   const monthlyReturn = (Number(investment.amount) * monthlyReturnRate) / 100;
   
-  // Calculate total return after 3 months
   const totalReturn = Number(investment.amount) * (Number(investment.return_rate) / 100);
   
   return {
@@ -86,17 +80,13 @@ const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
   };
 };
 
-// Generate last 12 months data from June 2024 to May 2025
 const generateLastTwelveMonths = () => {
   const months = [];
-  // Start with June 2024
-  let date = new Date(2024, 5, 1); // June is month 5 (zero-indexed)
+  let date = new Date(2024, 5, 1);
   
   for (let i = 0; i < 12; i++) {
-    // Format the month and year
     const monthLabel = new Date(date).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
     months.push(monthLabel);
-    // Move to next month
     date.setMonth(date.getMonth() + 1);
   }
   
@@ -126,7 +116,6 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  // Enhanced transactions with type information
   const userTransactions: ExtendedTransaction[] = rawTransactions.map(enhanceTransaction);
 
   const { data: rawInvestments = [], isLoading: isInvestmentsLoading } = useQuery({
@@ -144,46 +133,30 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  // Enhanced investments with creator info and return calculations
   const investments: ExtendedInvestment[] = rawInvestments.map(enhanceInvestment);
 
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + inv.monthly_return, 0);
 
-  // Generate performance data for the chart
   const generatePerformanceData = () => {
     const months = generateLastTwelveMonths();
     
-    // Create base data with months and zero values
     const baseData = months.map(month => ({
       month,
-      invested: 0,
-      return: 0
+      value: 0,
+      withdrawal: undefined as number | undefined
     }));
     
-    // If we have investments, populate their data into the chart
     if (investments.length > 0) {
-      // For each investment, calculate its contribution to each month
       investments.forEach(investment => {
-        // Simplification: assume all investments start from the first month in our chart
-        // In a real app, you'd use actual investment dates to determine which months to affect
-        
-        // We only show the investment amount, not the total account balance
-        // For the first month, add the initial investment amount
         if (baseData.length > 0) {
-          baseData[0].invested += investment.initial_amount;
+          baseData[0].value = investment.initial_amount;
         }
         
-        // For each month, calculate returns
         for (let i = 0; i < baseData.length; i++) {
-          // Add cumulative returns for each month (43.3% per month, simplified)
           const monthsElapsed = i + 1;
-          if (monthsElapsed <= 3) { // Returns only accumulate for 3 months
-            const monthlyReturn = investment.initial_amount * (Number(investment.return_rate) / 3 / 100) * monthsElapsed;
-            baseData[i].return = monthlyReturn;
-          } else {
-            // After 3 months, return stays constant
-            baseData[i].return = investment.initial_amount * (Number(investment.return_rate) / 100);
+          if (monthsElapsed <= 3) {
+            baseData[i].value = investment.initial_amount * (1 + ((Number(investment.return_rate) / 3 / 100) * monthsElapsed));
           }
         }
       });
@@ -317,20 +290,10 @@ const Dashboard = () => {
                   </div>
                   <div className="h-72">
                     <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart
+                      <LineChart
                         data={performanceData}
                         margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
                       >
-                        <defs>
-                          <linearGradient id="investedGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0.1}/>
-                          </linearGradient>
-                          <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
-                          </linearGradient>
-                        </defs>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                         <XAxis 
                           dataKey="month" 
@@ -338,34 +301,40 @@ const Dashboard = () => {
                           tickLine={false}
                           padding={{ left: 10, right: 10 }}
                           tick={{ fontSize: 10 }}
+                          interval={0}
                         />
                         <YAxis 
                           axisLine={false} 
                           tickLine={false}
-                          domain={[0, 'auto']}
+                          domain={[0, 'dataMax + 10']}
                           tickCount={5}
                           tickFormatter={(value) => Math.round(value).toString()}
                           width={40}
                         />
                         <Tooltip formatter={(value) => `${value}€`} />
-                        <Area
-                          type="monotone" 
-                          dataKey="invested" 
-                          name="Investissement"
-                          stroke="#0ea5e9" 
-                          fillOpacity={1} 
-                          fill="url(#investedGradient)"
-                          stackId="1"
+                        <Line
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#0ea5e9"
+                          strokeWidth={3}
+                          dot={{ r: 3 }}
+                          activeDot={{ r: 6, strokeWidth: 0 }}
                         />
-                        <Area 
-                          type="monotone" 
-                          dataKey="return" 
-                          name="Rendement"
-                          stroke="#22c55e" 
-                          fillOpacity={1} 
-                          fill="url(#returnGradient)"
-                        />
-                      </AreaChart>
+                        {performanceData.some(data => data.withdrawal) && (
+                          <ReferenceLine 
+                            x={performanceData.find(data => data.withdrawal)?.month}
+                            stroke="#22c55e"
+                            strokeDasharray="3 3"
+                            strokeWidth={2}
+                            label={{ 
+                              value: `Retrait total: ${performanceData.find(data => data.withdrawal)?.withdrawal}€`,
+                              position: 'top',
+                              fill: "#22c55e",
+                              fontSize: 12
+                            }}
+                          />
+                        )}
+                      </LineChart>
                     </ResponsiveContainer>
                   </div>
                   
@@ -484,7 +453,6 @@ const Dashboard = () => {
                   {userTransactions.length > 0 ? (
                     <div className="space-y-4">
                       {userTransactions.map((transaction) => {
-                        // For investment transactions, find the related creator info
                         let creatorInfo = null;
                         if (transaction.type === 'investment' && transaction.payment_id) {
                           const creator = creators.find(c => c.id === transaction.payment_id);
@@ -507,7 +475,6 @@ const Dashboard = () => {
                               transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
                               "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
                             )}>
-                              {/* Show creator image for investment transactions if available */}
                               {transaction.type === 'investment' && creatorInfo ? (
                                 <img 
                                   src={creatorInfo.image}
