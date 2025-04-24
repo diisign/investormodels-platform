@@ -31,6 +31,7 @@ export const createInvestment = async (
   }
 
   // Then, create a transaction record for this investment (negative amount)
+  // According to the database schema, 'description' is not a field in the transactions table
   const { data: transaction, error: transactionError } = await supabase
     .from('transactions')
     .insert({
@@ -39,7 +40,7 @@ export const createInvestment = async (
       status: 'completed',
       payment_method: 'investment',
       payment_id: creatorId, // Store creator ID in payment_id
-      description: `Investment in creator ${creatorId}`
+      currency: 'EUR' // Adding required currency field
     })
     .select()
     .single();
