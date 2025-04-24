@@ -93,7 +93,7 @@ const generateLastTwelveMonths = () => {
   return months;
 };
 
-const generatePerformanceData = (investments, investmentDate) => {
+const generatePerformanceData = (investments) => {
   const months = generateLastTwelveMonths();
   
   const baseData = months.map(month => ({
@@ -104,19 +104,25 @@ const generatePerformanceData = (investments, investmentDate) => {
   
   if (investments.length > 0) {
     investments.forEach(investment => {
-      const investDate = new Date(investmentDate);
-      const monthsElapsed = baseData.findIndex(data => {
+      const investDate = new Date(investment.created_at);
+      const monthIndex = baseData.findIndex(data => {
         const [monthStr, yearStr] = data.month.split(' ');
-        const monthIndex = ['janv', 'fevr', 'mars', 'avr', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov', 'déc'].indexOf(monthStr);
-        const monthDate = new Date(2000 + parseInt(yearStr), monthIndex);
-        return monthDate >= investDate;
+        const monthIdx = ['janv', 'févr', 'mars', 'avr', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov', 'déc'].indexOf(monthStr);
+        const monthDate = new Date(2000 + parseInt(yearStr), monthIdx);
+        return monthDate.getMonth() === investDate.getMonth() && 
+               monthDate.getFullYear() === investDate.getFullYear();
       });
       
-      for (let i = monthsElapsed; i < baseData.length; i++) {
-        const monthsSinceInvestment = i - monthsElapsed + 1;
-        if (monthsSinceInvestment <= 3) {
-          const monthlyReturnRate = Number(investment.return_rate) / 3;
-          baseData[i].value = investment.amount * (1 + (monthlyReturnRate / 100 * monthsSinceInvestment));
+      if (monthIndex !== -1) {
+        // Initial investment amount
+        baseData[monthIndex].value = investment.amount;
+        
+        // Calculate returns for the next 3 months
+        for (let i = 1; i <= 3; i++) {
+          if (monthIndex + i < baseData.length) {
+            const monthlyReturn = investment.amount * (0.433 * i); // 43.3% per month
+            baseData[monthIndex + i].value = investment.amount + monthlyReturn;
+          }
         }
       }
     });
@@ -170,10 +176,7 @@ const Dashboard = () => {
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + inv.monthly_return, 0);
 
-  const performanceData = generatePerformanceData(
-    investments, 
-    new Date(2025, 3, 23)
-  );
+  const performanceData = generatePerformanceData(investments);
 
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,12 +206,13 @@ const Dashboard = () => {
             <h1 className="text-3xl font-bold mb-8">Tableau de bord</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <FadeIn direction="up" delay={100} className="glass-card">
-                <Card>
-                  <CardHeader className="pb-2">
+              <FadeIn direction="up" delay={100}>
+                <Card className="relative overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-blue-900/20" />
+                  <CardHeader className="pb-2 relative">
                     <CardTitle className="text-sm font-medium">Votre solde</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="relative">
                     <div className="text-2xl font-bold">
                       {userTransactions.reduce((sum, t) => sum + Number(t.amount), 0).toFixed(2)}€
                     </div>
@@ -223,40 +227,46 @@ const Dashboard = () => {
                 </Card>
               </FadeIn>
 
-              <FadeIn direction="up" delay={200} className="glass-card">
-                <div className="p-6 rounded-lg border bg-card">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total investi</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600">
-                      <CircleDollarSign className="h-5 w-5" />
+              <FadeIn direction="up" delay={200}>
+                <Card className="relative overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
+                  <div className="absolute inset-0 bg-gradient-to-br from-investment-50/50 to-transparent dark:from-investment-900/20" />
+                  <div className="p-6 relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total investi</h3>
+                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-investment-100/80 dark:bg-investment-900/30 text-investment-600">
+                        <CircleDollarSign className="h-5 w-5" />
+                      </div>
+                    </div>
+                    <div className="flex items-end">
+                      <span className="text-2xl font-bold">{totalInvested}€</span>
+                    </div>
+                    <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                      Dans {investments.length} créatrice{investments.length > 1 ? 's' : ''}
                     </div>
                   </div>
-                  <div className="flex items-end">
-                    <span className="text-2xl font-bold">{totalInvested}€</span>
-                  </div>
-                  <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {investments.length} créatrice{investments.length > 1 ? 's' : ''}
-                  </div>
-                </div>
+                </Card>
               </FadeIn>
 
-              <FadeIn direction="up" delay={300} className="glass-card">
-                <div className="p-6 rounded-lg border bg-card">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement</h3>
-                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
-                      <TrendingUp className="h-5 w-5" />
+              <FadeIn direction="up" delay={300}>
+                <Card className="relative overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-transparent dark:from-green-900/20" />
+                  <div className="p-6 relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement</h3>
+                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-100/80 dark:bg-green-900/30 text-green-600">
+                        <TrendingUp className="h-5 w-5" />
+                      </div>
+                    </div>
+                    <div className="flex items-end">
+                      <span className="text-2xl font-bold">{totalReturn.toFixed(2)}€</span>
+                      {totalInvested > 0 && (
+                        <span className="ml-2 text-sm text-green-500">
+                          +{((totalReturn / totalInvested) * 100).toFixed(0)}%
+                        </span>
+                      )}
                     </div>
                   </div>
-                  <div className="flex items-end">
-                    <span className="text-2xl font-bold">{totalReturn.toFixed(2)}€</span>
-                    {totalInvested > 0 && (
-                      <span className="ml-2 text-sm text-green-500">
-                        +{((totalReturn / totalInvested) * 100).toFixed(0)}%
-                      </span>
-                    )}
-                  </div>
-                </div>
+                </Card>
               </FadeIn>
 
               <FadeIn direction="up" delay={400} className="glass-card">
