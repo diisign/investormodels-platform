@@ -38,6 +38,7 @@ const UserInvestments = () => {
             {investments.map((investment) => {
               const creator = getCreatorProfile(investment.creator_id);
               const investmentDate = new Date(investment.created_at);
+              
               return (
                 <div key={investment.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex items-center">
