@@ -82,15 +82,47 @@ const enhanceInvestment = (investment: Investment): ExtendedInvestment => {
 
 const generateLastTwelveMonths = () => {
   const months = [];
-  let date = new Date(2024, 5, 1);
+  let date = new Date(2025, 4, 1);
   
   for (let i = 0; i < 12; i++) {
     const monthLabel = new Date(date).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
-    months.push(monthLabel);
-    date.setMonth(date.getMonth() + 1);
+    months.unshift(monthLabel);
+    date.setMonth(date.getMonth() - 1);
   }
   
   return months;
+};
+
+const generatePerformanceData = (investments, investmentDate) => {
+  const months = generateLastTwelveMonths();
+  
+  const baseData = months.map(month => ({
+    month,
+    value: 0,
+    withdrawal: undefined as number | undefined
+  }));
+  
+  if (investments.length > 0) {
+    investments.forEach(investment => {
+      const investDate = new Date(investmentDate);
+      const monthsElapsed = baseData.findIndex(data => {
+        const [monthStr, yearStr] = data.month.split(' ');
+        const monthIndex = ['janv', 'fevr', 'mars', 'avr', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov', 'déc'].indexOf(monthStr);
+        const monthDate = new Date(2000 + parseInt(yearStr), monthIndex);
+        return monthDate >= investDate;
+      });
+      
+      for (let i = monthsElapsed; i < baseData.length; i++) {
+        const monthsSinceInvestment = i - monthsElapsed + 1;
+        if (monthsSinceInvestment <= 3) {
+          const monthlyReturnRate = Number(investment.return_rate) / 3;
+          baseData[i].value = investment.amount * (1 + (monthlyReturnRate / 100 * monthsSinceInvestment));
+        }
+      }
+    });
+  }
+  
+  return baseData;
 };
 
 const Dashboard = () => {
@@ -138,34 +170,10 @@ const Dashboard = () => {
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + inv.monthly_return, 0);
 
-  const generatePerformanceData = () => {
-    const months = generateLastTwelveMonths();
-    
-    const baseData = months.map(month => ({
-      month,
-      value: 0,
-      withdrawal: undefined as number | undefined
-    }));
-    
-    if (investments.length > 0) {
-      investments.forEach(investment => {
-        if (baseData.length > 0) {
-          baseData[0].value = investment.initial_amount;
-        }
-        
-        for (let i = 0; i < baseData.length; i++) {
-          const monthsElapsed = i + 1;
-          if (monthsElapsed <= 3) {
-            baseData[i].value = investment.initial_amount * (1 + ((Number(investment.return_rate) / 3 / 100) * monthsElapsed));
-          }
-        }
-      });
-    }
-    
-    return baseData;
-  };
-
-  const performanceData = generatePerformanceData();
+  const performanceData = generatePerformanceData(
+    investments, 
+    new Date(2025, 3, 23)
+  );
 
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
