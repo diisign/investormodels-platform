@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
@@ -707,3 +708,21 @@ const Dashboard = () => {
                     onClick={() => setShowDepositModal(false)}
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
+                    Annuler
+                  </button>
+                  <GradientButton type="submit">
+                    Déposer
+                  </GradientButton>
+                </div>
+              </div>
+            </form>
+          </FadeIn>
+        </div>
+      )}
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Dashboard;
