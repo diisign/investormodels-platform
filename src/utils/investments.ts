@@ -1,7 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
-import { getCreatorProfile } from './creatorProfiles';
+import { creatorProfiles, getCreatorProfile } from './creatorProfiles';
 
 export const createInvestment = async (
   creatorId: string,
@@ -74,6 +74,16 @@ export const getUserInvestments = async () => {
   if (error) {
     console.error('Error fetching investments:', error);
     throw error;
+  }
+  
+  console.log('Raw investments from database:', data);
+  
+  // Log creator profiles to help debug
+  if (data && data.length > 0) {
+    data.forEach(investment => {
+      const creator = getCreatorProfile(investment.creator_id);
+      console.log(`Creator for ${investment.creator_id}:`, creator);
+    });
   }
 
   return data;

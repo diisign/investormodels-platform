@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { toast } from 'sonner';
 
 const UserInvestments = () => {
   const { data: investments = [], isLoading } = useQuery({
@@ -39,17 +40,20 @@ const UserInvestments = () => {
               const creator = getCreatorProfile(investment.creator_id);
               const investmentDate = new Date(investment.created_at);
               
+              console.log('Creator profile in UserInvestments:', creator);
+              
               return (
                 <div key={investment.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex items-center">
                     <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                       <img 
-                        src={creator?.imageUrl || 'https://via.placeholder.com/40'} 
+                        src={creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`} 
                         alt={creator?.name || 'Créatrice'} 
                         className="h-full w-full object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                          toast.error(`Impossible de charger l'image pour ${creator?.name || 'la créatrice'}`);
                         }}
                       />
                     </div>
