@@ -163,6 +163,7 @@ const Dashboard = () => {
         .eq('user_id', user?.id);
 
       if (error) throw error;
+      console.log("Fetched investments:", data);
       return data || [];
     },
     enabled: !!user,
@@ -356,6 +357,7 @@ const Dashboard = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                     {investments.map((investment) => {
                       const creator = getCreatorProfile(investment.creator_id);
+                      console.log(`Rendering creator for ${investment.creator_id}:`, creator);
                       return (
                         <div 
                           key={investment.id}
@@ -369,6 +371,7 @@ const Dashboard = () => {
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
                                 target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                                toast.error(`Impossible de charger l'image pour ${creator?.name || 'la créatrice'}`);
                               }}
                             />
                           </div>
@@ -413,6 +416,7 @@ const Dashboard = () => {
                     <div className="space-y-4">
                       {investments.map((investment) => {
                         const creator = getCreatorProfile(investment.creator_id);
+                        console.log(`Rendering creator in investments list for ${investment.creator_id}:`, creator);
                         return (
                           <div 
                             key={investment.id}
@@ -426,6 +430,7 @@ const Dashboard = () => {
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;
                                   target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                                  toast.error(`Impossible de charger l'image pour ${creator?.name || 'la créatrice'}`);
                                 }}
                               />
                             </div>
