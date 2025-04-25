@@ -25,6 +25,7 @@ import {
 } from 'recharts';
 import { creators } from '@/utils/mockData';
 import { Database } from '@/integrations/supabase/types';
+import { toast } from 'sonner';
 
 type Transaction = Database['public']['Tables']['transactions']['Row'];
 type Investment = Database['public']['Tables']['investments']['Row'];
