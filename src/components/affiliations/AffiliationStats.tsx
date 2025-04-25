@@ -14,7 +14,7 @@ type Affiliation = {
   status: string;
   created_at: string;
   total_earnings: number | null;
-  referred: {
+  referred?: {
     name: string | null;
   } | null;
 }
@@ -27,7 +27,7 @@ const AffiliationStats = () => {
     queryFn: async () => {
       if (!user?.id) return [];
 
-      // Using the proper foreign key relationship in the query
+      // Using the explicit foreign key column names in the query
       const { data, error } = await supabase
         .from('affiliations')
         .select(`
@@ -35,14 +35,19 @@ const AffiliationStats = () => {
           status,
           created_at,
           total_earnings,
-          referred:profiles(name)
+          referred:profiles!referred_id(name)
         `)
         .eq('referrer_id', user.id)
         .order('created_at', { ascending: false })
         .limit(5);
         
-      if (error) throw error;
-      return data as Affiliation[];
+      if (error) {
+        console.error("Error fetching affiliations:", error);
+        throw error;
+      }
+      
+      // Use type assertion with unknown as intermediate step
+      return (data as unknown) as Affiliation[];
     },
     enabled: !!user?.id,
   });
