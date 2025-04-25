@@ -8,6 +8,17 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
+// Define a type for the affiliation data structure
+type Affiliation = {
+  id: string;
+  status: string;
+  created_at: string;
+  total_earnings: number | null;
+  referred: {
+    name: string | null;
+  } | null;
+}
+
 const AffiliationStats = () => {
   const { user } = useAuth();
 
@@ -16,6 +27,7 @@ const AffiliationStats = () => {
     queryFn: async () => {
       if (!user?.id) return [];
 
+      // Using the proper foreign key relationship in the query
       const { data, error } = await supabase
         .from('affiliations')
         .select(`
@@ -23,14 +35,14 @@ const AffiliationStats = () => {
           status,
           created_at,
           total_earnings,
-          referred:profiles!affiliations_referred_id_fkey(name)
+          referred:profiles(name)
         `)
         .eq('referrer_id', user.id)
         .order('created_at', { ascending: false })
         .limit(5);
         
       if (error) throw error;
-      return data;
+      return data as Affiliation[];
     },
     enabled: !!user?.id,
   });
