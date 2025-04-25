@@ -25,6 +25,7 @@ import DashboardStats from '@/components/dashboard/DashboardStats';
 import DashboardTransactions from '@/components/dashboard/DashboardTransactions';
 import CreatorProfile from '@/components/dashboard/CreatorProfile';
 import AffiliationStats from '@/components/affiliations/AffiliationStats';
+import GradientButton from '@/components/ui/GradientButton';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -32,14 +33,12 @@ const Dashboard = () => {
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
 
-  // Fetch investments
   const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery({
     queryKey: ['userInvestments'],
     queryFn: getUserInvestments,
     enabled: !!user,
   });
 
-  // Fetch transactions
   const { data: transactions = [] } = useQuery({
     queryKey: ['userTransactions'],
     queryFn: async () => {
@@ -56,7 +55,6 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  // Fetch balance from transactions
   const { data: balance = 0 } = useQuery({
     queryKey: ['userBalance'],
     queryFn: async () => {
@@ -75,11 +73,9 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  // Calculate investment statistics
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + (Number(inv.amount) * Number(inv.return_rate) / 100), 0);
 
-  // Generate performance data
   const performanceData = investments.map(investment => ({
     month: format(new Date(investment.created_at), 'MMM yy', { locale: fr }),
     value: Number(investment.amount)
