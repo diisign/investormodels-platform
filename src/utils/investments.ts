@@ -78,6 +78,7 @@ export const getUserInvestments = async () => {
   
   console.log('Raw investments from database:', data);
   
+  // Log creator profiles to help debug
   if (data && data.length > 0) {
     data.forEach(investment => {
       const creator = getCreatorProfile(investment.creator_id);
@@ -87,4 +88,3 @@ export const getUserInvestments = async () => {
 
   return data;
 };
-
