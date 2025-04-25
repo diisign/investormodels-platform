@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -13,7 +14,7 @@ import TransactionsList from '@/components/transactions/TransactionsList';
 
 const generateLastTwelveMonths = () => {
   const months = [];
-  let date = new Date(2025, 4, 1);
+  let date = new Date();
   
   for (let i = 0; i < 12; i++) {
     const monthLabel = new Date(date).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
@@ -29,8 +30,7 @@ const generatePerformanceData = (investments) => {
   
   const baseData = months.map(month => ({
     month,
-    value: 0,
-    withdrawal: undefined
+    value: 0
   }));
   
   if (investments.length > 0) {
@@ -46,13 +46,6 @@ const generatePerformanceData = (investments) => {
       
       if (monthIndex !== -1) {
         baseData[monthIndex].value = investment.amount;
-        
-        for (let i = 1; i <= 3; i++) {
-          if (monthIndex + i < baseData.length) {
-            const monthlyReturn = investment.amount * (0.433 * i);
-            baseData[monthIndex + i].value = investment.amount + monthlyReturn;
-          }
-        }
       }
     });
   }
@@ -73,7 +66,6 @@ const Dashboard = () => {
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + (Number(inv.amount) * Number(inv.return_rate) / 100), 0);
   const performanceData = generatePerformanceData(investments);
-  const balance = totalInvested + totalReturn;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -87,7 +79,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
               <UserBalance />
               <DashboardStats 
-                balance={balance}
+                balance={totalInvested + totalReturn}
                 totalInvested={totalInvested}
                 totalReturn={totalReturn}
                 investmentsCount={investments.length}

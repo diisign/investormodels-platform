@@ -18,7 +18,13 @@ const AffiliationStats = () => {
 
       const { data, error } = await supabase
         .from('affiliations')
-        .select('*, referred:profiles(name)')
+        .select(`
+          id,
+          status,
+          created_at,
+          total_earnings,
+          referred:profiles!affiliations_referred_id_fkey(name)
+        `)
         .eq('referrer_id', user.id)
         .order('created_at', { ascending: false })
         .limit(5);
@@ -56,7 +62,7 @@ const AffiliationStats = () => {
                     {affiliation.referred?.name || 'Utilisateur'}
                   </TableCell>
                   <TableCell>
-                    {formatDistance(new Date(affiliation.created_at || new Date()), new Date(), {
+                    {formatDistance(new Date(affiliation.created_at), new Date(), {
                       addSuffix: true,
                       locale: fr,
                     })}
