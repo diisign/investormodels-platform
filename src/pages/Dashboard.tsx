@@ -25,6 +25,7 @@ import {
 } from 'recharts';
 import { creators } from '@/utils/mockData';
 import { Database } from '@/integrations/supabase/types';
+import { toast } from 'sonner';
 
 type Transaction = Database['public']['Tables']['transactions']['Row'];
 type Investment = Database['public']['Tables']['investments']['Row'];
@@ -163,12 +164,14 @@ const Dashboard = () => {
         .eq('user_id', user?.id);
 
       if (error) throw error;
+      console.log("Fetched investments:", data);
       return data || [];
     },
     enabled: !!user,
   });
 
   const investments: ExtendedInvestment[] = rawInvestments.map(enhanceInvestment);
+  console.log("Enhanced investments:", investments);
 
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + inv.monthly_return, 0);
@@ -356,25 +359,27 @@ const Dashboard = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                     {investments.map((investment) => {
                       const creator = getCreatorProfile(investment.creator_id);
+                      console.log(`Rendering creator for ${investment.creator_id}:`, creator);
                       return (
                         <div 
                           key={investment.id}
-                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
                         >
                           <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                             <img 
-                              src={creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`}
-                              alt={creator?.name || 'Créatrice'} 
+                              src={creator?.imageUrl} 
+                              alt={creator?.name} 
                               className="h-full w-full object-cover"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
                                 target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                                toast.error(`Impossible de charger l'image pour ${creator?.name || 'la créatrice'}`);
                               }}
                             />
                           </div>
                           <div className="flex-grow">
                             <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'}</h4>
+                              <h4 className="font-medium text-sm">{creator?.name}</h4>
                               <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
@@ -413,6 +418,7 @@ const Dashboard = () => {
                     <div className="space-y-4">
                       {investments.map((investment) => {
                         const creator = getCreatorProfile(investment.creator_id);
+                        console.log(`Rendering creator in investments list for ${investment.creator_id}:`, creator);
                         return (
                           <div 
                             key={investment.id}
@@ -420,18 +426,19 @@ const Dashboard = () => {
                           >
                             <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                               <img 
-                                src={creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`}
-                                alt={creator?.name || 'Créatrice'} 
+                                src={creator?.imageUrl}
+                                alt={creator?.name}
                                 className="h-full w-full object-cover"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;
                                   target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`;
+                                  toast.error(`Impossible de charger l'image pour ${creator?.name || 'la créatrice'}`);
                                 }}
                               />
                             </div>
                             <div className="flex-grow">
                               <div className="flex justify-between items-center">
-                                <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'}</h4>
+                                <h4 className="font-medium text-sm">{creator?.name}</h4>
                                 <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
                               </div>
                               <div className="flex justify-between items-center mt-1">
@@ -685,62 +692,4 @@ const Dashboard = () => {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={depositAmount}
-                      onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10"
-                      step="10"
-                      className="input-field pl-10"
-                      placeholder="100"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
-                  </label>
-                  <select 
-                    id="payment-method" 
-                    className="input-field"
-                    required
-                  >
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer
-                  </GradientButton>
-                </div>
-              </div>
-            </form>
-          </FadeIn>
-        </div>
-      )}
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Dashboard;
-
-function getCreatorProfile(id: string): any {
-  return creators.find(c => c.id === id);
-}
+                      <CircleDollarSign className="h-5 w
