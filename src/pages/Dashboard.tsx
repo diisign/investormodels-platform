@@ -7,6 +7,9 @@ import Footer from '@/components/layout/Footer';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import PerformanceChart from '@/components/dashboard/PerformanceChart';
 import InvestmentsList from '@/components/dashboard/InvestmentsList';
+import UserBalance from '@/components/UserBalance';
+import AffiliationStats from '@/components/affiliations/AffiliationStats';
+import TransactionsList from '@/components/transactions/TransactionsList';
 
 const generateLastTwelveMonths = () => {
   const months = [];
@@ -81,13 +84,16 @@ const Dashboard = () => {
           <div className="container mx-auto px-4">
             <h1 className="text-3xl font-bold mb-8">Tableau de bord</h1>
 
-            <DashboardStats 
-              balance={balance}
-              totalInvested={totalInvested}
-              totalReturn={totalReturn}
-              investmentsCount={investments.length}
-              onDepositClick={() => setShowDepositModal(true)}
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+              <UserBalance />
+              <DashboardStats 
+                balance={balance}
+                totalInvested={totalInvested}
+                totalReturn={totalReturn}
+                investmentsCount={investments.length}
+                onDepositClick={() => setShowDepositModal(true)}
+              />
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
               <PerformanceChart 
@@ -98,6 +104,11 @@ const Dashboard = () => {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               <InvestmentsList investments={investments} />
+              <TransactionsList />
+            </div>
+
+            <div className="mt-8">
+              <AffiliationStats />
             </div>
           </div>
         </section>
