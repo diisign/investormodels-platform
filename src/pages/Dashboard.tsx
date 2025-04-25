@@ -355,19 +355,18 @@ const Dashboard = () => {
                     </ResponsiveContainer>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                     {investments.map((investment) => {
                       const creator = getCreatorProfile(investment.creator_id);
-                      console.log(`Rendering creator for ${investment.creator_id}:`, creator);
                       return (
                         <div 
                           key={investment.id}
-                          className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         >
                           <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                             <img 
                               src={creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`}
-                              alt={creator?.name || 'Créatrice'} 
+                              alt={creator?.name || 'Créatrice'}
                               className="h-full w-full object-cover"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
@@ -382,12 +381,11 @@ const Dashboard = () => {
                               <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {Number(investment.initial_amount).toFixed(2)}€
+                              <span className="text-xs text-gray-500">
+                                Initial: {Number(investment.amount).toFixed(2)}€
                               </span>
-                              <span className="text-xs font-medium text-green-500 flex items-center">
-                                <TrendingUp className="h-3 w-3 mr-1" />
-                                {investment.return_rate}%
+                              <span className="text-xs font-medium text-green-500">
+                                +{investment.return_rate}%
                               </span>
                             </div>
                           </div>
@@ -417,16 +415,15 @@ const Dashboard = () => {
                     <div className="space-y-4">
                       {investments.map((investment) => {
                         const creator = getCreatorProfile(investment.creator_id);
-                        console.log(`Rendering creator in investments list for ${investment.creator_id}:`, creator);
                         return (
                           <div 
                             key={investment.id}
-                            className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                           >
                             <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                               <img 
                                 src={creator?.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${investment.creator_id}`}
-                                alt={creator?.name || 'Créatrice'} 
+                                alt={creator?.name || 'Créatrice'}
                                 className="h-full w-full object-cover"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;
@@ -441,12 +438,11 @@ const Dashboard = () => {
                                 <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
                               </div>
                               <div className="flex justify-between items-center mt-1">
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                  Initial: {Number(investment.initial_amount).toFixed(2)}€
+                                <span className="text-xs text-gray-500">
+                                  Initial: {Number(investment.amount).toFixed(2)}€
                                 </span>
-                                <span className="text-xs font-medium text-green-500 flex items-center">
-                                  <TrendingUp className="h-3 w-3 mr-1" />
-                                  {investment.return_rate}%
+                                <span className="text-xs font-medium text-green-500">
+                                  +{investment.return_rate}%
                                 </span>
                               </div>
                             </div>
@@ -695,58 +691,4 @@ const Dashboard = () => {
                     </div>
                     <input
                       type="number"
-                      id="amount"
-                      value={depositAmount}
-                      onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10"
-                      step="10"
-                      className="input-field pl-10"
-                      placeholder="100"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
-                  </label>
-                  <select 
-                    id="payment-method" 
-                    className="input-field"
-                    required
-                  >
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer
-                  </GradientButton>
-                </div>
-              </div>
-            </form>
-          </FadeIn>
-        </div>
-      )}
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Dashboard;
-
-function getCreatorProfile(id: string): any {
-  return creators.find(c => c.id === id);
-}
+                      id
