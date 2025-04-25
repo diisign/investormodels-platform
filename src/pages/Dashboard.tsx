@@ -1,13 +1,9 @@
-
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
-import { Button } from '@/components/ui/button';
-import { LogOut, PlusCircle } from 'lucide-react';
 import { getUserInvestments } from '@/utils/investments';
 import Navbar from '@/components/layout/Navbar';
-import FadeIn from '@/components/animations/FadeIn';
+import Footer from '@/components/layout/Footer';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import PerformanceChart from '@/components/dashboard/PerformanceChart';
 import InvestmentsList from '@/components/dashboard/InvestmentsList';
@@ -62,8 +58,8 @@ const generatePerformanceData = (investments) => {
 };
 
 const Dashboard = () => {
-  const { logout, user } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [showDepositModal, setShowDepositModal] = useState(false);
 
   const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery({
     queryKey: ['userInvestments'],
@@ -74,6 +70,7 @@ const Dashboard = () => {
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + (Number(inv.amount) * Number(inv.return_rate) / 100), 0);
   const performanceData = generatePerformanceData(investments);
+  const balance = totalInvested + totalReturn;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -82,14 +79,14 @@ const Dashboard = () => {
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            <h1 className="text
-
--3xl font-bold mb-8">Tableau de bord</h1>
+            <h1 className="text-3xl font-bold mb-8">Tableau de bord</h1>
 
             <DashboardStats 
+              balance={balance}
               totalInvested={totalInvested}
               totalReturn={totalReturn}
               investmentsCount={investments.length}
+              onDepositClick={() => setShowDepositModal(true)}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
@@ -102,27 +99,11 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               <InvestmentsList investments={investments} />
             </div>
-            
-            <div className="flex flex-col sm:flex-row gap-3 mt-8">
-              <Button 
-                onClick={() => navigate('/deposit')} 
-                className="flex items-center gap-2"
-              >
-                <PlusCircle size={18} />
-                Déposer des fonds
-              </Button>
-              <Button 
-                onClick={logout} 
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <LogOut size={18} />
-                Se déconnecter
-              </Button>
-            </div>
           </div>
         </section>
       </main>
+      
+      <Footer />
     </div>
   );
 };
