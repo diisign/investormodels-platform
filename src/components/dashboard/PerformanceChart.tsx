@@ -6,6 +6,7 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { Investment } from '@/types/investment';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { toast } from 'sonner';
+import { TrendingUp } from 'lucide-react';
 
 interface PerformanceChartProps {
   investments: Investment[];
@@ -61,7 +62,7 @@ const PerformanceChart = ({ investments, timeRange, setTimeRange }: PerformanceC
                   </div>
                   <div className="flex justify-between items-center mt-1">
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      Initial: {Number(investment.initial_amount).toFixed(2)}€
+                      Initial: {Number(investment.amount).toFixed(2)}€
                     </span>
                     <span className="text-xs font-medium text-green-500 flex items-center">
                       <TrendingUp className="h-3 w-3 mr-1" />
