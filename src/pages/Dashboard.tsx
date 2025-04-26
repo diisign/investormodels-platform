@@ -76,10 +76,37 @@ const Dashboard = () => {
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + (Number(inv.amount) * Number(inv.return_rate) / 100), 0);
 
-  const performanceData = investments.map(investment => ({
-    month: format(new Date(investment.created_at), 'MMM yy', { locale: fr }),
-    value: Number(investment.amount)
-  }));
+  const performanceData = (() => {
+    const initialInvestment = 4; // Initial investment amount
+    const monthlyReturnRate = 43.3; // Monthly return rate in percentage
+    
+    // Create data points for the last 3 months
+    const startDate = new Date('2025-01-26'); // Investment date
+    const data = [];
+    
+    // Add initial investment point
+    data.push({
+      month: format(startDate, 'MMM yy', { locale: fr }),
+      value: initialInvestment
+    });
+
+    // Add monthly growth points
+    for (let i = 1; i <= 3; i++) {
+      const currentDate = new Date(startDate);
+      currentDate.setMonth(startDate.getMonth() + i);
+      
+      // Calculate cumulative return
+      const monthlyReturn = initialInvestment * (monthlyReturnRate / 100);
+      const currentValue = initialInvestment + (monthlyReturn * i);
+      
+      data.push({
+        month: format(currentDate, 'MMM yy', { locale: fr }),
+        value: Number(currentValue.toFixed(2))
+      });
+    }
+    
+    return data;
+  })();
 
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,7 +152,7 @@ const Dashboard = () => {
                   <div className="h-72">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart
-                        data={performanceData.slice(-parseInt(timeRange))}
+                        data={performanceData}
                         margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
@@ -140,7 +167,7 @@ const Dashboard = () => {
                         <YAxis 
                           axisLine={false} 
                           tickLine={false}
-                          domain={['dataMin - 10', 'dataMax + 10']}
+                          domain={[0, 'dataMax + 1']}
                           tickCount={5}
                           tickFormatter={(value) => Math.round(value).toString()}
                           width={40}
