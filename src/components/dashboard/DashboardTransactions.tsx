@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import FadeIn from '@/components/animations/FadeIn';
 import { cn } from '@/lib/utils';
+import { CreatorProfile } from '@/utils/creatorProfiles';
 
 interface Transaction {
   id: string;
@@ -13,10 +14,7 @@ interface Transaction {
   status: string;
   payment_method?: string;
   payment_id?: string;
-  creatorProfile?: {
-    name: string;
-    imageUrl: string;
-  };
+  creatorProfile?: CreatorProfile; // Updated to accept CreatorProfile type
   description?: string;
 }
 
@@ -50,7 +48,7 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                   {transaction.creatorProfile ? (
                     <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                       <img 
-                        src={transaction.creatorProfile.imageUrl} 
+                        src={transaction.creatorProfile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${transaction.payment_id}`} 
                         alt={transaction.creatorProfile.name}
                         className="h-full w-full object-cover"
                       />

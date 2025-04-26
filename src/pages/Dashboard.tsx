@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -44,12 +45,12 @@ const Dashboard = () => {
         
       if (error) throw error;
 
+      // Update the mapping to ensure creatorProfile has proper types
       return data.map(transaction => {
         if (transaction.payment_method === 'investment' && transaction.payment_id) {
-          const creatorProfile = getCreatorProfile(transaction.payment_id);
           return {
             ...transaction,
-            creatorProfile
+            creatorProfile: getCreatorProfile(transaction.payment_id)
           };
         }
         return transaction;
