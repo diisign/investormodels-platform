@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -12,20 +13,12 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import DashboardTransactions from '@/components/dashboard/DashboardTransactions';
 import CreatorProfile from '@/components/dashboard/CreatorProfile';
 import AffiliationStats from '@/components/affiliations/AffiliationStats';
 import GradientButton from '@/components/ui/GradientButton';
+import PerformanceChart from '@/components/dashboard/PerformanceChart';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -76,13 +69,14 @@ const Dashboard = () => {
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const totalReturn = investments.reduce((sum, inv) => sum + (Number(inv.amount) * Number(inv.return_rate) / 100), 0);
 
-  const performanceData = (() => {
+  const generatePerformanceData = () => {
     const initialInvestment = 4; // Initial investment amount
     const monthlyReturnRate = 43.3; // Monthly return rate in percentage
     
     const currentDate = new Date('2025-04-26');
     const data = [];
     
+    // Generate last 12 months of data
     for (let i = -11; i <= 0; i++) {
       const monthDate = new Date(currentDate);
       monthDate.setMonth(currentDate.getMonth() + i);
@@ -101,7 +95,13 @@ const Dashboard = () => {
     }
     
     return data;
-  })();
+  };
+
+  // Get full 12 months of data
+  const fullPerformanceData = generatePerformanceData();
+  
+  // Filter based on selected time range
+  const performanceData = fullPerformanceData.slice(-parseInt(timeRange));
 
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -144,53 +144,11 @@ const Dashboard = () => {
                       <option value="3">3 derniers mois</option>
                     </select>
                   </div>
-                  <div className="h-72">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={performanceData}
-                        margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis 
-                          dataKey="month" 
-                          axisLine={false} 
-                          tickLine={false}
-                          padding={{ left: 10, right: 10 }}
-                          tick={{ fontSize: 10 }}
-                          interval={0}
-                        />
-                        <YAxis 
-                          axisLine={false} 
-                          tickLine={false}
-                          domain={[0, 'dataMax + 1']}
-                          tickCount={5}
-                          tickFormatter={(value) => Math.round(value).toString()}
-                          width={40}
-                        />
-                        <Tooltip formatter={(value) => `${value}€`} />
-                        <Line
-                          type="monotone"
-                          dataKey="value"
-                          stroke="#0ea5e9"
-                          strokeWidth={3}
-                          dot={{ r: 3 }}
-                          activeDot={{ r: 6, strokeWidth: 0 }}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    {investments.map((investment) => (
-                      <CreatorProfile
-                        key={investment.id}
-                        creatorId={investment.creator_id}
-                        amount={investment.amount}
-                        returnRate={investment.return_rate}
-                        initialAmount={investment.amount}
-                      />
-                    ))}
-                  </div>
+                  <PerformanceChart 
+                    investments={investments} 
+                    performanceData={performanceData} 
+                  />
                 </div>
               </FadeIn>
             </div>
