@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -87,7 +88,8 @@ const Dashboard = () => {
   const { totalInvested, totalReturn } = calculateTotalReturn();
 
   const generatePerformanceData = () => {
-    const initialInvestment = 4; // Initial investment amount
+    // Utiliser totalInvested au lieu d'une valeur codée en dur
+    const initialInvestment = totalInvested; // Utiliser le montant total investi
     const monthlyReturnRate = 43.3; // Monthly return rate in percentage
     
     const currentDate = new Date('2025-04-26');
