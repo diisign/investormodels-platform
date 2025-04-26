@@ -80,9 +80,20 @@ const Dashboard = () => {
     const initialInvestment = 4; // Initial investment amount
     const monthlyReturnRate = 43.3; // Monthly return rate in percentage
     
-    // Create data points for the last 3 months
-    const startDate = new Date('2025-01-26'); // Investment date
+    // Calculate data points for the last 12 months, with investment starting in April 2025
+    const startDate = new Date('2025-04-26'); // Investment date in April
     const data = [];
+    
+    // Add data points for months before investment (0€)
+    for (let i = -11; i < 0; i++) {
+      const currentDate = new Date(startDate);
+      currentDate.setMonth(startDate.getMonth() + i);
+      
+      data.push({
+        month: format(currentDate, 'MMM yy', { locale: fr }),
+        value: 0
+      });
+    }
     
     // Add initial investment point
     data.push({
@@ -90,8 +101,8 @@ const Dashboard = () => {
       value: initialInvestment
     });
 
-    // Add monthly growth points
-    for (let i = 1; i <= 3; i++) {
+    // Add monthly growth points after investment
+    for (let i = 1; i <= 2; i++) {
       const currentDate = new Date(startDate);
       currentDate.setMonth(startDate.getMonth() + i);
       
