@@ -1,11 +1,10 @@
 
 import { Link } from 'react-router-dom';
-import { Filter, Wallet } from 'lucide-react';
+import { Filter, Wallet, Plus, Minus, ArrowUpRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import TransactionItem from './TransactionItem';
 import FadeIn from '@/components/animations/FadeIn';
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Transaction {
   id: string;
@@ -14,6 +13,11 @@ interface Transaction {
   status: string;
   payment_method?: string;
   payment_id?: string;
+  creatorProfile?: {
+    name: string;
+    imageUrl: string;
+  };
+  description?: string;
 }
 
 interface DashboardTransactionsProps {
@@ -39,29 +43,67 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                           transaction.amount > 0 ? 'deposit' : 'withdrawal';
               
               return (
-                <TransactionItem
+                <div 
                   key={transaction.id}
-                  transaction={{
-                    id: transaction.id,
-                    type,
-                    amount: Math.abs(transaction.amount),
-                    date: format(new Date(transaction.created_at), 'dd/MM/yyyy'),
-                    status: transaction.status,
-                    description: type === 'investment' ? 
-                      `Investissement - Créatrice #${transaction.payment_id}` :
-                      type === 'deposit' ? 'Dépôt' : 'Retrait'
-                  }}
-                />
+                  className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
+                >
+                  {transaction.creatorProfile ? (
+                    <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                      <img 
+                        src={transaction.creatorProfile.imageUrl} 
+                        alt={transaction.creatorProfile.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className={cn(
+                      "h-10 w-10 rounded-full flex items-center justify-center mr-3",
+                      type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
+                      type === 'withdrawal' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
+                      "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
+                    )}>
+                      {type === 'deposit' && <Plus className="h-5 w-5" />}
+                      {type === 'withdrawal' && <Minus className="h-5 w-5" />}
+                      {type === 'investment' && <ArrowUpRight className="h-5 w-5" />}
+                    </div>
+                  )}
+                  <div className="flex-grow">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-medium text-sm">
+                        {transaction.payment_method === 'investment' && transaction.creatorProfile
+                          ? `Investissement - ${transaction.creatorProfile.name}`
+                          : type === 'deposit'
+                          ? 'Dépôt'
+                          : 'Retrait'}
+                      </h4>
+                      <span className={cn(
+                        "text-sm font-semibold",
+                        type === 'deposit' ? "text-blue-500" : 
+                        type === 'withdrawal' ? "text-green-500" : 
+                        "text-red-500"
+                      )}>
+                        {type === 'deposit' ? '+' : ''}
+                        {Math.abs(transaction.amount)}€
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {format(new Date(transaction.created_at), 'dd/MM/yyyy')}
+                      </span>
+                      <span className={cn(
+                        "text-xs px-2 py-0.5 rounded-full",
+                        transaction.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                        transaction.status === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" :
+                        "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
+                      )}>
+                        {transaction.status === 'completed' ? 'Terminé' :
+                         transaction.status === 'pending' ? 'En attente' : 'Échoué'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               );
             })}
-            
-            <div className="flex justify-center mt-6">
-              <Link to="/transactions">
-                <Button variant="outline">
-                  Afficher plus de transactions
-                </Button>
-              </Link>
-            </div>
           </div>
         ) : (
           <div className="text-center py-8">

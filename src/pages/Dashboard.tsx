@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
 import { getUserInvestments } from '@/utils/investments';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { CircleDollarSign, TrendingUp, Users, Plus, ArrowRight, Award, UserPlus, Gift } from 'lucide-react';
+import { CircleDollarSign, TrendingUp, Users, Plus, ArrowRight } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -19,6 +18,7 @@ import CreatorProfile from '@/components/dashboard/CreatorProfile';
 import AffiliationStats from '@/components/affiliations/AffiliationStats';
 import GradientButton from '@/components/ui/GradientButton';
 import PerformanceChart from '@/components/dashboard/PerformanceChart';
+import { getCreatorProfile } from '@/utils/creatorProfiles';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -32,7 +32,7 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const { data: transactions = [] } = useQuery({
+  const { data: transactions = [], isLoading: isTransactionsLoading } = useQuery({
     queryKey: ['userTransactions'],
     queryFn: async () => {
       if (!user?.id) return [];
@@ -43,7 +43,17 @@ const Dashboard = () => {
         .order('created_at', { ascending: false });
         
       if (error) throw error;
-      return data;
+
+      return data.map(transaction => {
+        if (transaction.payment_method === 'investment' && transaction.payment_id) {
+          const creatorProfile = getCreatorProfile(transaction.payment_id);
+          return {
+            ...transaction,
+            creatorProfile
+          };
+        }
+        return transaction;
+      });
     },
     enabled: !!user,
   });
@@ -88,9 +98,8 @@ const Dashboard = () => {
   const { totalInvested, totalReturn } = calculateTotalReturn();
 
   const generatePerformanceData = () => {
-    // Utiliser totalInvested au lieu d'une valeur codée en dur
-    const initialInvestment = totalInvested; // Utiliser le montant total investi
-    const monthlyReturnRate = 43.3; // Monthly return rate in percentage
+    const initialInvestment = totalInvested;
+    const monthlyReturnRate = 43.3;
     
     const currentDate = new Date('2025-04-26');
     const data = [];
