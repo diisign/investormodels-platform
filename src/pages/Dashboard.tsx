@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -66,8 +65,26 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
-  const totalReturn = investments.reduce((sum, inv) => sum + (Number(inv.amount) * Number(inv.return_rate) / 100), 0);
+  const calculateTotalReturn = () => {
+    const currentDate = new Date('2025-04-26');
+    const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
+    
+    const totalReturn = investments.reduce((sum, inv) => {
+      const investmentDate = new Date(inv.created_at);
+      const monthsDiff = (currentDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
+                         (currentDate.getMonth() - investmentDate.getMonth());
+      
+      if (monthsDiff < 1) {
+        return 0;
+      }
+      
+      return sum + (Number(inv.amount) * Number(inv.return_rate) / 100);
+    }, 0);
+
+    return { totalInvested, totalReturn };
+  };
+
+  const { totalInvested, totalReturn } = calculateTotalReturn();
 
   const generatePerformanceData = () => {
     const initialInvestment = 4; // Initial investment amount
@@ -76,7 +93,6 @@ const Dashboard = () => {
     const currentDate = new Date('2025-04-26');
     const data = [];
     
-    // Generate last 12 months of data
     for (let i = -11; i <= 0; i++) {
       const monthDate = new Date(currentDate);
       monthDate.setMonth(currentDate.getMonth() + i);
@@ -97,10 +113,8 @@ const Dashboard = () => {
     return data;
   };
 
-  // Get full 12 months of data
   const fullPerformanceData = generatePerformanceData();
   
-  // Filter based on selected time range
   const performanceData = fullPerformanceData.slice(-parseInt(timeRange));
 
   const handleDeposit = (e: React.FormEvent) => {
