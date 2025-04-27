@@ -31,8 +31,9 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
     
     if (daysDiff < 30) return { gains: 0, percentage: 0 };
     
-    const monthlyRate = Number(investment.return_rate) / 3;
-    const gains = Number(investment.amount) * (monthlyRate / 100) * Math.floor(monthsDiff);
+    const quarterlyRate = Number(investment.return_rate);
+    const quarters = Math.floor(monthsDiff / 3);
+    const gains = Number(investment.amount) * (quarterlyRate / 100) * quarters;
     const percentage = (gains / Number(investment.amount)) * 100;
     
     return { gains: Math.round(gains * 100) / 100, percentage: Math.round(percentage * 100) / 100 };
@@ -78,9 +79,9 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               activeDot={{ r: 6, strokeWidth: 0 }}
             />
             <Line
-              name="Gains mensuels"
+              name="Gains trimestriels"
               type="monotone"
-              dataKey="monthlyGains"
+              dataKey="quarterlyGains"
               stroke="#22c55e"
               strokeWidth={2}
               dot={{ r: 2 }}
@@ -122,7 +123,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
                       Initial: {Number(investment.amount).toFixed(2)}€
                     </span>
                     <span className="text-xs font-medium text-green-500">
-                      +{investment.return_rate}% / mois
+                      +{investment.return_rate}% / trimestre
                     </span>
                   </div>
                   {gains > 0 && (
