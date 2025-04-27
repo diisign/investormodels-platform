@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   LineChart,
@@ -77,15 +76,6 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               strokeWidth={3}
               dot={{ r: 3 }}
               activeDot={{ r: 6, strokeWidth: 0 }}
-            />
-            <Line
-              name="Gains trimestriels"
-              type="monotone"
-              dataKey="quarterlyGains"
-              stroke="#22c55e"
-              strokeWidth={2}
-              dot={{ r: 2 }}
-              activeDot={{ r: 4, strokeWidth: 0 }}
             />
           </LineChart>
         </ResponsiveContainer>
