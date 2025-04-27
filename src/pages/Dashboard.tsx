@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -98,6 +99,10 @@ const Dashboard = () => {
     return { totalInvested, totalReturn, percentageReturn };
   };
 
+  // Get the calculated values first
+  const { totalInvested, totalReturn, percentageReturn } = calculateTotalReturn();
+
+  // Now we can use totalInvested in generatePerformanceData
   const generatePerformanceData = () => {
     const currentDate = new Date('2025-04-26');
     const startDate = new Date('2024-05-01');
@@ -155,8 +160,6 @@ const Dashboard = () => {
   if (isInvestmentsLoading) {
     return <div>Chargement...</div>;
   }
-
-  const { totalInvested, totalReturn, percentageReturn } = calculateTotalReturn();
 
   return (
     <div className="min-h-screen flex flex-col">
