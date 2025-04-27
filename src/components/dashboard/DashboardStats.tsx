@@ -24,17 +24,18 @@ const DashboardStats = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <FadeIn direction="up" delay={100} className="glass-card">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-black dark:text-white">Votre solde</CardTitle>
+        <Card className="hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between">
+            <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-300">Votre solde</CardTitle>
+            <CircleDollarSign className="h-5 w-5 text-gray-500 dark:text-gray-400" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-black dark:text-white">{balance.toFixed(2)} €</div>
+          <CardContent className="pt-2">
+            <div className="text-3xl font-bold text-black dark:text-white">{balance.toFixed(2)} €</div>
             <button 
               onClick={onDepositClick}
-              className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
+              className="mt-3 w-full text-sm text-investment-600 hover:text-investment-500 flex items-center justify-center font-medium bg-gray-100 dark:bg-gray-800 rounded-lg py-2 transition-colors"
             >
-              <Plus className="h-4 w-4 mr-1" />
+              <Plus className="h-4 w-4 mr-2" />
               Déposer des fonds
             </button>
           </CardContent>
@@ -51,9 +52,6 @@ const DashboardStats = ({
           </div>
           <div className="flex items-end">
             <span className="text-2xl font-bold">{totalInvested.toFixed(2)}€</span>
-          </div>
-          <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-            Dans {investmentsCount} créatrice{investmentsCount > 1 ? 's' : ''}
           </div>
         </div>
       </FadeIn>
@@ -72,9 +70,11 @@ const DashboardStats = ({
               +{percentageReturn.toFixed(1)}%
             </span>
           </div>
-          <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-            {totalReturn > 0 ? `+${(totalReturn / investmentsCount).toFixed(2)}€ par investissement` : 'Pas encore de rendement'}
-          </div>
+          {totalReturn > 0 && (
+            <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+              {(totalReturn / investmentsCount).toFixed(2)}€ par investissement
+            </div>
+          )}
         </div>
       </FadeIn>
       
