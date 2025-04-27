@@ -77,8 +77,21 @@ const Dashboard = () => {
   });
 
   const calculateTotalReturn = () => {
+    const currentDate = new Date('2025-04-26');
     const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
-    const totalReturn = 0;
+    
+    const totalReturn = investments.reduce((sum, inv) => {
+      const investmentDate = new Date(inv.created_at);
+      const monthsDiff = (currentDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
+                       (currentDate.getMonth() - investmentDate.getMonth());
+      
+      if (monthsDiff < 1) {
+        return sum;
+      }
+      
+      const monthlyRate = Number(inv.return_rate) / 3;
+      return sum + (Number(inv.amount) * (monthlyRate / 100) * monthsDiff);
+    }, 0);
 
     return { totalInvested, totalReturn };
   };
@@ -98,11 +111,28 @@ const Dashboard = () => {
         (monthDate.getMonth() >= 3 && monthDate.getFullYear() === 2025) || 
         monthDate.getFullYear() > 2025;
       
-      const value = isAprilOrLater ? totalInvested : 0;
+      let value = 0;
+      
+      if (isAprilOrLater) {
+        value = totalInvested;
+        
+        investments.forEach(inv => {
+          const investmentDate = new Date(inv.created_at);
+          const monthsSinceInvestment = 
+            (monthDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
+            (monthDate.getMonth() - investmentDate.getMonth());
+          
+          if (monthsSinceInvestment > 0) {
+            const monthlyRate = Number(inv.return_rate) / 3;
+            const monthlyReturn = Number(inv.amount) * (monthlyRate / 100) * monthsSinceInvestment;
+            value += monthlyReturn;
+          }
+        });
+      }
       
       data.push({
         month: format(monthDate, 'MMM yy', { locale: fr }),
-        value: value
+        value: Number(value.toFixed(2))
       });
     }
     
