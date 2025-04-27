@@ -93,10 +93,10 @@ const Dashboard = () => {
       return sum + (Number(inv.amount) * (monthlyRate / 100) * monthsDiff);
     }, 0);
 
-    return { totalInvested, totalReturn };
-  };
+    const percentageReturn = totalInvested > 0 ? (totalReturn / totalInvested) * 100 : 0;
 
-  const { totalInvested, totalReturn } = calculateTotalReturn();
+    return { totalInvested, totalReturn, percentageReturn };
+  };
 
   const generatePerformanceData = () => {
     const currentDate = new Date('2025-04-26');
@@ -155,6 +155,8 @@ const Dashboard = () => {
   if (isInvestmentsLoading) {
     return <div>Chargement...</div>;
   }
+
+  const { totalInvested, totalReturn, percentageReturn } = calculateTotalReturn();
 
   return (
     <div className="min-h-screen flex flex-col">

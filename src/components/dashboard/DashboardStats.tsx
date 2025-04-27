@@ -1,11 +1,7 @@
 
-import React from 'react';
-import { CircleDollarSign, TrendingUp, Users } from 'lucide-react';
+import { CircleDollarSign, TrendingUp, Users, Plus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import FadeIn from '@/components/animations/FadeIn';
-import { Link } from 'react-router-dom';
-import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 interface DashboardStatsProps {
   totalInvested: number;
@@ -15,9 +11,17 @@ interface DashboardStatsProps {
   onDepositClick: () => void;
 }
 
-const DashboardStats = ({ totalInvested, totalReturn, investmentsCount, balance, onDepositClick }: DashboardStatsProps) => {
+const DashboardStats = ({
+  totalInvested,
+  totalReturn,
+  investmentsCount,
+  balance,
+  onDepositClick
+}: DashboardStatsProps) => {
+  const percentageReturn = totalInvested > 0 ? (totalReturn / totalInvested) * 100 : 0;
+  
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <FadeIn direction="up" delay={100} className="glass-card">
         <Card>
           <CardHeader className="pb-2">
@@ -45,7 +49,7 @@ const DashboardStats = ({ totalInvested, totalReturn, investmentsCount, balance,
             </div>
           </div>
           <div className="flex items-end">
-            <span className="text-2xl font-bold">{totalInvested}€</span>
+            <span className="text-2xl font-bold">{totalInvested.toFixed(2)}€</span>
           </div>
           <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
             Dans {investmentsCount} créatrice{investmentsCount > 1 ? 's' : ''}
@@ -57,17 +61,18 @@ const DashboardStats = ({ totalInvested, totalReturn, investmentsCount, balance,
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement</h3>
-            <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600">
+            <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
               <TrendingUp className="h-5 w-5" />
             </div>
           </div>
           <div className="flex items-end">
-            <span className="text-2xl font-bold">{totalReturn}€</span>
-            {totalInvested > 0 && (
-              <span className="ml-2 text-sm text-green-500">
-                +{((totalReturn / totalInvested) * 100).toFixed(0)}%
-              </span>
-            )}
+            <span className="text-2xl font-bold">{totalReturn.toFixed(2)}€</span>
+            <span className="ml-2 text-sm text-green-500">
+              +{percentageReturn.toFixed(1)}%
+            </span>
+          </div>
+          <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+            {totalReturn > 0 ? `+${(totalReturn / investmentsCount).toFixed(2)}€ par investissement` : 'Pas encore de rendement'}
           </div>
         </div>
       </FadeIn>
