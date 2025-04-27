@@ -2,6 +2,7 @@
 import { CircleDollarSign, TrendingUp, Users, Plus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import FadeIn from '@/components/animations/FadeIn';
+import { Link } from 'react-router-dom';
 
 interface DashboardStatsProps {
   totalInvested: number;
