@@ -100,24 +100,47 @@ const Dashboard = () => {
 
   const generatePerformanceData = () => {
     const initialInvestment = totalInvested;
-    const monthlyReturnRate = 43.3;
-    
     const currentDate = new Date('2025-04-26');
     const data = [];
-    
+    let currentValue = initialInvestment;
+
+    // Calculate the monthly returns for active investments
+    const calculateMonthlyReturns = (monthDate: Date) => {
+      let monthlyReturn = 0;
+      
+      investments.forEach(investment => {
+        const investmentDate = new Date(investment.created_at);
+        
+        // Only calculate returns if the investment has been active for at least a month
+        if (monthDate > investmentDate) {
+          // Calculate monthly return as 1/3 of the annual return rate
+          const monthlyRate = Number(investment.return_rate) / 3 / 100;
+          monthlyReturn += Number(investment.amount) * monthlyRate;
+        }
+      });
+      
+      return monthlyReturn;
+    };
+
+    // Generate data for each month
     for (let i = -11; i <= 0; i++) {
       const monthDate = new Date(currentDate);
       monthDate.setMonth(currentDate.getMonth() + i);
       
-      if (i === 0) {
+      if (i === -11) {
+        // First month shows initial investment only
         data.push({
           month: format(monthDate, 'MMM yy', { locale: fr }),
-          value: initialInvestment
+          value: currentValue
         });
       } else {
+        // Add monthly returns to current value
+        const monthlyReturn = calculateMonthlyReturns(monthDate);
+        currentValue += monthlyReturn;
+        
         data.push({
           month: format(monthDate, 'MMM yy', { locale: fr }),
-          value: 0
+          value: Number(currentValue.toFixed(2))
         });
       }
     }
