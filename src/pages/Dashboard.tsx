@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -45,7 +44,6 @@ const Dashboard = () => {
         
       if (error) throw error;
 
-      // Update the mapping to ensure creatorProfile has proper types
       return data.map(transaction => {
         if (transaction.payment_method === 'investment' && transaction.payment_id) {
           return {
@@ -104,16 +102,13 @@ const Dashboard = () => {
     const data = [];
     let currentValue = initialInvestment;
 
-    // Calculate the monthly returns for active investments
     const calculateMonthlyReturns = (monthDate: Date) => {
       let monthlyReturn = 0;
       
       investments.forEach(investment => {
         const investmentDate = new Date(investment.created_at);
         
-        // Only calculate returns if the investment has been active for at least a month
         if (monthDate > investmentDate) {
-          // Calculate monthly return as 1/3 of the annual return rate
           const monthlyRate = Number(investment.return_rate) / 3 / 100;
           monthlyReturn += Number(investment.amount) * monthlyRate;
         }
@@ -122,19 +117,16 @@ const Dashboard = () => {
       return monthlyReturn;
     };
 
-    // Generate data for each month
     for (let i = -11; i <= 0; i++) {
       const monthDate = new Date(currentDate);
       monthDate.setMonth(currentDate.getMonth() + i);
       
       if (i === -11) {
-        // First month shows initial investment only
         data.push({
           month: format(monthDate, 'MMM yy', { locale: fr }),
           value: currentValue
         });
       } else {
-        // Add monthly returns to current value
         const monthlyReturn = calculateMonthlyReturns(monthDate);
         currentValue += monthlyReturn;
         
@@ -155,6 +147,11 @@ const Dashboard = () => {
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowDepositModal(false);
+  };
+
+  const handleWithdraw = () => {
+    queryClient.invalidateQueries({ queryKey: ['userBalance'] });
+    queryClient.invalidateQueries({ queryKey: ['userTransactions'] });
   };
 
   if (isInvestmentsLoading) {
@@ -196,7 +193,8 @@ const Dashboard = () => {
                   
                   <PerformanceChart 
                     investments={investments} 
-                    performanceData={performanceData} 
+                    performanceData={performanceData}
+                    onWithdraw={handleWithdraw}
                   />
                 </div>
               </FadeIn>
