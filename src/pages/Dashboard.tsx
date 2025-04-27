@@ -77,20 +77,8 @@ const Dashboard = () => {
   });
 
   const calculateTotalReturn = () => {
-    const currentDate = new Date('2025-04-26');
     const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
-    
-    const totalReturn = investments.reduce((sum, inv) => {
-      const investmentDate = new Date(inv.created_at);
-      const monthsDiff = (currentDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
-                         (currentDate.getMonth() - investmentDate.getMonth());
-      
-      if (monthsDiff < 1) {
-        return 0;
-      }
-      
-      return sum + (Number(inv.amount) * Number(inv.return_rate) / 100);
-    }, 0);
+    const totalReturn = 0;
 
     return { totalInvested, totalReturn };
   };
@@ -98,51 +86,30 @@ const Dashboard = () => {
   const { totalInvested, totalReturn } = calculateTotalReturn();
 
   const generatePerformanceData = () => {
-    const initialInvestment = totalInvested;
     const currentDate = new Date('2025-04-26');
+    const startDate = new Date('2024-05-01');
     const data = [];
-    let currentValue = initialInvestment;
-
-    const calculateMonthlyReturns = (monthDate: Date) => {
-      let monthlyReturn = 0;
+    
+    for (let i = 0; i < 12; i++) {
+      const monthDate = new Date(startDate);
+      monthDate.setMonth(startDate.getMonth() + i);
       
-      investments.forEach(investment => {
-        const investmentDate = new Date(investment.created_at);
-        
-        if (monthDate > investmentDate) {
-          const monthlyRate = Number(investment.return_rate) / 3 / 100;
-          monthlyReturn += Number(investment.amount) * monthlyRate;
-        }
+      const isAprilOrLater = 
+        (monthDate.getMonth() >= 3 && monthDate.getFullYear() === 2025) || 
+        monthDate.getFullYear() > 2025;
+      
+      const value = isAprilOrLater ? totalInvested : 0;
+      
+      data.push({
+        month: format(monthDate, 'MMM yy', { locale: fr }),
+        value: value
       });
-      
-      return monthlyReturn;
-    };
-
-    for (let i = -11; i <= 0; i++) {
-      const monthDate = new Date(currentDate);
-      monthDate.setMonth(currentDate.getMonth() + i);
-      
-      if (i === -11) {
-        data.push({
-          month: format(monthDate, 'MMM yy', { locale: fr }),
-          value: currentValue
-        });
-      } else {
-        const monthlyReturn = calculateMonthlyReturns(monthDate);
-        currentValue += monthlyReturn;
-        
-        data.push({
-          month: format(monthDate, 'MMM yy', { locale: fr }),
-          value: Number(currentValue.toFixed(2))
-        });
-      }
     }
     
     return data;
   };
 
   const fullPerformanceData = generatePerformanceData();
-  
   const performanceData = fullPerformanceData.slice(-parseInt(timeRange));
 
   const handleDeposit = (e: React.FormEvent) => {
