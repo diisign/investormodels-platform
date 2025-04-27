@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
@@ -99,14 +98,13 @@ const Dashboard = () => {
     return { totalInvested, totalReturn, percentageReturn };
   };
 
-  // Get the calculated values first
   const { totalInvested, totalReturn, percentageReturn } = calculateTotalReturn();
 
-  // Now we can use totalInvested in generatePerformanceData
   const generatePerformanceData = () => {
     const currentDate = new Date('2025-04-26');
     const startDate = new Date('2024-05-01');
     const data = [];
+    let accumulatedGains = 0;
     
     for (let i = 0; i < 12; i++) {
       const monthDate = new Date(startDate);
@@ -117,6 +115,7 @@ const Dashboard = () => {
         monthDate.getFullYear() > 2025;
       
       let value = 0;
+      let monthlyGains = 0;
       
       if (isAprilOrLater) {
         value = totalInvested;
@@ -129,15 +128,20 @@ const Dashboard = () => {
           
           if (monthsSinceInvestment > 0) {
             const monthlyRate = Number(inv.return_rate) / 3;
-            const monthlyReturn = Number(inv.amount) * (monthlyRate / 100) * monthsSinceInvestment;
-            value += monthlyReturn;
+            const monthlyReturn = Number(inv.amount) * (monthlyRate / 100);
+            const totalReturn = monthlyReturn * monthsSinceInvestment;
+            value += totalReturn;
+            monthlyGains += monthlyReturn;
           }
         });
+        
+        accumulatedGains += monthlyGains;
       }
       
       data.push({
         month: format(monthDate, 'MMM yy', { locale: fr }),
-        value: Number(value.toFixed(2))
+        value: Number(value.toFixed(2)),
+        monthlyGains: Number(monthlyGains.toFixed(2))
       });
     }
     

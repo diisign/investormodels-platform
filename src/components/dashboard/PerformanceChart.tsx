@@ -8,11 +8,13 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend
 } from 'recharts';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { Investment } from '@/types/investments';
 import { toast } from 'sonner';
 import WithdrawReturnsButton from './WithdrawReturnsButton';
+import { format } from 'date-fns';
 
 interface PerformanceChartProps {
   investments: Investment[];
@@ -21,6 +23,21 @@ interface PerformanceChartProps {
 }
 
 const PerformanceChart = ({ investments, performanceData, onWithdraw }: PerformanceChartProps) => {
+  const calculateGains = (investment: Investment) => {
+    const now = new Date('2025-04-26');
+    const investmentDate = new Date(investment.created_at);
+    const daysDiff = Math.floor((now.getTime() - investmentDate.getTime()) / (1000 * 60 * 60 * 24));
+    const monthsDiff = daysDiff / 30;
+    
+    if (daysDiff < 30) return { gains: 0, percentage: 0 };
+    
+    const monthlyRate = Number(investment.return_rate) / 3;
+    const gains = Number(investment.amount) * (monthlyRate / 100) * Math.floor(monthsDiff);
+    const percentage = (gains / Number(investment.amount)) * 100;
+    
+    return { gains: Math.round(gains * 100) / 100, percentage: Math.round(percentage * 100) / 100 };
+  };
+
   return (
     <>
       <div className="h-72">
@@ -43,17 +60,31 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               tickLine={false}
               domain={[0, 'dataMax + 1']}
               tickCount={5}
-              tickFormatter={(value) => Math.round(value).toString()}
+              tickFormatter={(value) => `${Math.round(value)}€`}
               width={40}
             />
-            <Tooltip formatter={(value) => `${value}€`} />
+            <Tooltip 
+              formatter={(value: number) => `${value}€`}
+              labelFormatter={(label) => `${label}`}
+            />
+            <Legend />
             <Line
+              name="Valeur totale"
               type="monotone"
               dataKey="value"
               stroke="#0ea5e9"
               strokeWidth={3}
               dot={{ r: 3 }}
               activeDot={{ r: 6, strokeWidth: 0 }}
+            />
+            <Line
+              name="Gains mensuels"
+              type="monotone"
+              dataKey="monthlyGains"
+              stroke="#22c55e"
+              strokeWidth={2}
+              dot={{ r: 2 }}
+              activeDot={{ r: 4, strokeWidth: 0 }}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -62,6 +93,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         {investments.map((investment) => {
           const creator = getCreatorProfile(investment.creator_id);
+          const { gains, percentage } = calculateGains(investment);
           return (
             <div 
               key={investment.id}
@@ -90,9 +122,19 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
                       Initial: {Number(investment.amount).toFixed(2)}€
                     </span>
                     <span className="text-xs font-medium text-green-500">
-                      +{investment.return_rate}%
+                      +{investment.return_rate}% / mois
                     </span>
                   </div>
+                  {gains > 0 && (
+                    <div className="flex justify-between items-center mt-2 text-xs">
+                      <span className="text-green-500 font-medium">
+                        Gains: +{gains}€
+                      </span>
+                      <span className="text-green-500 font-medium">
+                        +{percentage}%
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
               <WithdrawReturnsButton 
