@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
 import { getUserInvestments } from '@/utils/investments';
 import Navbar from '@/components/layout/Navbar';
@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
+  const queryClient = useQueryClient();
 
   const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery({
     queryKey: ['userInvestments'],
