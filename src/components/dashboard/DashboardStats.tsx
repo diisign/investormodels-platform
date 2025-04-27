@@ -22,20 +22,20 @@ const DashboardStats = ({
   const percentageReturn = totalInvested > 0 ? (totalReturn / totalInvested) * 100 : 0;
   
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <FadeIn direction="up" delay={100} className="glass-card">
         <Card className="hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors">
-          <CardHeader className="pb-2 flex flex-row items-center justify-between">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
             <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-300">Votre solde</CardTitle>
-            <CircleDollarSign className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+            <CircleDollarSign className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="text-3xl font-bold text-black dark:text-white">{balance.toFixed(2)} €</div>
+            <div className="text-2xl font-bold text-black dark:text-white mb-3">{balance.toFixed(2)} €</div>
             <button 
               onClick={onDepositClick}
-              className="mt-3 w-full text-sm text-investment-600 hover:text-investment-500 flex items-center justify-center font-medium bg-gray-100 dark:bg-gray-800 rounded-lg py-2 transition-colors"
+              className="w-full text-sm text-investment-600 hover:text-investment-500 flex items-center justify-center font-medium bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/50 dark:hover:bg-gray-800 rounded-lg py-1.5 transition-colors"
             >
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-3.5 w-3.5 mr-1.5" />
               Déposer des fonds
             </button>
           </CardContent>
@@ -43,11 +43,11 @@ const DashboardStats = ({
       </FadeIn>
       
       <FadeIn direction="up" delay={200} className="glass-card">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total investi</h3>
-            <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600">
-              <CircleDollarSign className="h-5 w-5" />
+            <div className="h-9 w-9 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600">
+              <CircleDollarSign className="h-4 w-4" />
             </div>
           </div>
           <div className="flex items-end">
@@ -57,11 +57,11 @@ const DashboardStats = ({
       </FadeIn>
       
       <FadeIn direction="up" delay={300} className="glass-card">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement</h3>
-            <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
-              <TrendingUp className="h-5 w-5" />
+            <div className="h-9 w-9 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
+              <TrendingUp className="h-4 w-4" />
             </div>
           </div>
           <div className="flex items-end">
@@ -71,7 +71,7 @@ const DashboardStats = ({
             </span>
           </div>
           {totalReturn > 0 && (
-            <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+            <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">
               {(totalReturn / investmentsCount).toFixed(2)}€ par investissement
             </div>
           )}
@@ -79,18 +79,18 @@ const DashboardStats = ({
       </FadeIn>
       
       <FadeIn direction="up" delay={400} className="glass-card">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Créatrices suivies</h3>
-            <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
-              <Users className="h-5 w-5" />
+            <div className="h-9 w-9 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
+              <Users className="h-4 w-4" />
             </div>
           </div>
           <div className="flex items-end">
             <span className="text-2xl font-bold">{investmentsCount}</span>
           </div>
-          <Link to="/creators" className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
-            <Plus className="h-4 w-4 mr-1" />
+          <Link to="/creators" className="mt-3 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
+            <Plus className="h-3.5 w-3.5 mr-1.5" />
             Découvrir plus de créatrices
           </Link>
         </div>
