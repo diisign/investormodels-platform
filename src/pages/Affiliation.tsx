@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -32,6 +31,16 @@ const Affiliation = () => {
     toast.success("Lien d'affiliation copié !");
     setTimeout(() => setCopied(false), 2000);
   };
+
+  useEffect(() => {
+    // Check if we should scroll to top based on sessionStorage flag
+    const shouldScrollToTop = sessionStorage.getItem('scrollToTop') === 'true';
+    if (shouldScrollToTop) {
+      window.scrollTo(0, 0);
+      // Clear the flag after scrolling
+      sessionStorage.removeItem('scrollToTop');
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

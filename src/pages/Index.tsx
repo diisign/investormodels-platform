@@ -142,6 +142,12 @@ const Index = () => {
 
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
+  // Function to handle navigation to affiliation page and scroll to top
+  const handleAffiliationClick = (e: React.MouseEvent) => {
+    // We'll use window.scrollTo after navigation to ensure scrolling to top
+    sessionStorage.setItem('scrollToTop', 'true');
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={false} />
@@ -298,7 +304,7 @@ const Index = () => {
             </div>
             
             <div className="mt-8 text-center">
-              <Link to="/affiliation">
+              <Link to="/affiliation" onClick={handleAffiliationClick}>
                 <GradientButton 
                   size="default"
                   variant="outline"
