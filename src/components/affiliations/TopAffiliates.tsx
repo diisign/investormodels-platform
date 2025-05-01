@@ -10,32 +10,32 @@ const topAffiliates = [
   {
     id: 1,
     name: "Sophie M.",
-    referrals: 187,
-    earnings: 6250,
+    referrals: 487,
+    earnings: 36250,
   },
   {
     id: 2,
     name: "Thomas D.",
-    referrals: 143,
-    earnings: 4780,
+    referrals: 343,
+    earnings: 24780,
   },
   {
     id: 3,
     name: "Emma B.",
-    referrals: 121,
-    earnings: 4060,
+    referrals: 321,
+    earnings: 19060,
   },
   {
     id: 4,
     name: "Lucas P.",
-    referrals: 98,
-    earnings: 3240,
+    referrals: 298,
+    earnings: 16240,
   },
   {
     id: 5,
     name: "Camille D.",
-    referrals: 81,
-    earnings: 2680,
+    referrals: 281,
+    earnings: 12680,
   },
 ];
 
