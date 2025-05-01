@@ -13,6 +13,7 @@ import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import AffiliationStats from '@/components/affiliations/AffiliationStats';
+import TopAffiliates from '@/components/affiliations/TopAffiliates';
 
 const Affiliation = () => {
   const { isAuthenticated, user } = useAuth();
@@ -144,6 +145,24 @@ const Affiliation = () => {
                   </div>
                 </Card>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Top Affiliés Section */}
+        <section className="py-10 bg-white">
+          <div className="container mx-auto px-4">
+            <FadeIn className="max-w-3xl mx-auto mb-6" direction="up">
+              <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
+                Nos <span className="text-investment-600">Meilleurs Parrains</span>
+              </h2>
+              <p className="text-base text-gray-600 dark:text-gray-300 text-center">
+                Découvrez les parrains qui ont gagné le plus en recommandant notre plateforme.
+              </p>
+            </FadeIn>
+            
+            <div className="max-w-3xl mx-auto">
+              <TopAffiliates />
             </div>
           </div>
         </section>

@@ -7,6 +7,7 @@ import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import TopAffiliates from '@/components/affiliations/TopAffiliates';
 
 // Define types for the joined data - updated to match actual response structure
 type AffiliationWithProfiles = {
@@ -52,6 +53,9 @@ const DashboardAffiliation = () => {
       <Navbar isLoggedIn={true} />
       
       <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <TopAffiliates />
+        </div>
         <Card className="p-4">
           <h2 className="text-xl font-semibold mb-4">Tous les Parrainages</h2>
           <div className="overflow-x-auto">
