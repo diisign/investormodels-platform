@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/carousel';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
+import TopAffiliates from '@/components/affiliations/TopAffiliates';
 
 const trustpilotReviews = [
   { 
@@ -273,6 +274,37 @@ const Index = () => {
                   className="text-[#8B5CF6] border-[#8B5CF6] hover:bg-[#8B5CF6]/10"
                 >
                   Voir toutes les créatrices
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </GradientButton>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Top Affiliés Section - Nouvelle section */}
+        <section className="py-10 md:py-16 bg-white dark:bg-gray-950">
+          <div className="container mx-auto px-4">
+            <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-center">
+                Nos <span className="text-investment-600">Meilleurs Parrains</span>
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
+                Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?
+              </p>
+            </FadeIn>
+            
+            <div className="max-w-3xl mx-auto">
+              <TopAffiliates />
+            </div>
+            
+            <div className="mt-8 text-center">
+              <Link to="/affiliation">
+                <GradientButton 
+                  size="default"
+                  variant="outline"
+                  className="text-investment-600 border-investment-600 hover:bg-investment-50"
+                >
+                  Rejoindre le programme d'affiliation
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
