@@ -9,33 +9,33 @@ import FadeIn from '@/components/animations/FadeIn';
 const topAffiliates = [
   {
     id: 1,
-    name: "Sophie Martin",
-    referrals: 48,
-    earnings: 4850,
+    name: "Sophie M.",
+    referrals: 124,
+    earnings: 3950,
   },
   {
     id: 2,
-    name: "Thomas Durand",
-    referrals: 37,
-    earnings: 3680,
+    name: "Thomas D.",
+    referrals: 98,
+    earnings: 2940,
   },
   {
     id: 3,
-    name: "Emma Bernard",
-    referrals: 31,
-    earnings: 3150,
+    name: "Emma B.",
+    referrals: 85,
+    earnings: 2550,
   },
   {
     id: 4,
-    name: "Lucas Petit",
-    referrals: 26,
-    earnings: 2480,
+    name: "Lucas P.",
+    referrals: 73,
+    earnings: 2190,
   },
   {
     id: 5,
-    name: "Camille Dubois",
-    referrals: 22,
-    earnings: 2180,
+    name: "Camille D.",
+    referrals: 61,
+    earnings: 1830,
   },
 ];
 
@@ -53,7 +53,7 @@ const TopAffiliates = () => {
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
-              <span>Gain moyen: 328€/filleul</span>
+              <span>Gain moyen: 125€/filleul</span>
             </div>
           </div>
         </CardHeader>
