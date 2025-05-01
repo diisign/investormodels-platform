@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -11,7 +12,6 @@ import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import AffiliationStats from '@/components/affiliations/AffiliationStats';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
 
 const Affiliation = () => {
@@ -175,14 +175,6 @@ const Affiliation = () => {
             </div>
           </div>
         </section>
-
-        <div className="max-w-4xl mx-auto">
-          {isAuthenticated && (
-            <div className="mt-8 px-4">
-              <AffiliationStats />
-            </div>
-          )}
-        </div>
 
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4">
