@@ -53,7 +53,7 @@ const TopAffiliates = () => {
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
-              <span>Gain moyen: 125€/filleul</span>
+              <span>Gain moyen: 250€/filleul</span>
             </div>
           </div>
         </CardHeader>
