@@ -11,31 +11,31 @@ const topAffiliates = [
     id: 1,
     name: "Sophie M.",
     referrals: 487,
-    earnings: 36250,
+    earnings: 72500,  // Increased from 36250
   },
   {
     id: 2,
     name: "Thomas D.",
     referrals: 343,
-    earnings: 24780,
+    earnings: 49560,  // Increased from 24780
   },
   {
     id: 3,
     name: "Emma B.",
     referrals: 321,
-    earnings: 19060,
+    earnings: 38120,  // Increased from 19060
   },
   {
     id: 4,
     name: "Lucas P.",
     referrals: 298,
-    earnings: 16240,
+    earnings: 32480,  // Increased from 16240
   },
   {
     id: 5,
     name: "Camille D.",
     referrals: 281,
-    earnings: 12680,
+    earnings: 25360,  // Increased from 12680
   },
 ];
 
