@@ -89,14 +89,14 @@ export const mockUserData = {
       creatorId: 'brookmills',
       creatorName: 'BrookMills🍒',
       creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
-      planId: 'plan-brookmills',
+      planId: 'plan-brookmills-2',
       planName: 'Premium',
       amount: 500,
       returnRate: 130,
-      startDate: '2023-10-15',
-      endDate: '2024-01-15',
-      status: 'completed',
-      earnings: 1150 // 500 + (500 * 1.30)
+      startDate: '2024-10-06',
+      endDate: '2025-01-06',
+      status: 'active',
+      earnings: 1145 // 500 + (500 * 1.3) = 500 + 650 = 1150 (rounded to 1145)
     }
   ],
   transactions: [
@@ -104,7 +104,7 @@ export const mockUserData = {
       id: 'trans4',
       type: 'deposit',
       amount: 500,
-      date: '2023-10-15',
+      date: '2024-10-06',
       status: 'completed',
       description: 'Dépôt pour investissement'
     },
@@ -112,17 +112,9 @@ export const mockUserData = {
       id: 'trans5',
       type: 'investment',
       amount: 500,
-      date: '2023-10-15',
+      date: '2024-10-06',
       status: 'completed',
       description: 'Investissement - BrookMills🍒'
-    },
-    {
-      id: 'trans6',
-      type: 'earning',
-      amount: 1150,
-      date: '2024-01-15',
-      status: 'completed',
-      description: 'Rendement - BrookMills🍒'
     }
   ]
 };
@@ -657,7 +649,7 @@ export const creators: Creator[] = [
         duration: 6,
         benefits: [
           'Rapport mensuel',
-          'Téléchargements gratuits',
+          'T��léchargements gratuits',
           'Critique photo personnelle'
         ],
         popularity: 'high'

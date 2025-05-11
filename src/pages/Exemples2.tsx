@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -17,18 +18,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 const generateRealisticData = () => {
-  // BrookMills investment from October 2023
+  // BrookMills investment from October 6, 2024
   const brookMillsInvestment = {
-    date: new Date('2023-10-15'),
+    date: new Date('2024-10-06'),
     amount: 500,
-    monthlyGain: 500 * (130/100) / 3, // Monthly gain based on 130% return rate over 3 months
+    monthlyGain: 215, // Monthly gain based on 130% return rate over 3 months (43.3% per month)
     returnRate: 130,
-    withdrawalDate: new Date('2024-01-15'),
-    withdrawalAmount: 500 + 500 * 1.3 // 500 + (500 * 1.30)
+    withdrawalDate: new Date('2025-01-06')
   };
   
-  const startDate = new Date('2023-10-01'); 
-  const currentDate = new Date('2025-04-20');
+  const startDate = new Date('2024-08-01'); // Start 2 months before investment
+  const currentDate = new Date('2025-05-11'); // Current date
   
   const performanceData = [];
   const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
@@ -43,33 +43,48 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    // BrookMills investment (from October 2023)
-    if (currentMonthDate.getTime() >= brookMillsInvestment.date.getTime() && 
-        currentMonthDate.getTime() < brookMillsInvestment.withdrawalDate.getTime()) {
-      // Initial investment
-      if (i === 0 || (currentMonthDate.getMonth() === brookMillsInvestment.date.getMonth() && 
-                      currentMonthDate.getFullYear() === brookMillsInvestment.date.getFullYear())) {
-        totalValue += brookMillsInvestment.amount;
-      }
-      // Monthly gains
-      if (i > 0) {
+    // Initial investment on October 6, 2024
+    if (currentMonthDate.getFullYear() === brookMillsInvestment.date.getFullYear() && 
+        currentMonthDate.getMonth() === brookMillsInvestment.date.getMonth()) {
+      totalValue += brookMillsInvestment.amount;
+    }
+    
+    // Monthly gains from October to December (3 months at 43.3% per month)
+    if (
+      (currentMonthDate.getFullYear() === 2024 && currentMonthDate.getMonth() >= 10) || // Oct-Dec 2024
+      (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() === 0)   // Jan 2025
+    ) {
+      if (currentMonthDate.getFullYear() > brookMillsInvestment.date.getFullYear() || 
+          currentMonthDate.getMonth() > brookMillsInvestment.date.getMonth()) {
         totalValue += brookMillsInvestment.monthlyGain;
       }
     }
     
-    // BrookMills withdrawal (January 2024)
-    if (currentMonthDate.getMonth() === brookMillsInvestment.withdrawalDate.getMonth() && 
-        currentMonthDate.getFullYear() === brookMillsInvestment.withdrawalDate.getFullYear()) {
-      // Keep the earnings in the balance
-      totalValue = brookMillsInvestment.withdrawalAmount;
+    // January 6, 2025: Now have 1145€ total (500 + 215*3 = 500 + 645 = 1145)
+    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() === 0) {
+      // No specific action needed, just continue tracking the value
+    }
+    
+    // New monthly gains from January to April (months 4-7 at 43.3% of 1145 = 492€ per month)
+    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 1 && currentMonthDate.getMonth() <= 3) {
+      if (i > 0 && (
+          currentMonthDate.getFullYear() > 2025 || 
+          (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 1)
+      )) {
+        totalValue += 492; // Monthly gain from January to April
+      }
+    }
+    
+    // April 2025: Now have 2621€ total (1145 + 492*3 = 1145 + 1476 = 2621)
+    // New monthly gains from April onwards (43.3% of 2621 = 1127€ per month)
+    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 4) {
+      totalValue += 1127; // Monthly gain from May onwards
     }
     
     performanceData.push({
       month: monthLabel,
       value: Number(totalValue.toFixed(2)),
-      withdrawal: currentMonthDate.getMonth() === brookMillsInvestment.withdrawalDate.getMonth() && 
-                 currentMonthDate.getFullYear() === brookMillsInvestment.withdrawalDate.getFullYear() ?
-                 brookMillsInvestment.withdrawalAmount : undefined
+      withdrawal: undefined
     });
   }
   
@@ -97,7 +112,7 @@ const generateRealisticData = () => {
     totalReferrals: 9,
     pendingReferrals: 3,
     completedReferrals: 6,
-    earnings: 125 + 200 + 75 + 250 + 150 + 75, // 875 total from completed
+    earnings: 875,
     recentReferrals: [
       { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
       { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
