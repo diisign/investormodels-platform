@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -13,6 +14,8 @@ import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { creators, mockUserData } from '@/utils/mockData';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 const generateRealisticData = () => {
   // First investment - Maria
@@ -630,4 +633,47 @@ const Exemples2 = () => {
       
       {showDepositModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <FadeIn className="bg-white dark:
+          <FadeIn className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Déposer des fonds</h3>
+            <form onSubmit={handleDeposit}>
+              <div className="mb-4">
+                <label htmlFor="amount" className="block text-sm font-medium mb-1">Montant (€)</label>
+                <input 
+                  type="number" 
+                  id="amount"
+                  min="100"
+                  step="10"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-investment-500 focus:border-investment-500"
+                  placeholder="100"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">Montant minimum: 100€</p>
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button 
+                  type="button" 
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium"
+                  onClick={() => setShowDepositModal(false)}
+                >
+                  Annuler
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-4 py-2 bg-investment-600 text-white rounded-md text-sm font-medium hover:bg-investment-700"
+                >
+                  Déposer
+                </button>
+              </div>
+            </form>
+          </FadeIn>
+        </div>
+      )}
+      <Footer />
+    </div>
+  );
+};
+
+export default Exemples2;
+
