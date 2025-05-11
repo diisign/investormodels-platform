@@ -97,6 +97,20 @@ export const mockUserData = {
       endDate: '2025-01-03',
       status: 'completed',
       earnings: 960
+    },
+    {
+      id: 'inv2',
+      creatorId: 'brookmills',
+      creatorName: 'BrookMills',
+      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
+      planId: 'plan-brookmills',
+      planName: 'Premium',
+      amount: 500,
+      returnRate: 43,
+      startDate: '2023-10-15',
+      endDate: '2024-01-15',
+      status: 'completed',
+      earnings: 715 // 500 + (500 * 0.43)
     }
   ],
   transactions: [
@@ -123,6 +137,30 @@ export const mockUserData = {
       date: '2025-01-03',
       status: 'completed',
       description: 'Rendement - Maria 🤸🏻‍*'
+    },
+    {
+      id: 'trans4',
+      type: 'deposit',
+      amount: 500,
+      date: '2023-10-15',
+      status: 'completed',
+      description: 'Dépôt pour investissement'
+    },
+    {
+      id: 'trans5',
+      type: 'investment',
+      amount: 500,
+      date: '2023-10-15',
+      status: 'completed',
+      description: 'Investissement - BrookMills'
+    },
+    {
+      id: 'trans6',
+      type: 'earning',
+      amount: 715,
+      date: '2024-01-15',
+      status: 'completed',
+      description: 'Rendement - BrookMills'
     }
   ]
 };
@@ -838,6 +876,61 @@ popularity: 'low'
           'Plan complet personnalisé',
           'Coaching privé régulier',
           'Produits bien-être offerts'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'brookmills',
+    name: 'BrookMills',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
+    category: 'Style',
+    returnRate: 43,
+    investorsCount: 326,
+    totalInvested: 78000,
+    monthlyRevenue: 19000,
+    followers: 405000,
+    creationDate: '2022-05-17',
+    description: "Créatrice de contenu lifestyle et mode. Mes revenus sont générés par ma boutique en ligne, mes collaborations avec des marques de luxe et mon programme de consultation en style personnalisé.",
+    plans: [
+      {
+        id: 'plan-brookmills-1',
+        name: 'Basique',
+        returnRate: 25,
+        minInvestment: 100,
+        duration: 3,
+        benefits: [
+          'Rapport mensuel sur les revenus',
+          'Newsletter exclusive'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan-brookmills-2',
+        name: 'Premium',
+        returnRate: 43,
+        minInvestment: 500,
+        duration: 3,
+        benefits: [
+          'Rapports détaillés mensuels',
+          'Remises sur les produits',
+          'Accès aux lancements en avant-première'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan-brookmills-3',
+        name: 'Exclusive',
+        returnRate: 60,
+        minInvestment: 1000,
+        duration: 3,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation de style personnalisée',
+          'Produits gratuits',
+          'Invitation aux événements VIP'
         ],
         popularity: 'low'
       }

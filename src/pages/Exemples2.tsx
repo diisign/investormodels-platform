@@ -12,16 +12,11 @@ import { cn } from '@/lib/utils';
 import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { creators } from '@/utils/mockData';
+import { creators, mockUserData } from '@/utils/mockData';
 
 const generateRealisticData = () => {
-  const creator = {
-    id: 'creator_maria',
-    name: 'Maria 🤸🏻‍*', 
-    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg'
-  };
-  
-  const firstInvestment = { 
+  // First investment - Maria
+  const mariaInvestment = { 
     date: new Date('2024-10-03'), 
     amount: 800, 
     monthlyGain: 344,
@@ -30,21 +25,32 @@ const generateRealisticData = () => {
     withdrawalAmount: 1832
   };
   
-  const secondInvestment = {
+  // Second investment - Maria reinvestment
+  const mariaReinvestment = {
     date: new Date('2025-01-25'),
     amount: 1000,
     monthlyGain: 430,
     returnRate: 43
   };
+
+  // BrookMills investment from October 2023
+  const brookMillsInvestment = {
+    date: new Date('2023-10-15'),
+    amount: 500,
+    monthlyGain: 215, // monthly gain based on 43% return rate
+    returnRate: 43,
+    withdrawalDate: new Date('2024-01-15'),
+    withdrawalAmount: 715 // 500 + (500 * 0.43)
+  };
   
-  const startDate = new Date('2024-10-03');
+  const startDate = new Date('2023-10-01'); // Start earlier to include BrookMills investment
   const currentDate = new Date('2025-04-20');
   
   const performanceData = [];
   const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
     (currentDate.getMonth() - startDate.getMonth());
   
-  let totalValue = firstInvestment.amount;
+  let totalValue = 0; // Start with zero
   
   for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
@@ -53,93 +59,93 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    if (i > 0 && currentMonthDate < firstInvestment.withdrawalDate) {
-      totalValue += firstInvestment.monthlyGain;
+    // BrookMills investment (from October 2023)
+    if (currentMonthDate.getTime() >= brookMillsInvestment.date.getTime() && 
+        currentMonthDate.getTime() < brookMillsInvestment.withdrawalDate.getTime()) {
+      // Initial investment
+      if (i === 0 || (currentMonthDate.getMonth() === brookMillsInvestment.date.getMonth() && 
+                      currentMonthDate.getFullYear() === brookMillsInvestment.date.getFullYear())) {
+        totalValue += brookMillsInvestment.amount;
+      }
+      // Monthly gains
+      if (i > 0) {
+        totalValue += brookMillsInvestment.monthlyGain;
+      }
     }
     
-    if (currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() && 
-        currentMonthDate.getFullYear() === firstInvestment.withdrawalDate.getFullYear()) {
-      totalValue = secondInvestment.amount; // Reset to second investment amount after withdrawal
+    // BrookMills withdrawal (January 2024)
+    if (currentMonthDate.getMonth() === brookMillsInvestment.withdrawalDate.getMonth() && 
+        currentMonthDate.getFullYear() === brookMillsInvestment.withdrawalDate.getFullYear()) {
+      // Keep the earnings in the balance
     }
     
-    if (currentMonthDate > secondInvestment.date) {
-      totalValue += secondInvestment.monthlyGain;
+    // Maria investment (from October 2024)
+    if (currentMonthDate.getTime() >= mariaInvestment.date.getTime() && 
+        currentMonthDate.getTime() < mariaInvestment.withdrawalDate.getTime()) {
+      // Initial investment
+      if (currentMonthDate.getMonth() === mariaInvestment.date.getMonth() && 
+          currentMonthDate.getFullYear() === mariaInvestment.date.getFullYear()) {
+        totalValue += mariaInvestment.amount;
+      }
+      // Monthly gains
+      if (currentMonthDate > mariaInvestment.date) {
+        totalValue += mariaInvestment.monthlyGain;
+      }
+    }
+    
+    // Maria withdrawal (January 2025)
+    if (currentMonthDate.getMonth() === mariaInvestment.withdrawalDate.getMonth() && 
+        currentMonthDate.getFullYear() === mariaInvestment.withdrawalDate.getFullYear()) {
+      // Keep some of the earnings and reinvest
+      totalValue = brookMillsInvestment.withdrawalAmount + (mariaInvestment.withdrawalAmount - mariaReinvestment.amount);
+    }
+    
+    // Maria reinvestment (from January 25, 2025)
+    if (currentMonthDate.getTime() > mariaReinvestment.date.getTime()) {
+      // Initial reinvestment
+      if (currentMonthDate.getMonth() === mariaReinvestment.date.getMonth() && 
+          currentMonthDate.getFullYear() === mariaReinvestment.date.getFullYear() && 
+          currentMonthDate.getDate() >= mariaReinvestment.date.getDate()) {
+        totalValue += mariaReinvestment.amount;
+      }
+      // Monthly gains from reinvestment
+      if (currentMonthDate.getTime() > mariaReinvestment.date.getTime() && 
+          (currentMonthDate.getMonth() > mariaReinvestment.date.getMonth() || 
+           currentMonthDate.getFullYear() > mariaReinvestment.date.getFullYear())) {
+        totalValue += mariaReinvestment.monthlyGain;
+      }
     }
     
     performanceData.push({
       month: monthLabel,
       value: Number(totalValue.toFixed(2)),
-      withdrawal: currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() ? 
-                 firstInvestment.withdrawalAmount - secondInvestment.amount : undefined
+      withdrawal: currentMonthDate.getMonth() === mariaInvestment.withdrawalDate.getMonth() ? 
+                 mariaInvestment.withdrawalAmount - mariaReinvestment.amount : 
+                 currentMonthDate.getMonth() === brookMillsInvestment.withdrawalDate.getMonth() ?
+                 brookMillsInvestment.withdrawalAmount : undefined
     });
   }
   
-  const portfolioData = [{
-    name: creator.name,
-    value: performanceData[performanceData.length - 1].value,
-    initial: secondInvestment.amount,
-    imageUrl: creator.imageUrl,
-    returnRate: secondInvestment.returnRate * 6  // multiplication by 6 months to display 258%
-  }];
+  // Get the current investments from mockUserData
+  const portfolioData = mockUserData.investments.map(inv => ({
+    name: inv.creatorName,
+    value: inv.amount,
+    initial: inv.amount,
+    imageUrl: inv.creatorImage,
+    returnRate: inv.returnRate
+  }));
 
-  const monthsInvested = (() => {
-    const start = secondInvestment.date;
-    const end = new Date('2025-04-20');
-    let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
-    if (end.getDate() < start.getDate()) {
-      months -= 1; // Partial month doesn't count fully
-    }
-    return months > 0 ? months : 0;
-  })();
+  // Calculate total invested amount
+  const totalInvested = mockUserData.investments.reduce((sum, inv) => sum + inv.amount, 0);
 
-  const cumulativeReturnPercent = monthsInvested * secondInvestment.returnRate;
+  // Calculate total earnings
+  const totalEarnings = mockUserData.investments.reduce((sum, inv) => sum + inv.earnings - inv.amount, 0);
 
-  const investmentsList = [{
-    id: '1',
-    creatorName: creator.name,
-    creatorImage: creator.imageUrl,
-    planName: 'Professionnel',
-    amount: portfolioData[0].value,
-    initial: secondInvestment.amount,
-    returnRate: secondInvestment.returnRate * 6, // display 258%
-    totalReturn: cumulativeReturnPercent,
-    status: 'completed'
-  }];
-  
-  const transactions = [
-    {
-      id: '1',
-      type: 'deposit',
-      amount: firstInvestment.amount,
-      date: '03/10/2024',
-      status: 'completed',
-      description: 'Dépôt initial'
-    },
-    {
-      id: '2',
-      type: 'investment',
-      amount: -firstInvestment.amount,
-      date: '03/10/2024',
-      status: 'completed',
-      description: `Investissement - ${creator.name}`
-    },
-    {
-      id: '3',
-      type: 'withdrawal',
-      amount: firstInvestment.withdrawalAmount - secondInvestment.amount, // Only the withdrawn amount (832€)
-      date: '23/01/2025',
-      status: 'completed',
-      description: 'Retrait partiel'
-    },
-    {
-      id: '4',
-      type: 'investment',
-      amount: -secondInvestment.amount,
-      date: '25/01/2025',
-      status: 'completed',
-      description: `Réinvestissement - ${creator.name}`
-    }
-  ];
+  // Calculate average percentage return across all investments
+  const totalPercentageReturn = mockUserData.investments.reduce((sum, inv) => sum + inv.returnRate, 0) / mockUserData.investments.length;
+
+  // Use the transactions from mockUserData
+  const transactions = mockUserData.transactions;
   
   const referralData = {
     totalReferrals: 9,
@@ -164,25 +170,25 @@ const generateRealisticData = () => {
   };
 
   const updatedReferralEarnings = referralData.earnings;
-  const totalEarningsValue = 2340;
-
+  const totalEarningsValue = totalEarnings;
+  
   const balanceWithoutReferral = Number(totalValue.toFixed(2));
   const balance = balanceWithoutReferral + updatedReferralEarnings;
 
   return {
     performanceData,
     portfolioData,
-    investments: investmentsList,
+    investments: mockUserData.investments,
     transactions,
     referralData,
     balance,
-    totalInvested: 800,
-    totalEarnings: totalEarningsValue,
+    totalInvested,
+    totalEarnings: totalEarnings,
     monthlyChartData: performanceData.map(item => ({
       month: item.month,
       value: item.value
     })),
-    totalPercentageReturn: cumulativeReturnPercent
+    totalPercentageReturn
   };
 };
 
@@ -234,7 +240,7 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">800€</span>
+                    <span className="text-2xl font-bold">{data.totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                     Dans {data.investments.length} créatrice
@@ -251,9 +257,9 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">2340€</span>
+                    <span className="text-2xl font-bold">{data.totalEarnings}€</span>
                     <span className="ml-2 text-sm text-green-500">
-                      +258%
+                      +{data.totalPercentageReturn}%
                     </span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
@@ -624,68 +630,4 @@ const Exemples2 = () => {
       
       {showDepositModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
-            <form onSubmit={handleDeposit}>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Montant (€)
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={depositAmount}
-                      onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10"
-                      step="10"
-                      className="input-field pl-10"
-                      placeholder="100"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
-                  </label>
-                  <select 
-                    id="payment-method" 
-                    className="input-field"
-                    required
-                  >
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer
-                  </GradientButton>
-                </div>
-              </div>
-            </form>
-          </FadeIn>
-        </div>
-      )}
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Exemples2;
+          <FadeIn className="bg-white dark:
