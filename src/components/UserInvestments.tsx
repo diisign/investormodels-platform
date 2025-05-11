@@ -61,9 +61,6 @@ const UserInvestments = () => {
                       <p className="font-medium">{creator?.name || 'Créatrice'}</p>
                       <p className="text-sm text-gray-500">Rendement: {investment.return_rate}%</p>
                       <p className="text-xs text-gray-500">
-                        Total: 3748€ (+749.6%)
-                      </p>
-                      <p className="text-xs text-gray-500">
                         Bloqué jusqu'au {format(
                           new Date(
                             investmentDate.getFullYear(),
