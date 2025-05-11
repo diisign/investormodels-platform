@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -108,10 +109,10 @@ const generateRealisticData = () => {
   const transactions = mockUserData.transactions;
   
   const referralData = {
-    totalReferrals: 9,
-    pendingReferrals: 3,
-    completedReferrals: 6,
-    earnings: 875,
+    totalReferrals: 18,
+    pendingReferrals: 5,
+    completedReferrals: 13,
+    earnings: 1775,
     recentReferrals: [
       { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
       { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
@@ -122,11 +123,20 @@ const generateRealisticData = () => {
       { name: 'Inès D.', date: '20/04/2025', status: 'pending', reward: 180 },
       { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 260 },
       { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 120 },
+      { name: 'Marie T.', date: '21/04/2025', status: 'completed', reward: 110 },
+      { name: 'Olivier K.', date: '22/04/2025', status: 'completed', reward: 135 },
+      { name: 'Julie M.', date: '23/04/2025', status: 'completed', reward: 190 },
+      { name: 'Théo R.', date: '24/04/2025', status: 'completed', reward: 100 },
+      { name: 'Léa B.', date: '25/04/2025', status: 'completed', reward: 165 },
+      { name: 'Alexandre D.', date: '26/04/2025', status: 'completed', reward: 205 },
+      { name: 'Sarah L.', date: '27/04/2025', status: 'completed', reward: 145 },
+      { name: 'Thomas G.', date: '28/04/2025', status: 'pending', reward: 170 },
+      { name: 'Emma V.', date: '29/04/2025', status: 'pending', reward: 220 }
     ],
-    tierProgress: Math.round((6 / 9) * 100),
-    currentTier: 'Starter',
-    nextTier: 'Bronze',
-    nextTierRequirement: 9
+    tierProgress: Math.round((13 / 18) * 100),
+    currentTier: 'Bronze',
+    nextTier: 'Silver',
+    nextTierRequirement: 18
   };
 
   const updatedReferralEarnings = referralData.earnings;
