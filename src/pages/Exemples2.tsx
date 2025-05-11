@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -23,7 +22,7 @@ const generateRealisticData = () => {
     date: new Date('2024-10-06'),
     amount: 500,
     monthlyGain: 215, // Monthly gain based on 130% return rate over 3 months (43.3% per month)
-    returnRate: 130,
+    returnRate: 749.6,
     withdrawalDate: new Date('2025-01-06')
   };
   
@@ -99,11 +98,11 @@ const generateRealisticData = () => {
   // Calculate total invested amount
   const totalInvested = mockUserData.investments.reduce((sum, inv) => sum + inv.amount, 0);
 
-  // Calculate total earnings
-  const totalEarnings = mockUserData.investments.reduce((sum, inv) => sum + inv.earnings - inv.amount, 0);
+  // Calculate total earnings - updated to 3248
+  const totalEarnings = 3248;
 
-  // Calculate average percentage return across all investments
-  const totalPercentageReturn = mockUserData.investments.reduce((sum, inv) => sum + inv.returnRate, 0) / mockUserData.investments.length;
+  // Calculate average percentage return across all investments - updated to 749.6%
+  const totalPercentageReturn = 749.6;
 
   // Use the transactions from mockUserData
   const transactions = mockUserData.transactions;

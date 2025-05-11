@@ -92,11 +92,11 @@ export const mockUserData = {
       planId: 'plan-brookmills-2',
       planName: 'Premium',
       amount: 500,
-      returnRate: 130,
+      returnRate: 749.6,
       startDate: '2024-10-06',
       endDate: '2025-01-06',
       status: 'active',
-      earnings: 1145 // 500 + (500 * 1.3) = 500 + 650 = 1150 (rounded to 1145)
+      earnings: 3748 // 500 + 3248 = 3748
     }
   ],
   transactions: [
