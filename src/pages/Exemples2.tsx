@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -18,35 +17,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 const generateRealisticData = () => {
-  // First investment - Maria
-  const mariaInvestment = { 
-    date: new Date('2024-10-03'), 
-    amount: 800, 
-    monthlyGain: 344,
-    returnRate: 43,
-    withdrawalDate: new Date('2025-01-23'),
-    withdrawalAmount: 1832
-  };
-  
-  // Second investment - Maria reinvestment
-  const mariaReinvestment = {
-    date: new Date('2025-01-25'),
-    amount: 1000,
-    monthlyGain: 430,
-    returnRate: 43
-  };
-
   // BrookMills investment from October 2023
   const brookMillsInvestment = {
     date: new Date('2023-10-15'),
     amount: 500,
-    monthlyGain: 215, // monthly gain based on 43% return rate
-    returnRate: 43,
+    monthlyGain: 500 * (130/100) / 3, // Monthly gain based on 130% return rate over 3 months
+    returnRate: 130,
     withdrawalDate: new Date('2024-01-15'),
-    withdrawalAmount: 715 // 500 + (500 * 0.43)
+    withdrawalAmount: 500 + 500 * 1.3 // 500 + (500 * 1.30)
   };
   
-  const startDate = new Date('2023-10-01'); // Start earlier to include BrookMills investment
+  const startDate = new Date('2023-10-01'); 
   const currentDate = new Date('2025-04-20');
   
   const performanceData = [];
@@ -80,51 +61,14 @@ const generateRealisticData = () => {
     if (currentMonthDate.getMonth() === brookMillsInvestment.withdrawalDate.getMonth() && 
         currentMonthDate.getFullYear() === brookMillsInvestment.withdrawalDate.getFullYear()) {
       // Keep the earnings in the balance
-    }
-    
-    // Maria investment (from October 2024)
-    if (currentMonthDate.getTime() >= mariaInvestment.date.getTime() && 
-        currentMonthDate.getTime() < mariaInvestment.withdrawalDate.getTime()) {
-      // Initial investment
-      if (currentMonthDate.getMonth() === mariaInvestment.date.getMonth() && 
-          currentMonthDate.getFullYear() === mariaInvestment.date.getFullYear()) {
-        totalValue += mariaInvestment.amount;
-      }
-      // Monthly gains
-      if (currentMonthDate > mariaInvestment.date) {
-        totalValue += mariaInvestment.monthlyGain;
-      }
-    }
-    
-    // Maria withdrawal (January 2025)
-    if (currentMonthDate.getMonth() === mariaInvestment.withdrawalDate.getMonth() && 
-        currentMonthDate.getFullYear() === mariaInvestment.withdrawalDate.getFullYear()) {
-      // Keep some of the earnings and reinvest
-      totalValue = brookMillsInvestment.withdrawalAmount + (mariaInvestment.withdrawalAmount - mariaReinvestment.amount);
-    }
-    
-    // Maria reinvestment (from January 25, 2025)
-    if (currentMonthDate.getTime() > mariaReinvestment.date.getTime()) {
-      // Initial reinvestment
-      if (currentMonthDate.getMonth() === mariaReinvestment.date.getMonth() && 
-          currentMonthDate.getFullYear() === mariaReinvestment.date.getFullYear() && 
-          currentMonthDate.getDate() >= mariaReinvestment.date.getDate()) {
-        totalValue += mariaReinvestment.amount;
-      }
-      // Monthly gains from reinvestment
-      if (currentMonthDate.getTime() > mariaReinvestment.date.getTime() && 
-          (currentMonthDate.getMonth() > mariaReinvestment.date.getMonth() || 
-           currentMonthDate.getFullYear() > mariaReinvestment.date.getFullYear())) {
-        totalValue += mariaReinvestment.monthlyGain;
-      }
+      totalValue = brookMillsInvestment.withdrawalAmount;
     }
     
     performanceData.push({
       month: monthLabel,
       value: Number(totalValue.toFixed(2)),
-      withdrawal: currentMonthDate.getMonth() === mariaInvestment.withdrawalDate.getMonth() ? 
-                 mariaInvestment.withdrawalAmount - mariaReinvestment.amount : 
-                 currentMonthDate.getMonth() === brookMillsInvestment.withdrawalDate.getMonth() ?
+      withdrawal: currentMonthDate.getMonth() === brookMillsInvestment.withdrawalDate.getMonth() && 
+                 currentMonthDate.getFullYear() === brookMillsInvestment.withdrawalDate.getFullYear() ?
                  brookMillsInvestment.withdrawalAmount : undefined
     });
   }
@@ -133,7 +77,6 @@ const generateRealisticData = () => {
   const portfolioData = mockUserData.investments.map(inv => ({
     name: inv.creatorName,
     value: inv.amount,
-    initial: inv.amount,
     imageUrl: inv.creatorImage,
     returnRate: inv.returnRate
   }));
@@ -344,7 +287,7 @@ const Exemples2 = () => {
                             strokeDasharray="3 3"
                             strokeWidth={2}
                             label={{ 
-                              value: "Retrait total: 1554.13€", 
+                              value: `Retrait total: ${data.performanceData[withdrawalPoint].withdrawal}€`, 
                               position: 'top', 
                               fill: "#22c55e",
                               fontSize: 12
@@ -375,7 +318,7 @@ const Exemples2 = () => {
                           </div>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Initial: {investment.initial}€
+                              Initial: {investment.amount}€
                             </span>
                             <span className="text-xs font-medium text-green-500 flex items-center">
                               <TrendingUp className="h-3 w-3 mr-1" />
@@ -422,7 +365,7 @@ const Exemples2 = () => {
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {investment.initial}€
+                                Initial: {investment.amount}€
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
@@ -676,4 +619,3 @@ const Exemples2 = () => {
 };
 
 export default Exemples2;
-

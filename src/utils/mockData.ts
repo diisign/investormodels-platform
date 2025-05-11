@@ -85,59 +85,21 @@ export const mockUserData = {
   balance: 2500,
   investments: [
     {
-      id: 'inv1',
-      creatorId: 'creator2',
-      creatorName: 'Maria 🤸🏻‍*',
-      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
-      planId: 'plan2-2',
-      planName: 'Professionnel',
-      amount: 800,
-      returnRate: 120,
-      startDate: '2024-10-03',
-      endDate: '2025-01-03',
-      status: 'completed',
-      earnings: 960
-    },
-    {
       id: 'inv2',
       creatorId: 'brookmills',
-      creatorName: 'BrookMills',
+      creatorName: 'BrookMills🍒',
       creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
       planId: 'plan-brookmills',
       planName: 'Premium',
       amount: 500,
-      returnRate: 43,
+      returnRate: 130,
       startDate: '2023-10-15',
       endDate: '2024-01-15',
       status: 'completed',
-      earnings: 715 // 500 + (500 * 0.43)
+      earnings: 1150 // 500 + (500 * 1.30)
     }
   ],
   transactions: [
-    {
-      id: 'trans1',
-      type: 'deposit',
-      amount: 800,
-      date: '2024-10-03',
-      status: 'completed',
-      description: 'Dépôt initial'
-    },
-    {
-      id: 'trans2',
-      type: 'investment',
-      amount: 800,
-      date: '2024-10-03',
-      status: 'completed',
-      description: 'Investissement - Maria 🤸🏻‍*'
-    },
-    {
-      id: 'trans3',
-      type: 'earning',
-      amount: 960,
-      date: '2025-01-03',
-      status: 'completed',
-      description: 'Rendement - Maria 🤸🏻‍*'
-    },
     {
       id: 'trans4',
       type: 'deposit',
@@ -152,15 +114,15 @@ export const mockUserData = {
       amount: 500,
       date: '2023-10-15',
       status: 'completed',
-      description: 'Investissement - BrookMills'
+      description: 'Investissement - BrookMills🍒'
     },
     {
       id: 'trans6',
       type: 'earning',
-      amount: 715,
+      amount: 1150,
       date: '2024-01-15',
       status: 'completed',
-      description: 'Rendement - BrookMills'
+      description: 'Rendement - BrookMills🍒'
     }
   ]
 };
@@ -883,11 +845,11 @@ popularity: 'low'
   },
   {
     id: 'brookmills',
-    name: 'BrookMills',
+    name: 'BrookMills🍒',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
     category: 'Style',
-    returnRate: 43,
+    returnRate: 130,
     investorsCount: 326,
     totalInvested: 78000,
     monthlyRevenue: 19000,
@@ -910,7 +872,7 @@ popularity: 'low'
       {
         id: 'plan-brookmills-2',
         name: 'Premium',
-        returnRate: 43,
+        returnRate: 130,
         minInvestment: 500,
         duration: 3,
         benefits: [
@@ -923,7 +885,7 @@ popularity: 'low'
       {
         id: 'plan-brookmills-3',
         name: 'Exclusive',
-        returnRate: 60,
+        returnRate: 180,
         minInvestment: 1000,
         duration: 3,
         benefits: [

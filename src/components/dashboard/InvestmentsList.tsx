@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, CircleDollarSign } from 'lucide-react';  // Added CircleDollarSign import
+import { ArrowRight, CircleDollarSign } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { Investment } from '@/types/investments';
