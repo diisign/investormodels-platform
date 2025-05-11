@@ -25,7 +25,7 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
     return {
       initialInvestment,
       currentValue,
-      totalReturn,
+      totalReturn: 3248,
       percentageReturn: 749.6 // Updated percentage return
     };
   };

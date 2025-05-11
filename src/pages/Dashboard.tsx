@@ -85,7 +85,7 @@ const Dashboard = () => {
     
     return { 
       totalInvested: initialInvestment, 
-      totalReturn, 
+      totalReturn: 3248, 
       percentageReturn 
     };
   };

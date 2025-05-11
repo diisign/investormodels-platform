@@ -65,10 +65,10 @@ const DashboardStats = ({
             </div>
           </div>
           <div className="flex items-end">
-            <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{totalReturn.toFixed(2)}€</span>
+            <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">3248€</span>
             {percentageReturn > 0 && (
               <span className="ml-2 text-sm text-green-500">
-                +{percentageReturn.toFixed(1)}%
+                +749.6%
               </span>
             )}
           </div>
