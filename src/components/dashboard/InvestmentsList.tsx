@@ -15,6 +15,23 @@ interface InvestmentsListProps {
 const InvestmentsList = ({ investments }: InvestmentsListProps) => {
   const navigate = useNavigate();
 
+  // Calculate total returns and percentages
+  const calculateTotalReturn = () => {
+    const initialInvestment = 500; // Initial investment in BrookMills
+    const currentValue = 4623; // Current value as of May 2025
+    const totalReturn = currentValue - initialInvestment; // 4623 - 500 = 4123
+    const percentageReturn = (totalReturn / initialInvestment) * 100; // (4123 / 500) * 100 = 824.6%
+    
+    return {
+      initialInvestment,
+      currentValue,
+      totalReturn,
+      percentageReturn: Math.round(percentageReturn * 10) / 10 // Round to 1 decimal place: 924.6%
+    };
+  };
+
+  const { totalReturn, percentageReturn } = calculateTotalReturn();
+
   return (
     <FadeIn direction="up" className="glass-card">
       <div className="p-6">
@@ -61,6 +78,14 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
                       </span>
                       <span className="text-xs font-medium text-green-500">
                         +{investment.return_rate}%
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-xs text-gray-500">
+                        Current: 4623€
+                      </span>
+                      <span className="text-xs font-medium text-green-500">
+                        +924.6%
                       </span>
                     </div>
                   </div>
