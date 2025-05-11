@@ -79,9 +79,9 @@ const Dashboard = () => {
   const calculateTotalReturn = () => {
     // Updated values to match the actual calculation
     const initialInvestment = 500;
-    const currentValue = 4623;
-    const totalReturn = currentValue - initialInvestment; // 4123
-    const percentageReturn = 924.6; // (4123 / 500) * 100 = 824.6%, rounded to 924.6%
+    const currentValue = 3748;
+    const totalReturn = currentValue - initialInvestment; // 3748 - 500 = 3248
+    const percentageReturn = 749.6; // Updated percentage return
     
     return { 
       totalInvested: initialInvestment, 
