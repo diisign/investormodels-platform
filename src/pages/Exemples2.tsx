@@ -624,25 +624,6 @@ const Exemples2 = () => {
                       ))}
                     </div>
                   </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Niveau du programme</h4>
-                    <div className="mb-2 flex justify-between">
-                      <span className="text-sm font-medium">{data.referralData.currentTier}</span>
-                      <span className="text-sm font-medium">{data.referralData.nextTier}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mb-4 dark:bg-gray-700">
-                      <div 
-                        className="bg-investment-600 h-2 rounded-full" 
-                        style={{ width: `${data.referralData.tierProgress}%` }}
-                      ></div>
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">
-                        {data.referralData.completedReferrals}/{data.referralData.nextTierRequirement}
-                      </span> parrainages nécessaires pour débloquer le niveau {data.referralData.nextTier}
-                    </div>
-                  </div>
                 </div>
               </div>
             </FadeIn>
