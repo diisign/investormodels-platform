@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -108,35 +107,88 @@ const generateRealisticData = () => {
   // Use the transactions from mockUserData
   const transactions = mockUserData.transactions;
   
-  const referralData = {
-    totalReferrals: 18,
-    pendingReferrals: 5,
-    completedReferrals: 13,
-    earnings: 1775,
-    recentReferrals: [
+  // Generate 157 referrals with rewards between 50€ and 250€
+  const generateReferrals = (count) => {
+    const firstNames = [
+      'Emma', 'Lucas', 'Chloé', 'Hugo', 'Inès', 'Léo', 'Jade', 'Gabriel', 'Louise', 'Raphaël',
+      'Alice', 'Louis', 'Léa', 'Jules', 'Manon', 'Arthur', 'Lina', 'Adam', 'Rose', 'Noah',
+      'Zoé', 'Ethan', 'Anna', 'Théo', 'Camille', 'Nathan', 'Juliette', 'Marius', 'Sarah', 'Tom',
+      'Nina', 'Maxime', 'Eva', 'Paul', 'Sofia', 'Victor', 'Lucie', 'Antoine', 'Clara', 'Mathis',
+      'Lola', 'Clément', 'Agathe', 'Alexandre', 'Jeanne', 'Samuel', 'Noémie', 'Oscar', 'Elise', 'Alexis',
+      'Charlotte', 'Robin', 'Anaïs', 'Thomas', 'Margaux', 'Sacha', 'Justine', 'Rayan', 'Alicia', 'Maxence',
+      'Candice', 'Evan', 'Lisa', 'Timéo', 'Elsa', 'Mathéo', 'Julie', 'Esteban', 'Salomé', 'Nolan',
+      'Océane', 'Mael', 'Marie', 'Martin', 'Laura', 'Quentin', 'Romane', 'Augustin', 'Apolline', 'Mathieu',
+      'Ambre', 'Enzo', 'Elisa', 'Valentin', 'Chloé', 'Nicolas', 'Margot', 'Tristan', 'Olivia', 'Benjamin',
+      'Célia', 'Axel', 'Pauline', 'Gabin', 'Victoria', 'Liam', 'Hélène', 'Noa', 'Maya', 'Yanis'
+    ];
+    
+    const lastNames = [
+      'M.', 'L.', 'B.', 'D.', 'R.', 'T.', 'P.', 'C.', 'G.', 'F.',
+      'S.', 'V.', 'N.', 'H.', 'J.', 'A.', 'O.', 'K.', 'W.', 'E.'
+    ];
+
+    let referrals = [];
+    
+    // First add our existing referrals to ensure we keep the ones that were specifically mentioned
+    referrals = [
       { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
       { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
       { name: 'Alan P.', date: '16/04/2025', status: 'completed', reward: 75 },
       { name: 'Karine B.', date: '17/04/2025', status: 'completed', reward: 250 },
       { name: 'Charles N.', date: '18/04/2025', status: 'completed', reward: 150 },
-      { name: 'Lina F.', date: '19/04/2025', status: 'completed', reward: 75 },
-      { name: 'Inès D.', date: '20/04/2025', status: 'pending', reward: 180 },
-      { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 260 },
-      { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 120 },
-      { name: 'Marie T.', date: '21/04/2025', status: 'completed', reward: 110 },
-      { name: 'Olivier K.', date: '22/04/2025', status: 'completed', reward: 135 },
-      { name: 'Julie M.', date: '23/04/2025', status: 'completed', reward: 190 },
-      { name: 'Théo R.', date: '24/04/2025', status: 'completed', reward: 100 },
-      { name: 'Léa B.', date: '25/04/2025', status: 'completed', reward: 165 },
-      { name: 'Alexandre D.', date: '26/04/2025', status: 'completed', reward: 205 },
-      { name: 'Sarah L.', date: '27/04/2025', status: 'completed', reward: 145 },
-      { name: 'Thomas G.', date: '28/04/2025', status: 'pending', reward: 170 },
-      { name: 'Emma V.', date: '29/04/2025', status: 'pending', reward: 220 }
-    ],
-    tierProgress: Math.round((13 / 18) * 100),
-    currentTier: 'Bronze',
-    nextTier: 'Silver',
-    nextTierRequirement: 18
+      { name: 'Lina F.', date: '19/04/2025', status: 'completed', reward: 75 }
+    ];
+    
+    // Now generate the rest to reach our target count
+    for (let i = referrals.length; i < count; i++) {
+      const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+      const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+      const name = `${firstName} ${lastName}`;
+      
+      // Generate date (from January 2025 to May 2025)
+      const month = Math.floor(Math.random() * 5) + 1; // 1 to 5
+      const day = Math.floor(Math.random() * 28) + 1; // 1 to 28
+      const date = `${day < 10 ? '0' + day : day}/0${month}/2025`;
+      
+      // Generate random reward between 50€ and 250€
+      const reward = Math.floor(Math.random() * 201) + 50; // 50 to 250
+      
+      // Determine status: earlier dates are more likely to be completed
+      const status = month < 4 || (month === 4 && day < 15) || Math.random() < 0.7 ? 'completed' : 'pending';
+      
+      referrals.push({ name, date, status, reward });
+    }
+    
+    // Sort by date (most recent first)
+    referrals.sort((a, b) => {
+      const [dayA, monthA] = a.date.split('/');
+      const [dayB, monthB] = b.date.split('/');
+      if (monthA !== monthB) return parseInt(monthB) - parseInt(monthA);
+      return parseInt(dayB) - parseInt(dayA);
+    });
+    
+    return referrals;
+  };
+  
+  const allReferrals = generateReferrals(157);
+  const completedReferrals = allReferrals.filter(ref => ref.status === 'completed').length;
+  const pendingReferrals = allReferrals.filter(ref => ref.status === 'pending').length;
+  
+  // Calculate total earnings from referrals
+  const totalReferralEarnings = allReferrals.reduce((sum, ref) => {
+    return ref.status === 'completed' ? sum + ref.reward : sum;
+  }, 0);
+
+  const referralData = {
+    totalReferrals: allReferrals.length,
+    pendingReferrals,
+    completedReferrals,
+    earnings: totalReferralEarnings,
+    recentReferrals: allReferrals,
+    tierProgress: Math.round((completedReferrals / 200) * 100),
+    currentTier: 'Silver',
+    nextTier: 'Gold',
+    nextTierRequirement: 200
   };
 
   const updatedReferralEarnings = referralData.earnings;
