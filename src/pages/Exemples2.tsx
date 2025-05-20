@@ -15,6 +15,19 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { creators, mockUserData } from '@/utils/mockData';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const generateRealisticData = () => {
   // BrookMills investment from October 6, 2024
@@ -219,6 +232,7 @@ const Exemples2 = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
+  const [referralTimeRange, setReferralTimeRange] = useState('all');
 
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -226,6 +240,39 @@ const Exemples2 = () => {
   };
 
   const withdrawalPoint = data.performanceData.findIndex(item => item.withdrawal);
+  
+  // Filter referrals based on selected time range
+  const getFilteredReferrals = () => {
+    if (referralTimeRange === 'all') {
+      return data.referralData.recentReferrals;
+    }
+    
+    const now = new Date();
+    const filterDate = new Date();
+    
+    switch (referralTimeRange) {
+      case 'week':
+        filterDate.setDate(now.getDate() - 7);
+        break;
+      case 'month':
+        filterDate.setMonth(now.getMonth() - 1);
+        break;
+      case 'quarter':
+        filterDate.setMonth(now.getMonth() - 3);
+        break;
+      default:
+        return data.referralData.recentReferrals;
+    }
+
+    // Parse the date format "DD/MM/YYYY" to a Date object for comparison
+    return data.referralData.recentReferrals.filter(referral => {
+      const [day, month, year] = referral.date.split('/').map(Number);
+      const referralDate = new Date(year, month - 1, day); // month is 0-indexed in JS Date
+      return referralDate >= filterDate;
+    });
+  };
+
+  const filteredReferrals = getFilteredReferrals();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -602,26 +649,48 @@ const Exemples2 = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Parrainages récents</h4>
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold">Parrainages récents</h4>
+                      <Select
+                        value={referralTimeRange}
+                        onValueChange={setReferralTimeRange}
+                      >
+                        <SelectTrigger className="w-[120px] h-8 text-xs">
+                          <SelectValue placeholder="Période" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tous</SelectItem>
+                          <SelectItem value="week">7 derniers jours</SelectItem>
+                          <SelectItem value="month">30 derniers jours</SelectItem>
+                          <SelectItem value="quarter">3 derniers mois</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <div className="space-y-3 max-h-72 overflow-y-auto">
-                      {data.referralData.recentReferrals.map((referral, index) => (
-                        <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
-                          <div>
-                            <div className="font-medium text-sm">{referral.name}</div>
-                            <div className="text-xs text-gray-500">{referral.date}</div>
+                      {filteredReferrals.length > 0 ? (
+                        filteredReferrals.map((referral, index) => (
+                          <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
+                            <div>
+                              <div className="font-medium text-sm">{referral.name}</div>
+                              <div className="text-xs text-gray-500">{referral.date}</div>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <span className="text-sm font-semibold text-green-500">{referral.status === "completed" ? `+${referral.reward}€` : `+${referral.reward}€`}</span>
+                              <span className={cn(
+                                "text-xs px-2 py-0.5 rounded-full mt-1",
+                                referral.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                                "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                              )}>
+                                {referral.status === 'completed' ? 'Complété' : 'En attente'}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex flex-col items-end">
-                            <span className="text-sm font-semibold text-green-500">{referral.status === "completed" ? `+${referral.reward}€` : `+${referral.reward}€`}</span>
-                            <span className={cn(
-                              "text-xs px-2 py-0.5 rounded-full mt-1",
-                              referral.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
-                              "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                            )}>
-                              {referral.status === 'completed' ? 'Complété' : 'En attente'}
-                            </span>
-                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-4 text-gray-500">
+                          Aucun parrainage pour cette période
                         </div>
-                      ))}
+                      )}
                     </div>
                   </div>
                 </div>
