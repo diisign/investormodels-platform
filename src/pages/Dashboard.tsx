@@ -1,182 +1,108 @@
-
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/utils/auth';
-import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { PlusCircle, LogOut, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift, ArrowRight, ArrowUpRight } from "lucide-react";
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import FadeIn from '@/components/animations/FadeIn';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
+import { 
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  PieChart, Pie, Cell, BarChart, Bar
+} from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
+import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-} from 'recharts';
-import { creators } from '@/utils/mockData';
-
-// Define extended types for our database data with visual fields
-interface ExtendedTransaction extends Tables<"transactions"> {
-  type: 'deposit' | 'withdrawal' | 'investment';
-}
-
-interface ExtendedInvestment extends Tables<"investments"> {
-  creator_name: string;
-  creator_image: string;
-  initial_amount: number;
-}
-
-// Helper function to add visual properties to transactions
-const enhanceTransaction = (transaction: Tables<"transactions">): ExtendedTransaction => {
-  // Determine transaction type based on amount and other properties
-  let type: 'deposit' | 'withdrawal' | 'investment' = 'deposit';
-  
-  if (transaction.payment_method?.includes('investment') || transaction.payment_id?.includes('invest')) {
-    type = 'investment';
-  } else if (transaction.amount < 0 || transaction.payment_method === 'withdrawal') {
-    type = 'withdrawal';
-  }
-  
-  return {
-    ...transaction,
-    type
-  };
-};
-
-// Helper function to add creator details to investments
-const enhanceInvestment = (investment: Tables<"investments">): ExtendedInvestment => {
-  // Find creator details from mockData based on creator_id
-  const creator = creators.find(c => c.id === investment.creator_id) || {
-    name: "Créatrice",
-    imageUrl: "https://via.placeholder.com/40"
-  };
-  
-  return {
-    ...investment,
-    creator_name: creator.name,
-    creator_image: creator.imageUrl,
-    initial_amount: investment.amount // Use amount as initial amount if not specified
-  };
-};
+import { mockUserData } from '@/utils/mockData';
+import { useAuth } from '@/utils/auth';
+import UserBalance from '@/components/UserBalance';
+import { toast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
-  const { logout, user } = useAuth();
-  const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useAuth();
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
-  const [timeRange, setTimeRange] = useState('12');
-
-  const { data: rawTransactions = [], isLoading: isTransactionsLoading } = useQuery({
-    queryKey: ['userTransactions', user?.id],
-    queryFn: async () => {
-      if (!user) return [];
-      const { data, error } = await supabase
-        .from('transactions')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      return data || [];
-    },
-    enabled: !!user,
-  });
-
-  // Transform raw transactions to add the type property
-  const userTransactions: ExtendedTransaction[] = rawTransactions.map(enhanceTransaction);
-
-  const { data: rawInvestments = [], isLoading: isInvestmentsLoading } = useQuery({
-    queryKey: ['userInvestments'],
-    queryFn: async () => {
-      if (!user) return [];
-      const { data, error } = await supabase
-        .from('investments')
-        .select('*')
-        .eq('user_id', user?.id);
-
-      if (error) throw error;
-      return data || [];
-    },
-    enabled: !!user,
-  });
-
-  // Transform raw investments to add visual properties
-  const investments: ExtendedInvestment[] = rawInvestments.map(enhanceInvestment);
-
-  // Calculate total invested and returns
-  const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
-  const totalReturn = investments.reduce((sum, inv) => {
-    const monthlyReturn = (Number(inv.amount) * Number(inv.return_rate)) / 100;
-    return sum + monthlyReturn;
-  }, 0);
-
-  // Generate performance data for the chart
-  const performanceData = userTransactions.map(transaction => ({
-    month: new Date(transaction.created_at).toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }),
-    value: transaction.amount,
-    withdrawal: transaction.type === 'withdrawal' ? transaction.amount : undefined
-  }));
-
-  const handleDeposit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowDepositModal(false);
-    navigate('/deposit');
-  };
-
-  // Referral mock data - you can replace this with real data later
+  
+  const performanceData = [
+    { month: 'Jan', value: 0 },
+    { month: 'Fév', value: 0 },
+    { month: 'Mar', value: 0 },
+    { month: 'Avr', value: 0 },
+    { month: 'Mai', value: 0 },
+    { month: 'Juin', value: 0 },
+    { month: 'Juil', value: 0 },
+    { month: 'Août', value: 0 },
+    { month: 'Sep', value: 0 },
+    { month: 'Oct', value: 0 },
+    { month: 'Nov', value: 0 },
+    { month: 'Déc', value: 0 },
+  ];
+  
+  const portfolioData = [
+    { name: 'Sophia Martinez', value: 0 },
+    { name: 'Emma Wilson', value: 0 },
+    { name: 'Non investi', value: user?.balance || 0 },
+  ];
+  
+  const COLORS = ['#0284c7', '#0ea5e9', '#e5e7eb'];
+  
+  const recentTransactionsData = user?.transactions.slice(0, 5) || [];
+  
+  const totalInvested = user?.investments.reduce((total, inv) => total + inv.amount, 0) || 0;
+  const totalEarnings = user?.investments.reduce((total, inv) => total + inv.earnings, 0) || 0;
+  
   const referralData = {
     totalReferrals: 0,
     pendingReferrals: 0,
     completedReferrals: 0,
     earnings: 0,
-    recentReferrals: [],
-    tierProgress: 0,
-    currentTier: 'Starter',
-    nextTier: 'Bronze',
-    nextTierRequirement: 5
+    recentReferrals: []
   };
-
+  
+  const handleDeposit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowDepositModal(false);
+    alert(`Dépôt simulé de ${depositAmount}€ effectué avec succès!`);
+  };
+  
+  const handleInviteFriends = () => {
+    const affiliationCode = user?.id ? `${user.id.substring(0, 8)}` : 'DEMO2024';
+    const affiliationLink = `${window.location.origin}/register?ref=${affiliationCode}`;
+    
+    navigator.clipboard.writeText(affiliationLink);
+    toast({
+      title: "Lien d'affiliation copié !",
+      description: "Partagez ce lien avec vos amis pour commencer à gagner des récompenses."
+    });
+  };
+  
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar isLoggedIn={true} />
-
+      <Navbar isLoggedIn={true} onLogout={logout} />
+      
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold mb-8">Tableau de bord</h1>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <FadeIn direction="up" delay={100} className="glass-card">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium">Votre solde</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {userTransactions.reduce((sum, t) => sum + Number(t.amount), 0).toFixed(2)}€
-                    </div>
-                    <button 
-                      onClick={() => navigate('/deposit')}
-                      className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
-                    >
-                      <PlusCircle className="h-4 w-4 mr-1" />
-                      Déposer des fonds
-                    </button>
-                  </CardContent>
-                </Card>
+            <div className="mb-8">
+              <FadeIn direction="up">
+                <h1 className="text-3xl font-bold mb-2">Tableau de bord</h1>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Bienvenue, {user?.name || 'Investisseur'}. Voici l'état actuel de vos investissements.
+                </p>
               </FadeIn>
-
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <FadeIn direction="up" delay={100} className="glass-card">
+                <UserBalance />
+                <button 
+                  onClick={() => setShowDepositModal(true)}
+                  className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium p-6 pt-0"
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                  Déposer des fonds
+                </button>
+              </FadeIn>
+              
               <FadeIn direction="up" delay={200} className="glass-card">
-                <div className="p-6 rounded-lg border bg-card">
+                <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total investi</h3>
                     <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-investment-600">
@@ -187,13 +113,13 @@ const Dashboard = () => {
                     <span className="text-2xl font-bold">{totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {investments.length} créatrice{investments.length > 1 ? 's' : ''}
+                    Dans {user?.investments.length || 0} créateurs
                   </div>
                 </div>
               </FadeIn>
-
+              
               <FadeIn direction="up" delay={300} className="glass-card">
-                <div className="p-6 rounded-lg border bg-card">
+                <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement</h3>
                     <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
@@ -201,116 +127,105 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{totalReturn.toFixed(2)}€</span>
-                    {totalInvested > 0 && (
-                      <span className="ml-2 text-sm text-green-500">
-                        +{((totalReturn / totalInvested) * 100).toFixed(0)}%
-                      </span>
-                    )}
+                    <span className="text-2xl font-bold">{totalEarnings}€</span>
+                    <span className="ml-2 text-sm text-green-500">+{(totalInvested > 0 ? (totalEarnings / totalInvested) * 100 : 0).toFixed(1)}%</span>
+                  </div>
+                  <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                    Depuis le début
                   </div>
                 </div>
               </FadeIn>
-
+              
               <FadeIn direction="up" delay={400} className="glass-card">
-                <div className="p-6 rounded-lg border bg-card">
+                <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Créatrices suivies</h3>
+                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Créateurs suivis</h3>
                     <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
                       <Users className="h-5 w-5" />
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{investments.length}</span>
+                    <span className="text-2xl font-bold">{user?.investments.length || 0}</span>
                   </div>
-                  <button 
-                    onClick={() => navigate('/creators')}
-                    className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
-                  >
-                    <PlusCircle className="h-4 w-4 mr-1" />
+                  <Link to="/creators" className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
+                    <Plus className="h-4 w-4 mr-1" />
                     Découvrir plus de créatrices
-                  </button>
+                  </Link>
                 </div>
               </FadeIn>
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-              <FadeIn direction="up" className="glass-card lg:col-span-3">
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <FadeIn direction="up" className="glass-card lg:col-span-2">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">Performance</h3>
-                    <select 
-                      className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2"
-                      value={timeRange}
-                      onChange={(e) => setTimeRange(e.target.value)}
-                    >
-                      <option value="12">12 derniers mois</option>
-                      <option value="6">6 derniers mois</option>
-                      <option value="3">3 derniers mois</option>
+                    <select className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2">
+                      <option>Cette année</option>
+                      <option>6 derniers mois</option>
+                      <option>30 derniers jours</option>
                     </select>
                   </div>
                   <div className="h-72">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart
                         data={performanceData}
-                        margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
+                        margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis 
-                          dataKey="month" 
-                          axisLine={false} 
-                          tickLine={false}
-                          padding={{ left: 10, right: 10 }}
-                          tick={{ fontSize: 10 }}
-                        />
-                        <YAxis 
-                          axisLine={false} 
-                          tickLine={false} 
-                          domain={['dataMin - 10', 'dataMax + 10']}
-                          tickCount={5}
-                          tickFormatter={(value) => Math.round(value).toString()}
-                          width={40}
-                        />
-                        <Tooltip formatter={(value) => `${value}€`} />
+                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                        <YAxis axisLine={false} tickLine={false} />
+                        <Tooltip />
                         <Line
                           type="monotone"
                           dataKey="value"
                           stroke="#0ea5e9"
                           strokeWidth={3}
-                          dot={{ r: 3 }}
+                          dot={{ r: 0 }}
                           activeDot={{ r: 6, strokeWidth: 0 }}
                         />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    {investments.map((investment) => (
-                      <div 
-                        key={investment.id}
-                        className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
-                      >
-                        <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                          <img 
-                            src={investment.creator_image || 'https://via.placeholder.com/40'} 
-                            alt={investment.creator_name} 
-                            className="h-full w-full object-cover"
+                </div>
+              </FadeIn>
+              
+              <FadeIn direction="up" delay={100} className="glass-card">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-semibold">Répartition du portefeuille</h3>
+                  </div>
+                  <div className="h-64 flex justify-center">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={portfolioData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={80}
+                          paddingAngle={5}
+                          dataKey="value"
+                        >
+                          {portfolioData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => `${value}€`} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    {portfolioData.map((item, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div
+                            className="h-3 w-3 rounded-full mr-2"
+                            style={{ backgroundColor: COLORS[index % COLORS.length] }}
                           />
+                          <span className="text-sm">{item.name}</span>
                         </div>
-                        <div className="flex-grow">
-                          <div className="flex justify-between items-center">
-                            <h4 className="font-medium text-sm">{investment.creator_name}</h4>
-                            <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
-                          </div>
-                          <div className="flex justify-between items-center mt-1">
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Initial: {Number(investment.initial_amount || investment.amount).toFixed(2)}€
-                            </span>
-                            <span className="text-xs font-medium text-green-500 flex items-center">
-                              <TrendingUp className="h-3 w-3 mr-1" />
-                              {investment.return_rate}%
-                            </span>
-                          </div>
-                        </div>
+                        <span className="text-sm font-medium">{item.value}€</span>
                       </div>
                     ))}
                   </div>
@@ -323,41 +238,38 @@ const Dashboard = () => {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">Mes investissements</h3>
-                    <button
-                      onClick={() => navigate('/investments')}
-                      className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
-                    >
-                      Voir tout
+                    <Link to="/investments" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
+                      <span>Voir tout</span>
                       <ArrowRight className="h-4 w-4 ml-1" />
-                    </button>
+                    </Link>
                   </div>
                   
-                  {investments.length > 0 ? (
+                  {user?.investments && user.investments.length > 0 ? (
                     <div className="space-y-4">
-                      {investments.map((investment) => (
+                      {user.investments.map((investment) => (
                         <div 
                           key={investment.id}
                           className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         >
                           <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                             <img 
-                              src={investment.creator_image || 'https://via.placeholder.com/40'} 
-                              alt={investment.creator_name} 
+                              src={investment.creatorImage} 
+                              alt={investment.creatorName} 
                               className="h-full w-full object-cover"
                             />
                           </div>
                           <div className="flex-grow">
                             <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-sm">{investment.creator_name}</h4>
-                              <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                              <h4 className="font-medium text-sm">{investment.creatorName}</h4>
+                              <span className="text-sm font-semibold">{investment.amount}€</span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {Number(investment.initial_amount || investment.amount).toFixed(2)}€
+                                Plan {investment.planName}
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
-                                {investment.return_rate}%
+                                {investment.returnRate}%
                               </span>
                             </div>
                           </div>
@@ -373,13 +285,15 @@ const Dashboard = () => {
                       <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
                         Vous n'avez pas encore investi dans des créateurs.
                       </p>
-                      <GradientButton 
-                        onClick={() => navigate('/creators')}
-                        size="sm"
-                        className="from-teal-400 to-blue-500 text-white"
-                      >
-                        Découvrir des créatrices
-                      </GradientButton>
+                      <Link to="/creators">
+                        <GradientButton 
+                          size="sm"
+                          gradientDirection="to-r"
+                          className="from-teal-400 to-blue-500 text-white"
+                        >
+                          Découvrir des créatrices
+                        </GradientButton>
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -395,50 +309,47 @@ const Dashboard = () => {
                     </button>
                   </div>
                   
-                  {userTransactions.length > 0 ? (
+                  {recentTransactionsData.length > 0 ? (
                     <div className="space-y-4">
-                      {userTransactions.map((transaction) => (
+                      {recentTransactionsData.map((transaction) => (
                         <div 
                           key={transaction.id}
                           className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
                         >
                           <div className={cn(
                             "h-10 w-10 rounded-full flex items-center justify-center mr-3",
-                            transaction.type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
-                            transaction.type === 'withdrawal' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
-                            "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
+                            transaction.type === 'deposit' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
+                            transaction.type === 'withdrawal' ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
+                            transaction.type === 'investment' ? "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400" :
+                            "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
                           )}>
                             {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
                             {transaction.type === 'withdrawal' && <Minus className="h-5 w-5" />}
                             {transaction.type === 'investment' && <ArrowUpRight className="h-5 w-5" />}
+                            {transaction.type === 'earning' && <TrendingUp className="h-5 w-5" />}
                           </div>
                           <div className="flex-grow">
                             <div className="flex justify-between items-center">
-                              <h4 className="font-medium text-sm">
-                                {transaction.type === 'deposit' ? 'Dépôt' : 
-                                 transaction.type === 'withdrawal' ? 'Retrait' : 
-                                 'Investissement'}
-                              </h4>
+                              <h4 className="font-medium text-sm">{transaction.description}</h4>
                               <span className={cn(
                                 "text-sm font-semibold",
-                                transaction.type === 'deposit' ? "text-blue-500" : 
-                                transaction.type === 'withdrawal' ? "text-green-500" : 
-                                "text-investment-500"
+                                transaction.amount > 0 ? "text-green-500" : "text-red-500"
                               )}>
-                                {transaction.type === 'deposit' ? '+' : ''}
-                                {Number(transaction.amount).toFixed(2)}€
+                                {transaction.amount > 0 ? '+' : ''}{transaction.amount}€
                               </span>
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {new Date(transaction.created_at).toLocaleDateString('fr-FR')}
+                                {transaction.date}
                               </span>
                               <span className={cn(
                                 "text-xs px-2 py-0.5 rounded-full",
-                                transaction.status === 'completed' ? "bg-green-100 text-green-800" : 
-                                "bg-yellow-100 text-yellow-800"
+                                transaction.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                                transaction.status === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" :
+                                "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
                               )}>
-                                {transaction.status === 'completed' ? 'Terminé' : 'En cours'}
+                                {transaction.status === 'completed' ? 'Terminé' :
+                                 transaction.status === 'pending' ? 'En attente' : 'Échoué'}
                               </span>
                             </div>
                           </div>
@@ -460,17 +371,14 @@ const Dashboard = () => {
               </FadeIn>
             </div>
             
-            <FadeIn direction="up" delay={200} className="glass-card mt-8">
+            <FadeIn direction="up" delay={500} className="glass-card mt-8">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold">Programme de parrainage</h3>
-                  <button
-                    onClick={() => navigate('/affiliation')}
-                    className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
-                  >
+                  <Link to="/affiliation" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
                     <span>Voir tout</span>
                     <ArrowRight className="h-4 w-4 ml-1" />
-                  </button>
+                  </Link>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -515,44 +423,24 @@ const Dashboard = () => {
                   </div>
                 </div>
                 
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                  <h4 className="font-semibold mb-3">Niveau du programme</h4>
-                  <div className="mb-2 flex justify-between">
-                    <span className="text-sm font-medium">{referralData.currentTier}</span>
-                    <span className="text-sm font-medium">{referralData.nextTier}</span>
+                <div className="text-center py-8">
+                  <div className="text-gray-400 mb-3">
+                    <UserPlus className="h-12 w-12 mx-auto opacity-30" />
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mb-4 dark:bg-gray-700">
-                    <div 
-                      className="bg-investment-600 h-2 rounded-full" 
-                      style={{ width: `${referralData.tierProgress}%` }}
-                    ></div>
-                  </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300">
-                    <span className="font-medium">
-                      {referralData.completedReferrals}/{referralData.nextTierRequirement}
-                    </span> parrainages nécessaires pour débloquer le niveau {referralData.nextTier}
-                  </div>
+                  <h4 className="text-lg font-medium mb-2">Aucun parrainage</h4>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
+                    Vous n'avez pas encore parrainé d'amis.
+                  </p>
+                  <GradientButton
+                    onClick={handleInviteFriends}
+                    size="sm"
+                    className="from-teal-400 to-blue-500 text-white"
+                  >
+                    Inviter des amis
+                  </GradientButton>
                 </div>
               </div>
             </FadeIn>
-            
-            <div className="flex flex-col sm:flex-row gap-3 mt-8">
-              <Button 
-                onClick={() => navigate('/deposit')} 
-                className="flex items-center gap-2"
-              >
-                <PlusCircle size={18} />
-                Déposer des fonds
-              </Button>
-              <Button 
-                onClick={logout} 
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <LogOut size={18} />
-                Se déconnecter
-              </Button>
-            </div>
           </div>
         </section>
       </main>
@@ -595,8 +483,9 @@ const Dashboard = () => {
                     required
                   >
                     <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
+                    <option value="card">Carte bancaire</option>
+                    <option value="transfer">Virement bancaire</option>
+                    <option value="paypal">PayPal</option>
                   </select>
                 </div>
                 
@@ -604,12 +493,12 @@ const Dashboard = () => {
                   <button
                     type="button"
                     onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   >
                     Annuler
                   </button>
                   <GradientButton type="submit">
-                    Déposer
+                    Déposer des fonds
                   </GradientButton>
                 </div>
               </div>

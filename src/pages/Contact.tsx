@@ -32,10 +32,7 @@ const Contact = () => {
           <div className="space-y-4 mb-8">
             <div>
               <h3 className="font-medium">Adresse</h3>
-              <p className="text-sm text-muted-foreground">
-                1600 Amphitheatre Parkway<br />
-                Mountain View, CA 94043, USA
-              </p>
+              <p className="text-sm text-muted-foreground">1234 Elm Street<br />San Francisco, CA 94102, USA</p>
             </div>
             
             <div>

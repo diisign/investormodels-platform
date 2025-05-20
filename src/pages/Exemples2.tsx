@@ -15,6 +15,7 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { creators } from '@/utils/mockData';
 
 const generateRealisticData = () => {
+  // Configuration spécifique de l'investissement
   const creator = {
     id: 'creator_maria',
     name: 'Maria 🤸🏻‍*', 
@@ -79,21 +80,9 @@ const generateRealisticData = () => {
     value: performanceData[performanceData.length - 1].value,
     initial: secondInvestment.amount,
     imageUrl: creator.imageUrl,
-    returnRate: secondInvestment.returnRate * 6  // multiplication by 6 months to display 258%
+    returnRate: secondInvestment.returnRate
   }];
-
-  const monthsInvested = (() => {
-    const start = secondInvestment.date;
-    const end = new Date('2025-04-20');
-    let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
-    if (end.getDate() < start.getDate()) {
-      months -= 1; // Partial month doesn't count fully
-    }
-    return months > 0 ? months : 0;
-  })();
-
-  const cumulativeReturnPercent = monthsInvested * secondInvestment.returnRate;
-
+  
   const investmentsList = [{
     id: '1',
     creatorName: creator.name,
@@ -101,8 +90,8 @@ const generateRealisticData = () => {
     planName: 'Professionnel',
     amount: portfolioData[0].value,
     initial: secondInvestment.amount,
-    returnRate: secondInvestment.returnRate * 6, // display 258%
-    totalReturn: cumulativeReturnPercent,
+    returnRate: secondInvestment.returnRate,
+    totalReturn: 43,
     status: 'completed'
   }];
   
@@ -142,47 +131,31 @@ const generateRealisticData = () => {
   ];
   
   const referralData = {
-    totalReferrals: 9,
-    pendingReferrals: 3,
-    completedReferrals: 6,
-    earnings: 125 + 200 + 75 + 250 + 150 + 75, // 875 total from completed
-    recentReferrals: [
-      { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
-      { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
-      { name: 'Alan P.', date: '16/04/2025', status: 'completed', reward: 75 },
-      { name: 'Karine B.', date: '17/04/2025', status: 'completed', reward: 250 },
-      { name: 'Charles N.', date: '18/04/2025', status: 'completed', reward: 150 },
-      { name: 'Lina F.', date: '19/04/2025', status: 'completed', reward: 75 },
-      { name: 'Inès D.', date: '20/04/2025', status: 'pending', reward: 180 },
-      { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 260 },
-      { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 120 },
-    ],
-    tierProgress: Math.round((6 / 9) * 100),
+    totalReferrals: 0,
+    pendingReferrals: 0,
+    completedReferrals: 0,
+    earnings: 0,
+    recentReferrals: [],
+    tierProgress: 0,
     currentTier: 'Starter',
     nextTier: 'Bronze',
-    nextTierRequirement: 9
+    nextTierRequirement: 5
   };
-
-  const updatedReferralEarnings = referralData.earnings;
-  const totalEarningsValue = 2340;
-
-  const balanceWithoutReferral = Number(totalValue.toFixed(2));
-  const balance = balanceWithoutReferral + updatedReferralEarnings;
-
+  
   return {
     performanceData,
     portfolioData,
     investments: investmentsList,
     transactions,
     referralData,
-    balance,
-    totalInvested: 800,
-    totalEarnings: totalEarningsValue,
+    balance: Number(totalValue.toFixed(2)),
+    totalInvested: secondInvestment.amount,
+    totalEarnings: Number((totalValue - secondInvestment.amount).toFixed(2)),
     monthlyChartData: performanceData.map(item => ({
       month: item.month,
       value: item.value
     })),
-    totalPercentageReturn: cumulativeReturnPercent
+    totalPercentageReturn: 43
   };
 };
 
@@ -191,21 +164,22 @@ const Exemples2 = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
-
+  
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowDepositModal(false);
   };
-
+  
   const withdrawalPoint = data.performanceData.findIndex(item => item.withdrawal);
-
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={true} />
-
+      
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
                 <Card>
@@ -213,7 +187,7 @@ const Exemples2 = () => {
                     <CardTitle className="text-sm font-medium text-black dark:text-white">Votre solde</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance.toFixed(2)} €</div>
+                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance} €</div>
                     <button 
                       onClick={() => setShowDepositModal(true)}
                       className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
@@ -234,7 +208,7 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">800€</span>
+                    <span className="text-2xl font-bold">{data.totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                     Dans {data.investments.length} créatrice
@@ -251,13 +225,11 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">2340€</span>
-                    <span className="ml-2 text-sm text-green-500">
-                      +258%
-                    </span>
+                    <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
+                    <span className="ml-2 text-sm text-green-500">+{data.totalPercentageReturn}%</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    {/* Retrait total le 06 avril 2025 --> removed as requested */}
+                    Retrait total le 06 avril 2025
                   </div>
                 </div>
               </FadeIn>
@@ -370,7 +342,7 @@ const Exemples2 = () => {
                             </span>
                             <span className="text-xs font-medium text-green-500 flex items-center">
                               <TrendingUp className="h-3 w-3 mr-1" />
-                              {investment.returnRate}%
+                              {investment.totalReturn}%
                             </span>
                           </div>
                         </div>
@@ -417,7 +389,7 @@ const Exemples2 = () => {
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
-                                {investment.returnRate}%
+                                {investment.totalReturn}%
                               </span>
                             </div>
                           </div>
@@ -583,7 +555,7 @@ const Exemples2 = () => {
                             <div className="text-xs text-gray-500">{referral.date}</div>
                           </div>
                           <div className="flex flex-col items-end">
-                            <span className="text-sm font-semibold text-green-500">{referral.status === "completed" ? `+${referral.reward}€` : `+${referral.reward}€`}</span>
+                            <span className="text-sm font-semibold text-green-500">+{referral.reward}€</span>
                             <span className={cn(
                               "text-xs px-2 py-0.5 rounded-full mt-1",
                               referral.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
