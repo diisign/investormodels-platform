@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -137,8 +136,7 @@ const generateRealisticData = () => {
     ];
     
     const lastNames = [
-      'M.', 'L.', 'B.', 'D.', 'R.', 'T.', 'P.', 'C.', 'G.', 'F.',
-      'S.', 'V.', 'N.', 'H.', 'J.', 'A.', 'O.', 'K.', 'W.', 'E.'
+      'M.', 'L.', 'B.', 'D.', 'R.', 'T.', 'P.', 'C.', 'G.', 'F.'
     ];
 
     let referrals = [];
@@ -260,6 +258,9 @@ const Exemples2 = () => {
         break;
       case 'quarter':
         filterDate.setMonth(now.getMonth() - 3);
+        break;
+      case 'sixMonths':
+        filterDate.setMonth(now.getMonth() - 6);
         break;
       default:
         return data.referralData.recentReferrals;
@@ -636,6 +637,7 @@ const Exemples2 = () => {
                       <SelectItem value="week">7 derniers jours</SelectItem>
                       <SelectItem value="month">30 derniers jours</SelectItem>
                       <SelectItem value="quarter">3 derniers mois</SelectItem>
+                      <SelectItem value="sixMonths">6 derniers mois</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -698,6 +700,7 @@ const Exemples2 = () => {
                           <SelectItem value="week">7 derniers jours</SelectItem>
                           <SelectItem value="month">30 derniers jours</SelectItem>
                           <SelectItem value="quarter">3 derniers mois</SelectItem>
+                          <SelectItem value="sixMonths">6 derniers mois</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
