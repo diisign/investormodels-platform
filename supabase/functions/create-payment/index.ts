@@ -75,7 +75,13 @@ serve(async (req) => {
     console.log("Creating Stripe instance with API version 2025-02-24.acacia");
     const stripe = new Stripe(stripeSecretKey, {
       apiVersion: "2025-02-24.acacia",
-      httpClient: Stripe.createFetchHttpClient()
+      httpClient: Stripe.createFetchHttpClient({
+        fetchApi: fetch,
+        headers: {
+          Authorization: `Bearer ${stripeSecretKey}`,
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
     });
 
     console.log("Creating checkout session with amount:", amount, "EUR");
@@ -151,7 +157,7 @@ serve(async (req) => {
       { 
         status: 500, 
         headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      }
+        }
     );
   }
 });

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import UserBalance from "@/components/UserBalance";
 import { supabase } from "@/integrations/supabase/client";
+import { STRIPE_PUBLIC_KEY } from "@/integrations/stripe/config";
 
 const Deposit = () => {
   const [amount, setAmount] = useState("");
@@ -65,16 +66,11 @@ const Deposit = () => {
         }
       );
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Une erreur est survenue lors de la création du paiement");
-      }
-      
       const data = await response.json();
       console.log("Réponse de l'API de paiement:", data);
       
-      if (!data.url) {
-        throw new Error("URL de paiement non disponible");
+      if (!response.ok && !data.url) {
+        throw new Error(data.error || "Une erreur est survenue lors de la création du paiement");
       }
       
       // Rediriger vers la page de paiement Stripe
