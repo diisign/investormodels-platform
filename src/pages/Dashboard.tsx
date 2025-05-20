@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
 import { getUserInvestments } from '@/utils/investments';
 import Navbar from '@/components/layout/Navbar';
@@ -25,7 +26,6 @@ const Dashboard = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
-  const queryClient = useQueryClient();
 
   const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery({
     queryKey: ['userInvestments'],
@@ -45,6 +45,7 @@ const Dashboard = () => {
         
       if (error) throw error;
 
+      // Update the mapping to ensure creatorProfile has proper types
       return data.map(transaction => {
         if (transaction.payment_method === 'investment' && transaction.payment_id) {
           return {
@@ -83,82 +84,77 @@ const Dashboard = () => {
     const totalReturn = investments.reduce((sum, inv) => {
       const investmentDate = new Date(inv.created_at);
       const monthsDiff = (currentDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
-                       (currentDate.getMonth() - investmentDate.getMonth());
+                         (currentDate.getMonth() - investmentDate.getMonth());
       
       if (monthsDiff < 1) {
-        return sum;
+        return 0;
       }
       
-      const monthlyRate = Number(inv.return_rate) / 3;
-      return sum + (Number(inv.amount) * (monthlyRate / 100) * monthsDiff);
+      return sum + (Number(inv.amount) * Number(inv.return_rate) / 100);
     }, 0);
 
-    const percentageReturn = totalInvested > 0 ? (totalReturn / totalInvested) * 100 : 0;
-
-    return { totalInvested, totalReturn, percentageReturn };
+    return { totalInvested, totalReturn };
   };
 
-  const { totalInvested, totalReturn, percentageReturn } = calculateTotalReturn();
+  const { totalInvested, totalReturn } = calculateTotalReturn();
 
   const generatePerformanceData = () => {
+    const initialInvestment = totalInvested;
     const currentDate = new Date('2025-04-26');
-    const startDate = new Date('2024-05-01');
     const data = [];
-    let accumulatedGains = 0;
-    
-    for (let i = 0; i < 12; i++) {
-      const monthDate = new Date(startDate);
-      monthDate.setMonth(startDate.getMonth() + i);
+    let currentValue = initialInvestment;
+
+    // Calculate the monthly returns for active investments
+    const calculateMonthlyReturns = (monthDate: Date) => {
+      let monthlyReturn = 0;
       
-      const isAprilOrLater = 
-        (monthDate.getMonth() >= 3 && monthDate.getFullYear() === 2025) || 
-        monthDate.getFullYear() > 2025;
-      
-      let value = 0;
-      let monthlyGains = 0;
-      
-      if (isAprilOrLater) {
-        value = totalInvested;
+      investments.forEach(investment => {
+        const investmentDate = new Date(investment.created_at);
         
-        investments.forEach(inv => {
-          const investmentDate = new Date(inv.created_at);
-          const monthsSinceInvestment = 
-            (monthDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
-            (monthDate.getMonth() - investmentDate.getMonth());
-          
-          if (monthsSinceInvestment > 0) {
-            const monthlyRate = Number(inv.return_rate) / 3;
-            const monthlyReturn = Number(inv.amount) * (monthlyRate / 100);
-            const totalReturn = monthlyReturn * monthsSinceInvestment;
-            value += totalReturn;
-            monthlyGains += monthlyReturn;
-          }
-        });
-        
-        accumulatedGains += monthlyGains;
-      }
-      
-      data.push({
-        month: format(monthDate, 'MMM yy', { locale: fr }),
-        value: Number(value.toFixed(2)),
-        monthlyGains: Number(monthlyGains.toFixed(2))
+        // Only calculate returns if the investment has been active for at least a month
+        if (monthDate > investmentDate) {
+          // Calculate monthly return as 1/3 of the annual return rate
+          const monthlyRate = Number(investment.return_rate) / 3 / 100;
+          monthlyReturn += Number(investment.amount) * monthlyRate;
+        }
       });
+      
+      return monthlyReturn;
+    };
+
+    // Generate data for each month
+    for (let i = -11; i <= 0; i++) {
+      const monthDate = new Date(currentDate);
+      monthDate.setMonth(currentDate.getMonth() + i);
+      
+      if (i === -11) {
+        // First month shows initial investment only
+        data.push({
+          month: format(monthDate, 'MMM yy', { locale: fr }),
+          value: currentValue
+        });
+      } else {
+        // Add monthly returns to current value
+        const monthlyReturn = calculateMonthlyReturns(monthDate);
+        currentValue += monthlyReturn;
+        
+        data.push({
+          month: format(monthDate, 'MMM yy', { locale: fr }),
+          value: Number(currentValue.toFixed(2))
+        });
+      }
     }
     
     return data;
   };
 
   const fullPerformanceData = generatePerformanceData();
+  
   const performanceData = fullPerformanceData.slice(-parseInt(timeRange));
 
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowDepositModal(false);
-  };
-
-  const handleWithdraw = () => {
-    queryClient.invalidateQueries({ queryKey: ['userBalance'] });
-    queryClient.invalidateQueries({ queryKey: ['userTransactions'] });
   };
 
   if (isInvestmentsLoading) {
@@ -200,8 +196,7 @@ const Dashboard = () => {
                   
                   <PerformanceChart 
                     investments={investments} 
-                    performanceData={performanceData}
-                    onWithdraw={handleWithdraw}
+                    performanceData={performanceData} 
                   />
                 </div>
               </FadeIn>
