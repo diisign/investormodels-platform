@@ -141,8 +141,8 @@ const CreatorDetails = () => {
     }
     
     const amount = Number(investmentAmount);
-    if (isNaN(amount) || amount < 100) {
-      toast.error("Le montant minimum d'investissement est de 100€");
+    if (isNaN(amount) || amount < 1) {
+      toast.error("Le montant minimum d'investissement est de 1€");
       return;
     }
 
@@ -459,14 +459,14 @@ const CreatorDetails = () => {
                       id="amount"
                       value={investmentAmount}
                       onChange={(e) => setInvestmentAmount(e.target.value)}
-                      min={100}
+                      min={1}
                       step="1"
                       className="input-field pl-10"
                       required
                     />
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Montant minimum : 100€
+                    Montant minimum : 1€
                   </p>
                 </div>
                 
@@ -510,7 +510,7 @@ const CreatorDetails = () => {
                     variant="primary"
                     gradientDirection="to-r"
                     className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-lg transition-all duration-300"
-                    disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user || Number(investmentAmount) > userBalance}
+                    disabled={loading || !investmentAmount || Number(investmentAmount) <= 0 || !user || Number(investmentAmount) > userBalance}
                   >
                     {loading ? 'Traitement...' : 'Confirmer l\'investissement'}
                   </GradientButton>

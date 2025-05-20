@@ -85,36 +85,44 @@ export const mockUserData = {
   balance: 2500,
   investments: [
     {
-      id: 'inv2',
-      creatorId: 'brookmills',
-      creatorName: 'BrookMills🍒',
-      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
-      planId: 'plan-brookmills-2',
-      planName: 'Premium',
-      amount: 500,
-      returnRate: 749.6,
-      startDate: '2024-10-06',
-      endDate: '2025-01-06',
-      status: 'active',
-      earnings: 3748 // 500 + 3248 = 3748
+      id: 'inv1',
+      creatorId: 'creator2',
+      creatorName: 'Maria 🤸🏻‍*',
+      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
+      planId: 'plan2-2',
+      planName: 'Professionnel',
+      amount: 800,
+      returnRate: 120,
+      startDate: '2024-10-03',
+      endDate: '2025-01-03',
+      status: 'completed',
+      earnings: 960
     }
   ],
   transactions: [
     {
-      id: 'trans4',
+      id: 'trans1',
       type: 'deposit',
-      amount: 500,
-      date: '2024-10-06',
+      amount: 800,
+      date: '2024-10-03',
       status: 'completed',
-      description: 'Dépôt pour investissement'
+      description: 'Dépôt initial'
     },
     {
-      id: 'trans5',
+      id: 'trans2',
       type: 'investment',
-      amount: 500,
-      date: '2024-10-06',
+      amount: 800,
+      date: '2024-10-03',
       status: 'completed',
-      description: 'Investissement - BrookMills🍒'
+      description: 'Investissement - Maria 🤸🏻‍*'
+    },
+    {
+      id: 'trans3',
+      type: 'earning',
+      amount: 960,
+      date: '2025-01-03',
+      status: 'completed',
+      description: 'Rendement - Maria 🤸🏻‍*'
     }
   ]
 };
@@ -649,7 +657,7 @@ export const creators: Creator[] = [
         duration: 6,
         benefits: [
           'Rapport mensuel',
-          'T��léchargements gratuits',
+          'Téléchargements gratuits',
           'Critique photo personnelle'
         ],
         popularity: 'high'
@@ -830,61 +838,6 @@ popularity: 'low'
           'Plan complet personnalisé',
           'Coaching privé régulier',
           'Produits bien-être offerts'
-        ],
-        popularity: 'low'
-      }
-    ]
-  },
-  {
-    id: 'brookmills',
-    name: 'BrookMills🍒',
-    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
-    coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
-    category: 'Style',
-    returnRate: 130,
-    investorsCount: 326,
-    totalInvested: 78000,
-    monthlyRevenue: 19000,
-    followers: 405000,
-    creationDate: '2022-05-17',
-    description: "Créatrice de contenu lifestyle et mode. Mes revenus sont générés par ma boutique en ligne, mes collaborations avec des marques de luxe et mon programme de consultation en style personnalisé.",
-    plans: [
-      {
-        id: 'plan-brookmills-1',
-        name: 'Basique',
-        returnRate: 25,
-        minInvestment: 100,
-        duration: 3,
-        benefits: [
-          'Rapport mensuel sur les revenus',
-          'Newsletter exclusive'
-        ],
-        popularity: 'medium'
-      },
-      {
-        id: 'plan-brookmills-2',
-        name: 'Premium',
-        returnRate: 130,
-        minInvestment: 500,
-        duration: 3,
-        benefits: [
-          'Rapports détaillés mensuels',
-          'Remises sur les produits',
-          'Accès aux lancements en avant-première'
-        ],
-        popularity: 'high'
-      },
-      {
-        id: 'plan-brookmills-3',
-        name: 'Exclusive',
-        returnRate: 180,
-        minInvestment: 1000,
-        duration: 3,
-        benefits: [
-          'Rapports hebdomadaires',
-          'Consultation de style personnalisée',
-          'Produits gratuits',
-          'Invitation aux événements VIP'
         ],
         popularity: 'low'
       }

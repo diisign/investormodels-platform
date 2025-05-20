@@ -28,8 +28,8 @@ const Deposit = () => {
     
     // Validation du montant
     const depositAmount = parseFloat(amount);
-    if (isNaN(depositAmount) || depositAmount < 100) {
-      toast.error("Veuillez entrer un montant valide (minimum 100€)");
+    if (isNaN(depositAmount) || depositAmount <= 0) {
+      toast.error("Veuillez entrer un montant valide");
       return;
     }
     
@@ -121,8 +121,8 @@ const Deposit = () => {
                   id="amount"
                   type="number"
                   placeholder="0.00"
-                  min="100"
-                  step="1"
+                  min="1"
+                  step="0.01"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   required
@@ -147,7 +147,7 @@ const Deposit = () => {
               <CardTitle>Comment ça marche</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <p>1. Entrez le montant que vous souhaitez déposer (minimum 100€)</p>
+              <p>1. Entrez le montant que vous souhaitez déposer</p>
               <p>2. Vous serez redirigé vers notre prestataire de paiement sécurisé</p>
               <p>3. Une fois le paiement confirmé, les fonds seront disponibles dans votre compte</p>
               <p className="text-sm text-gray-500 mt-4">

@@ -9,33 +9,33 @@ import FadeIn from '@/components/animations/FadeIn';
 const topAffiliates = [
   {
     id: 1,
-    name: "Sophie M.",
-    referrals: 487,
-    earnings: 121750,  // Updated to match 487 × 250
+    name: "Sophie Martin",
+    referrals: 48,
+    earnings: 4850,
   },
   {
     id: 2,
-    name: "Thomas D.",
-    referrals: 343,
-    earnings: 85750,   // Updated to match 343 × 250
+    name: "Thomas Durand",
+    referrals: 37,
+    earnings: 3680,
   },
   {
     id: 3,
-    name: "Emma B.",
-    referrals: 321,
-    earnings: 80250,   // Updated to match 321 × 250
+    name: "Emma Bernard",
+    referrals: 31,
+    earnings: 3150,
   },
   {
     id: 4,
-    name: "Lucas P.",
-    referrals: 298,
-    earnings: 74500,   // Updated to match 298 × 250
+    name: "Lucas Petit",
+    referrals: 26,
+    earnings: 2480,
   },
   {
     id: 5,
-    name: "Camille D.",
-    referrals: 281,
-    earnings: 70250,   // Updated to match 281 × 250
+    name: "Camille Dubois",
+    referrals: 22,
+    earnings: 2180,
   },
 ];
 
@@ -49,11 +49,11 @@ const TopAffiliates = () => {
               <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
                 <Award className="h-4 w-4" />
               </div>
-              <CardTitle className="text-lg font-medium">Top 5 des Parrains (avril)</CardTitle>
+              <CardTitle className="text-lg font-medium">Top 5 des Parrains</CardTitle>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
-              <span>Gain moyen: 250€/filleul</span>
+              <span>Gain moyen: 328€/filleul</span>
             </div>
           </div>
         </CardHeader>

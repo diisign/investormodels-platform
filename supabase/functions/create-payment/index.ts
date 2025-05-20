@@ -47,18 +47,6 @@ serve(async (req) => {
       );
     }
 
-    // Vérifier le montant minimum (100 euros)
-    if (amount < 100) {
-      console.error("Amount too low:", amount);
-      return new Response(
-        JSON.stringify({ error: "Le montant minimum est de 100€" }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
-      );
-    }
-
     const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
     
     if (!stripeSecretKey) {

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -13,28 +12,39 @@ import { cn } from '@/lib/utils';
 import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { creators, mockUserData } from '@/utils/mockData';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { creators } from '@/utils/mockData';
 
 const generateRealisticData = () => {
-  // BrookMills investment from October 6, 2024
-  const brookMillsInvestment = {
-    date: new Date('2024-10-06'),
-    amount: 500,
-    monthlyGain: 215, // Monthly gain based on 130% return rate over 3 months (43.3% per month)
-    returnRate: 749.6,
-    withdrawalDate: new Date('2025-01-06')
+  const creator = {
+    id: 'creator_maria',
+    name: 'Maria 🤸🏻‍*', 
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg'
   };
   
-  const startDate = new Date('2024-08-01'); // Start 2 months before investment
-  const currentDate = new Date('2025-05-11'); // Current date
+  const firstInvestment = { 
+    date: new Date('2024-10-03'), 
+    amount: 800, 
+    monthlyGain: 344,
+    returnRate: 43,
+    withdrawalDate: new Date('2025-01-23'),
+    withdrawalAmount: 1832
+  };
+  
+  const secondInvestment = {
+    date: new Date('2025-01-25'),
+    amount: 1000,
+    monthlyGain: 430,
+    returnRate: 43
+  };
+  
+  const startDate = new Date('2024-10-03');
+  const currentDate = new Date('2025-04-20');
   
   const performanceData = [];
   const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
     (currentDate.getMonth() - startDate.getMonth());
   
-  let totalValue = 0; // Start with zero
+  let totalValue = firstInvestment.amount;
   
   for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
@@ -43,76 +53,99 @@ const generateRealisticData = () => {
     const year = currentMonthDate.getFullYear();
     const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    // Initial investment on October 6, 2024
-    if (currentMonthDate.getFullYear() === brookMillsInvestment.date.getFullYear() && 
-        currentMonthDate.getMonth() === brookMillsInvestment.date.getMonth()) {
-      totalValue += brookMillsInvestment.amount;
+    if (i > 0 && currentMonthDate < firstInvestment.withdrawalDate) {
+      totalValue += firstInvestment.monthlyGain;
     }
     
-    // Monthly gains from October to December (3 months at 43.3% per month)
-    if (
-      (currentMonthDate.getFullYear() === 2024 && currentMonthDate.getMonth() >= 10) || // Oct-Dec 2024
-      (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() === 0)   // Jan 2025
-    ) {
-      if (currentMonthDate.getFullYear() > brookMillsInvestment.date.getFullYear() || 
-          currentMonthDate.getMonth() > brookMillsInvestment.date.getMonth()) {
-        totalValue += brookMillsInvestment.monthlyGain;
-      }
+    if (currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() && 
+        currentMonthDate.getFullYear() === firstInvestment.withdrawalDate.getFullYear()) {
+      totalValue = secondInvestment.amount; // Reset to second investment amount after withdrawal
     }
     
-    // January 6, 2025: Now have 1145€ total (500 + 215*3 = 500 + 645 = 1145)
-    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() === 0) {
-      // No specific action needed, just continue tracking the value
-    }
-    
-    // New monthly gains from January to April (months 4-7 at 43.3% of 1145 = 492€ per month)
-    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 1 && currentMonthDate.getMonth() <= 3) {
-      if (i > 0 && (
-          currentMonthDate.getFullYear() > 2025 || 
-          (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 1)
-      )) {
-        totalValue += 492; // Monthly gain from January to April
-      }
-    }
-    
-    // April 2025: Now have 2621€ total (1145 + 492*3 = 1145 + 1476 = 2621)
-    // New monthly gains from April onwards (43.3% of 2621 = 1127€ per month)
-    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 4) {
-      totalValue += 1127; // Monthly gain from May onwards
+    if (currentMonthDate > secondInvestment.date) {
+      totalValue += secondInvestment.monthlyGain;
     }
     
     performanceData.push({
       month: monthLabel,
       value: Number(totalValue.toFixed(2)),
-      withdrawal: undefined
+      withdrawal: currentMonthDate.getMonth() === firstInvestment.withdrawalDate.getMonth() ? 
+                 firstInvestment.withdrawalAmount - secondInvestment.amount : undefined
     });
   }
   
-  // Get the current investments from mockUserData
-  const portfolioData = mockUserData.investments.map(inv => ({
-    name: inv.creatorName,
-    value: inv.amount,
-    imageUrl: inv.creatorImage,
-    returnRate: inv.returnRate
-  }));
+  const portfolioData = [{
+    name: creator.name,
+    value: performanceData[performanceData.length - 1].value,
+    initial: secondInvestment.amount,
+    imageUrl: creator.imageUrl,
+    returnRate: secondInvestment.returnRate * 6  // multiplication by 6 months to display 258%
+  }];
 
-  // Calculate total invested amount
-  const totalInvested = mockUserData.investments.reduce((sum, inv) => sum + inv.amount, 0);
+  const monthsInvested = (() => {
+    const start = secondInvestment.date;
+    const end = new Date('2025-04-20');
+    let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+    if (end.getDate() < start.getDate()) {
+      months -= 1; // Partial month doesn't count fully
+    }
+    return months > 0 ? months : 0;
+  })();
 
-  // Calculate total earnings - updated to 3248
-  const totalEarnings = 3248;
+  const cumulativeReturnPercent = monthsInvested * secondInvestment.returnRate;
 
-  // Calculate average percentage return across all investments - updated to 749.6%
-  const totalPercentageReturn = 749.6;
-
-  // Use the transactions from mockUserData
-  const transactions = mockUserData.transactions;
+  const investmentsList = [{
+    id: '1',
+    creatorName: creator.name,
+    creatorImage: creator.imageUrl,
+    planName: 'Professionnel',
+    amount: portfolioData[0].value,
+    initial: secondInvestment.amount,
+    returnRate: secondInvestment.returnRate * 6, // display 258%
+    totalReturn: cumulativeReturnPercent,
+    status: 'completed'
+  }];
+  
+  const transactions = [
+    {
+      id: '1',
+      type: 'deposit',
+      amount: firstInvestment.amount,
+      date: '03/10/2024',
+      status: 'completed',
+      description: 'Dépôt initial'
+    },
+    {
+      id: '2',
+      type: 'investment',
+      amount: -firstInvestment.amount,
+      date: '03/10/2024',
+      status: 'completed',
+      description: `Investissement - ${creator.name}`
+    },
+    {
+      id: '3',
+      type: 'withdrawal',
+      amount: firstInvestment.withdrawalAmount - secondInvestment.amount, // Only the withdrawn amount (832€)
+      date: '23/01/2025',
+      status: 'completed',
+      description: 'Retrait partiel'
+    },
+    {
+      id: '4',
+      type: 'investment',
+      amount: -secondInvestment.amount,
+      date: '25/01/2025',
+      status: 'completed',
+      description: `Réinvestissement - ${creator.name}`
+    }
+  ];
   
   const referralData = {
-    totalReferrals: 18,
-    pendingReferrals: 5,
-    completedReferrals: 13,
-    earnings: 1775,
+    totalReferrals: 9,
+    pendingReferrals: 3,
+    completedReferrals: 6,
+    earnings: 125 + 200 + 75 + 250 + 150 + 75, // 875 total from completed
     recentReferrals: [
       { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
       { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
@@ -123,42 +156,33 @@ const generateRealisticData = () => {
       { name: 'Inès D.', date: '20/04/2025', status: 'pending', reward: 180 },
       { name: 'Hugo P.', date: '20/04/2025', status: 'pending', reward: 260 },
       { name: 'Nicolas S.', date: '20/04/2025', status: 'pending', reward: 120 },
-      { name: 'Marie T.', date: '21/04/2025', status: 'completed', reward: 110 },
-      { name: 'Olivier K.', date: '22/04/2025', status: 'completed', reward: 135 },
-      { name: 'Julie M.', date: '23/04/2025', status: 'completed', reward: 190 },
-      { name: 'Théo R.', date: '24/04/2025', status: 'completed', reward: 100 },
-      { name: 'Léa B.', date: '25/04/2025', status: 'completed', reward: 165 },
-      { name: 'Alexandre D.', date: '26/04/2025', status: 'completed', reward: 205 },
-      { name: 'Sarah L.', date: '27/04/2025', status: 'completed', reward: 145 },
-      { name: 'Thomas G.', date: '28/04/2025', status: 'pending', reward: 170 },
-      { name: 'Emma V.', date: '29/04/2025', status: 'pending', reward: 220 }
     ],
-    tierProgress: Math.round((13 / 18) * 100),
-    currentTier: 'Bronze',
-    nextTier: 'Silver',
-    nextTierRequirement: 18
+    tierProgress: Math.round((6 / 9) * 100),
+    currentTier: 'Starter',
+    nextTier: 'Bronze',
+    nextTierRequirement: 9
   };
 
   const updatedReferralEarnings = referralData.earnings;
-  const totalEarningsValue = totalEarnings;
-  
+  const totalEarningsValue = 2340;
+
   const balanceWithoutReferral = Number(totalValue.toFixed(2));
   const balance = balanceWithoutReferral + updatedReferralEarnings;
 
   return {
     performanceData,
     portfolioData,
-    investments: mockUserData.investments,
+    investments: investmentsList,
     transactions,
     referralData,
     balance,
-    totalInvested,
-    totalEarnings: totalEarnings,
+    totalInvested: 800,
+    totalEarnings: totalEarningsValue,
     monthlyChartData: performanceData.map(item => ({
       month: item.month,
       value: item.value
     })),
-    totalPercentageReturn
+    totalPercentageReturn: cumulativeReturnPercent
   };
 };
 
@@ -210,7 +234,7 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalInvested}€</span>
+                    <span className="text-2xl font-bold">800€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                     Dans {data.investments.length} créatrice
@@ -227,9 +251,9 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalEarnings}€</span>
+                    <span className="text-2xl font-bold">2340€</span>
                     <span className="ml-2 text-sm text-green-500">
-                      +{data.totalPercentageReturn}%
+                      +258%
                     </span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
@@ -311,7 +335,7 @@ const Exemples2 = () => {
                             strokeDasharray="3 3"
                             strokeWidth={2}
                             label={{ 
-                              value: `Retrait total: ${data.performanceData[withdrawalPoint].withdrawal}€`, 
+                              value: "Retrait total: 1554.13€", 
                               position: 'top', 
                               fill: "#22c55e",
                               fontSize: 12
@@ -342,7 +366,7 @@ const Exemples2 = () => {
                           </div>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Initial: {investment.amount}€
+                              Initial: {investment.initial}€
                             </span>
                             <span className="text-xs font-medium text-green-500 flex items-center">
                               <TrendingUp className="h-3 w-3 mr-1" />
@@ -389,7 +413,7 @@ const Exemples2 = () => {
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {investment.amount}€
+                                Initial: {investment.initial}€
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
@@ -600,43 +624,65 @@ const Exemples2 = () => {
       
       {showDepositModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <FadeIn className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">Déposer des fonds</h3>
+          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
+            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
             <form onSubmit={handleDeposit}>
-              <div className="mb-4">
-                <label htmlFor="amount" className="block text-sm font-medium mb-1">Montant (€)</label>
-                <input 
-                  type="number" 
-                  id="amount"
-                  min="100"
-                  step="10"
-                  value={depositAmount}
-                  onChange={(e) => setDepositAmount(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-investment-500 focus:border-investment-500"
-                  placeholder="100"
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">Montant minimum: 100€</p>
-              </div>
-              <div className="flex justify-end space-x-3">
-                <button 
-                  type="button" 
-                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium"
-                  onClick={() => setShowDepositModal(false)}
-                >
-                  Annuler
-                </button>
-                <button 
-                  type="submit" 
-                  className="px-4 py-2 bg-investment-600 text-white rounded-md text-sm font-medium hover:bg-investment-700"
-                >
-                  Déposer
-                </button>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Montant (€)
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="number"
+                      id="amount"
+                      value={depositAmount}
+                      onChange={(e) => setDepositAmount(e.target.value)}
+                      min="10"
+                      step="10"
+                      className="input-field pl-10"
+                      placeholder="100"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Méthode de paiement
+                  </label>
+                  <select 
+                    id="payment-method" 
+                    className="input-field"
+                    required
+                  >
+                    <option value="">Sélectionner une méthode</option>
+                    <option value="credit-card">Carte bancaire</option>
+                    <option value="bank-transfer">Virement bancaire</option>
+                  </select>
+                </div>
+                
+                <div className="pt-4 flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowDepositModal(false)}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    Annuler
+                  </button>
+                  <GradientButton type="submit">
+                    Déposer
+                  </GradientButton>
+                </div>
               </div>
             </form>
           </FadeIn>
         </div>
       )}
+      
       <Footer />
     </div>
   );
