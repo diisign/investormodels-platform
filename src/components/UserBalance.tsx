@@ -66,7 +66,7 @@ const UserBalance = () => {
       }
     },
     enabled: !!user,
-    refetchInterval: 2000, // Rafraîchir toutes les 2 secondes pour détecter les nouvelles transactions
+    refetchInterval: 5000, // Rafraîchir toutes les 5 secondes pour détecter les nouvelles transactions
     staleTime: 0, // Considérer les données comme obsolètes immédiatement
     refetchOnWindowFocus: true,
     refetchOnMount: true,
