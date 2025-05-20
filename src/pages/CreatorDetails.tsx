@@ -15,8 +15,9 @@ import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
 import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
+import { createInvestment } from '@/utils/investments';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
@@ -26,6 +27,7 @@ const CreatorDetails = () => {
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
+  const queryClient = useQueryClient();
   
   const mockCreator = creators.find(c => c.id === creatorId);
   
@@ -139,18 +141,36 @@ const CreatorDetails = () => {
     }
     
     const amount = Number(investmentAmount);
-    if (isNaN(amount) || amount <= 0) {
-      toast.error("Veuillez entrer un montant valide");
+    if (isNaN(amount) || amount < 1) {
+      toast.error("Le montant minimum d'investissement est de 1€");
+      return;
+    }
+
+    if (amount > userBalance) {
+      toast.error("Solde insuffisant pour cet investissement");
       return;
     }
     
     setLoading(true);
     
     try {
-      await investInCreator(creator.id, "default", amount);
+      const returnRate = creatorProfile?.returnRate || 0;
+      
+      await createInvestment(
+        creatorId || '',
+        amount,
+        returnRate
+      );
+      
       toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
       setShowInvestModal(false);
+      
+      queryClient.invalidateQueries({
+        queryKey: ['userBalance'],
+      });
+      
     } catch (error) {
+      console.error('Error during investment:', error);
       toast.error(error instanceof Error ? error.message : "Erreur lors de l'investissement");
     } finally {
       setLoading(false);
@@ -439,14 +459,14 @@ const CreatorDetails = () => {
                       id="amount"
                       value={investmentAmount}
                       onChange={(e) => setInvestmentAmount(e.target.value)}
-                      min={50}
-                      step="10"
+                      min={1}
+                      step="1"
                       className="input-field pl-10"
                       required
                     />
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Montant minimum: 50€
+                    Montant minimum : 1€
                   </p>
                 </div>
                 

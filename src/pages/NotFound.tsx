@@ -1,5 +1,5 @@
 
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,34 +7,13 @@ import FadeIn from "@/components/animations/FadeIn";
 
 const NotFound = () => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
-    
-    // Check if this is a direct access (i.e., refreshed page or direct URL entry)
-    const directAccess = performance.navigation?.type === 1 || document.referrer === "";
-    
-    // If the route exists in our router but was accessed directly, we should navigate to it
-    if (directAccess && location.pathname !== "/404") {
-      const availableRoutes = [
-        "/", "/login", "/register", "/dashboard", "/profile", "/affiliation", 
-        "/faq", "/contact", "/creators", "/examples", "/exemples2", "/terms",
-        "/privacy", "/cookies", "/legal", "/dashboard-affiliation", "/webhook-debug"
-      ];
-      
-      if (availableRoutes.includes(location.pathname)) {
-        // Wait a bit before redirecting to ensure component is fully mounted
-        const timer = setTimeout(() => {
-          navigate(location.pathname, { replace: true });
-        }, 100);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [location.pathname, navigate]);
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

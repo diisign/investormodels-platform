@@ -45,6 +45,39 @@ export type Database = {
         }
         Relationships: []
       }
+      investments: {
+        Row: {
+          amount: number
+          created_at: string
+          creator_id: string
+          id: string
+          return_rate: number
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          creator_id: string
+          id?: string
+          return_rate: number
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          creator_id?: string
+          id?: string
+          return_rate?: number
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
