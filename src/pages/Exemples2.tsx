@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
 import { 
@@ -272,7 +273,23 @@ const Exemples2 = () => {
     });
   };
 
-  const filteredReferrals = getFilteredReferrals();
+  const filteredReferrals = useMemo(() => getFilteredReferrals(), [referralTimeRange, data.referralData.recentReferrals]);
+  
+  // Calculate statistics based on filtered referrals
+  const referralStats = useMemo(() => {
+    const completed = filteredReferrals.filter(ref => ref.status === 'completed').length;
+    const pending = filteredReferrals.filter(ref => ref.status === 'pending').length;
+    const earnings = filteredReferrals.reduce((sum, ref) => {
+      return ref.status === 'completed' ? sum + ref.reward : sum;
+    }, 0);
+    
+    return {
+      total: filteredReferrals.length,
+      completed,
+      pending,
+      earnings
+    };
+  }, [filteredReferrals]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -605,6 +622,24 @@ const Exemples2 = () => {
                   </Link>
                 </div>
                 
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-base font-medium">Statistiques</h4>
+                  <Select
+                    value={referralTimeRange}
+                    onValueChange={setReferralTimeRange}
+                  >
+                    <SelectTrigger className="w-[120px] h-8 text-xs">
+                      <SelectValue placeholder="Période" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tous</SelectItem>
+                      <SelectItem value="week">7 derniers jours</SelectItem>
+                      <SelectItem value="month">30 derniers jours</SelectItem>
+                      <SelectItem value="quarter">3 derniers mois</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -613,7 +648,7 @@ const Exemples2 = () => {
                         <UserPlus className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{data.referralData.totalReferrals}</div>
+                    <div className="text-2xl font-bold">{referralStats.total}</div>
                   </div>
                   
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -623,7 +658,7 @@ const Exemples2 = () => {
                         <Users className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{data.referralData.pendingReferrals}</div>
+                    <div className="text-2xl font-bold">{referralStats.pending}</div>
                   </div>
                   
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -633,7 +668,7 @@ const Exemples2 = () => {
                         <Award className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{data.referralData.completedReferrals}</div>
+                    <div className="text-2xl font-bold">{referralStats.completed}</div>
                   </div>
                   
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -643,7 +678,7 @@ const Exemples2 = () => {
                         <Gift className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{data.referralData.earnings}€</div>
+                    <div className="text-2xl font-bold">{referralStats.earnings}€</div>
                   </div>
                 </div>
                 
