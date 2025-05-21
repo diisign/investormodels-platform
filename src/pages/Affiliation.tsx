@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import AffiliationStats from '@/components/affiliations/AffiliationStats';
+import TopAffiliates from '@/components/affiliations/TopAffiliates';
 
 const Affiliation = () => {
   const { isAuthenticated, user } = useAuth();
@@ -31,6 +31,16 @@ const Affiliation = () => {
     toast.success("Lien d'affiliation copié !");
     setTimeout(() => setCopied(false), 2000);
   };
+
+  useEffect(() => {
+    // Check if we should scroll to top based on sessionStorage flag
+    const shouldScrollToTop = sessionStorage.getItem('scrollToTop') === 'true';
+    if (shouldScrollToTop) {
+      window.scrollTo(0, 0);
+      // Clear the flag after scrolling
+      sessionStorage.removeItem('scrollToTop');
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -148,13 +158,23 @@ const Affiliation = () => {
           </div>
         </section>
 
-        <div className="max-w-4xl mx-auto">
-          {isAuthenticated && (
-            <div className="mt-8 px-4">
-              <AffiliationStats />
+        {/* Top Affiliés Section */}
+        <section className="py-10 bg-white">
+          <div className="container mx-auto px-4">
+            <FadeIn className="max-w-3xl mx-auto mb-6" direction="up">
+              <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
+                Nos <span className="text-investment-600">Meilleurs Parrains</span>
+              </h2>
+              <p className="text-base text-gray-600 dark:text-gray-300 text-center">
+                Découvrez les parrains qui ont gagné le plus en recommandant notre plateforme.
+              </p>
+            </FadeIn>
+            
+            <div className="max-w-3xl mx-auto">
+              <TopAffiliates />
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4">
