@@ -31,13 +31,13 @@ const DashboardStats = ({
           </CardHeader>
           <CardContent>
             <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">{balance.toFixed(2)} €</div>
-            <button 
-              onClick={onDepositClick}
+            <Link 
+              to="/deposit"
               className="w-full text-sm text-purple-600 hover:text-purple-500 flex items-center justify-center font-medium bg-purple-50 hover:bg-purple-100 dark:bg-purple-900/20 dark:hover:bg-purple-900/30 rounded-lg py-1.5 transition-colors"
             >
               <Plus className="h-3.5 w-3.5 mr-1" />
               Déposer des fonds
-            </button>
+            </Link>
           </CardContent>
         </Card>
       </FadeIn>
@@ -98,7 +98,7 @@ const DashboardStats = ({
             <Plus className="h-3.5 w-3.5 mr-1" />
             Découvrir plus de créatrices
           </Link>
-        </Card>
+        </div>
       </FadeIn>
     </div>
   );
