@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -13,22 +12,7 @@ import { cn } from '@/lib/utils';
 import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { creators, mockUserData } from '@/utils/mockData';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { mockUserData } from '@/utils/mockData';
 
 const generateRealisticData = () => {
   // BrookMills investment from October 6, 2024
@@ -124,7 +108,7 @@ const generateRealisticData = () => {
       id: 'trans-withdrawal-2500',
       type: 'withdrawal',
       amount: 2500,
-      date: '2025-05-10',
+      date: '2025-05-23',
       status: 'completed',
       description: 'Retrait de bénéfices'
     },
