@@ -13,6 +13,13 @@ import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { mockUserData } from '@/utils/mockData';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
 
 const generateRealisticData = () => {
   // BrookMills investment from October 6, 2024
