@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
@@ -117,8 +118,18 @@ const generateRealisticData = () => {
   // Calculate average percentage return across all investments - updated to 749.6%
   const totalPercentageReturn = 749.6;
 
-  // Use the transactions from mockUserData
-  const transactions = mockUserData.transactions;
+  // Use the transactions from mockUserData and add a withdrawal of 2500€
+  const transactions = [
+    {
+      id: 'trans-withdrawal-2500',
+      type: 'withdrawal',
+      amount: 2500,
+      date: '2025-05-10',
+      status: 'completed',
+      description: 'Retrait de bénéfices'
+    },
+    ...mockUserData.transactions
+  ];
   
   // Generate 157 referrals with rewards between 50€ and 250€
   const generateReferrals = (count) => {
