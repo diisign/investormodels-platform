@@ -1,4 +1,3 @@
-
 import { useMemo } from 'react';
 
 export interface StaticInvestment {
@@ -168,7 +167,7 @@ export const useStaticInvestmentData = (): StaticInvestmentData => {
   return useMemo(() => {
     const totalInvested = 500;
     const totalEarnings = 3248;
-    const balance = 3748 + 6250; // Current value + referral earnings
+    const balance = 9898; // Updated balance to 9898€
     
     return {
       balance,
