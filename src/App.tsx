@@ -23,7 +23,7 @@ import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import Legal from "./pages/Legal";
 import Examples from "./pages/Examples";
-import Exemples2 from "./pages/Exemples2";
+import Dɑshboard from "./pages/dɑshboard";
 import DashboardAffiliation from "./pages/DashboardAffiliation";
 
 const queryClient = new QueryClient();
@@ -43,7 +43,7 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/examples" element={<Examples />} />
-            <Route path="/exemples2" element={<Exemples2 />} />
+            <Route path="/dɑshboard" element={<Dɑshboard />} />
             
             {/* Legal Pages */}
             <Route path="/terms" element={<Terms />} />
