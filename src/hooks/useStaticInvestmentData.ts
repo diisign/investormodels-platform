@@ -52,13 +52,86 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
 ];
 
 const STATIC_TRANSACTIONS: StaticTransaction[] = [
+  // Retraits mensuels d'août 2024 à mai 2025
   {
-    id: 'trans-withdrawal-2500',
+    id: 'trans-withdrawal-mai-2025',
     type: 'withdrawal',
-    amount: 2500,
-    date: '2025-05-23',
+    amount: 5100,
+    date: '2025-05-15',
     status: 'completed',
-    description: 'Retrait de bénéfices'
+    description: 'Retrait mensuel - Mai 2025'
+  },
+  {
+    id: 'trans-withdrawal-avril-2025',
+    type: 'withdrawal',
+    amount: 4950,
+    date: '2025-04-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Avril 2025'
+  },
+  {
+    id: 'trans-withdrawal-mars-2025',
+    type: 'withdrawal',
+    amount: 5200,
+    date: '2025-03-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Mars 2025'
+  },
+  {
+    id: 'trans-withdrawal-fevrier-2025',
+    type: 'withdrawal',
+    amount: 4850,
+    date: '2025-02-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Février 2025'
+  },
+  {
+    id: 'trans-withdrawal-janvier-2025',
+    type: 'withdrawal',
+    amount: 5050,
+    date: '2025-01-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Janvier 2025'
+  },
+  {
+    id: 'trans-withdrawal-decembre-2024',
+    type: 'withdrawal',
+    amount: 4900,
+    date: '2024-12-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Décembre 2024'
+  },
+  {
+    id: 'trans-withdrawal-novembre-2024',
+    type: 'withdrawal',
+    amount: 5150,
+    date: '2024-11-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Novembre 2024'
+  },
+  {
+    id: 'trans-withdrawal-octobre-2024',
+    type: 'withdrawal',
+    amount: 4800,
+    date: '2024-10-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Octobre 2024'
+  },
+  {
+    id: 'trans-withdrawal-septembre-2024',
+    type: 'withdrawal',
+    amount: 5000,
+    date: '2024-09-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Septembre 2024'
+  },
+  {
+    id: 'trans-withdrawal-aout-2024',
+    type: 'withdrawal',
+    amount: 4950,
+    date: '2024-08-15',
+    status: 'completed',
+    description: 'Retrait mensuel - Août 2024'
   },
   {
     id: 'trans-investment-500',
