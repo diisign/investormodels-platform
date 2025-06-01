@@ -71,14 +71,14 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
 ];
 
 const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
-  { month: 'Jun 25', value: 100 }
+  { month: 'Jun 25', value: 325 }
 ];
 
 export const useStaticInvestmentData = (): StaticInvestmentData => {
   return useMemo(() => {
     const totalInvested = 100;
     const totalEarnings = 0;
-    const balance = 100;
+    const balance = 325;
     
     return {
       balance,
