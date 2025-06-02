@@ -344,6 +344,11 @@ const STATIC_REFERRALS: StaticReferral[] = [
   { name: 'Sarah K.', date: '31/05/2025', status: 'completed', reward: 200 },
   { name: 'Théo L.', date: '31/05/2025', status: 'completed', reward: 175 },
   
+  // Nouveaux parrainages de juin 2025 - 3 nouveaux pour atteindre environ 2450€
+  { name: 'Claire M.', date: '01/06/2025', status: 'completed', reward: 185 },
+  { name: 'Benjamin L.', date: '02/06/2025', status: 'completed', reward: 220 },
+  { name: 'Océane P.', date: '02/06/2025', status: 'completed', reward: 195 },
+  
   // Quelques en attente (juin 2025)
   { name: 'Lisa P.', date: '01/06/2025', status: 'pending', reward: 200 },
   { name: 'Gabriel F.', date: '01/06/2025', status: 'pending', reward: 175 },
