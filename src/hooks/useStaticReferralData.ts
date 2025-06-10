@@ -1,4 +1,3 @@
-
 import { useMemo } from 'react';
 
 export interface StaticReferral {
@@ -20,9 +19,8 @@ export interface StaticReferralData {
   nextTierRequirement: number;
 }
 
-// Données statiques persistantes pour les parrainages - environ 2000€ par semaine depuis août 2024
+// Août 2024 - semaine 1 (01-07/08)
 const STATIC_REFERRALS: StaticReferral[] = [
-  // Août 2024 - semaine 1 (01-07/08)
   { name: 'Marie L.', date: '01/08/2024', status: 'completed', reward: 150 },
   { name: 'Paul D.', date: '02/08/2024', status: 'completed', reward: 200 },
   { name: 'Emma R.', date: '03/08/2024', status: 'completed', reward: 175 },
@@ -344,15 +342,30 @@ const STATIC_REFERRALS: StaticReferral[] = [
   { name: 'Sarah K.', date: '31/05/2025', status: 'completed', reward: 200 },
   { name: 'Théo L.', date: '31/05/2025', status: 'completed', reward: 175 },
   
-  // Nouveaux parrainages de juin 2025 - 3 nouveaux pour atteindre environ 2450€
-  { name: 'Claire M.', date: '01/06/2025', status: 'completed', reward: 185 },
-  { name: 'Benjamin L.', date: '02/06/2025', status: 'completed', reward: 220 },
-  { name: 'Océane P.', date: '02/06/2025', status: 'completed', reward: 195 },
+  // NOUVEAUX PARRAINAGES JUIN 2025 - DERNIÈRE SEMAINE (1-7 juin 2025) pour atteindre 2500€
+  // 17 nouveaux parrainages avec un gain moyen de ~147€ pour faire environ 2500€
+  { name: 'CryptoMax_', date: '01/06/2025', status: 'completed', reward: 145 },
+  { name: 'InvestLola', date: '01/06/2025', status: 'completed', reward: 160 },
+  { name: 'TradingPro22', date: '01/06/2025', status: 'completed', reward: 135 },
+  { name: 'GamerInvest', date: '02/06/2025', status: 'completed', reward: 155 },
+  { name: 'DigitalNomad_', date: '02/06/2025', status: 'completed', reward: 140 },
+  { name: 'FutureRich', date: '02/06/2025', status: 'completed', reward: 165 },
+  { name: 'MoneyMaker99', date: '03/06/2025', status: 'completed', reward: 150 },
+  { name: 'CashFlow_King', date: '03/06/2025', status: 'completed', reward: 145 },
+  { name: 'SmartInvestor', date: '03/06/2025', status: 'completed', reward: 130 },
+  { name: 'WealthBuilder', date: '04/06/2025', status: 'completed', reward: 175 },
+  { name: 'ProfitHunter', date: '04/06/2025', status: 'completed', reward: 140 },
+  { name: 'SuccessStory', date: '04/06/2025', status: 'completed', reward: 155 },
+  { name: 'EuroTrader_', date: '05/06/2025', status: 'completed', reward: 160 },
+  { name: 'RichMindset', date: '05/06/2025', status: 'completed', reward: 135 },
+  { name: 'InvestQueen', date: '06/06/2025', status: 'completed', reward: 170 },
+  { name: 'MoneyWise_', date: '06/06/2025', status: 'completed', reward: 145 },
+  { name: 'GoldRush2025', date: '07/06/2025', status: 'completed', reward: 180 },
   
-  // Quelques en attente (juin 2025)
-  { name: 'Lisa P.', date: '01/06/2025', status: 'pending', reward: 200 },
-  { name: 'Gabriel F.', date: '01/06/2025', status: 'pending', reward: 175 },
-  { name: 'Jade B.', date: '02/06/2025', status: 'pending', reward: 185 }
+  // Quelques parrainages en attente (juin 2025)
+  { name: 'NextLevel_', date: '06/06/2025', status: 'pending', reward: 150 },
+  { name: 'DreamBig22', date: '07/06/2025', status: 'pending', reward: 155 },
+  { name: 'FreedomSeeker', date: '07/06/2025', status: 'pending', reward: 140 }
 ];
 
 export const useStaticReferralData = () => {
