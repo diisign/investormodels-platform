@@ -342,30 +342,29 @@ const STATIC_REFERRALS: StaticReferral[] = [
   { name: 'Sarah K.', date: '31/05/2025', status: 'completed', reward: 200 },
   { name: 'Théo L.', date: '31/05/2025', status: 'completed', reward: 175 },
   
-  // NOUVEAUX PARRAINAGES JUIN 2025 - DERNIÈRE SEMAINE (1-7 juin 2025) pour atteindre 2500€
-  // 17 nouveaux parrainages avec un gain moyen de ~147€ pour faire environ 2500€
-  { name: 'CryptoMax_', date: '01/06/2025', status: 'completed', reward: 145 },
-  { name: 'InvestLola', date: '01/06/2025', status: 'completed', reward: 160 },
-  { name: 'TradingPro22', date: '01/06/2025', status: 'completed', reward: 135 },
-  { name: 'GamerInvest', date: '02/06/2025', status: 'completed', reward: 155 },
-  { name: 'DigitalNomad_', date: '02/06/2025', status: 'completed', reward: 140 },
-  { name: 'FutureRich', date: '02/06/2025', status: 'completed', reward: 165 },
-  { name: 'MoneyMaker99', date: '03/06/2025', status: 'completed', reward: 150 },
-  { name: 'CashFlow_King', date: '03/06/2025', status: 'completed', reward: 145 },
-  { name: 'SmartInvestor', date: '03/06/2025', status: 'completed', reward: 130 },
-  { name: 'WealthBuilder', date: '04/06/2025', status: 'completed', reward: 175 },
-  { name: 'ProfitHunter', date: '04/06/2025', status: 'completed', reward: 140 },
-  { name: 'SuccessStory', date: '04/06/2025', status: 'completed', reward: 155 },
-  { name: 'EuroTrader_', date: '05/06/2025', status: 'completed', reward: 160 },
-  { name: 'RichMindset', date: '05/06/2025', status: 'completed', reward: 135 },
-  { name: 'InvestQueen', date: '06/06/2025', status: 'completed', reward: 170 },
-  { name: 'MoneyWise_', date: '06/06/2025', status: 'completed', reward: 145 },
-  { name: 'GoldRush2025', date: '07/06/2025', status: 'completed', reward: 180 },
+  // NOUVEAUX PARRAINAGES JUIN 2025 - DERNIÈRE SEMAINE (1-7 juin 2025) - TOTAL: 2400€
+  // 16 parrainages avec un gain moyen de 150€ exactement
+  { name: 'CryptoMax_', date: '01/06/2025', status: 'completed', reward: 150 },
+  { name: 'InvestLola', date: '01/06/2025', status: 'completed', reward: 150 },
+  { name: 'TradingPro22', date: '02/06/2025', status: 'completed', reward: 150 },
+  { name: 'GamerInvest', date: '02/06/2025', status: 'completed', reward: 150 },
+  { name: 'DigitalNomad_', date: '03/06/2025', status: 'completed', reward: 150 },
+  { name: 'FutureRich', date: '03/06/2025', status: 'completed', reward: 150 },
+  { name: 'MoneyMaker99', date: '04/06/2025', status: 'completed', reward: 150 },
+  { name: 'CashFlow_King', date: '04/06/2025', status: 'completed', reward: 150 },
+  { name: 'SmartInvestor', date: '05/06/2025', status: 'completed', reward: 150 },
+  { name: 'WealthBuilder', date: '05/06/2025', status: 'completed', reward: 150 },
+  { name: 'ProfitHunter', date: '06/06/2025', status: 'completed', reward: 150 },
+  { name: 'SuccessStory', date: '06/06/2025', status: 'completed', reward: 150 },
+  { name: 'EuroTrader_', date: '07/06/2025', status: 'completed', reward: 150 },
+  { name: 'RichMindset', date: '07/06/2025', status: 'completed', reward: 150 },
+  { name: 'InvestQueen', date: '07/06/2025', status: 'completed', reward: 150 },
+  { name: 'MoneyWise_', date: '07/06/2025', status: 'completed', reward: 150 },
   
   // Quelques parrainages en attente (juin 2025)
-  { name: 'NextLevel_', date: '06/06/2025', status: 'pending', reward: 150 },
-  { name: 'DreamBig22', date: '07/06/2025', status: 'pending', reward: 155 },
-  { name: 'FreedomSeeker', date: '07/06/2025', status: 'pending', reward: 140 }
+  { name: 'NextLevel_', date: '08/06/2025', status: 'pending', reward: 150 },
+  { name: 'DreamBig22', date: '08/06/2025', status: 'pending', reward: 150 },
+  { name: 'FreedomSeeker', date: '09/06/2025', status: 'pending', reward: 150 }
 ];
 
 export const useStaticReferralData = () => {
