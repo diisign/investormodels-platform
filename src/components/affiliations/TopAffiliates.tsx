@@ -5,37 +5,37 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Award, TrendingUp, Users } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 
-// Les données simulées pour les meilleurs parrains
+// Les données simulées pour les meilleurs parrains avec pseudonymes et nouveau calcul
 const topAffiliates = [
   {
     id: 1,
-    name: "Sophie M.",
-    referrals: 487,
-    earnings: 121750,  // Updated to match 487 × 250
+    name: "CryptoSophie_",
+    referrals: 743,
+    earnings: 111450,  // 743 × 150 (gain moyen de 150€ par filleul)
   },
   {
     id: 2,
-    name: "Thomas D.",
-    referrals: 343,
-    earnings: 85750,   // Updated to match 343 × 250
+    name: "TomInvest92",
+    referrals: 612,
+    earnings: 91800,   // 612 × 150
   },
   {
     id: 3,
-    name: "Emma B.",
-    referrals: 321,
-    earnings: 80250,   // Updated to match 321 × 250
+    name: "EmmaTrader",
+    referrals: 589,
+    earnings: 88350,   // 589 × 150
   },
   {
     id: 4,
-    name: "Lucas P.",
-    referrals: 298,
-    earnings: 74500,   // Updated to match 298 × 250
+    name: "LuckyLucas_",
+    referrals: 534,
+    earnings: 80100,   // 534 × 150
   },
   {
     id: 5,
-    name: "Camille D.",
-    referrals: 281,
-    earnings: 70250,   // Updated to match 281 × 250
+    name: "CamInvestor",
+    referrals: 487,
+    earnings: 73050,   // 487 × 150
   },
 ];
 
@@ -49,11 +49,11 @@ const TopAffiliates = () => {
               <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
                 <Award className="h-4 w-4" />
               </div>
-              <CardTitle className="text-lg font-medium">Top 5 des Parrains (avril)</CardTitle>
+              <CardTitle className="text-lg font-medium">Top 5 des parrains (mai)</CardTitle>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
-              <span>Gain moyen: 250€/filleul</span>
+              <span>Gain moyen: 150€/filleul</span>
             </div>
           </div>
         </CardHeader>
