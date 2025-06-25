@@ -1,3 +1,4 @@
+
 import { useMemo } from 'react';
 
 export interface StaticInvestment {
@@ -151,16 +152,16 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
 ];
 
 const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
-  { month: 'Aug 24', value: 0 },
-  { month: 'Sep 24', value: 0 },
-  { month: 'Oct 24', value: 500 },
-  { month: 'Nov 24', value: 715 },
-  { month: 'Dec 24', value: 930 },
-  { month: 'Jan 25', value: 1145 },
-  { month: 'Feb 25', value: 1637 },
-  { month: 'Mar 25', value: 2129 },
-  { month: 'Apr 25', value: 2621 },
-  { month: 'May 25', value: 3748 }
+  { month: 'Août', value: 0 },
+  { month: 'Sept', value: 0 },
+  { month: 'Oct', value: 500 },
+  { month: 'Nov', value: 715 },
+  { month: 'Déc', value: 930 },
+  { month: 'Jan', value: 1145 },
+  { month: 'Fév', value: 1637 },
+  { month: 'Mars', value: 2129 },
+  { month: 'Avr', value: 2621 },
+  { month: 'Mai', value: 3748 }
 ];
 
 export const useStaticInvestmentData = (): StaticInvestmentData => {
