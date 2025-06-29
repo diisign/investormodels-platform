@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -30,11 +31,24 @@ const CreatorCard = ({
   const navigate = useNavigate();
   const creatorProfile = getCreatorProfile(id);
   
+  // Debug logging for Kayla specifically
+  if (id === 'creator3') {
+    console.log('CreatorCard - Kayla debug:', {
+      id,
+      creatorProfileImageUrl: creatorProfile.imageUrl,
+      propsImageUrl: imageUrl,
+      creatorProfileName: creatorProfile.name
+    });
+  }
+  
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate(`/creator/${id}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  
+  // Use the profile image URL instead of the props imageUrl
+  const finalImageUrl = creatorProfile.imageUrl || imageUrl;
   
   return (
     <motion.div 
@@ -51,7 +65,19 @@ const CreatorCard = ({
         <div className="relative p-2 sm:p-4">
           <div className="flex flex-col items-center mb-2 sm:mb-4">
             <Avatar className="h-16 w-16 sm:h-24 sm:w-24 border-4 border-white dark:border-gray-700 shadow-lg mb-2 sm:mb-3">
-              <AvatarImage src={imageUrl} alt={creatorProfile.name} className="object-cover" />
+              <AvatarImage 
+                src={finalImageUrl} 
+                alt={creatorProfile.name} 
+                className="object-cover"
+                onError={(e) => {
+                  console.log(`Image failed to load for ${creatorProfile.name}:`, finalImageUrl);
+                }}
+                onLoad={() => {
+                  if (id === 'creator3') {
+                    console.log(`Image loaded successfully for Kayla:`, finalImageUrl);
+                  }
+                }}
+              />
               <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
             </Avatar>
             

@@ -35,6 +35,16 @@ const CreatorDetails = () => {
   
   const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
   
+  // Debug logging for Kayla specifically
+  if (creatorId === 'creator3' && creatorProfile) {
+    console.log('CreatorDetails - Kayla debug:', {
+      creatorId,
+      profileExists,
+      creatorProfileImageUrl: creatorProfile.imageUrl,
+      creatorProfileName: creatorProfile.name
+    });
+  }
+  
   const creatorExists = !!mockCreator || !!profileExists;
   
   const { data: userBalance = 0 } = useQuery({
@@ -250,7 +260,13 @@ const CreatorDetails = () => {
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
+                      console.log(`CreatorDetails - Image failed to load for ${creatorProfile.name}:`, creator.imageUrl);
                       target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
+                    }}
+                    onLoad={() => {
+                      if (creatorId === 'creator3') {
+                        console.log(`CreatorDetails - Image loaded successfully for Kayla:`, creator.imageUrl);
+                      }
                     }}
                   />
                 </div>
