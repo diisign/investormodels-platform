@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, CircleDollarSign, TrendingUp, Users, Wallet, Plus, Minus, Filter, Award, UserPlus, Gift } from 'lucide-react';
 import { 
@@ -12,7 +12,9 @@ import { cn } from '@/lib/utils';
 import UserBalance from '@/components/UserBalance';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { mockUserData } from '@/utils/mockData';
+import { creators, mockUserData } from '@/utils/mockData';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { 
   Select, 
   SelectContent, 
@@ -20,301 +22,283 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
-import { useReferralData } from '@/hooks/useReferralData';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-// Generate realistic data for the example dashboard based on user investments
 const generateRealisticData = () => {
-  // Initial investment amounts
-  const investments = [
-    { 
-      name: 'Emma Wilson', 
-      date: new Date('2024-06-10'), 
-      amount: 100, 
-      monthlyGain: 36.5, 
-      returnRate: 36.5, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg' 
-    },
-    { 
-      name: 'Sophia Martinez', 
-      date: new Date('2024-10-10'), 
-      amount: 100, 
-      monthlyGain: 38, 
-      returnRate: 38, 
-      imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg' 
-    },
-    { 
-      name: 'Kayla Smith', 
-      date: new Date('2024-10-10'), 
-      amount: 100, 
-      monthlyGain: 36, 
-      returnRate: 36, 
-      imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp' 
-    }
-  ];
+  // BrookMills investment from October 6, 2024
+  const brookMillsInvestment = {
+    date: new Date('2024-10-06'),
+    amount: 500,
+    monthlyGain: 215, // Monthly gain based on 130% return rate over 3 months (43.3% per month)
+    returnRate: 749.6,
+    withdrawalDate: new Date('2025-01-06')
+  };
   
-  // Withdrawal date - January 23, 2025
-  const withdrawalDate = new Date('2025-01-23');
-  const withdrawalAmount = 250;
+  const startDate = new Date('2024-08-01'); // Start 2 months before investment
+  const currentDate = new Date('2025-05-11'); // Current date
   
-  // Generate 12 months of performance data
   const performanceData = [];
+  const monthsDiff = (currentDate.getFullYear() - startDate.getFullYear()) * 12 + 
+    (currentDate.getMonth() - startDate.getMonth());
   
-  // Start date 12 months ago from current date
-  const currentDate = new Date();
-  const startDate = new Date(currentDate);
-  startDate.setMonth(currentDate.getMonth() - 11); // Starting 12 months ago (0-indexed)
+  let totalValue = 0; // Start with zero
   
-  // Track total value over time
-  let totalValue = 0;
-  let totalInvested = 0;
-  let monthlyReturns = 0;
-  
-  // For each month
-  for (let i = 0; i <= 11; i++) { // 0 to 11 = 12 months
+  for (let i = 0; i <= monthsDiff; i++) {
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
+    const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
+    const year = currentMonthDate.getFullYear();
+    const monthLabel = `${monthName} ${year.toString().slice(2)}`;
     
-    // Check for investments
-    investments.forEach(investment => {
-      if (i === 0 && currentMonthDate >= investment.date) {
-        // Add initial investments if the first month is after the investment date
-        totalValue += investment.amount;
-        totalInvested += investment.amount;
-      } else if (i > 0 && 
-                currentMonthDate.getMonth() === investment.date.getMonth() && 
-                currentMonthDate.getFullYear() === investment.date.getFullYear()) {
-        // Add investments on the month they were made
-        totalValue += investment.amount;
-        totalInvested += investment.amount;
-      }
-    });
-    
-    // Add monthly gains for existing investments
-    investments.forEach(investment => {
-      if (currentMonthDate > investment.date) {
-        // Calculate months since investment
-        const timeDiff = currentMonthDate.getTime() - investment.date.getTime();
-        const daysDiff = timeDiff / (1000 * 3600 * 24);
-        const monthsDiff = daysDiff / 30; // Approximating a month as 30 days
-        
-        if (monthsDiff >= 1) {
-          // IMPORTANT: For each month that passes, add the monthly gain regardless of withdrawals
-          // This ensures gains continue after withdrawals
-          const fullMonthsPassed = Math.floor(monthsDiff);
-          if (fullMonthsPassed > 0) {
-            totalValue += investment.monthlyGain;
-            monthlyReturns += investment.monthlyGain;
-          }
-        }
-      }
-    });
-    
-    // Apply withdrawal but don't affect the ongoing generation of returns
-    let withdrawal = undefined;
-    if (currentMonthDate.getMonth() === withdrawalDate.getMonth() && 
-        currentMonthDate.getFullYear() === withdrawalDate.getFullYear()) {
-      totalValue -= withdrawalAmount;
-      withdrawal = withdrawalAmount;
+    // Initial investment on October 6, 2024
+    if (currentMonthDate.getFullYear() === brookMillsInvestment.date.getFullYear() && 
+        currentMonthDate.getMonth() === brookMillsInvestment.date.getMonth()) {
+      totalValue += brookMillsInvestment.amount;
     }
     
-    // Format the month for display
-    const monthName = currentMonthDate.toLocaleString('default', { month: 'short' });
+    // Monthly gains from October to December (3 months at 43.3% per month)
+    if (
+      (currentMonthDate.getFullYear() === 2024 && currentMonthDate.getMonth() >= 10) || // Oct-Dec 2024
+      (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() === 0)   // Jan 2025
+    ) {
+      if (currentMonthDate.getFullYear() > brookMillsInvestment.date.getFullYear() || 
+          currentMonthDate.getMonth() > brookMillsInvestment.date.getMonth()) {
+        totalValue += brookMillsInvestment.monthlyGain;
+      }
+    }
+    
+    // January 6, 2025: Now have 1145€ total (500 + 215*3 = 500 + 645 = 1145)
+    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() === 0) {
+      // No specific action needed, just continue tracking the value
+    }
+    
+    // New monthly gains from January to April (months 4-7 at 43.3% of 1145 = 492€ per month)
+    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 1 && currentMonthDate.getMonth() <= 3) {
+      if (i > 0 && (
+          currentMonthDate.getFullYear() > 2025 || 
+          (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 1)
+      )) {
+        totalValue += 492; // Monthly gain from January to April
+      }
+    }
+    
+    // April 2025: Now have 2621€ total (1145 + 492*3 = 1145 + 1476 = 2621)
+    // New monthly gains from April onwards (43.3% of 2621 = 1127€ per month)
+    if (currentMonthDate.getFullYear() === 2025 && currentMonthDate.getMonth() >= 4) {
+      totalValue += 1127; // Monthly gain from May onwards
+    }
     
     performanceData.push({
-      month: monthName,
+      month: monthLabel,
       value: Number(totalValue.toFixed(2)),
-      withdrawal: withdrawal
+      withdrawal: undefined
     });
   }
   
-  // Calculate current portfolio values for each creator
-  const portfolioData = investments.map(investment => {
-    const monthsSinceInvestment = Math.floor(
-      (new Date().getTime() - investment.date.getTime()) / 
-      (30 * 24 * 60 * 60 * 1000)
-    );
-    
-    // Calculate current value: initial investment + (monthly gain * months)
-    const currentValue = investment.amount + (investment.monthlyGain * monthsSinceInvestment);
-    
-    return {
-      name: investment.name,
-      value: Number(Math.max(0, currentValue).toFixed(2)),
-      initial: investment.amount,
-      imageUrl: investment.imageUrl,
-      returnRate: investment.returnRate
-    };
-  });
-  
-  // Generate investments list for display
-  const investmentsList = portfolioData.map((item, index) => ({
-    id: String(index + 1),
-    creatorName: item.name,
-    creatorImage: item.imageUrl,
-    planName: 'Growth',
-    amount: item.value,
-    initial: item.initial,
-    returnRate: item.returnRate,
-    status: 'active'
+  // Get the current investments from mockUserData
+  const portfolioData = mockUserData.investments.map(inv => ({
+    name: inv.creatorName,
+    value: inv.amount,
+    imageUrl: inv.creatorImage,
+    returnRate: inv.returnRate
   }));
+
+  // Calculate total invested amount
+  const totalInvested = mockUserData.investments.reduce((sum, inv) => sum + inv.amount, 0);
+
+  // Calculate total earnings - updated to 3248
+  const totalEarnings = 3248;
+
+  // Calculate average percentage return across all investments - updated to 749.6%
+  const totalPercentageReturn = 749.6;
+
+  // Use the transactions from mockUserData
+  const transactions = mockUserData.transactions;
   
-  // Calculate total earnings (this is cumulative returns before any withdrawal)
-  const totalEarnings = monthlyReturns;
-  
-  // Generate transactions: deposits, investments, and withdrawal only
-  const transactions = [];
-  let transactionId = 1;
-  
-  // Add Emma Wilson deposit and investment
-  transactions.push({
-    id: String(transactionId++),
-    type: 'deposit',
-    amount: investments[0].amount,
-    date: '10/06/2024',
-    status: 'completed',
-    description: 'Dépôt initial'
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[0].amount,
-    date: '10/06/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[0].name}`
-  });
-  
-  // Add Sophia and Kayla deposits and investments
-  transactions.push({
-    id: String(transactionId++),
-    type: 'deposit',
-    amount: investments[1].amount + investments[2].amount,
-    date: '10/10/2024',
-    status: 'completed',
-    description: 'Dépôt'
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[1].amount,
-    date: '10/10/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[1].name}`
-  });
-  
-  transactions.push({
-    id: String(transactionId++),
-    type: 'investment',
-    amount: -investments[2].amount,
-    date: '10/10/2024',
-    status: 'completed',
-    description: `Investissement - ${investments[2].name}`
-  });
-  
-  // Add withdrawal transaction - updated to January 23, 2025
-  transactions.push({
-    id: String(transactionId++),
-    type: 'withdrawal',
-    amount: withdrawalAmount,
-    date: '23/01/2025',
-    status: 'completed',
-    description: 'Retrait de bénéfices'
-  });
-  
-  // Enhanced referral data with 5 completed and 3 pending referrals
-  const referralData = {
-    totalReferrals: 8,
-    pendingReferrals: 3,
-    completedReferrals: 5,
-    earnings: 250,
-    recentReferrals: [
-      { name: 'Marie L.', date: '15/02/2025', status: 'completed', reward: 50 },
-      { name: 'Thomas B.', date: '28/02/2025', status: 'completed', reward: 50 },
-      { name: 'Claire D.', date: '05/03/2025', status: 'completed', reward: 50 },
-      { name: 'François M.', date: '12/03/2025', status: 'completed', reward: 50 },
-      { name: 'Sophie R.', date: '18/03/2025', status: 'completed', reward: 50 },
-      { name: 'Julien K.', date: '22/03/2025', status: 'pending', reward: 50 },
-      { name: 'Amélie P.', date: '25/03/2025', status: 'pending', reward: 50 },
-      { name: 'Lucas T.', date: '28/03/2025', status: 'pending', reward: 50 }
-    ],
-    tierProgress: 68,
-    currentTier: 'Silver',
-    nextTier: 'Gold',
-    nextTierRequirement: 10
+  // Generate 157 referrals with rewards between 50€ and 250€
+  const generateReferrals = (count) => {
+    const firstNames = [
+      'Emma', 'Lucas', 'Chloé', 'Hugo', 'Inès', 'Léo', 'Jade', 'Gabriel', 'Louise', 'Raphaël',
+      'Alice', 'Louis', 'Léa', 'Jules', 'Manon', 'Arthur', 'Lina', 'Adam', 'Rose', 'Noah',
+      'Zoé', 'Ethan', 'Anna', 'Théo', 'Camille', 'Nathan', 'Juliette', 'Marius', 'Sarah', 'Tom',
+      'Nina', 'Maxime', 'Eva', 'Paul', 'Sofia', 'Victor', 'Lucie', 'Antoine', 'Clara', 'Mathis',
+      'Lola', 'Clément', 'Agathe', 'Alexandre', 'Jeanne', 'Samuel', 'Noémie', 'Oscar', 'Elise', 'Alexis',
+      'Charlotte', 'Robin', 'Anaïs', 'Thomas', 'Margaux', 'Sacha', 'Justine', 'Rayan', 'Alicia', 'Maxence',
+      'Candice', 'Evan', 'Lisa', 'Timéo', 'Elsa', 'Mathéo', 'Julie', 'Esteban', 'Salomé', 'Nolan',
+      'Océane', 'Mael', 'Marie', 'Martin', 'Laura', 'Quentin', 'Romane', 'Augustin', 'Apolline', 'Mathieu',
+      'Ambre', 'Enzo', 'Elisa', 'Valentin', 'Chloé', 'Nicolas', 'Margot', 'Tristan', 'Olivia', 'Benjamin',
+      'Célia', 'Axel', 'Pauline', 'Gabin', 'Victoria', 'Liam', 'Hélène', 'Noa', 'Maya', 'Yanis'
+    ];
+    
+    const lastNames = [
+      'M.', 'L.', 'B.', 'D.', 'R.', 'T.', 'P.', 'C.', 'G.', 'F.'
+    ];
+
+    let referrals = [];
+    
+    // First add our existing referrals to ensure we keep the ones that were specifically mentioned
+    referrals = [
+      { name: 'Luc V.', date: '11/04/2025', status: 'completed', reward: 125 },
+      { name: 'Salomé G.', date: '12/04/2025', status: 'completed', reward: 200 },
+      { name: 'Alan P.', date: '16/04/2025', status: 'completed', reward: 75 },
+      { name: 'Karine B.', date: '17/04/2025', status: 'completed', reward: 250 },
+      { name: 'Charles N.', date: '18/04/2025', status: 'completed', reward: 150 },
+      { name: 'Lina F.', date: '19/04/2025', status: 'completed', reward: 75 }
+    ];
+    
+    // Now generate the rest to reach our target count
+    for (let i = referrals.length; i < count; i++) {
+      const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+      const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+      const name = `${firstName} ${lastName}`;
+      
+      // Generate date (from January 2025 to May 2025)
+      const month = Math.floor(Math.random() * 5) + 1; // 1 to 5
+      const day = Math.floor(Math.random() * 28) + 1; // 1 to 28
+      const date = `${day < 10 ? '0' + day : day}/0${month}/2025`;
+      
+      // Generate random reward between 50€ and 250€
+      const reward = Math.floor(Math.random() * 201) + 50; // 50 to 250
+      
+      // Determine status: earlier dates are more likely to be completed
+      const status = month < 4 || (month === 4 && day < 15) || Math.random() < 0.7 ? 'completed' : 'pending';
+      
+      referrals.push({ name, date, status, reward });
+    }
+    
+    // Sort by date (most recent first)
+    referrals.sort((a, b) => {
+      const [dayA, monthA] = a.date.split('/');
+      const [dayB, monthB] = b.date.split('/');
+      if (monthA !== monthB) return parseInt(monthB) - parseInt(monthA);
+      return parseInt(dayB) - parseInt(dayA);
+    });
+    
+    return referrals;
   };
   
-  // Calculate final balance (current value)
-  const balance = performanceData[performanceData.length - 1].value;
+  const allReferrals = generateReferrals(157);
+  const completedReferrals = allReferrals.filter(ref => ref.status === 'completed').length;
+  const pendingReferrals = allReferrals.filter(ref => ref.status === 'pending').length;
   
-  // Monthly performance data for the chart - UPDATED TO HANDLE RETURNS BETTER
-  const monthlyChartData = performanceData.map(item => {
-    // Calculate how much of the value is from investment vs returns
-    const returns = Math.max(0, item.value - totalInvested);
-    
-    return {
-      month: item.month,
-      invested: totalInvested,
-      return: returns,
-      withdrawal: item.withdrawal
-    };
-  });
+  // Calculate total earnings from referrals
+  const totalReferralEarnings = allReferrals.reduce((sum, ref) => {
+    return ref.status === 'completed' ? sum + ref.reward : sum;
+  }, 0);
+
+  const referralData = {
+    totalReferrals: allReferrals.length,
+    pendingReferrals,
+    completedReferrals,
+    earnings: totalReferralEarnings,
+    recentReferrals: allReferrals,
+    tierProgress: Math.round((completedReferrals / 200) * 100),
+    currentTier: 'Silver',
+    nextTier: 'Gold',
+    nextTierRequirement: 200
+  };
+
+  const updatedReferralEarnings = referralData.earnings;
+  const totalEarningsValue = totalEarnings;
   
+  const balanceWithoutReferral = Number(totalValue.toFixed(2));
+  const balance = balanceWithoutReferral + updatedReferralEarnings;
+
   return {
     performanceData,
     portfolioData,
-    investments: investmentsList,
+    investments: mockUserData.investments,
     transactions,
     referralData,
     balance,
     totalInvested,
-    totalEarnings: Number(totalEarnings.toFixed(2)),
-    monthlyChartData
+    totalEarnings: totalEarnings,
+    monthlyChartData: performanceData.map(item => ({
+      month: item.month,
+      value: item.value
+    })),
+    totalPercentageReturn
   };
 };
 
 const Exemples2 = () => {
   const data = generateRealisticData();
-  const { referrals, stats, isLoading, triggerDailyReferrals } = useReferralData();
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
   const [timeRange, setTimeRange] = useState('12');
-  
+  const [referralTimeRange, setReferralTimeRange] = useState('all');
+
   const handleDeposit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowDepositModal(false);
   };
-  
-  // Find withdrawal point in performance data
-  const withdrawalPoint = data.performanceData.findIndex(item => item.withdrawal);
 
-  // Utiliser les vraies données de parrainage si disponibles, sinon utiliser les données mockées
-  const referralData = stats ? {
-    totalReferrals: stats.total_referrals,
-    pendingReferrals: stats.pending_referrals,
-    completedReferrals: stats.completed_referrals,
-    earnings: stats.total_earnings,
-    recentReferrals: referrals.slice(0, 8).map(r => ({
-      name: r.referee_name,
-      date: new Date(r.referral_date).toLocaleDateString('fr-FR'),
-      status: r.status,
-      reward: r.reward_amount
-    })),
-    tierProgress: stats.tier_progress,
-    currentTier: stats.current_tier,
-    nextTier: stats.next_tier,
-    nextTierRequirement: stats.next_tier_requirement
-  } : data.referralData;
+  const withdrawalPoint = data.performanceData.findIndex(item => item.withdrawal);
   
+  // Filter referrals based on selected time range
+  const getFilteredReferrals = () => {
+    if (referralTimeRange === 'all') {
+      return data.referralData.recentReferrals;
+    }
+    
+    const now = new Date();
+    const filterDate = new Date();
+    
+    switch (referralTimeRange) {
+      case 'week':
+        filterDate.setDate(now.getDate() - 7);
+        break;
+      case 'month':
+        filterDate.setMonth(now.getMonth() - 1);
+        break;
+      case 'quarter':
+        filterDate.setMonth(now.getMonth() - 3);
+        break;
+      case 'sixMonths':
+        filterDate.setMonth(now.getMonth() - 6);
+        break;
+      default:
+        return data.referralData.recentReferrals;
+    }
+
+    // Parse the date format "DD/MM/YYYY" to a Date object for comparison
+    return data.referralData.recentReferrals.filter(referral => {
+      const [day, month, year] = referral.date.split('/').map(Number);
+      const referralDate = new Date(year, month - 1, day); // month is 0-indexed in JS Date
+      return referralDate >= filterDate;
+    });
+  };
+
+  const filteredReferrals = useMemo(() => getFilteredReferrals(), [referralTimeRange, data.referralData.recentReferrals]);
+  
+  // Calculate statistics based on filtered referrals
+  const referralStats = useMemo(() => {
+    const completed = filteredReferrals.filter(ref => ref.status === 'completed').length;
+    const pending = filteredReferrals.filter(ref => ref.status === 'pending').length;
+    const earnings = filteredReferrals.reduce((sum, ref) => {
+      return ref.status === 'completed' ? sum + ref.reward : sum;
+    }, 0);
+    
+    return {
+      total: filteredReferrals.length,
+      completed,
+      pending,
+      earnings
+    };
+  }, [filteredReferrals]);
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar isLoggedIn={true} />
-      
+
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <FadeIn direction="up" delay={100} className="glass-card">
                 <Card>
@@ -322,7 +306,7 @@ const Exemples2 = () => {
                     <CardTitle className="text-sm font-medium text-black dark:text-white">Votre solde</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance} €</div>
+                    <div className="text-2xl font-bold text-black dark:text-white">{data.balance.toFixed(2)} €</div>
                     <button 
                       onClick={() => setShowDepositModal(true)}
                       className="mt-4 text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium"
@@ -346,7 +330,7 @@ const Exemples2 = () => {
                     <span className="text-2xl font-bold">{data.totalInvested}€</span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Dans {data.investments.length} créatrices
+                    Dans {data.investments.length} créatrice
                   </div>
                 </div>
               </FadeIn>
@@ -360,11 +344,13 @@ const Exemples2 = () => {
                     </div>
                   </div>
                   <div className="flex items-end">
-                    <span className="text-2xl font-bold">{data.totalEarnings.toFixed(2)}€</span>
-                    <span className="ml-2 text-sm text-green-500">+{(data.totalInvested > 0 ? (data.totalEarnings / data.totalInvested) * 100 : 0).toFixed(1)}%</span>
+                    <span className="text-2xl font-bold">{data.totalEarnings}€</span>
+                    <span className="ml-2 text-sm text-green-500">
+                      +{data.totalPercentageReturn}%
+                    </span>
                   </div>
                   <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Avant le retrait du 23 janvier 2025
+                    {/* Retrait total le 06 avril 2025 --> removed as requested */}
                   </div>
                 </div>
               </FadeIn>
@@ -388,9 +374,7 @@ const Exemples2 = () => {
               </FadeIn>
             </div>
             
-            {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Performance Chart */}
               <FadeIn direction="up" className="glass-card lg:col-span-3">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -409,14 +393,24 @@ const Exemples2 = () => {
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart
                         data={data.performanceData.slice(-parseInt(timeRange))}
-                        margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                        margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                        <XAxis 
+                          dataKey="month" 
+                          axisLine={false} 
+                          tickLine={false}
+                          padding={{ left: 10, right: 10 }}
+                          tick={{ fontSize: 10 }}
+                          interval={0}
+                        />
                         <YAxis 
                           axisLine={false} 
                           tickLine={false} 
                           domain={['dataMin - 10', 'dataMax + 10']}
+                          tickCount={5}
+                          tickFormatter={(value) => Math.round(value).toString()}
+                          width={40}
                         />
                         <Tooltip formatter={(value) => `${value}€`} />
                         <Line
@@ -434,7 +428,7 @@ const Exemples2 = () => {
                             strokeDasharray="3 3"
                             strokeWidth={2}
                             label={{ 
-                              value: "Retrait: 250€", 
+                              value: `Retrait total: ${data.performanceData[withdrawalPoint].withdrawal}€`, 
                               position: 'top', 
                               fill: "#22c55e",
                               fontSize: 12
@@ -444,6 +438,7 @@ const Exemples2 = () => {
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                     {data.investments.map((investment, index) => (
                       <div 
@@ -464,7 +459,7 @@ const Exemples2 = () => {
                           </div>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Initial: {investment.initial}€
+                              Initial: {investment.amount}€
                             </span>
                             <span className="text-xs font-medium text-green-500 flex items-center">
                               <TrendingUp className="h-3 w-3 mr-1" />
@@ -479,9 +474,7 @@ const Exemples2 = () => {
               </FadeIn>
             </div>
             
-            {/* Investments and Transactions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              {/* Investments */}
               <FadeIn direction="up" className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -513,7 +506,7 @@ const Exemples2 = () => {
                             </div>
                             <div className="flex justify-between items-center mt-1">
                               <span className="text-xs text-gray-500 dark:text-gray-400">
-                                Initial: {investment.initial}€
+                                Initial: {investment.amount}€
                               </span>
                               <span className="text-xs font-medium text-green-500 flex items-center">
                                 <TrendingUp className="h-3 w-3 mr-1" />
@@ -547,7 +540,6 @@ const Exemples2 = () => {
                 </div>
               </FadeIn>
               
-              {/* Recent Transactions */}
               <FadeIn direction="up" delay={100} className="glass-card">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -621,25 +613,33 @@ const Exemples2 = () => {
               </FadeIn>
             </div>
             
-            {/* Enhanced Referral Card avec vraies données */}
             <FadeIn direction="up" delay={200} className="glass-card mt-8">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold">Programme de parrainage</h3>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={triggerDailyReferrals}
-                      className="text-sm bg-investment-600 hover:bg-investment-700 text-white px-3 py-1 rounded-md flex items-center font-medium"
-                      disabled={isLoading}
-                    >
-                      <Plus className="h-4 w-4 mr-1" />
-                      Ajouter 6 parrainages
-                    </button>
-                    <Link to="/affiliation" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
-                      <span>Voir tout</span>
-                      <ArrowRight className="h-4 w-4 ml-1" />
-                    </Link>
-                  </div>
+                  <Link to="/affiliation" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
+                    <span>Voir tout</span>
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Link>
+                </div>
+                
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-base font-medium">Statistiques</h4>
+                  <Select
+                    value={referralTimeRange}
+                    onValueChange={setReferralTimeRange}
+                  >
+                    <SelectTrigger className="w-[120px] h-8 text-xs">
+                      <SelectValue placeholder="Période" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tous</SelectItem>
+                      <SelectItem value="week">7 derniers jours</SelectItem>
+                      <SelectItem value="month">30 derniers jours</SelectItem>
+                      <SelectItem value="quarter">3 derniers mois</SelectItem>
+                      <SelectItem value="sixMonths">6 derniers mois</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -650,7 +650,7 @@ const Exemples2 = () => {
                         <UserPlus className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{referralData.totalReferrals}</div>
+                    <div className="text-2xl font-bold">{referralStats.total}</div>
                   </div>
                   
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -660,7 +660,7 @@ const Exemples2 = () => {
                         <Users className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{referralData.pendingReferrals}</div>
+                    <div className="text-2xl font-bold">{referralStats.pending}</div>
                   </div>
                   
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -670,7 +670,7 @@ const Exemples2 = () => {
                         <Award className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{referralData.completedReferrals}</div>
+                    <div className="text-2xl font-bold">{referralStats.completed}</div>
                   </div>
                   
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -680,26 +680,40 @@ const Exemples2 = () => {
                         <Gift className="h-4 w-4" />
                       </div>
                     </div>
-                    <div className="text-2xl font-bold">{referralData.earnings}€</div>
+                    <div className="text-2xl font-bold">{referralStats.earnings}€</div>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Recent Referrals - utilisant les vraies données */}
                   <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Parrainages récents</h4>
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold">Parrainages récents</h4>
+                      <Select
+                        value={referralTimeRange}
+                        onValueChange={setReferralTimeRange}
+                      >
+                        <SelectTrigger className="w-[120px] h-8 text-xs">
+                          <SelectValue placeholder="Période" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tous</SelectItem>
+                          <SelectItem value="week">7 derniers jours</SelectItem>
+                          <SelectItem value="month">30 derniers jours</SelectItem>
+                          <SelectItem value="quarter">3 derniers mois</SelectItem>
+                          <SelectItem value="sixMonths">6 derniers mois</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <div className="space-y-3 max-h-72 overflow-y-auto">
-                      {isLoading ? (
-                        <div className="text-center py-4">Chargement...</div>
-                      ) : (
-                        referralData.recentReferrals.map((referral, index) => (
+                      {filteredReferrals.length > 0 ? (
+                        filteredReferrals.map((referral, index) => (
                           <div key={index} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0">
                             <div>
                               <div className="font-medium text-sm">{referral.name}</div>
                               <div className="text-xs text-gray-500">{referral.date}</div>
                             </div>
                             <div className="flex flex-col items-end">
-                              <span className="text-sm font-semibold text-green-500">+{referral.reward}€</span>
+                              <span className="text-sm font-semibold text-green-500">{referral.status === "completed" ? `+${referral.reward}€` : `+${referral.reward}€`}</span>
                               <span className={cn(
                                 "text-xs px-2 py-0.5 rounded-full mt-1",
                                 referral.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
@@ -710,47 +724,13 @@ const Exemples2 = () => {
                             </div>
                           </div>
                         ))
+                      ) : (
+                        <div className="text-center py-4 text-gray-500">
+                          Aucun parrainage pour cette période
+                        </div>
                       )}
                     </div>
                   </div>
-                  
-                  {/* Tier progress */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <h4 className="font-semibold mb-3">Niveau du programme</h4>
-                    <div className="mb-2 flex justify-between">
-                      <span className="text-sm font-medium">{referralData.currentTier}</span>
-                      <span className="text-sm font-medium">{referralData.nextTier}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mb-4 dark:bg-gray-700">
-                      <div 
-                        className="bg-investment-600 h-2 rounded-full" 
-                        style={{ width: `${referralData.tierProgress}%` }}
-                      ></div>
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">
-                        {referralData.completedReferrals}/{referralData.nextTierRequirement}
-                      </span> parrainages pour atteindre le niveau {referralData.nextTier}
-                    </div>
-                    
-                    <div className="mt-6 text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                        <span className="font-medium">Récompense par parrainage validé:</span>
-                      </div>
-                      <div className="text-xl font-bold text-investment-600">50€</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="text-center py-6">
-                  <GradientButton
-                    size="default"
-                    className="from-teal-400 to-blue-500 text-white"
-                  >
-                    <Link to="/affiliation">
-                      Inviter des amis et gagner des récompenses
-                    </Link>
-                  </GradientButton>
                 </div>
               </div>
             </FadeIn>
@@ -758,68 +738,45 @@ const Exemples2 = () => {
         </section>
       </main>
       
-      {/* Deposit Modal */}
       {showDepositModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
+          <FadeIn className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Déposer des fonds</h3>
             <form onSubmit={handleDeposit}>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Montant (€)
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={depositAmount}
-                      onChange={(e) => setDepositAmount(e.target.value)}
-                      min="10"
-                      step="10"
-                      className="input-field pl-10"
-                      placeholder="100"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
-                  </label>
-                  <select 
-                    id="payment-method" 
-                    className="input-field"
-                    required
-                  >
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
-                  </select>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowDepositModal(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    Annuler
-                  </button>
-                  <GradientButton type="submit">
-                    Déposer
-                  </GradientButton>
-                </div>
+              <div className="mb-4">
+                <label htmlFor="amount" className="block text-sm font-medium mb-1">Montant (€)</label>
+                <input 
+                  type="number" 
+                  id="amount"
+                  min="100"
+                  step="10"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-investment-500 focus:border-investment-500"
+                  placeholder="100"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">Montant minimum: 100€</p>
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button 
+                  type="button" 
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium"
+                  onClick={() => setShowDepositModal(false)}
+                >
+                  Annuler
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-4 py-2 bg-investment-600 text-white rounded-md text-sm font-medium hover:bg-investment-700"
+                >
+                  Déposer
+                </button>
               </div>
             </form>
           </FadeIn>
         </div>
       )}
-      
       <Footer />
     </div>
   );
