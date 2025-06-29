@@ -539,7 +539,7 @@ const CreatorDetails = () => {
                     className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-lg transition-all duration-300"
                     disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user}
                   >
-                    {loading ? 'Redirection...' : 'Investir via Stripe'}
+                    {loading ? 'Redirection...' : 'Investir maintenant'}
                   </GradientButton>
                 </div>
               </div>
