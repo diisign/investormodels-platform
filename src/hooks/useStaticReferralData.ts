@@ -1,3 +1,4 @@
+
 import { useMemo } from 'react';
 
 export interface StaticReferral {
@@ -19,8 +20,9 @@ export interface StaticReferralData {
   nextTierRequirement: number;
 }
 
-// Août 2024 - semaine 1 (01-07/08)
+// Données statiques persistantes pour les parrainages - environ 2000€ par semaine depuis août 2024
 const STATIC_REFERRALS: StaticReferral[] = [
+  // Août 2024 - semaine 1 (01-07/08)
   { name: 'Marie L.', date: '01/08/2024', status: 'completed', reward: 150 },
   { name: 'Paul D.', date: '02/08/2024', status: 'completed', reward: 200 },
   { name: 'Emma R.', date: '03/08/2024', status: 'completed', reward: 175 },
@@ -342,108 +344,10 @@ const STATIC_REFERRALS: StaticReferral[] = [
   { name: 'Sarah K.', date: '31/05/2025', status: 'completed', reward: 200 },
   { name: 'Théo L.', date: '31/05/2025', status: 'completed', reward: 175 },
   
-  // JUIN 2025 - PARRAINAGES AVEC GAINS ENTRE 50€ ET 250€ - TOTAL: ENVIRON 10 000€
-  // Semaine 1 (1-7 juin)
-  { name: 'CryptoMax_', date: '01/06/2025', status: 'completed', reward: 125 },
-  { name: 'InvestLola', date: '01/06/2025', status: 'completed', reward: 95 },
-  { name: 'TradingPro22', date: '02/06/2025', status: 'completed', reward: 180 },
-  { name: 'GamerInvest', date: '02/06/2025', status: 'completed', reward: 75 },
-  { name: 'DigitalNomad_', date: '03/06/2025', status: 'completed', reward: 220 },
-  { name: 'FutureRich', date: '03/06/2025', status: 'completed', reward: 85 },
-  { name: 'MoneyMaker99', date: '04/06/2025', status: 'completed', reward: 165 },
-  { name: 'CashFlow_King', date: '04/06/2025', status: 'completed', reward: 110 },
-  { name: 'SmartInvestor', date: '05/06/2025', status: 'completed', reward: 195 },
-  { name: 'WealthBuilder', date: '05/06/2025', status: 'completed', reward: 60 },
-  { name: 'ProfitHunter', date: '06/06/2025', status: 'completed', reward: 240 },
-  { name: 'SuccessStory', date: '06/06/2025', status: 'completed', reward: 90 },
-  { name: 'EuroTrader_', date: '07/06/2025', status: 'completed', reward: 150 },
-  { name: 'RichMindset', date: '07/06/2025', status: 'completed', reward: 70 },
-  { name: 'InvestQueen', date: '07/06/2025', status: 'completed', reward: 205 },
-  { name: 'MoneyWise_', date: '07/06/2025', status: 'completed', reward: 115 },
-  
-  // Semaine 2 (8-14 juin)
-  { name: 'NextLevel_', date: '08/06/2025', status: 'completed', reward: 185 },
-  { name: 'DreamBig22', date: '08/06/2025', status: 'completed', reward: 80 },
-  { name: 'FreedomSeeker', date: '09/06/2025', status: 'completed', reward: 225 },
-  { name: 'CryptoKing_', date: '09/06/2025', status: 'completed', reward: 55 },
-  { name: 'InvestMaster', date: '10/06/2025', status: 'completed', reward: 170 },
-  { name: 'WealthGen_', date: '10/06/2025', status: 'completed', reward: 100 },
-  { name: 'FinanceGuru', date: '11/06/2025', status: 'completed', reward: 210 },
-  { name: 'MoneyFlow_', date: '11/06/2025', status: 'completed', reward: 65 },
-  { name: 'ProfitMax22', date: '12/06/2025', status: 'completed', reward: 160 },
-  { name: 'GoldInvest', date: '12/06/2025', status: 'completed', reward: 120 },
-  { name: 'SmartMoney_', date: '13/06/2025', status: 'completed', reward: 190 },
-  { name: 'CashMaster', date: '13/06/2025', status: 'completed', reward: 85 },
-  { name: 'InvestPro99', date: '14/06/2025', status: 'completed', reward: 245 },
-  { name: 'WealthSeeker', date: '14/06/2025', status: 'completed', reward: 75 },
-  
-  // Semaine 3 (15-21 juin)
-  { name: 'MoneyMind_', date: '15/06/2025', status: 'completed', reward: 135 },
-  { name: 'TradingWin', date: '15/06/2025', status: 'completed', reward: 200 },
-  { name: 'CryptoWise', date: '16/06/2025', status: 'completed', reward: 90 },
-  { name: 'FinanceFree', date: '16/06/2025', status: 'completed', reward: 175 },
-  { name: 'InvestSmart', date: '17/06/2025', status: 'completed', reward: 110 },
-  { name: 'ProfitWave', date: '17/06/2025', status: 'completed', reward: 230 },
-  { name: 'MoneyTech_', date: '18/06/2025', status: 'completed', reward: 95 },
-  { name: 'WealthTech', date: '18/06/2025', status: 'completed', reward: 155 },
-  { name: 'InvestFlow', date: '19/06/2025', status: 'completed', reward: 120 },
-  { name: 'CashWave22', date: '19/06/2025', status: 'completed', reward: 180 },
-  { name: 'FinanceMax', date: '20/06/2025', status: 'completed', reward: 85 },
-  { name: 'MoneyBoost', date: '20/06/2025', status: 'completed', reward: 215 },
-  { name: 'ProfitZone', date: '21/06/2025', status: 'completed', reward: 105 },
-  { name: 'InvestZone', date: '21/06/2025', status: 'completed', reward: 165 },
-  
-  // Semaine 4 (22-25 juin)
-  { name: 'WealthWin_', date: '22/06/2025', status: 'completed', reward: 140 },
-  { name: 'CryptoFlow', date: '22/06/2025', status: 'completed', reward: 190 },
-  { name: 'MoneyPro22', date: '23/06/2025', status: 'completed', reward: 80 },
-  { name: 'FinanceWin', date: '23/06/2025', status: 'completed', reward: 205 },
-  { name: 'InvestWave', date: '24/06/2025', status: 'completed', reward: 115 },
-  { name: 'ProfitTech', date: '24/06/2025', status: 'completed', reward: 175 },
-  { name: 'WealthFlow', date: '25/06/2025', status: 'completed', reward: 95 },
-  { name: 'CashTech22', date: '25/06/2025', status: 'completed', reward: 225 },
-  { name: 'MoneyWave_', date: '25/06/2025', status: 'completed', reward: 130 },
-  { name: 'InvestBoost', date: '25/06/2025', status: 'completed', reward: 160 },
-  { name: 'FinanceFlow', date: '25/06/2025', status: 'completed', reward: 185 },
-  { name: 'ProfitFlow', date: '25/06/2025', status: 'completed', reward: 110 },
-  { name: 'WealthMax22', date: '25/06/2025', status: 'completed', reward: 200 },
-  { name: 'CryptoWin_', date: '25/06/2025', status: 'completed', reward: 145 },
-  { name: 'MoneyZone22', date: '25/06/2025', status: 'completed', reward: 250 },
-  { name: 'InvestMax_', date: '25/06/2025', status: 'completed', reward: 70 },
-  { name: 'FinancePro', date: '25/06/2025', status: 'completed', reward: 180 },
-  { name: 'ProfitWin22', date: '25/06/2025', status: 'completed', reward: 125 },
-  { name: 'WealthTech_', date: '25/06/2025', status: 'completed', reward: 195 },
-  { name: 'CashFlow22', date: '25/06/2025', status: 'completed', reward: 85 },
-  { name: 'MoneyMax22', date: '25/06/2025', status: 'completed', reward: 215 },
-  { name: 'InvestWin_', date: '25/06/2025', status: 'completed', reward: 100 },
-  { name: 'TradingMax', date: '25/06/2025', status: 'completed', reward: 170 },
-  { name: 'FinanceBoost', date: '25/06/2025', status: 'completed', reward: 135 },
-  { name: 'ProfitMax_', date: '25/06/2025', status: 'completed', reward: 240 },
-  { name: 'WealthNext_', date: '25/06/2025', status: 'completed', reward: 90 },
-  { name: 'CryptoNext', date: '25/06/2025', status: 'completed', reward: 155 },
-  { name: 'MoneyNext22', date: '25/06/2025', status: 'completed', reward: 120 },
-  { name: 'InvestNext', date: '25/06/2025', status: 'completed', reward: 210 },
-  { name: 'FinanceNext', date: '25/06/2025', status: 'completed', reward: 75 },
-  { name: 'ProfitNext', date: '25/06/2025', status: 'completed', reward: 165 },
-  { name: 'WealthBoost', date: '25/06/2025', status: 'completed', reward: 105 },
-  { name: 'CashBoost22', date: '25/06/2025', status: 'completed', reward: 185 },
-  { name: 'MoneyBoost_', date: '25/06/2025', status: 'completed', reward: 140 },
-  { name: 'InvestBoost_', date: '25/06/2025', status: 'completed', reward: 220 },
-  { name: 'TechInvest99', date: '25/06/2025', status: 'completed', reward: 95 },
-  { name: 'SmartCash_', date: '25/06/2025', status: 'completed', reward: 175 },
-  { name: 'ProInvestor', date: '25/06/2025', status: 'completed', reward: 115 },
-  { name: 'EliteTrader', date: '25/06/2025', status: 'completed', reward: 235 },
-  { name: 'MegaProfit', date: '25/06/2025', status: 'completed', reward: 80 },
-  { name: 'UltraWealth', date: '25/06/2025', status: 'completed', reward: 190 },
-  { name: 'SuperCash_', date: '25/06/2025', status: 'completed', reward: 125 },
-  { name: 'TopInvestor', date: '25/06/2025', status: 'completed', reward: 205 },
-  { name: 'MaxProfit_', date: '25/06/2025', status: 'completed', reward: 150 },
-  { name: 'KingInvest', date: '25/06/2025', status: 'completed', reward: 60 },
-  { name: 'QueenCash', date: '25/06/2025', status: 'completed', reward: 245 },
-  
-  // Quelques parrainages en attente
-  { name: 'FutureInvest', date: '26/06/2025', status: 'pending', reward: 150 },
-  { name: 'NextProfit_', date: '26/06/2025', status: 'pending', reward: 125 }
+  // Quelques en attente (juin 2025)
+  { name: 'Lisa P.', date: '01/06/2025', status: 'pending', reward: 200 },
+  { name: 'Gabriel F.', date: '01/06/2025', status: 'pending', reward: 175 },
+  { name: 'Jade B.', date: '02/06/2025', status: 'pending', reward: 185 }
 ];
 
 export const useStaticReferralData = () => {

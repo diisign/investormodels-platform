@@ -52,86 +52,13 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
 ];
 
 const STATIC_TRANSACTIONS: StaticTransaction[] = [
-  // Retraits mensuels d'août 2024 à mai 2025
   {
-    id: 'trans-withdrawal-mai-2025',
+    id: 'trans-withdrawal-2500',
     type: 'withdrawal',
-    amount: 5100,
-    date: '2025-05-15',
+    amount: 2500,
+    date: '2025-05-23',
     status: 'completed',
-    description: 'Retrait mensuel - Mai 2025'
-  },
-  {
-    id: 'trans-withdrawal-avril-2025',
-    type: 'withdrawal',
-    amount: 4950,
-    date: '2025-04-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Avril 2025'
-  },
-  {
-    id: 'trans-withdrawal-mars-2025',
-    type: 'withdrawal',
-    amount: 5200,
-    date: '2025-03-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Mars 2025'
-  },
-  {
-    id: 'trans-withdrawal-fevrier-2025',
-    type: 'withdrawal',
-    amount: 4850,
-    date: '2025-02-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Février 2025'
-  },
-  {
-    id: 'trans-withdrawal-janvier-2025',
-    type: 'withdrawal',
-    amount: 5050,
-    date: '2025-01-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Janvier 2025'
-  },
-  {
-    id: 'trans-withdrawal-decembre-2024',
-    type: 'withdrawal',
-    amount: 4900,
-    date: '2024-12-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Décembre 2024'
-  },
-  {
-    id: 'trans-withdrawal-novembre-2024',
-    type: 'withdrawal',
-    amount: 5150,
-    date: '2024-11-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Novembre 2024'
-  },
-  {
-    id: 'trans-withdrawal-octobre-2024',
-    type: 'withdrawal',
-    amount: 4800,
-    date: '2024-10-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Octobre 2024'
-  },
-  {
-    id: 'trans-withdrawal-septembre-2024',
-    type: 'withdrawal',
-    amount: 5000,
-    date: '2024-09-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Septembre 2024'
-  },
-  {
-    id: 'trans-withdrawal-aout-2024',
-    type: 'withdrawal',
-    amount: 4950,
-    date: '2024-08-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Août 2024'
+    description: 'Retrait de bénéfices'
   },
   {
     id: 'trans-investment-500',
@@ -152,23 +79,23 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
 ];
 
 const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
-  { month: 'Août', value: 0 },
-  { month: 'Sept', value: 0 },
-  { month: 'Oct', value: 500 },
-  { month: 'Nov', value: 715 },
-  { month: 'Déc', value: 930 },
-  { month: 'Jan', value: 1145 },
-  { month: 'Fév', value: 1637 },
-  { month: 'Mars', value: 2129 },
-  { month: 'Avr', value: 2621 },
-  { month: 'Mai', value: 3748 }
+  { month: 'Aug 24', value: 0 },
+  { month: 'Sep 24', value: 0 },
+  { month: 'Oct 24', value: 500 },
+  { month: 'Nov 24', value: 715 },
+  { month: 'Dec 24', value: 930 },
+  { month: 'Jan 25', value: 1145 },
+  { month: 'Feb 25', value: 1637 },
+  { month: 'Mar 25', value: 2129 },
+  { month: 'Apr 25', value: 2621 },
+  { month: 'May 25', value: 3748 }
 ];
 
 export const useStaticInvestmentData = (): StaticInvestmentData => {
   return useMemo(() => {
     const totalInvested = 500;
     const totalEarnings = 3248;
-    const balance = 9898; // Updated balance to 9898€
+    const balance = 3748 + 6250; // Current value + referral earnings
     
     return {
       balance,
