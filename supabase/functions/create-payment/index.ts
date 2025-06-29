@@ -32,9 +32,9 @@ serve(async (req) => {
       );
     }
     
-    const { amount, userId, returnUrl } = requestData;
+    const { amount, userId, returnUrl, creatorId, returnRate } = requestData;
     
-    console.log("Request data:", { amount, userId, returnUrl });
+    console.log("Request data:", { amount, userId, returnUrl, creatorId, returnRate });
     
     if (!amount || !userId) {
       console.error("Missing required fields:", { amount, userId });
@@ -84,16 +84,21 @@ serve(async (req) => {
       })
     });
 
-    console.log("Creating checkout session with amount:", amount, "EUR");
+    // Déterminer le type de paiement et le nom du produit
+    const isInvestment = creatorId && returnRate !== undefined;
+    const productName = isInvestment ? "Investissement" : "Dépôt d'argent";
+    
+    console.log("Creating checkout session with amount:", amount, "EUR, type:", isInvestment ? "investment" : "deposit");
+    
     try {
-      const session = await stripe.checkout.sessions.create({
+      const sessionData = {
         payment_method_types: ["card"],
         line_items: [
           {
             price_data: {
               currency: "eur",
               product_data: {
-                name: "Dépôt d'argent",
+                name: productName,
               },
               unit_amount: Math.round(amount * 100),
             },
@@ -105,12 +110,20 @@ serve(async (req) => {
         cancel_url: `${returnUrl}?canceled=true`,
         metadata: {
           userId: userId,
+          ...(isInvestment && { 
+            creatorId: creatorId,
+            returnRate: returnRate.toString(),
+            type: "investment"
+          })
         },
-      });
+      };
+
+      const session = await stripe.checkout.sessions.create(sessionData);
 
       console.log("Checkout session created successfully:", {
         sessionId: session.id,
         url: session.url,
+        type: isInvestment ? "investment" : "deposit"
       });
       
       return new Response(

@@ -145,33 +145,75 @@ const CreatorDetails = () => {
       toast.error("Le montant minimum d'investissement est de 100€");
       return;
     }
-
-    if (amount > userBalance) {
-      toast.error("Solde insuffisant pour cet investissement");
-      return;
-    }
     
     setLoading(true);
     
     try {
-      const returnRate = creatorProfile?.returnRate || 0;
+      console.log("Début du processus d'investissement...");
       
-      await createInvestment(
-        creatorId || '',
-        amount,
-        returnRate
+      // Obtenir la session et le token
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error("Session utilisateur expirée");
+      }
+      
+      // Afficher un message informatif pour l'utilisateur
+      toast.info("Redirection vers le paiement...");
+      
+      // Appel à la fonction Edge Supabase pour créer le paiement
+      const response = await fetch(
+        "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment",
+        {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6cXNndnlwcnR0ZmNweW9mZ250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1MDIyNzQsImV4cCI6MjA1ODA3ODI3NH0.Tdl-ViV44yvnpIXEisYsHcWFCnkBd2yvmuIiudGAVlY'
+          },
+          body: JSON.stringify({
+            amount: amount,
+            userId: user.id,
+            returnUrl: `${window.location.origin}/creator/${creatorId}?investment_success=true`,
+            creatorId: creatorId,
+            returnRate: creatorProfile?.returnRate || 0
+          }),
+        }
       );
       
-      toast.success(`Investissement de ${amount}€ réalisé avec succès!`);
+      const data = await response.json();
+      console.log("Réponse de l'API de paiement:", data);
+      
+      if (!response.ok && !data.url) {
+        throw new Error(data.error || "Une erreur est survenue lors de la création du paiement");
+      }
+      
+      // Rediriger vers la page de paiement Stripe
+      const paymentUrl = data.url;
+      
+      console.log("Redirection vers:", paymentUrl);
+      toast.success("Redirection vers la page de paiement...");
+      
+      // Fermer le modal avant la redirection
       setShowInvestModal(false);
       
-      queryClient.invalidateQueries({
-        queryKey: ['userBalance'],
-      });
-      
+      // Rediriger vers la page de paiement Stripe
+      window.location.href = paymentUrl;
     } catch (error) {
-      console.error('Error during investment:', error);
-      toast.error(error instanceof Error ? error.message : "Erreur lors de l'investissement");
+      console.error("Erreur lors de la création du paiement:", error);
+      
+      // En cas d'erreur, proposer l'URL fixe comme solution de secours
+      toast.error(
+        "Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.",
+        {
+          duration: 5000,
+        }
+      );
+      
+      // Attendre que l'utilisateur voie le message d'erreur puis rediriger
+      setTimeout(() => {
+        window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
+      }, 2000);
     } finally {
       setLoading(false);
     }
@@ -482,21 +524,6 @@ const CreatorDetails = () => {
                   </div>
                 </div>
                 
-                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Solde disponible:</span>
-                    <span className="font-medium">{userBalance.toFixed(2)}€</span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Montant d'investissement:</span>
-                    <span className="font-medium">{investmentAmount || 0}€</span>
-                  </div>
-                  <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Solde après investissement:</span>
-                    <span className="font-medium">{(userBalance - Number(investmentAmount || 0)).toFixed(2)}€</span>
-                  </div>
-                </div>
-                
                 <div className="pt-4 flex justify-end space-x-3">
                   <button
                     type="button"
@@ -510,9 +537,9 @@ const CreatorDetails = () => {
                     variant="primary"
                     gradientDirection="to-r"
                     className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-lg transition-all duration-300"
-                    disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user || Number(investmentAmount) > userBalance}
+                    disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user}
                   >
-                    {loading ? 'Traitement...' : 'Confirmer l\'investissement'}
+                    {loading ? 'Redirection...' : 'Investir via Stripe'}
                   </GradientButton>
                 </div>
               </div>
