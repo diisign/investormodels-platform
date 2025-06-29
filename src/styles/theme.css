@@ -38,7 +38,25 @@
     --sidebar-accent: 180 50% 30%;
     --sidebar-accent-foreground: 215 15% 90%;
     --sidebar-border: 180 50% 30%;
-    --sidebar-ring: 180 70% 90%;
+    --sidebar-ring: 180 75% 65%;
+
+    --creator-gradient-from: 180 40% 70%;
+    --creator-gradient-to: 210 40% 60%;
+    
+    --hero-gradient-from: 210 50% 90%;
+    --hero-gradient-to: 180 70% 50%;
+    
+    --hero-icon-color: 180 70% 30%;
+
+    --affiliation-gradient-from: 210 50% 90%;
+    --affiliation-gradient-to: 180 70% 50%;
+    
+    /* New purple gradient variables */
+    --purple-gradient-from: 265 80% 70%;
+    --purple-gradient-to: 250 70% 50%;
+    --purple-accent: 265 70% 60%;
+    --purple-light: 265 80% 90%;
+    --purple-dark: 265 60% 40%;
   }
 
   .dark {
@@ -78,5 +96,23 @@
     --sidebar-accent-foreground: 215 15% 90%;
     --sidebar-border: 180 35% 16%;
     --sidebar-ring: 180 75% 65%;
+
+    --creator-gradient-from: 180 30% 40%;
+    --creator-gradient-to: 210 30% 35%;
+    
+    --hero-gradient-from: 210 40% 25%;
+    --hero-gradient-to: 180 50% 20%;
+    
+    --hero-icon-color: 180 85% 30%;
+
+    --affiliation-gradient-from: 210 40% 25%;
+    --affiliation-gradient-to: 180 50% 20%;
+    
+    /* New purple gradient variables for dark mode */
+    --purple-gradient-from: 265 50% 40%;
+    --purple-gradient-to: 250 40% 30%;
+    --purple-accent: 265 60% 50%;
+    --purple-light: 265 40% 70%;
+    --purple-dark: 265 60% 25%;
   }
 }

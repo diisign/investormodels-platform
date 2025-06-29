@@ -88,7 +88,8 @@ const Register = () => {
     if (validateForm()) {
       try {
         console.log('Attempting registration with form validation passed');
-        await register(email, name, password);
+        // Updated to match the function signature in auth.tsx
+        await register(email, password, name);
       } catch (error) {
         console.error('Registration error:', error);
       }
@@ -244,18 +245,19 @@ const Register = () => {
                       {errors.terms && <p className="text-sm text-red-500 mt-1">{errors.terms}</p>}
                     </div>
                     
-                    {/* Submit button */}
+                    {/* Submit button - Fixing nesting button warning */}
                     <div>
                       <GradientButton
                         type="submit"
                         fullWidth
                         size="lg"
                         disabled={isLoading}
-                        icon={<ArrowRight className="h-5 w-5" />}
-                        iconPosition="right"
-                        className="mt-2"
+                        className="from-teal-400 to-blue-500 text-white mt-2"
                       >
-                        {isLoading ? 'Création du compte...' : 'Créer un compte'}
+                        <span className="flex items-center justify-center">
+                          {isLoading ? 'Création du compte...' : 'Créer un compte'}
+                          {!isLoading && <ArrowRight className="ml-2 h-5 w-5" />}
+                        </span>
                       </GradientButton>
                     </div>
                   </form>

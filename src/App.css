@@ -7,11 +7,19 @@
 }
 
 .creator-gradient {
-  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #C4B5FD 89%);
+  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #E9D5FF 89%, #FFFFFF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Add subtle shadow for better readability */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced shadow for better readability */
+}
+
+.text-gradient {
+  background: linear-gradient(102.3deg, #8B5CF6 5.9%, #A78BFA 64%, #E9D5FF 89%, #FFFFFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Enhanced shadow for better readability */
 }
 
 .creator-gradient-bg {
@@ -45,3 +53,36 @@
   color: rgba(0, 0, 0, 0.9);
   text-shadow: 0 1px 3px rgba(255, 255, 255, 0.2);
 }
+
+/* Animation pour les graphiques */
+.animate-pulse-light {
+  animation: pulse-light 3s infinite;
+}
+
+@keyframes pulse-light {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.1;
+  }
+}
+
+/* Styles pour les tableaux et graphiques */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(160, 160, 160, 0.2);
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 10;
+}
+
+.recharts-default-tooltip {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  padding: 0.75rem !important;
+}
+

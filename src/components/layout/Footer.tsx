@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
               CréatorInvest
             </Link>
             <p className="text-muted-foreground dark:text-muted-foreground mt-2">
-              La première plateforme qui vous permet d'investir dans les créatrices de contenu et de partager leur succès.
+              La première plateforme qui vous permet d'investir dans les créatrices OnlyFans et de partager leurs revenus.
             </p>
             <div className="flex space-x-4 mt-4">
               <a 
@@ -71,18 +71,10 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link 
-                  to="/how-it-works" 
+                  to="/affiliation" 
                   className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
-                  Comment ça marche
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/about" 
-                  className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
-                >
-                  À propos
+                  Affiliation
                 </Link>
               </li>
             </ul>
@@ -134,10 +126,10 @@ const Footer: React.FC = () => {
               <li className="flex items-start">
                 <Mail className="h-5 w-5 text-creator-500 mr-2 mt-0.5" />
                 <a 
-                  href="mailto:contact@creatorinvest.com" 
+                  href="mailto:creatorinvest@outlook.fr" 
                   className="text-muted-foreground dark:text-muted-foreground hover:text-creator-500 dark:hover:text-creator-400 transition-colors duration-300"
                 >
-                  contact@creatorinvest.com
+                  creatorinvest@outlook.fr
                 </a>
               </li>
               <li>
@@ -166,11 +158,6 @@ const Footer: React.FC = () => {
           <p className="text-muted-foreground dark:text-muted-foreground text-sm">
             &copy; {new Date().getFullYear()} CréatorInvest. Tous droits réservés.
           </p>
-          <div className="mt-4 sm:mt-0">
-            <p className="text-muted-foreground dark:text-muted-foreground text-sm">
-              Ce site est une démonstration et ne permet pas de réels investissements.
-            </p>
-          </div>
         </div>
       </div>
     </footer>
@@ -178,3 +165,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+

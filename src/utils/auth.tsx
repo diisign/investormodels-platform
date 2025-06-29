@@ -1,15 +1,14 @@
-
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
-import { supabase } from '../integrations/supabase/client';
+import { supabase, getSupabaseUrl } from '../integrations/supabase/client';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 
 type User = {
   id: string;
   email: string;
   name?: string;
-  // Propriétés temporaires pour éviter les erreurs TypeScript
+  avatar_url?: string;
   balance?: number;
   transactions?: any[];
   investments?: any[];
@@ -21,7 +20,7 @@ type AuthContextType = {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (email: string, name: string, password: string) => Promise<boolean>;
+  register: (email: string, password: string, name: string) => Promise<boolean>;
   logout: () => Promise<void>;
 };
 
@@ -35,25 +34,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Set up auth state listener FIRST with more verbose logging
+    console.log('AuthProvider: Setting up auth state listener');
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
         console.log('Auth state changed:', event, newSession);
         setSession(newSession);
         
         if (newSession?.user) {
+          console.log('User is authenticated:', newSession.user.email);
+          
           const userData: User = {
             id: newSession.user.id,
             email: newSession.user.email || '',
             name: newSession.user.user_metadata?.name,
-            // Ajouter des valeurs par défaut pour les propriétés manquantes
-            balance: 1000, // Valeur temporaire
+            balance: 1000,
             transactions: [],
             investments: []
           };
+          
+          setTimeout(async () => {
+            try {
+              const { data: profileData, error } = await supabase
+                .from('profiles')
+                .select('avatar_url')
+                .eq('id', newSession.user.id)
+                .maybeSingle();
+                
+              if (profileData && !error) {
+                userData.avatar_url = profileData.avatar_url;
+                setUser({ ...userData });
+              } else if (error) {
+                console.error('Error fetching profile:', error);
+              }
+            } catch (error) {
+              console.error('Error in profile fetch:', error);
+            }
+          }, 0);
+          
           setUser(userData);
           setIsAuthenticated(true);
         } else {
+          console.log('User is not authenticated');
           setUser(null);
           setIsAuthenticated(false);
         }
@@ -62,21 +84,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     );
 
-    // THEN check for existing session with more verbose logging
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       console.log('Got existing session:', currentSession);
       setSession(currentSession);
       
       if (currentSession?.user) {
+        console.log('Existing user found:', currentSession.user.email);
+        
         const userData: User = {
           id: currentSession.user.id,
           email: currentSession.user.email || '',
           name: currentSession.user.user_metadata?.name,
-          // Ajouter des valeurs par défaut pour les propriétés manquantes
-          balance: 1000, // Valeur temporaire
+          balance: 1000,
           transactions: [],
           investments: []
         };
+        
+        setTimeout(async () => {
+          try {
+            const { data: profileData, error } = await supabase
+              .from('profiles')
+              .select('avatar_url')
+              .eq('id', currentSession.user.id)
+              .maybeSingle();
+              
+            if (profileData && !error) {
+              userData.avatar_url = profileData.avatar_url;
+              setUser({ ...userData });
+            } else if (error) {
+              console.error('Error fetching profile:', error);
+            }
+          } catch (error) {
+            console.error('Error in profile fetch:', error);
+          }
+        }, 0);
+        
         setUser(userData);
         setIsAuthenticated(true);
       }
@@ -94,7 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Attempting login with:', email);
       setIsLoading(true);
       
-      // Vérifier la configuration sans accéder aux propriétés protégées
+      console.log('Using Supabase URL:', getSupabaseUrl());
       console.log('Attempting to login with Supabase');
       
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -104,24 +146,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Login error:', error);
-        
-        // Check for specific error types
-        if (error.message.includes('Email logins are disabled')) {
-          toast.error("Les connexions par email sont désactivées. Veuillez activer l'authentification par email dans la console Supabase.");
-          return false;
-        }
-        
-        throw error;
+        toast.error(error.message || "Échec de la connexion");
+        return false;
       }
 
       console.log('Login successful:', data);
       toast.success("Connexion réussie");
       
-      // Important: Use a slight delay to ensure auth state is properly updated before redirect
-      setTimeout(() => {
-        navigate('/', { replace: true });
-      }, 100);
+      if (data.user) {
+        const userData: User = {
+          id: data.user.id,
+          email: data.user.email || '',
+          name: data.user.user_metadata?.name,
+          balance: 1000,
+          transactions: [],
+          investments: []
+        };
+        setUser(userData);
+      }
       
+      setIsAuthenticated(true);
       return true;
     } catch (error) {
       console.error('Erreur de connexion:', error);
@@ -132,10 +176,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (email: string, name: string, password: string): Promise<boolean> => {
+  const register = async (email: string, password: string, name: string): Promise<boolean> => {
     try {
       console.log('Attempting registration with:', email, name);
       setIsLoading(true);
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -148,14 +193,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Registration error:', error);
-        
-        // Check for specific error types
-        if (error.message.includes('Email signups are disabled')) {
-          toast.error("Les inscriptions par email sont désactivées. Veuillez activer l'authentification par email dans la console Supabase.");
-          return false;
-        }
-        
-        throw error;
+        toast.error(error.message || "Échec de l'inscription");
+        return false;
       }
 
       console.log('Registration successful:', data);
@@ -207,7 +246,6 @@ export const useAuth = () => {
   return context;
 };
 
-// Protection des routes
 export const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
