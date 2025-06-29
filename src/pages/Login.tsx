@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
@@ -7,7 +8,6 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
-import { toast } from 'sonner';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -20,15 +20,8 @@ const Login = () => {
     general: ''
   });
   
-  const { login, isLoading, isAuthenticated } = useAuth();
+  const { login, isLoading } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      console.log("User already authenticated, redirecting to dashboard");
-      navigate('/dashboard');
-    }
-  }, [isAuthenticated, navigate]);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -42,14 +35,13 @@ const Login = () => {
       general: ''
     };
 
+    // Validate email
     if (!email.trim()) {
       newErrors.email = 'L\'email est requis';
       isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Format d\'email invalide';
-      isValid = false;
     }
 
+    // Validate password
     if (!password) {
       newErrors.password = 'Le mot de passe est requis';
       isValid = false;
@@ -62,7 +54,6 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Login form submitted');
-    setErrors({ email: '', password: '', general: '' });
     
     if (validateForm()) {
       try {
@@ -75,10 +66,8 @@ const Login = () => {
             general: 'Identifiants incorrects'
           });
         } else {
-          toast.success("Connexion réussie! Redirection...");
-          setTimeout(() => {
-            navigate('/dashboard');
-          }, 500);
+          // Let auth context handle the redirect
+          // The navigation happens in the auth.tsx login function
         }
       } catch (error) {
         console.error('Login submission error:', error);
@@ -94,6 +83,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
       <Navbar isLoggedIn={false} />
       
       <main className="flex-grow pt-20">
@@ -116,6 +106,7 @@ const Login = () => {
                   )}
                   
                   <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Email field */}
                     <div className="space-y-2">
                       <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Adresse email
@@ -139,6 +130,7 @@ const Login = () => {
                       {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                     </div>
                     
+                    {/* Password field */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -178,6 +170,7 @@ const Login = () => {
                       {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                     </div>
                     
+                    {/* Remember me checkbox */}
                     <div className="flex items-center">
                       <input
                         id="remember-me"
@@ -191,6 +184,7 @@ const Login = () => {
                       </label>
                     </div>
                     
+                    {/* Submit button */}
                     <div>
                       <GradientButton
                         type="submit"
@@ -199,8 +193,7 @@ const Login = () => {
                         disabled={isLoading}
                         icon={<LogIn className="h-5 w-5" />}
                         iconPosition="right"
-                        gradientDirection="to-r"
-                        className="from-teal-400 to-blue-500 text-white mt-2"
+                        className="mt-2"
                       >
                         {isLoading ? 'Connexion en cours...' : 'Se connecter'}
                       </GradientButton>
@@ -217,6 +210,17 @@ const Login = () => {
                   </div>
                 </div>
               </FadeIn>
+              
+              {/* Test account hint */}
+              <div className="mt-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-100 dark:border-yellow-800">
+                <p className="text-sm text-yellow-800 dark:text-yellow-300">
+                  <span className="font-semibold">Compte de démonstration:</span> Pour tester l'application, utilisez les identifiants suivants:
+                </p>
+                <ul className="mt-2 text-sm text-yellow-700 dark:text-yellow-400 space-y-1">
+                  <li>Email: <code className="bg-yellow-100 dark:bg-yellow-900/40 px-1 py-0.5 rounded">user@example.com</code></li>
+                  <li>Mot de passe: <code className="bg-yellow-100 dark:bg-yellow-900/40 px-1 py-0.5 rounded">password</code></li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>

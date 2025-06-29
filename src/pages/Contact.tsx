@@ -32,20 +32,17 @@ const Contact = () => {
           <div className="space-y-4 mb-8">
             <div>
               <h3 className="font-medium">Adresse</h3>
-              <p className="text-sm text-muted-foreground">
-                1600 Amphitheatre Parkway<br />
-                Mountain View, CA 94043, USA
-              </p>
+              <p className="text-sm text-muted-foreground">123 Avenue des Investisseurs<br />75008 Paris, France</p>
             </div>
             
             <div>
               <h3 className="font-medium">Email</h3>
-              <p className="text-sm text-muted-foreground">creatorinvest@outlook.fr</p>
+              <p className="text-sm text-muted-foreground">contact@investormodels.com</p>
             </div>
             
             <div>
               <h3 className="font-medium">Téléphone</h3>
-              <p className="text-sm text-muted-foreground">07 56 86 92 29</p>
+              <p className="text-sm text-muted-foreground">+33 1 23 45 67 89</p>
             </div>
           </div>
           
@@ -114,4 +111,3 @@ const Contact = () => {
 };
 
 export default Contact;
-

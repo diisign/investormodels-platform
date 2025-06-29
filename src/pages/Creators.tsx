@@ -8,111 +8,48 @@ import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
-import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  PaginationEllipsis,
-} from '@/components/ui/pagination';
 
 type SortOption = 'popularity' | 'return' | 'alphabetical';
-
-// Create an interface for consolidated creator data
-interface ConsolidatedCreator {
-  id: string;
-  name: string;
-  imageUrl: string;
-  category: string;
-  investorsCount: number;
-  totalInvested: number;
-  monthlyRevenue: number;
-  returnRate: number;
-}
+type FilterCategory = 'all' | 'fitness' | 'photographie' | 'lifestyle' | 'cuisine' | 'mode' | 'tech';
 
 const Creators = () => {
   const { isAuthenticated } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<SortOption>('return'); // Default to 'return'
+  const [sortBy, setSortBy] = useState<SortOption>('popularity');
+  const [filterCategory, setFilterCategory] = useState<FilterCategory>('all');
   const [showFilters, setShowFilters] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
-  const itemsPerPage = 12;
-  
-  useEffect(() => {
-    // Combine creators from mockData and creatorProfiles
-    const combinedCreators: ConsolidatedCreator[] = [];
-    
-    // Add creators from mockData
-    creators.forEach(creator => {
-      const profile = getCreatorProfile(creator.id);
-      combinedCreators.push({
-        id: creator.id,
-        name: profile.name, // Utiliser le nom du profil pour assurer la cohérence
-        imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
-        category: creator.category,
-        investorsCount: creator.investorsCount,
-        totalInvested: creator.totalInvested,
-        monthlyRevenue: profile.monthlyRevenue, // Utiliser le revenu du profil pour assurer la cohérence
-        returnRate: profile.returnRate
-      });
-    });
-    
-    // Add additional creators from creatorProfiles that aren't already in combinedCreators
-    Object.values(creatorProfiles).forEach(profile => {
-      if (!combinedCreators.some(c => c.id === profile.id)) {
-        // Calculer le "total investi" de façon cohérente
-        const totalInvested = calculateTotalInvested(profile.monthlyRevenue);
-        
-        // For creators that only exist in creatorProfiles, create placeholder data
-        combinedCreators.push({
-          id: profile.id,
-          name: profile.name,
-          imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
-          category: determineCategory(profile.id), // Helper function to assign random category
-          investorsCount: Math.floor(profile.followers / 15),
-          totalInvested: totalInvested,
-          monthlyRevenue: profile.monthlyRevenue,
-          returnRate: profile.returnRate
-        });
-      }
-    });
-    
-    setAllCreators(combinedCreators);
-  }, []);
-  
-  // Helper function to deterministically assign a category based on creator ID
-  const determineCategory = (id: string): string => {
-    const categories = ['Fitness', 'Lifestyle', 'Mode', 'Photographie', 'Cuisine', 'Tech'];
-    const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return categories[sum % categories.length];
-  };
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to first page on new search
   };
   
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
-    setCurrentPage(1); // Reset to first page on new sort
+  };
+  
+  const handleFilterChange = (category: FilterCategory) => {
+    setFilterCategory(category);
   };
   
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
   
-  const filteredCreators = allCreators
+  // Filter and sort creators
+  const filteredCreators = creators
     .filter(creator => {
+      // Apply search filter
       const matchesSearch = creator.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            creator.category.toLowerCase().includes(searchTerm.toLowerCase());
       
-      return matchesSearch;
+      // Apply category filter
+      const matchesCategory = filterCategory === 'all' || 
+                             creator.category.toLowerCase() === filterCategory;
+      
+      return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
+      // Apply sorting
       switch (sortBy) {
         case 'popularity':
           return b.investorsCount - a.investorsCount;
@@ -121,53 +58,44 @@ const Creators = () => {
         case 'alphabetical':
           return a.name.localeCompare(b.name);
         default:
-          return b.returnRate - a.returnRate;
+          return 0;
       }
     });
   
-  const totalPages = Math.ceil(filteredCreators.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCreators = filteredCreators.slice(indexOfFirstItem, indexOfLastItem);
-  
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-  
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="mb-8">
-              <h1 className="text-3xl font-bold mb-2 text-[#8B5CF6]">Découvrez nos créatrices</h1>
+              <h1 className="text-3xl font-bold mb-2">Découvrez nos créateurs</h1>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl">
-                Parcourez notre sélection de créatrices talentueuses et investissez dans celles qui vous inspirent. Diversifiez votre portefeuille tout en soutenant le contenu que vous aimez.
+                Parcourez notre sélection de créateurs talentueux et investissez dans ceux qui vous inspirent. Diversifiez votre portefeuille tout en soutenant le contenu que vous aimez.
               </p>
             </FadeIn>
             
+            {/* Search and Filters Bar */}
             <FadeIn direction="up" delay={100} className="mb-8">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-4">
                 <div className="flex flex-col md:flex-row gap-4">
+                  {/* Search Input */}
                   <div className="relative flex-grow">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Search className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       type="text"
-                      placeholder="Rechercher une créatrice..."
+                      placeholder="Rechercher un créateur..."
                       value={searchTerm}
                       onChange={handleSearchChange}
                       className="input-field pl-10 w-full"
                     />
                   </div>
                   
+                  {/* Sort and Filter Buttons */}
                   <div className="flex gap-2">
                     <div className="relative">
                       <button
@@ -178,6 +106,7 @@ const Creators = () => {
                         <span>Filtres</span>
                       </button>
                       
+                      {/* Filter Dropdown */}
                       {showFilters && (
                         <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 z-10 animate-scale-in origin-top-right">
                           <div className="p-4">
@@ -220,6 +149,87 @@ const Creators = () => {
                                 <span>Alphabétique</span>
                               </button>
                             </div>
+                            
+                            <h4 className="font-semibold mb-3 mt-6">Catégories</h4>
+                            <div className="space-y-2">
+                              <button 
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg",
+                                  filterCategory === 'all' 
+                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                )}
+                                onClick={() => handleFilterChange('all')}
+                              >
+                                Toutes les catégories
+                              </button>
+                              <button 
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg",
+                                  filterCategory === 'fitness' 
+                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                )}
+                                onClick={() => handleFilterChange('fitness')}
+                              >
+                                Fitness
+                              </button>
+                              <button 
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg",
+                                  filterCategory === 'photographie' 
+                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                )}
+                                onClick={() => handleFilterChange('photographie')}
+                              >
+                                Photographie
+                              </button>
+                              <button 
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg",
+                                  filterCategory === 'lifestyle' 
+                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                )}
+                                onClick={() => handleFilterChange('lifestyle')}
+                              >
+                                Lifestyle
+                              </button>
+                              <button 
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg",
+                                  filterCategory === 'cuisine' 
+                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                )}
+                                onClick={() => handleFilterChange('cuisine')}
+                              >
+                                Cuisine
+                              </button>
+                              <button 
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg",
+                                  filterCategory === 'mode' 
+                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                )}
+                                onClick={() => handleFilterChange('mode')}
+                              >
+                                Mode
+                              </button>
+                              <button 
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg",
+                                  filterCategory === 'tech' 
+                                    ? "bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400"
+                                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                )}
+                                onClick={() => handleFilterChange('tech')}
+                              >
+                                Tech
+                              </button>
+                            </div>
                           </div>
                         </div>
                       )}
@@ -227,17 +237,29 @@ const Creators = () => {
                   </div>
                 </div>
                 
-                {(searchTerm || sortBy !== 'return') && (
+                {/* Active Filters */}
+                {(searchTerm || filterCategory !== 'all' || sortBy !== 'popularity') && (
                   <div className="flex flex-wrap gap-2 mt-4">
-                    {sortBy !== 'return' && (
+                    {filterCategory !== 'all' && (
+                      <div className="bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 text-sm rounded-full px-3 py-1 flex items-center">
+                        <span>Catégorie: {filterCategory}</span>
+                        <button 
+                          className="ml-2 hover:text-investment-800"
+                          onClick={() => handleFilterChange('all')}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    )}
+                    {sortBy !== 'popularity' && (
                       <div className="bg-investment-100 dark:bg-investment-900/30 text-investment-600 dark:text-investment-400 text-sm rounded-full px-3 py-1 flex items-center">
                         <span>Tri: {
-                          sortBy === 'popularity' ? 'Popularité' :
-                          sortBy === 'alphabetical' ? 'Alphabétique' : 'Rendement'
+                          sortBy === 'return' ? 'Rendement' :
+                          sortBy === 'alphabetical' ? 'Alphabétique' : 'Popularité'
                         }</span>
                         <button 
                           className="ml-2 hover:text-investment-800"
-                          onClick={() => handleSortChange('return')}
+                          onClick={() => handleSortChange('popularity')}
                         >
                           &times;
                         </button>
@@ -258,7 +280,8 @@ const Creators = () => {
                       className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-sm"
                       onClick={() => {
                         setSearchTerm('');
-                        setSortBy('return');
+                        setSortBy('popularity');
+                        setFilterCategory('all');
                       }}
                     >
                       Réinitialiser tous les filtres
@@ -268,95 +291,42 @@ const Creators = () => {
               </div>
             </FadeIn>
             
+            {/* Results Info */}
             <FadeIn direction="up" delay={150} className="mb-6">
               <div className="flex items-center justify-between">
                 <p className="text-gray-600 dark:text-gray-300">
-                  {filteredCreators.length} {filteredCreators.length > 1 ? 'créatrices' : 'créatrice'} {searchTerm && `correspondant à "${searchTerm}"`}
+                  {filteredCreators.length} {filteredCreators.length > 1 ? 'créateurs' : 'créateur'} {searchTerm && `correspondant à "${searchTerm}"`}
                 </p>
               </div>
             </FadeIn>
             
+            {/* Creators Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {currentCreators.map((creator, index) => (
+              {filteredCreators.map((creator, index) => (
                 <FadeIn key={creator.id} direction="up" delay={100 + (index % 8) * 50}>
                   <CreatorCard
                     id={creator.id}
                     name={creator.name}
                     imageUrl={creator.imageUrl}
                     category={creator.category}
+                    returnRate={creator.returnRate}
                     investorsCount={creator.investorsCount}
                     totalInvested={creator.totalInvested}
-                    monthlyRevenue={creator.monthlyRevenue}
                   />
                 </FadeIn>
               ))}
             </div>
             
-            {currentCreators.length === 0 && (
+            {/* No Results */}
+            {filteredCreators.length === 0 && (
               <FadeIn direction="up" className="text-center py-16">
                 <div className="text-gray-400 mb-3">
                   <Search className="h-12 w-12 mx-auto opacity-30" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Aucun résultat trouvé</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                  Nous n'avons trouvé aucune créatrice correspondant à votre recherche. Essayez avec d'autres termes ou filtres.
+                  Nous n'avons trouvé aucun créateur correspondant à votre recherche. Essayez avec d'autres termes ou filtres.
                 </p>
-              </FadeIn>
-            )}
-            
-            {filteredCreators.length > 0 && (
-              <FadeIn direction="up" delay={200} className="mt-8">
-                <Pagination>
-                  <PaginationContent>
-                    {currentPage > 1 && (
-                      <PaginationItem>
-                        <PaginationPrevious 
-                          onClick={() => handlePageChange(currentPage - 1)}
-                          className="cursor-pointer"
-                        />
-                      </PaginationItem>
-                    )}
-                    
-                    {[...Array(totalPages)].map((_, i) => {
-                      const pageNumber = i + 1;
-                      if (
-                        pageNumber === 1 ||
-                        pageNumber === totalPages ||
-                        (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
-                      ) {
-                        return (
-                          <PaginationItem key={pageNumber}>
-                            <PaginationLink
-                              isActive={pageNumber === currentPage}
-                              onClick={() => handlePageChange(pageNumber)}
-                              className="cursor-pointer"
-                            >
-                              {pageNumber}
-                            </PaginationLink>
-                          </PaginationItem>
-                        );
-                      }
-                      
-                      if (
-                        (pageNumber === currentPage - 2 && pageNumber > 2) ||
-                        (pageNumber === currentPage + 2 && pageNumber < totalPages - 1)
-                      ) {
-                        return <PaginationItem key={`ellipsis-${pageNumber}`}><PaginationEllipsis /></PaginationItem>;
-                      }
-                      
-                      return null;
-                    })}
-                    
-                    {currentPage < totalPages && (
-                      <PaginationItem>
-                        <PaginationNext 
-                          onClick={() => handlePageChange(currentPage + 1)}
-                          className="cursor-pointer"
-                        />
-                      </PaginationItem>
-                    )}
-                  </PaginationContent>
-                </Pagination>
               </FadeIn>
             )}
           </div>

@@ -57,68 +57,7 @@ export interface Transaction {
   description: string;
 }
 
-export const investInCreator = async (
-  creatorId: string, 
-  planId: string, 
-  amount: number
-): Promise<void> => {
-  const creator = creators.find(c => c.id === creatorId);
-  if (!creator) throw new Error("Creator not found");
-  
-  const plan = creator.plans.find(p => p.id === planId);
-  if (!plan) throw new Error("Plan not found");
-  
-  console.log(`Investment of ${amount}€ in ${creator.name}'s ${plan.name} plan`);
-  
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  if (amount <= 0) throw new Error("Amount must be positive");
-  if (amount < plan.minInvestment) throw new Error(`Minimum investment for this plan is ${plan.minInvestment}€`);
-  
-  return;
-};
-
-export const mockUserData = {
-  id: 'user1',
-  name: 'John Doe',
-  email: 'john@example.com',
-  balance: 2500,
-  investments: [
-    {
-      id: 'inv2',
-      creatorId: 'brookmills',
-      creatorName: 'BrookMills🍒',
-      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
-      planId: 'plan-brookmills-2',
-      planName: 'Premium',
-      amount: 500,
-      returnRate: 749.6,
-      startDate: '2024-10-06',
-      endDate: '2025-01-06',
-      status: 'active',
-      earnings: 3748 // 500 + 3248 = 3748
-    }
-  ],
-  transactions: [
-    {
-      id: 'trans4',
-      type: 'deposit',
-      amount: 500,
-      date: '2024-10-06',
-      status: 'completed',
-      description: 'Dépôt pour investissement'
-    },
-    {
-      id: 'trans5',
-      type: 'investment',
-      amount: 500,
-      date: '2024-10-06',
-      status: 'completed',
-      description: 'Investissement - BrookMills🍒'
-    }
-  ]
-};
-
+// Mock creators data
 export const creators: Creator[] = [
   {
     id: 'creator1',
@@ -177,13 +116,13 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator2',
-    name: 'Maria 🤸🏻‍*',
+    name: 'Maria *Gymnastics Girl 🤸🏻‍*',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1505236273555-17add303d4fb?q=80&w=2069&auto=format&fit=crop',
     category: 'Photographie',
     returnRate: 10.8,
     investorsCount: 215,
-    totalInvested: 52000,
+    totalInvested: 42000,
     monthlyRevenue: 15000,
     followers: 320000,
     creationDate: '2019-11-23',
@@ -238,7 +177,7 @@ export const creators: Creator[] = [
     category: 'Lifestyle',
     returnRate: 11.2,
     investorsCount: 372,
-    totalInvested: 87000,
+    totalInvested: 68000,
     monthlyRevenue: 22000,
     followers: 480000,
     creationDate: '2021-02-15',
@@ -293,11 +232,11 @@ export const creators: Creator[] = [
     category: 'Cuisine',
     returnRate: 9.8,
     investorsCount: 192,
-    totalInvested: 48000,
+    totalInvested: 38000,
     monthlyRevenue: 12000,
     followers: 280000,
     creationDate: '2020-09-03',
-    description: "Chef cuisinier proposant des recettes faciles à réaliser chez soi. Mes revenus sont générés par mon livre de cuisine, mes cours en ligne et mes partenariats avec des marques d'ustensils de cuisine et d'ingrédients premium.",
+    description: "Chef cuisinier proposant des recettes faciles à réaliser chez soi. Mes revenus sont générés par mon livre de cuisine, mes cours en ligne et mes partenariats avec des marques d'ustensiles de cuisine et d'ingrédients premium.",
     plans: [
       {
         id: 'plan4-1',
@@ -348,7 +287,7 @@ export const creators: Creator[] = [
     category: 'Mode',
     returnRate: 13.2,
     investorsCount: 286,
-    totalInvested: 72000,
+    totalInvested: 52000,
     monthlyRevenue: 18000,
     followers: 390000,
     creationDate: '2021-04-20',
@@ -403,7 +342,7 @@ export const creators: Creator[] = [
     category: 'Tech',
     returnRate: 14.5,
     investorsCount: 412,
-    totalInvested: 93000,
+    totalInvested: 78000,
     monthlyRevenue: 25000,
     followers: 450000,
     creationDate: '2019-08-10',
@@ -458,7 +397,7 @@ export const creators: Creator[] = [
     category: 'Lifestyle',
     returnRate: 11.5,
     investorsCount: 245,
-    totalInvested: 57000,
+    totalInvested: 42000,
     monthlyRevenue: 16000,
     followers: 320000,
     creationDate: '2021-01-15',
@@ -513,7 +452,7 @@ export const creators: Creator[] = [
     category: 'Mode',
     returnRate: 12.8,
     investorsCount: 310,
-    totalInvested: 76000,
+    totalInvested: 56000,
     monthlyRevenue: 19000,
     followers: 410000,
     creationDate: '2020-11-20',
@@ -562,13 +501,13 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator9',
-    name: 'Ariana Colombian 🌶',
+    name: 'Ariana 💄 Petite colombian 🌶',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/r/rn/rnj/rnj2ki36l6ih5ay5ecbbplaearzyhqpd1725115071/440793308/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1602017322281-85b2e82e3dec?q=80&w=2070&auto=format&fit=crop',
     category: 'Fitness',
     returnRate: 13.2,
     investorsCount: 385,
-    totalInvested: 92000,
+    totalInvested: 72000,
     monthlyRevenue: 24000,
     followers: 490000,
     creationDate: '2020-08-14',
@@ -623,7 +562,7 @@ export const creators: Creator[] = [
     category: 'Photographie',
     returnRate: 10.5,
     investorsCount: 230,
-    totalInvested: 63000,
+    totalInvested: 45000,
     monthlyRevenue: 16000,
     followers: 340000,
     creationDate: '2021-02-22',
@@ -649,7 +588,7 @@ export const creators: Creator[] = [
         duration: 6,
         benefits: [
           'Rapport mensuel',
-          'T��léchargements gratuits',
+          'Téléchargements gratuits',
           'Critique photo personnelle'
         ],
         popularity: 'high'
@@ -672,17 +611,17 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator11',
-    name: 'Isabella Santos',
+    name: 'Isabella Santos 🇺🇸🇧🇷',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/g/gc/gcl/gclytoh6ibqn1khp1cf2i6ymelztqmgl1714404792/412109090/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
     category: 'Lifestyle',
     returnRate: 11.8,
     investorsCount: 295,
-    totalInvested: 79000,
+    totalInvested: 58000,
     monthlyRevenue: 20000,
     followers: 420000,
     creationDate: '2020-07-15',
-    description: "Cr��atrice de contenu lifestyle. Mes revenus proviennent de mes partenariats avec des marques internationales et de mon contenu exclusif.",
+    description: "Créatrice de contenu lifestyle. Mes revenus proviennent de mes partenariats avec des marques internationales et de mon contenu exclusif.",
     plans: [
       {
         id: 'plan11-1',
@@ -711,17 +650,17 @@ export const creators: Creator[] = [
       },
       {
         id: 'plan11-3',
-name: 'Globetrotter',
-returnRate: 15.6,
-minInvestment: 1300,
-duration: 12,
-benefits: [
-'Rapports hebdomadaires',
-'Consultation personnelle',
-'Produits exclusifs',
-'Appels privés'
-],
-popularity: 'low'
+        name: 'Globetrotter',
+        returnRate: 15.6,
+        minInvestment: 1300,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation personnelle',
+          'Produits exclusifs',
+          'Appels privés'
+        ],
+        popularity: 'low'
       }
     ]
   },
@@ -733,7 +672,7 @@ popularity: 'low'
     category: 'Mode',
     returnRate: 12.6,
     investorsCount: 320,
-    totalInvested: 82000,
+    totalInvested: 62000,
     monthlyRevenue: 21000,
     followers: 405000,
     creationDate: '2020-10-08',
@@ -766,7 +705,7 @@ popularity: 'low'
       },
       {
         id: 'plan12-3',
-        name: 'Couture',
+ name: 'Couture',
         returnRate: 16.2,
         minInvestment: 1400,
         duration: 12,
@@ -788,7 +727,7 @@ popularity: 'low'
     category: 'Lifestyle',
     returnRate: 11.4,
     investorsCount: 260,
-    totalInvested: 67000,
+    totalInvested: 50000,
     monthlyRevenue: 18000,
     followers: 365000,
     creationDate: '2021-03-05',
@@ -813,81 +752,376 @@ popularity: 'low'
         minInvestment: 620,
         duration: 6,
         benefits: [
-          'Rapports mensuels',
-          'Programmes personnalisés',
-          'Séances de coaching'
+          'Rapport détaillé',
+          'Programme personnalisé',
+          'Conseils exclusifs'
         ],
         popularity: 'high'
       },
       {
         id: 'plan13-3',
         name: 'Harmonie',
-        returnRate: 15.0,
-        minInvestment: 1200,
+        returnRate: 15.2,
+        minInvestment: 1250,
         duration: 12,
         benefits: [
           'Rapports hebdomadaires',
-          'Plan complet personnalisé',
-          'Coaching privé régulier',
-          'Produits bien-être offerts'
+          'Programme complet',
+          'Coaching privé',
+          'Produits bien-être'
         ],
         popularity: 'low'
       }
     ]
   },
   {
-    id: 'brookmills',
-    name: 'BrookMills🍒',
-    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
-    coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
-    category: 'Style',
-    returnRate: 130,
-    investorsCount: 326,
-    totalInvested: 78000,
-    monthlyRevenue: 19000,
-    followers: 405000,
-    creationDate: '2022-05-17',
-    description: "Créatrice de contenu lifestyle et mode. Mes revenus sont générés par ma boutique en ligne, mes collaborations avec des marques de luxe et mon programme de consultation en style personnalisé.",
+    id: 'creator14',
+    name: 'Audrey Shanice 🔞🔥',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tr/tre/treu426uagi2nu0ppnuhscgqhz1vajrb1614919839/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1602017322281-85b2e82e3dec?q=80&w=2070&auto=format&fit=crop',
+    category: 'Fitness',
+    returnRate: 13.0,
+    investorsCount: 340,
+    totalInvested: 67000,
+    monthlyRevenue: 23000,
+    followers: 450000,
+    creationDate: '2020-06-18',
+    description: "Coach fitness et nutrition. Mes revenus proviennent de mes programmes d'entraînement, de mes conseils nutritionnels et de mes partenariats avec des marques de fitness.",
     plans: [
       {
-        id: 'plan-brookmills-1',
-        name: 'Basique',
-        returnRate: 25,
-        minInvestment: 100,
+        id: 'plan14-1',
+        name: 'Débutant',
+        returnRate: 8.6,
+        minInvestment: 160,
         duration: 3,
         benefits: [
-          'Rapport mensuel sur les revenus',
-          'Newsletter exclusive'
+          'Rapport mensuel',
+          'Programme de base'
         ],
         popularity: 'medium'
       },
       {
-        id: 'plan-brookmills-2',
-        name: 'Premium',
-        returnRate: 130,
-        minInvestment: 500,
-        duration: 3,
+        id: 'plan14-2',
+        name: 'Sportif',
+        returnRate: 13.0,
+        minInvestment: 580,
+        duration: 6,
         benefits: [
-          'Rapports détaillés mensuels',
-          'Remises sur les produits',
-          'Accès aux lancements en avant-première'
+          'Rapport détaillé',
+          'Programme complet',
+          'Consultation nutrition'
         ],
         popularity: 'high'
       },
       {
-        id: 'plan-brookmills-3',
-        name: 'Exclusive',
-        returnRate: 180,
-        minInvestment: 1000,
-        duration: 3,
+        id: 'plan14-3',
+        name: 'Athlète',
+        returnRate: 16.5,
+        minInvestment: 1150,
+        duration: 12,
         benefits: [
           'Rapports hebdomadaires',
-          'Consultation de style personnalisée',
-          'Produits gratuits',
-          'Invitation aux événements VIP'
+          'Programme personnalisé',
+          'Coaching privé',
+          'Suppléments exclusifs'
+        ],
+        popularity: 'low'
+      }
+    ]
+  },
+  {
+    id: 'creator15',
+    name: 'Brooke Mills🍒',
+    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg',
+    coverImageUrl: 'https://images.unsplash.com/photo-1598927429372-a7ed4f4a9c27?q=80&w=2070&auto=format&fit=crop',
+    category: 'Mode',
+    returnRate: 12.2,
+    investorsCount: 305,
+    totalInvested: 60000,
+    monthlyRevenue: 20000,
+    followers: 395000,
+    creationDate: '2020-12-10',
+    description: "Créatrice de mode et influenceuse. Mes revenus proviennent de mes collaborations avec des marques de luxe et de mon contenu exclusif pour mes abonnés.",
+    plans: [
+      {
+        id: 'plan15-1',
+        name: 'Style',
+        returnRate: 8.8,
+        minInvestment: 190,
+        duration: 3,
+        benefits: [
+          'Rapport trimestriel',
+          'Accès collections'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan15-2',
+        name: 'Glamour',
+        returnRate: 12.2,
+        minInvestment: 700,
+        duration: 6,
+        benefits: [
+          'Rapport mensuel',
+          'Remises exclusives',
+          'Conseils personnalisés'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan15-3',
+        name: 'Prestige',
+        returnRate: 16.0,
+        minInvestment: 1450,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires',
+          'Consultation complète',
+          'Produits exclusifs',
+          'Invitations événements'
         ],
         popularity: 'low'
       }
     ]
   }
 ];
+
+// Function to simulate authentication
+export let isAuthenticated = false;
+let currentUser: User | null = null;
+
+export const login = (email: string, password: string): Promise<User> => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (email === 'user@example.com' && password === 'password') {
+        isAuthenticated = true;
+        currentUser = mockUser;
+        resolve(mockUser);
+      } else {
+        reject(new Error('Identifiants incorrects'));
+      }
+    }, 800);
+  });
+};
+
+export const register = (email: string, name: string, password: string): Promise<User> => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (email === 'user@example.com') {
+        reject(new Error('Cet email est déjà utilisé'));
+      } else {
+        const newUser: User = {
+          id: `user${Date.now()}`,
+          email,
+          name,
+          balance: 0,
+          investments: [],
+          transactions: []
+        };
+        isAuthenticated = true;
+        currentUser = newUser;
+        resolve(newUser);
+      }
+    }, 800);
+  });
+};
+
+export const logout = (): Promise<void> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      isAuthenticated = false;
+      currentUser = null;
+      resolve();
+    }, 300);
+  });
+};
+
+export const getCurrentUser = (): User | null => {
+  return currentUser;
+};
+
+export const depositFunds = (amount: number): Promise<User> => {
+  return new Promise((resolve, reject) => {
+    if (!currentUser) {
+      reject(new Error('Utilisateur non connecté'));
+      return;
+    }
+    
+    setTimeout(() => {
+      const transaction: Transaction = {
+        id: `trans${Date.now()}`,
+        type: 'deposit',
+        amount,
+        date: new Date().toISOString().split('T')[0],
+        status: 'completed',
+        description: 'Dépôt de fonds'
+      };
+      
+      currentUser = {
+        ...currentUser,
+        balance: currentUser.balance + amount,
+        transactions: [transaction, ...currentUser.transactions]
+      };
+      
+      resolve(currentUser);
+    }, 800);
+  });
+};
+
+export const investInCreator = (creatorId: string, planId: string, amount: number): Promise<User> => {
+  return new Promise((resolve, reject) => {
+    if (!currentUser) {
+      reject(new Error('Utilisateur non connecté'));
+      return;
+    }
+    
+    setTimeout(() => {
+      const creator = creators.find(c => c.id === creatorId);
+      if (!creator) {
+        reject(new Error('Créateur non trouvé'));
+        return;
+      }
+      
+      const plan = creator.plans.find(p => p.id === planId);
+      if (!plan) {
+        reject(new Error('Plan non trouvé'));
+        return;
+      }
+      
+      if (currentUser.balance < amount) {
+        reject(new Error('Solde insuffisant'));
+        return;
+      }
+      
+      if (amount < plan.minInvestment) {
+        reject(new Error(`L'investissement minimum est de ${plan.minInvestment}€`));
+        return;
+      }
+      
+      const today = new Date();
+      const endDate = new Date();
+      endDate.setMonth(today.getMonth() + plan.duration);
+      
+      const investment: Investment = {
+        id: `inv${Date.now()}`,
+        creatorId,
+        creatorName: creator.name,
+        creatorImage: creator.imageUrl,
+        planId,
+        planName: plan.name,
+        amount,
+        returnRate: plan.returnRate,
+        startDate: today.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
+        status: 'active',
+        earnings: 0
+      };
+      
+      const transaction: Transaction = {
+        id: `trans${Date.now()}`,
+        type: 'investment',
+        amount: -amount,
+        date: today.toISOString().split('T')[0],
+        status: 'completed',
+        description: `Investissement - ${creator.name} (${plan.name})`
+      };
+      
+      currentUser = {
+        ...currentUser,
+        balance: currentUser.balance - amount,
+        investments: [investment, ...currentUser.investments],
+        transactions: [transaction, ...currentUser.transactions]
+      };
+      
+      resolve(currentUser);
+    }, 800);
+  });
+};
+
+// Mock user data
+export const mockUser: User = {
+  id: 'user1',
+  email: 'user@example.com',
+  name: 'Jean Dupont',
+  balance: 2500,
+  investments: [
+    {
+      id: 'inv1',
+      creatorId: 'creator1',
+      creatorName: 'Emma *Asian #1*',
+      creatorImage: creators[0].imageUrl,
+      planId: 'plan1-2',
+      planName: 'Growth',
+      amount: 500,
+      returnRate: 12.5,
+      startDate: '2023-12-15',
+      endDate: '2024-06-15',
+      status: 'active',
+      earnings: 31.25
+    },
+    {
+      id: 'inv2',
+      creatorId: 'creator3',
+      creatorName: 'Kayla',
+      creatorImage: creators[2].imageUrl,
+      planId: 'plan3-2',
+      planName: 'Confort',
+      amount: 700,
+      returnRate: 11.2,
+      startDate: '2024-01-10',
+      endDate: '2024-07-10',
+      status: 'active',
+      earnings: 39.2
+    }
+  ],
+  transactions: [
+    {
+      id: 'trans1',
+      type: 'deposit',
+      amount: 1000,
+      date: '2023-12-01',
+      status: 'completed',
+      description: 'Dépôt initial'
+    },
+    {
+      id: 'trans2',
+      type: 'deposit',
+      amount: 2000,
+      date: '2023-12-10',
+      status: 'completed',
+      description: 'Ajout de fonds'
+    },
+    {
+      id: 'trans3',
+      type: 'investment',
+      amount: -500,
+      date: '2023-12-15',
+      status: 'completed',
+      description: 'Investissement - Emma *Asian #1* (Growth)'
+    },
+    {
+      id: 'trans4',
+      type: 'investment',
+      amount: -700,
+      date: '2024-01-10',
+      status: 'completed',
+      description: 'Investissement - Kayla (Confort)'
+    },
+    {
+      id: 'trans5',
+      type: 'earning',
+      amount: 31.25,
+      date: '2024-01-15',
+      status: 'completed',
+      description: 'Gains - Emma *Asian #1* (Growth)'
+    },
+    {
+      id: 'trans6',
+      type: 'earning',
+      amount: 39.2,
+      date: '2024-02-10',
+      status: 'completed',
+      description: 'Gains - Kayla (Confort)'
+    }
+  ]
+};

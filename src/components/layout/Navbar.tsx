@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface NavbarProps {
   isLoggedIn: boolean;
@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout, isAuthenticated, user } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -48,16 +48,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   };
 
   const userIsLoggedIn = isAuthenticated;
-  
-  const getAvatarInitial = () => {
-    if (!user) return '';
-    
-    if (user.name) {
-      return user.name.charAt(0).toUpperCase();
-    }
-    
-    return user.email.charAt(0).toUpperCase();
-  };
 
   return (
     <nav 
@@ -85,29 +75,29 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                   : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
               )}
             >
-              Créatrices
+              Créateurs
             </Link>
             <Link 
-              to="/affiliation" 
+              to="/how-it-works" 
               className={cn(
                 'font-medium transition-colors duration-300',
-                isActive('/affiliation') 
+                isActive('/how-it-works') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
               )}
             >
-              Affiliation
+              Comment ça marche
             </Link>
             <Link 
-              to="/dashboard" 
+              to="/about" 
               className={cn(
                 'font-medium transition-colors duration-300',
-                isActive('/dashboard') 
+                isActive('/about') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400'
               )}
             >
-              Tableau de bord
+              À propos
             </Link>
           </div>
 
@@ -118,12 +108,6 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                   className="flex items-center space-x-2 font-medium text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300"
                   onClick={toggleUserMenu}
                 >
-                  <Avatar className="h-8 w-8 border border-gray-200 dark:border-gray-700">
-                    <AvatarImage src={user?.avatar_url || ''} alt="Avatar" />
-                    <AvatarFallback className="bg-investment-100 text-investment-600">
-                      {getAvatarInitial()}
-                    </AvatarFallback>
-                  </Avatar>
                   <span>Mon compte</span>
                   <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -132,6 +116,14 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                   <div 
                     className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-800 animate-scale-in origin-top-right"
                   >
+                    <Link 
+                      to="/dashboard" 
+                      className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      <span>Tableau de bord</span>
+                    </Link>
                     <Link 
                       to="/profile" 
                       className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
@@ -219,45 +211,43 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               )}
               onClick={closeMenu}
             >
-              Créatrices
+              Créateurs
             </Link>
             <Link 
-              to="/affiliation" 
+              to="/how-it-works" 
               className={cn(
                 'block py-2 font-medium',
-                isActive('/affiliation') 
+                isActive('/how-it-works') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300'
               )}
               onClick={closeMenu}
             >
-              Affiliation
+              Comment ça marche
             </Link>
             <Link 
-              to="/dashboard" 
+              to="/about" 
               className={cn(
                 'block py-2 font-medium',
-                isActive('/dashboard') 
+                isActive('/about') 
                   ? 'text-investment-600 dark:text-investment-400' 
                   : 'text-gray-700 dark:text-gray-300'
               )}
               onClick={closeMenu}
             >
-              Tableau de bord
+              À propos
             </Link>
             
             <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
               {userIsLoggedIn ? (
                 <>
-                  <div className="flex items-center space-x-3 py-2">
-                    <Avatar className="h-8 w-8 border border-gray-200 dark:border-gray-700">
-                      <AvatarImage src={user?.avatar_url || ''} alt="Avatar" />
-                      <AvatarFallback className="bg-investment-100 text-investment-600">
-                        {getAvatarInitial()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="font-medium">{user?.name || user?.email}</span>
-                  </div>
+                  <Link 
+                    to="/dashboard" 
+                    className="block py-2 font-medium text-gray-700 dark:text-gray-300"
+                    onClick={closeMenu}
+                  >
+                    Tableau de bord
+                  </Link>
                   <Link 
                     to="/profile" 
                     className="block py-2 font-medium text-gray-700 dark:text-gray-300"
