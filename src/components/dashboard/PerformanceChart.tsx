@@ -40,19 +40,19 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
 
   return (
     <>
-      <div className="h-72 bg-gray-900 rounded-lg p-4">
+      <div className="h-72 bg-white rounded-lg p-4 border border-gray-200">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={performanceData}
             margin={{ top: 20, right: 20, left: 20, bottom: 40 }}
             barCategoryGap="20%"
           >
-            <CartesianGrid strokeDasharray="none" vertical={false} stroke="rgba(255,255,255,0.1)" />
+            <CartesianGrid strokeDasharray="none" vertical={false} stroke="rgba(0,0,0,0.1)" />
             <XAxis 
               dataKey="month" 
               axisLine={false} 
               tickLine={false}
-              tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.7)' }}
+              tick={{ fontSize: 11, fill: '#000000' }}
               interval={0}
               dy={10}
             />
@@ -62,22 +62,22 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               domain={[0, 'dataMax + 1000']}
               tickCount={6}
               tickFormatter={(value) => `${Math.round(value/1000)}k`}
-              tick={{ fontSize: 10, fill: 'rgba(255,255,255,0.5)' }}
+              tick={{ fontSize: 10, fill: '#000000' }}
               width={30}
             />
             <Tooltip 
               formatter={(value: number) => [`${value}€`, 'Valeur']}
               labelFormatter={(label) => `${label}`}
               contentStyle={{
-                backgroundColor: 'rgba(0,0,0,0.8)',
-                border: 'none',
+                backgroundColor: 'white',
+                border: '1px solid #e5e7eb',
                 borderRadius: '8px',
-                color: 'white'
+                color: 'black'
               }}
             />
             <Bar
               dataKey="value"
-              fill="#ffffff"
+              fill="#8B5CF6"
               radius={[2, 2, 0, 0]}
             />
           </BarChart>
