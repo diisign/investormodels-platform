@@ -121,11 +121,12 @@ const Dashboard = () => {
         (monthDate.getMonth() >= 3 && monthDate.getFullYear() === 2025) || 
         monthDate.getFullYear() > 2025;
       
-      let value = 0;
+      let investmentValue = 0;
       let monthlyGains = 0;
+      let referralGains = 0;
       
       if (isAprilOrLater) {
-        value = totalInvested;
+        investmentValue = totalInvested;
         
         investments.forEach(inv => {
           const investmentDate = new Date(inv.created_at);
@@ -137,17 +138,21 @@ const Dashboard = () => {
             const monthlyRate = Number(inv.return_rate) / 3;
             const monthlyReturn = Number(inv.amount) * (monthlyRate / 100);
             const totalReturn = monthlyReturn * monthsSinceInvestment;
-            value += totalReturn;
+            investmentValue += totalReturn;
             monthlyGains += monthlyReturn;
           }
         });
+        
+        // Simulate referral gains (10% of investment gains as example)
+        referralGains = monthlyGains * 0.1;
         
         accumulatedGains += monthlyGains;
       }
       
       data.push({
         month: format(monthDate, 'MMM yy', { locale: fr }),
-        value: Number(value.toFixed(2)),
+        investmentValue: Number(investmentValue.toFixed(2)),
+        referralGains: Number(referralGains.toFixed(2)),
         monthlyGains: Number(monthlyGains.toFixed(2))
       });
     }

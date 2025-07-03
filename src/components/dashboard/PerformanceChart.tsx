@@ -38,8 +38,8 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
     return { gains: Math.round(gains * 100) / 100, percentage: Math.round(percentage * 100) / 100 };
   };
 
-  // Calculate dynamic Y-axis based on max value
-  const maxValue = Math.max(...performanceData.map(d => d.value));
+  // Calculate dynamic Y-axis based on max value (considering both investment and referral values)
+  const maxValue = Math.max(...performanceData.map(d => Math.max(d.investmentValue || d.value || 0, d.referralGains || 0)));
   
   const getYAxisConfig = (maxVal: number) => {
     if (maxVal <= 1000) {
@@ -102,7 +102,11 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               width={30}
             />
             <Tooltip 
-              formatter={(value: number) => [`${value}€`, 'Valeur']}
+              formatter={(value: number, name: string) => {
+                if (name === 'investmentValue') return [`${value}€`, 'Investissements & Gains'];
+                if (name === 'referralGains') return [`${value}€`, 'Gains Parrainage'];
+                return [`${value}€`, name];
+              }}
               labelFormatter={(label) => `${label}`}
               contentStyle={{
                 backgroundColor: 'white',
@@ -111,9 +115,17 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
                 color: 'black'
               }}
             />
+            <Legend />
             <Bar
-              dataKey="value"
-              fill="#8B5CF6"
+              dataKey="investmentValue"
+              fill="hsl(var(--purple-accent))"
+              name="Investissements & Gains"
+              radius={[2, 2, 0, 0]}
+            />
+            <Bar
+              dataKey="referralGains"
+              fill="hsl(var(--accent))"
+              name="Gains Parrainage"
               radius={[2, 2, 0, 0]}
             />
           </BarChart>
