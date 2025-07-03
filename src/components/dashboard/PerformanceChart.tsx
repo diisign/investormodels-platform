@@ -42,7 +42,13 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
   const maxValue = Math.max(...performanceData.map(d => d.value));
   
   const getYAxisConfig = (maxVal: number) => {
-    if (maxVal <= 5000) {
+    if (maxVal <= 1000) {
+      return {
+        domain: [0, 1000],
+        ticks: [0, 250, 500, 750, 1000],
+        tickFormatter: (value: number) => value.toString()
+      };
+    } else if (maxVal <= 5000) {
       return {
         domain: [0, 5000],
         ticks: [0, 1000, 2000, 3000, 4000, 5000],
@@ -60,7 +66,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
       const maxTick = Math.max(30000, roundedMax);
       return {
         domain: [0, maxTick],
-        ticks: Array.from({ length: 7 }, (_, i) => i * 5000).filter(v => v <= maxTick),
+        ticks: [10000, 15000, 20000, 25000, 30000].filter(v => v <= maxTick),
         tickFormatter: (value: number) => `${Math.round(value/1000)}k`
       };
     }
