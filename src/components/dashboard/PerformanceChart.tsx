@@ -93,7 +93,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={performanceData}
-            margin={{ top: 20, right: 20, left: 20, bottom: 40 }}
+            margin={{ top: 20, right: 20, left: 20, bottom: isMobile ? 20 : 40 }}
             barCategoryGap="20%"
           >
             <CartesianGrid strokeDasharray="none" vertical={false} stroke="rgba(0,0,0,0.1)" />
@@ -105,7 +105,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               interval={0}
               angle={isMobile ? -90 : 0}
               textAnchor={isMobile ? 'end' : 'middle'}
-              height={isMobile ? 80 : 30}
+              height={isMobile ? 50 : 30}
               dy={isMobile ? 0 : 10}
             />
             <YAxis 
