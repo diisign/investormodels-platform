@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -40,44 +40,47 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
 
   return (
     <>
-      <div className="h-72">
+      <div className="h-72 bg-white dark:bg-gray-900 rounded-lg p-4">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
+          <BarChart
             data={performanceData}
-            margin={{ top: 5, right: 5, left: 15, bottom: 5 }}
+            margin={{ top: 20, right: 20, left: 20, bottom: 40 }}
+            barCategoryGap="20%"
           >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+            <CartesianGrid strokeDasharray="none" vertical={false} stroke="rgba(255,255,255,0.1)" />
             <XAxis 
               dataKey="month" 
               axisLine={false} 
               tickLine={false}
-              padding={{ left: 10, right: 10 }}
-              tick={{ fontSize: 10 }}
+              tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.7)' }}
               interval={0}
+              dy={10}
             />
             <YAxis 
               axisLine={false} 
               tickLine={false}
-              domain={[0, 'dataMax + 1']}
-              tickCount={5}
-              tickFormatter={(value) => `${Math.round(value)}€`}
-              width={40}
+              domain={[0, 'dataMax + 1000']}
+              tickCount={6}
+              tickFormatter={(value) => `${Math.round(value/1000)}k`}
+              tick={{ fontSize: 10, fill: 'rgba(255,255,255,0.5)' }}
+              width={30}
             />
             <Tooltip 
-              formatter={(value: number) => `${value}€`}
+              formatter={(value: number) => [`${value}€`, 'Valeur']}
               labelFormatter={(label) => `${label}`}
+              contentStyle={{
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                border: 'none',
+                borderRadius: '8px',
+                color: 'white'
+              }}
             />
-            <Legend />
-            <Line
-              name="Valeur totale"
-              type="monotone"
+            <Bar
               dataKey="value"
-              stroke="#0ea5e9"
-              strokeWidth={3}
-              dot={{ r: 3 }}
-              activeDot={{ r: 6, strokeWidth: 0 }}
+              fill="rgba(255,255,255,0.8)"
+              radius={[2, 2, 0, 0]}
             />
-          </LineChart>
+          </BarChart>
         </ResponsiveContainer>
       </div>
       
