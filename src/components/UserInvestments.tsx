@@ -11,6 +11,8 @@ const UserInvestments = () => {
   const { data: investments = [], isLoading } = useQuery({
     queryKey: ['userInvestments'],
     queryFn: getUserInvestments,
+    staleTime: 0,
+    gcTime: 0,
   });
 
   if (isLoading) {

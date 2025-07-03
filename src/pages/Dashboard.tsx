@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/utils/auth';
 import { getUserInvestments } from '@/utils/investments';
+import { Investment } from '@/types/investments';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { CircleDollarSign, TrendingUp, Users, Plus, ArrowRight } from 'lucide-react';
@@ -27,10 +28,12 @@ const Dashboard = () => {
   const [timeRange, setTimeRange] = useState('12');
   const queryClient = useQueryClient();
 
-  const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery({
+  const { data: investments = [], isLoading: isInvestmentsLoading } = useQuery<Investment[]>({
     queryKey: ['userInvestments'],
     queryFn: getUserInvestments,
     enabled: !!user,
+    staleTime: 0, // Always refetch data
+    gcTime: 0, // Don't cache data (gcTime replaced cacheTime in v5)
   });
 
   const { data: transactions = [], isLoading: isTransactionsLoading } = useQuery({
@@ -56,6 +59,8 @@ const Dashboard = () => {
       });
     },
     enabled: !!user,
+    staleTime: 0,
+    gcTime: 0,
   });
 
   const { data: balance = 0 } = useQuery({
@@ -74,6 +79,8 @@ const Dashboard = () => {
       return data.reduce((sum, transaction) => sum + Number(transaction.amount), 0);
     },
     enabled: !!user,
+    staleTime: 0,
+    gcTime: 0,
   });
 
   const calculateTotalReturn = () => {

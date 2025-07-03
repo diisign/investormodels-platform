@@ -54,11 +54,10 @@ export const mockSupabase = {
   }),
 };
 
-// Determine which client to use
-const isDev = process.env.NODE_ENV === 'development';
-export const supabase = isDev ? mockSupabase : realSupabase;
+// Always use the real Supabase client for data persistence
+export const supabase = realSupabase;
 
 // This is a utility to help work with the project before connecting to Supabase
 export const useDevelopmentData = (enabled = true) => {
-  return isDev && enabled;
+  return false; // Always use real data from Supabase
 };
