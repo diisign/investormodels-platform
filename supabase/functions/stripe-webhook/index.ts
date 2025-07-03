@@ -64,10 +64,8 @@ serve(async (req: Request) => {
       console.error("Erreur d'enregistrement de l'événement:", eventError);
     }
 
-    // Vérifier si c'est un événement de paiement
-    if (event.type === 'checkout.session.completed' || 
-        event.type === 'charge.succeeded' || 
-        event.type === 'payment_intent.succeeded') {
+    // Vérifier si c'est un événement de paiement - UNIQUEMENT checkout.session.completed pour éviter les doublons
+    if (event.type === 'checkout.session.completed') {
       
       // Vérifier si cet événement a déjà été traité (déduplication)
       if (event.id) {
