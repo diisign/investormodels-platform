@@ -98,9 +98,12 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               dataKey="month" 
               axisLine={false} 
               tickLine={false}
-              tick={{ fontSize: 11, fill: '#000000' }}
-              interval={0}
-              dy={10}
+              tick={{ fontSize: 10, fill: '#000000' }}
+              interval={window.innerWidth < 768 ? 1 : 0}
+              angle={window.innerWidth < 768 ? -45 : 0}
+              textAnchor={window.innerWidth < 768 ? 'end' : 'middle'}
+              height={window.innerWidth < 768 ? 60 : 30}
+              dy={window.innerWidth < 768 ? 5 : 10}
             />
             <YAxis 
               axisLine={false} 
