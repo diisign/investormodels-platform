@@ -14,6 +14,7 @@ import { Investment } from '@/types/investments';
 import { toast } from 'sonner';
 import WithdrawReturnsButton from './WithdrawReturnsButton';
 import { format } from 'date-fns';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PerformanceChartProps {
   investments: Investment[];
@@ -22,6 +23,8 @@ interface PerformanceChartProps {
 }
 
 const PerformanceChart = ({ investments, performanceData, onWithdraw }: PerformanceChartProps) => {
+  const isMobile = useIsMobile();
+  
   const calculateGains = (investment: Investment) => {
     const now = new Date();
     const investmentDate = new Date(investment.created_at);
@@ -99,11 +102,11 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
               axisLine={false} 
               tickLine={false}
               tick={{ fontSize: 10, fill: '#000000' }}
-              interval={window.innerWidth < 768 ? 1 : 0}
-              angle={window.innerWidth < 768 ? -45 : 0}
-              textAnchor={window.innerWidth < 768 ? 'end' : 'middle'}
-              height={window.innerWidth < 768 ? 60 : 30}
-              dy={window.innerWidth < 768 ? 5 : 10}
+              interval={isMobile ? 1 : 0}
+              angle={isMobile ? -90 : 0}
+              textAnchor={isMobile ? 'end' : 'middle'}
+              height={isMobile ? 80 : 30}
+              dy={isMobile ? 0 : 10}
             />
             <YAxis 
               axisLine={false} 
