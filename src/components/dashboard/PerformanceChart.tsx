@@ -23,7 +23,7 @@ interface PerformanceChartProps {
 
 const PerformanceChart = ({ investments, performanceData, onWithdraw }: PerformanceChartProps) => {
   const calculateGains = (investment: Investment) => {
-    const now = new Date('2025-04-26');
+    const now = new Date();
     const investmentDate = new Date(investment.created_at);
     const daysDiff = Math.floor((now.getTime() - investmentDate.getTime()) / (1000 * 60 * 60 * 24));
     const monthsDiff = daysDiff / 30;

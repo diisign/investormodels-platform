@@ -84,7 +84,7 @@ const Dashboard = () => {
   });
 
   const calculateTotalReturn = () => {
-    const currentDate = new Date('2025-04-26');
+    const currentDate = new Date();
     const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
     
     const totalReturn = investments.reduce((sum, inv) => {
@@ -108,8 +108,10 @@ const Dashboard = () => {
   const { totalInvested, totalReturn, percentageReturn } = calculateTotalReturn();
 
   const generatePerformanceData = () => {
-    const currentDate = new Date('2025-04-26');
-    const startDate = new Date('2024-05-01');
+    const currentDate = new Date();
+    // Utiliser le mois précédent comme référence
+    const referenceDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+    const startDate = new Date(referenceDate.getFullYear() - 1, referenceDate.getMonth() + 1, 1);
     const data = [];
     let accumulatedGains = 0;
     
@@ -117,15 +119,13 @@ const Dashboard = () => {
       const monthDate = new Date(startDate);
       monthDate.setMonth(startDate.getMonth() + i);
       
-      const isAprilOrLater = 
-        (monthDate.getMonth() >= 3 && monthDate.getFullYear() === 2025) || 
-        monthDate.getFullYear() > 2025;
+      const isCurrentOrPast = monthDate <= referenceDate;
       
       let investmentValue = 0;
       let monthlyGains = 0;
       let referralGains = 0;
       
-      if (isAprilOrLater) {
+      if (isCurrentOrPast) {
         investmentValue = totalInvested;
         
         investments.forEach(inv => {
@@ -158,6 +158,7 @@ const Dashboard = () => {
     }
     
     return data;
+
   };
 
   const fullPerformanceData = generatePerformanceData();
