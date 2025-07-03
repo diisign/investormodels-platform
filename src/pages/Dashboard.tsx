@@ -171,168 +171,72 @@ const Dashboard = () => {
 
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
-          <div className="container mx-auto px-4 space-y-8">
-            {/* Overview Section */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-white">Overview</h1>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <FadeIn direction="up" delay={100}>
-                  <Card className="bg-gray-900 border-gray-800 p-6">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400">Total fund</span>
-                        <span className="text-xs text-green-400 font-medium">+{percentageReturn.toFixed(1)}%</span>
-                      </div>
-                      <div className="text-2xl font-bold text-white">{(totalInvested + totalReturn).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}€</div>
-                    </div>
-                  </Card>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={200}>
-                  <Card className="bg-gray-900 border-gray-800 p-6">
-                    <div className="space-y-2">
-                      <span className="text-sm text-gray-400">Total Work Space</span>
-                      <div className="text-2xl font-bold text-white">{investments.length}</div>
-                    </div>
-                  </Card>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={300}>
-                  <Card className="bg-gray-900 border-gray-800 p-6">
-                    <div className="space-y-2">
-                      <span className="text-sm text-gray-400">Products</span>
-                      <div className="text-2xl font-bold text-white">{balance.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}€</div>
-                    </div>
-                  </Card>
-                </FadeIn>
-              </div>
-            </div>
+          <div className="container mx-auto px-4">
+            <h1 className="text-3xl font-bold mb-8">Tableau de bord</h1>
 
-            {/* Transaction Overview */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-white">Transaction overview</h2>
-                <div className="flex gap-4">
-                  <button className="text-sm text-white bg-gray-800 px-3 py-1 rounded">Monthly</button>
-                  <button className="text-sm text-gray-400">Yearly</button>
-                </div>
-              </div>
-              
-              <FadeIn direction="up" className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-                <div className="flex items-center gap-6 mb-6">
-                  <div>
-                    <div className="text-2xl font-bold text-white">{totalReturn.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}€</div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                      <span className="text-gray-400">Profit</span>
-                    </div>
+            <DashboardStats 
+              totalInvested={totalInvested}
+              totalReturn={totalReturn}
+              investmentsCount={investments.length}
+              balance={balance}
+              onDepositClick={() => setShowDepositModal(true)}
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+              <FadeIn direction="up" className="glass-card lg:col-span-3">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-semibold">Performance</h3>
+                    <select 
+                      className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2"
+                      value={timeRange}
+                      onChange={(e) => setTimeRange(e.target.value)}
+                    >
+                      <option value="12">12 derniers mois</option>
+                      <option value="6">6 derniers mois</option>
+                      <option value="3">3 derniers mois</option>
+                    </select>
                   </div>
-                  <div>
-                    <div className="text-2xl font-bold text-white">{totalInvested.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}€</div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
-                      <span className="text-gray-400">Expenses</span>
-                    </div>
-                  </div>
+                  
+                  <PerformanceChart 
+                    investments={investments} 
+                    performanceData={performanceData}
+                    onWithdraw={handleWithdraw}
+                  />
                 </div>
-                
-                <PerformanceChart 
-                  investments={investments} 
-                  performanceData={performanceData}
-                  onWithdraw={handleWithdraw}
-                />
               </FadeIn>
             </div>
-
-            {/* Bottom Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Investments */}
-              <FadeIn direction="up" className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-white">Investments</h3>
-                  <div className="flex gap-2">
-                    <button className="text-sm text-white bg-gray-800 px-3 py-1 rounded">Today</button>
-                    <button className="text-sm text-gray-400">All</button>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  {investments.slice(0, 4).map((investment) => (
-                    <CreatorProfile
-                      key={investment.id}
-                      creatorId={investment.creator_id}
-                      amount={investment.amount}
-                      returnRate={investment.return_rate}
-                      initialAmount={investment.amount}
-                    />
-                  ))}
-                </div>
-                
-                {investments.length === 0 && (
-                  <div className="text-center py-8">
-                    <div className="text-gray-400 mb-3">
-                      <CircleDollarSign className="h-12 w-12 mx-auto opacity-30" />
-                    </div>
-                    <h4 className="text-lg font-medium text-white mb-2">Aucun investissement</h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Vous n'avez pas encore investi dans des créateurs.
-                    </p>
-                    <Link to="/creators">
-                      <GradientButton size="sm">
-                        Découvrir des créatrices
-                      </GradientButton>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+              <FadeIn direction="up" className="glass-card">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-semibold">Mes investissements</h3>
+                    <Link to="/investments" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
+                      <span>Voir tout</span>
+                      <ArrowRight className="h-4 w-4 ml-1" />
                     </Link>
                   </div>
-                )}
+                  
+                  <div className="space-y-4">
+                    {investments.map((investment) => (
+                      <CreatorProfile
+                        key={investment.id}
+                        creatorId={investment.creator_id}
+                        amount={investment.amount}
+                        returnRate={investment.return_rate}
+                        initialAmount={investment.amount}
+                      />
+                    ))}
+                  </div>
+                </div>
               </FadeIn>
               
-              {/* Recent Activity */}
-              <FadeIn direction="up" className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-                  <div className="flex gap-2">
-                    <button className="text-sm text-white bg-gray-800 px-3 py-1 rounded">Today</button>
-                    <button className="text-sm text-gray-400">All</button>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  {transactions.slice(0, 4).map((transaction) => (
-                    <div key={transaction.id} className="flex items-center justify-between py-2">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
-                          <CircleDollarSign className="h-4 w-4 text-gray-400" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium text-white">
-                            {transaction.payment_method === 'investment' ? 'Investissement' : 'Dépôt'}
-                          </div>
-                          <div className="text-xs text-gray-400">
-                            {format(new Date(transaction.created_at), 'dd MMM', { locale: fr })}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-sm font-medium text-green-400">
-                        +{Number(transaction.amount).toFixed(2)}€
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {transactions.length === 0 && (
-                  <div className="text-center py-8">
-                    <div className="text-gray-400 mb-2">Aucune transaction récente</div>
-                    <Link to="/deposit">
-                      <GradientButton size="sm">
-                        Effectuer un dépôt
-                      </GradientButton>
-                    </Link>
-                  </div>
-                )}
-              </FadeIn>
+              <DashboardTransactions transactions={transactions} />
+            </div>
+
+            <div className="mt-8">
+              <AffiliationStats />
             </div>
           </div>
         </section>
