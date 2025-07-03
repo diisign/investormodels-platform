@@ -222,12 +222,8 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
               <FadeIn direction="up" className="glass-card">
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="mb-6">
                     <h3 className="text-lg font-semibold">Mes investissements</h3>
-                    <Link to="/investments" className="text-sm text-investment-600 hover:text-investment-500 flex items-center font-medium">
-                      <span>Voir tout</span>
-                      <ArrowRight className="h-4 w-4 ml-1" />
-                    </Link>
                   </div>
                   
                   <div className="space-y-4">
