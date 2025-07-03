@@ -40,7 +40,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
 
   return (
     <>
-      <div className="h-72 bg-white dark:bg-gray-900 rounded-lg p-4">
+      <div className="h-72 bg-gray-900 rounded-lg p-4">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={performanceData}
@@ -77,7 +77,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
             />
             <Bar
               dataKey="value"
-              fill="rgba(255,255,255,0.8)"
+              fill="#ffffff"
               radius={[2, 2, 0, 0]}
             />
           </BarChart>
