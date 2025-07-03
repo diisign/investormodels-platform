@@ -76,6 +76,16 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
 
   return (
     <>
+      <div className="flex items-center justify-center gap-6 mb-4">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: 'hsl(var(--purple-accent))' }}></div>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Investissements & Gains</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: 'hsl(var(--accent))' }}></div>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Gains Parrainage</span>
+        </div>
+      </div>
       <div className="h-72 bg-white rounded-lg p-4 border border-gray-200">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -115,7 +125,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
                 color: 'black'
               }}
             />
-            <Legend />
+            
             <Bar
               dataKey="investmentValue"
               fill="hsl(var(--purple-accent))"
