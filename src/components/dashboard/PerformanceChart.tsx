@@ -89,11 +89,11 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Gains Parrainage</span>
         </div>
       </div>
-      <div className={`${isMobile ? 'h-64' : 'h-72'} bg-white rounded-lg p-4 border border-gray-200`}>
+      <div className={`${isMobile ? 'h-56' : 'h-72'} bg-white rounded-lg p-4 border border-gray-200`}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={performanceData}
-            margin={{ top: 20, right: 20, left: 20, bottom: 40 }}
+            margin={{ top: 10, right: 10, left: 10, bottom: isMobile ? 60 : 40 }}
             barCategoryGap="20%"
           >
             <CartesianGrid strokeDasharray="none" vertical={false} stroke="rgba(0,0,0,0.1)" />
