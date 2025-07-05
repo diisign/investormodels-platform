@@ -73,7 +73,7 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
     id: 'trans-investment-500',
     type: 'investment',
     amount: -500,
-    date: '2024-09-15',
+    date: '2024-09-10',
     status: 'completed',
     description: 'Investissement - Brooks Mills 🍒'
   },
@@ -81,7 +81,7 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
     id: 'trans-deposit-500',
     type: 'deposit',
     amount: 500,
-    date: '2024-09-15',
+    date: '2024-09-10',
     status: 'completed',
     description: 'Dépôt initial'
   }
