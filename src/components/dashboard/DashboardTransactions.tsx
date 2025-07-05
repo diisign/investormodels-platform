@@ -69,7 +69,7 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                     <div className="flex justify-between items-center">
                       <h4 className="font-medium text-sm">
                         {transaction.payment_method === 'investment' && transaction.creatorProfile
-                          ? `Investissement - ${transaction.creatorProfile.name}`
+                          ? `Investissement ${transaction.creatorProfile.name}`
                           : type === 'deposit'
                           ? 'Dépôt'
                           : 'Retrait'}
