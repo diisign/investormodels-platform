@@ -78,7 +78,7 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                         "text-sm font-semibold",
                         type === 'deposit' ? "text-blue-500" : 
                         type === 'withdrawal' ? "text-green-500" : 
-                        "text-red-500"
+                        "text-green-500"
                       )}>
                         {type === 'deposit' ? '+' : ''}
                         {Math.abs(transaction.amount)}€
