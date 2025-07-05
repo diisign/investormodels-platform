@@ -19,18 +19,18 @@ export interface StaticReferralData {
   nextTierRequirement: number;
 }
 
-// Août 2024 - semaine 1 (01-07/08)
+// Données statiques persistantes avec gains variés entre 2550€ et 10250€
 const STATIC_REFERRALS: StaticReferral[] = [
-  { name: 'Marie L.', date: '01/08/2024', status: 'completed', reward: 150 },
-  { name: 'Paul D.', date: '02/08/2024', status: 'completed', reward: 200 },
-  { name: 'Emma R.', date: '03/08/2024', status: 'completed', reward: 175 },
-  { name: 'Lucas M.', date: '04/08/2024', status: 'completed', reward: 225 },
-  { name: 'Sophie B.', date: '05/08/2024', status: 'completed', reward: 180 },
-  { name: 'Thomas G.', date: '06/08/2024', status: 'completed', reward: 165 },
-  { name: 'Julie H.', date: '07/08/2024', status: 'completed', reward: 190 },
-  { name: 'Antoine K.', date: '07/08/2024', status: 'completed', reward: 215 },
-  { name: 'Camille F.', date: '07/08/2024', status: 'completed', reward: 240 },
-  { name: 'Nicolas P.', date: '07/08/2024', status: 'completed', reward: 160 },
+  { name: 'Marie L.', date: '01/08/2024', status: 'completed', reward: 3750 },
+  { name: 'Paul D.', date: '02/08/2024', status: 'completed', reward: 4200 },
+  { name: 'Emma R.', date: '03/08/2024', status: 'completed', reward: 5675 },
+  { name: 'Lucas M.', date: '04/08/2024', status: 'completed', reward: 7225 },
+  { name: 'Sophie B.', date: '05/08/2024', status: 'completed', reward: 8180 },
+  { name: 'Thomas G.', date: '06/08/2024', status: 'completed', reward: 6165 },
+  { name: 'Julie H.', date: '07/08/2024', status: 'completed', reward: 9190 },
+  { name: 'Antoine K.', date: '07/08/2024', status: 'completed', reward: 5215 },
+  { name: 'Camille F.', date: '07/08/2024', status: 'completed', reward: 8240 },
+  { name: 'Nicolas P.', date: '07/08/2024', status: 'completed', reward: 4160 },
   
   // Août 2024 - semaine 2 (08-14/08)
   { name: 'Laura N.', date: '08/08/2024', status: 'completed', reward: 185 },

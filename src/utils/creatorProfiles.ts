@@ -311,7 +311,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     followers: 10000,
     minRevenue: 120000,
     maxRevenue: 180000,
-    imageUrl: "/lovable-uploads/b8d20d29-9dc0-4a07-988f-3812814c2bde.png"
+    imageUrl: "/lovable-uploads/e09bb6c4-2388-4ba2-bc33-10429376180d.png"
   }
 };
 
