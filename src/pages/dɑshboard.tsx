@@ -47,7 +47,7 @@ const Dɑshboard = () => {
   const transformedTransactions = investmentData.transactions.map(trans => ({
     id: trans.id,
     amount: trans.amount,
-    created_at: new Date().toISOString(),
+    created_at: trans.date,
     status: 'completed',
     payment_method: trans.type === 'investment' ? 'investment' : trans.type,
     payment_id: trans.type === 'investment' ? trans.id : null,
