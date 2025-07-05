@@ -35,10 +35,10 @@ const Dɑshboard = () => {
   // Transform static data to match expected formats
   const transformedInvestments = investmentData.investments.map(inv => ({
     id: inv.id,
-    creator_id: inv.creatorName.toLowerCase().replace(' ', '-'),
+    creator_id: 'brooks-mills-🍒',
     amount: inv.amount,
     return_rate: inv.returnRate,
-    created_at: new Date().toISOString(),
+    created_at: '2024-09-15T00:00:00.000Z',
     status: 'active',
     user_id: 'test-user'
   }));
@@ -54,20 +54,14 @@ const Dɑshboard = () => {
     description: trans.description
   }));
 
-  // Generate performance data
+  // Generate performance data based on static data
   const generatePerformanceData = () => {
-    const data = [];
-    for (let i = 0; i < 12; i++) {
-      const date = new Date();
-      date.setMonth(date.getMonth() - (11 - i));
-      data.push({
-        month: format(date, 'MMM yy', { locale: fr }),
-        investmentValue: investmentData.totalInvested + (investmentData.totalEarnings * (i + 1) / 12),
-        referralGains: 50 * (i + 1) / 12,
-        monthlyGains: investmentData.totalEarnings / 12
-      });
-    }
-    return data;
+    return investmentData.performanceData.map(item => ({
+      month: item.month,
+      investmentValue: item.value,
+      referralGains: item.withdrawal || 0,
+      monthlyGains: item.value > 500 ? (item.value - 500) : 0
+    }));
   };
 
   const performanceData = generatePerformanceData().slice(-parseInt(timeRange));

@@ -302,6 +302,16 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     minRevenue: 44000,
     maxRevenue: 83000,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/l9/l9x/l9xmlchxkcd4qlxzgvv2rthxmcy927sl1716795807/50366283/avatar.jpg"
+  },
+  "brooks-mills-🍒": {
+    id: "brooks-mills-🍒",
+    name: "Brooks Mills 🍒",
+    monthlyRevenue: 150000,
+    returnRate: 130,
+    followers: 10000,
+    minRevenue: 120000,
+    maxRevenue: 180000,
+    imageUrl: "/lovable-uploads/b8d20d29-9dc0-4a07-988f-3812814c2bde.png"
   }
 };
 

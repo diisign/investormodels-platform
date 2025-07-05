@@ -41,8 +41,8 @@ export interface StaticInvestmentData {
 const STATIC_INVESTMENTS: StaticInvestment[] = [
   {
     id: '1',
-    creatorName: 'Brook Mills',
-    creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg',
+    creatorName: 'Brooks Mills 🍒',
+    creatorImage: '/lovable-uploads/b8d20d29-9dc0-4a07-988f-3812814c2bde.png',
     planName: 'Growth',
     amount: 3748,
     initial: 500,
@@ -52,116 +52,108 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
 ];
 
 const STATIC_TRANSACTIONS: StaticTransaction[] = [
-  // Retraits mensuels d'août 2024 à mai 2025
+  // Retraits mensuels de septembre 2024 à juin 2025 (gains de parrainage)
   {
-    id: 'trans-withdrawal-mai-2025',
+    id: 'trans-referral-juin-2025',
     type: 'withdrawal',
-    amount: 5100,
+    amount: 12000,
+    date: '2025-06-15',
+    status: 'completed',
+    description: 'Gains parrainage - Juin 2025'
+  },
+  {
+    id: 'trans-referral-mai-2025',
+    type: 'withdrawal',
+    amount: 10800,
     date: '2025-05-15',
     status: 'completed',
-    description: 'Retrait mensuel - Mai 2025'
+    description: 'Gains parrainage - Mai 2025'
   },
   {
-    id: 'trans-withdrawal-avril-2025',
+    id: 'trans-referral-avril-2025',
     type: 'withdrawal',
-    amount: 4950,
+    amount: 8600,
     date: '2025-04-15',
     status: 'completed',
-    description: 'Retrait mensuel - Avril 2025'
+    description: 'Gains parrainage - Avril 2025'
   },
   {
-    id: 'trans-withdrawal-mars-2025',
+    id: 'trans-referral-mars-2025',
     type: 'withdrawal',
-    amount: 5200,
+    amount: 11200,
     date: '2025-03-15',
     status: 'completed',
-    description: 'Retrait mensuel - Mars 2025'
+    description: 'Gains parrainage - Mars 2025'
   },
   {
-    id: 'trans-withdrawal-fevrier-2025',
+    id: 'trans-referral-fevrier-2025',
     type: 'withdrawal',
-    amount: 4850,
+    amount: 9400,
     date: '2025-02-15',
     status: 'completed',
-    description: 'Retrait mensuel - Février 2025'
+    description: 'Gains parrainage - Février 2025'
   },
   {
-    id: 'trans-withdrawal-janvier-2025',
+    id: 'trans-referral-janvier-2025',
     type: 'withdrawal',
-    amount: 5050,
+    amount: 6900,
     date: '2025-01-15',
     status: 'completed',
-    description: 'Retrait mensuel - Janvier 2025'
+    description: 'Gains parrainage - Janvier 2025'
   },
   {
-    id: 'trans-withdrawal-decembre-2024',
+    id: 'trans-referral-decembre-2024',
     type: 'withdrawal',
-    amount: 4900,
+    amount: 8800,
     date: '2024-12-15',
     status: 'completed',
-    description: 'Retrait mensuel - Décembre 2024'
+    description: 'Gains parrainage - Décembre 2024'
   },
   {
-    id: 'trans-withdrawal-novembre-2024',
+    id: 'trans-referral-novembre-2024',
     type: 'withdrawal',
-    amount: 5150,
+    amount: 7200,
     date: '2024-11-15',
     status: 'completed',
-    description: 'Retrait mensuel - Novembre 2024'
+    description: 'Gains parrainage - Novembre 2024'
   },
   {
-    id: 'trans-withdrawal-octobre-2024',
+    id: 'trans-referral-octobre-2024',
     type: 'withdrawal',
-    amount: 4800,
+    amount: 5500,
     date: '2024-10-15',
     status: 'completed',
-    description: 'Retrait mensuel - Octobre 2024'
-  },
-  {
-    id: 'trans-withdrawal-septembre-2024',
-    type: 'withdrawal',
-    amount: 5000,
-    date: '2024-09-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Septembre 2024'
-  },
-  {
-    id: 'trans-withdrawal-aout-2024',
-    type: 'withdrawal',
-    amount: 4950,
-    date: '2024-08-15',
-    status: 'completed',
-    description: 'Retrait mensuel - Août 2024'
+    description: 'Gains parrainage - Octobre 2024'
   },
   {
     id: 'trans-investment-500',
     type: 'investment',
     amount: -500,
-    date: '2024-10-06',
+    date: '2024-09-15',
     status: 'completed',
-    description: 'Investissement - Brook Mills'
+    description: 'Investissement - Brooks Mills 🍒'
   },
   {
     id: 'trans-deposit-500',
     type: 'deposit',
     amount: 500,
-    date: '2024-10-06',
+    date: '2024-09-15',
     status: 'completed',
     description: 'Dépôt initial'
   }
 ];
 
 const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
-  { month: 'Août', value: 0 },
-  { month: 'Sept', value: 0 },
-  { month: 'Oct', value: 500 },
-  { month: 'Nov', value: 715 },
-  { month: 'Déc', value: 930 },
-  { month: 'Jan', value: 1145 },
-  { month: 'Fév', value: 1637 },
-  { month: 'Mars', value: 2129 },
-  { month: 'Avr', value: 2621 },
-  { month: 'Mai', value: 3748 }
+  { month: 'Sept', value: 500, withdrawal: 0 },
+  { month: 'Oct', value: 715, withdrawal: 5500 },
+  { month: 'Nov', value: 930, withdrawal: 7200 },
+  { month: 'Déc', value: 1145, withdrawal: 8800 },
+  { month: 'Jan', value: 1637, withdrawal: 6900 },
+  { month: 'Fév', value: 2129, withdrawal: 9400 },
+  { month: 'Mars', value: 2621, withdrawal: 11200 },
+  { month: 'Avr', value: 3100, withdrawal: 8600 },
+  { month: 'Mai', value: 3500, withdrawal: 10800 },
+  { month: 'Juin', value: 3748, withdrawal: 12000 }
 ];
 
 export const useStaticInvestmentData = (): StaticInvestmentData => {
