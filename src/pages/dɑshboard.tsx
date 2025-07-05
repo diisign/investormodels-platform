@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStaticReferralData } from '@/hooks/useStaticReferralData';
 import { useStaticInvestmentData } from '@/hooks/useStaticInvestmentData';
+import { getCreatorProfile } from '@/utils/creatorProfiles';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import DashboardStats from '@/components/dashboard/DashboardStats';
@@ -50,7 +51,7 @@ const Dɑshboard = () => {
     status: 'completed',
     payment_method: trans.type === 'investment' ? 'investment' : trans.type,
     payment_id: trans.type === 'investment' ? trans.id : null,
-    creatorProfile: undefined,
+    creatorProfile: trans.type === 'investment' ? getCreatorProfile('brooks-mills-🍒') : undefined,
     description: trans.description
   }));
 
