@@ -13,11 +13,24 @@ import { useScreenSize } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
+import { getUserInvestments } from '@/utils/investments';
+import { useQuery } from '@tanstack/react-query';
 
 const Affiliation = () => {
   const { isAuthenticated, user } = useAuth();
   const [copied, setCopied] = useState(false);
   const { isMobile } = useScreenSize();
+  
+  // Fetch user investments to check if they have invested at least 100€
+  const { data: investments = [] } = useQuery({
+    queryKey: ['userInvestments'],
+    queryFn: getUserInvestments,
+    enabled: isAuthenticated,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  // Check if user has invested at least 100€
+  const hasInvestedMinimum = investments.some(investment => investment.amount >= 100);
   
   const affiliationCode = isAuthenticated && user 
     ? `${user.id.substring(0, 8)}` 
@@ -102,7 +115,7 @@ const Affiliation = () => {
                       </div>
                     )}
                     
-                    {isAuthenticated && (
+                    {isAuthenticated && hasInvestedMinimum && (
                       <div className="pt-2 md:pt-3 w-full">
                         <GradientButton 
                           onClick={handleCopyLink}
@@ -115,6 +128,25 @@ const Affiliation = () => {
                         >
                           Inviter des amis
                         </GradientButton>
+                      </div>
+                    )}
+                    
+                    {isAuthenticated && !hasInvestedMinimum && (
+                      <div className="pt-2 md:pt-3 w-full">
+                        <div className="text-center p-2 bg-gray-100 rounded-lg">
+                          <p className="text-xs text-gray-600 mb-2">
+                            Investissez au moins 100€ pour débloquer votre lien de parrainage
+                          </p>
+                          <Link to="/creators">
+                            <Button 
+                              size="sm"
+                              variant="outline"
+                              className="text-xs h-8"
+                            >
+                              Voir les créatrices
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     )}
                   </div>
