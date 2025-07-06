@@ -38,6 +38,7 @@ const Dɑshboard = () => {
     id: inv.id,
     creator_id: 'brooks-mills-🍒',
     amount: inv.amount,
+    initial: inv.initial,
     return_rate: inv.returnRate,
     created_at: '2024-09-15T00:00:00.000Z',
     status: 'active',

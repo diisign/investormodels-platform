@@ -57,7 +57,7 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
                     </div>
                     <div className="flex justify-between items-center mt-1">
                       <span className="text-xs text-gray-500">
-                        Initial: {Number(investment.amount).toFixed(2)}€
+                        Initial: {investment.initial}€
                       </span>
                       <span className="text-xs font-medium text-green-500">
                         +{investment.return_rate}%

@@ -86,5 +86,8 @@ export const getUserInvestments = async () => {
     });
   }
 
-  return data;
+  return data.map(investment => ({
+    ...investment,
+    initial: investment.amount // Pour maintenir la compatibilité, nous utilisons amount comme valeur initiale par défaut
+  }));
 };
