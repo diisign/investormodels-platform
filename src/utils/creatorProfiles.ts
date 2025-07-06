@@ -172,7 +172,6 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     maxRevenue: 79000,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lv/lvi/lviitmbx2pppksgphr5kk2vh5tmwzo1w1704302300/6793248/avatar.jpg"
   },
-  // Nouveaux profils de créatrices avec les images que vous avez fournies
   "creator17": {
     id: "creator17",
     name: "Victoria 💋",
@@ -302,16 +301,6 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     minRevenue: 44000,
     maxRevenue: 83000,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/l9/l9x/l9xmlchxkcd4qlxzgvv2rthxmcy927sl1716795807/50366283/avatar.jpg"
-  },
-  "brooks-mills-🍒": {
-    id: "brooks-mills-🍒",
-    name: "Brooks Mills 🍒",
-    monthlyRevenue: 150000,
-    returnRate: 130,
-    followers: 10000,
-    minRevenue: 120000,
-    maxRevenue: 180000,
-    imageUrl: "/lovable-uploads/e09bb6c4-2388-4ba2-bc33-10429376180d.png"
   }
 };
 
