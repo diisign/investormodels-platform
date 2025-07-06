@@ -40,7 +40,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     followers: 5920,
     minRevenue: 60000,
     maxRevenue: 99650,
-    imageUrl: "/lovable-uploads/ecd0dd94-ad68-4661-9980-c1f4cb1a2d37.png"
+    imageUrl: "/lovable-uploads/04ad2b8a-84bd-4b38-9166-961830f4ba0f.png"
   },
   "creator4": {
     id: "creator4",
