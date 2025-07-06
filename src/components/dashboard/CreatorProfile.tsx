@@ -1,6 +1,7 @@
 
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { TrendingUp } from 'lucide-react';
+import CreatorBadge from '@/components/ui/CreatorBadge';
 
 interface CreatorProfileProps {
   creatorId: string;
@@ -23,16 +24,15 @@ const CreatorProfile = ({ creatorId, amount, returnRate, initialAmount }: Creato
       </div>
       <div className="flex-grow">
         <div className="flex justify-between items-center">
-          <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'}</h4>
+          <div className="flex items-center gap-2">
+            <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'}</h4>
+            <CreatorBadge returnRate={returnRate} />
+          </div>
           <span className="text-sm font-semibold">{amount.toFixed(2)}€</span>
         </div>
         <div className="flex justify-between items-center mt-1">
           <span className="text-xs text-gray-500">
             Initial: {initialAmount}€
-          </span>
-          <span className="text-xs font-medium text-green-500 flex items-center">
-            <TrendingUp className="h-3 w-3 mr-1" />
-            {returnRate}%
           </span>
         </div>
       </div>
