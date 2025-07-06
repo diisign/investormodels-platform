@@ -25,10 +25,10 @@ const STATIC_REFERRALS: StaticReferral[] = [
   { name: '@SkyllaGaming', date: '27/06/2025', status: 'completed', reward: 200 },
   { name: '@MoonPhoenix', date: '22/06/2025', status: 'completed', reward: 150 },
   { name: '@CyberWolfX', date: '17/06/2025', status: 'completed', reward: 180 },
-  { name: '@NeonDreamer', date: '12/06/2025', status: 'completed', reward: 120 },
+  { name: '@NeonDreamer', date: '12/06/2025', status: 'pending', reward: 120 },
   { name: '@PixelHunter', date: '07/06/2025', status: 'completed', reward: 250 },
   { name: '@StardustRider', date: '02/06/2025', status: 'completed', reward: 90 },
-  { name: '@VoidSeeker', date: '28/05/2025', status: 'completed', reward: 160 },
+  { name: '@VoidSeeker', date: '28/05/2025', status: 'pending', reward: 160 },
   { name: '@ThunderStrike', date: '23/05/2025', status: 'completed', reward: 110 }
 ];
 
