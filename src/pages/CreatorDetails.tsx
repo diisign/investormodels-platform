@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, CircleDollarSign, TrendingUp, Users, 
-  Calendar, ArrowRight, ArrowLeft
+  Calendar, ArrowRight, ArrowLeft, Trophy
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
@@ -13,11 +13,12 @@ import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
-import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
+import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested, getCreatorRanking } from '@/utils/creatorProfiles';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
 import { createInvestment } from '@/utils/investments';
+import CreatorBadge from '@/components/ui/CreatorBadge';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
@@ -363,11 +364,14 @@ const CreatorDetails = () => {
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
                         <div className="flex items-center mb-3">
                           <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
-                            <TrendingUp className="h-5 w-5" />
+                            <Trophy className="h-5 w-5" />
                           </div>
-                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement prévu</span>
+                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Classement</span>
                         </div>
-                        <div className="text-2xl font-bold">{creatorProfile?.returnRate || 0}%</div>
+                        <div className="flex items-center gap-2">
+                          <div className="text-2xl font-bold">#{creatorId ? getCreatorRanking(creatorId) : 30}</div>
+                          <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
+                        </div>
                       </div>
                       
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -392,10 +396,7 @@ const CreatorDetails = () => {
                       <div className="mb-4">
                         <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                         <div className="flex items-center mt-2">
-                          <span className="text-green-600 dark:text-green-400 font-medium flex items-center">
-                            <TrendingUp className="h-4 w-4 mr-1" />
-                            {creatorProfile?.returnRate || 0}% de rendement prévu
-                          </span>
+                          <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
                         </div>
                       </div>
                       
@@ -453,10 +454,7 @@ const CreatorDetails = () => {
                               <div className="flex-grow">
                                 <div className="flex justify-between items-center">
                                   <h4 className="font-medium">{similarProfile.name}</h4>
-                                  <span className="text-xs font-medium text-green-500 flex items-center">
-                                    <TrendingUp className="h-3 w-3 mr-1" />
-                                    {similarProfile.returnRate}%
-                                  </span>
+                                  <CreatorBadge returnRate={similarProfile.returnRate} />
                                 </div>
                                 <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                   {similarCreator.investorsCount} investisseurs
@@ -531,8 +529,8 @@ const CreatorDetails = () => {
                 <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
                   <h3 className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Estimation du rendement (3 mois)</h3>
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Taux de rendement:</span>
-                    <span className="font-medium text-purple-600 dark:text-purple-400">{creatorProfile?.returnRate || 0}%</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Badge:</span>
+                    <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés (3 mois):</span>

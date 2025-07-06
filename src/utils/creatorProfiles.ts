@@ -404,3 +404,15 @@ export const calculateTotalInvested = (monthlyRevenue: number): number => {
   
   return totalInvested;
 };
+
+// Fonction pour obtenir le classement d'une créatrice
+export const getCreatorRanking = (creatorId: string): number => {
+  // Créer une liste de tous les profils triés par returnRate (décroissant)
+  const sortedCreators = Object.values(creatorProfiles)
+    .sort((a, b) => b.returnRate - a.returnRate);
+  
+  // Trouver l'index de la créatrice et ajouter 1 pour obtenir le rang
+  const ranking = sortedCreators.findIndex(creator => creator.id === creatorId) + 1;
+  
+  return ranking > 0 ? ranking : 30; // Fallback si pas trouvé
+};
