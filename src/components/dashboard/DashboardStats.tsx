@@ -72,11 +72,6 @@ const DashboardStats = ({
               </span>
             )}
           </div>
-          {totalReturn > 0 && (
-            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-              {(totalReturn / investmentsCount).toFixed(2)}€ par investissement
-            </div>
-          )}
         </Card>
       </FadeIn>
       
