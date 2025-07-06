@@ -70,22 +70,6 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
     description: 'Retrait'
   },
   {
-    id: 'trans-withdrawal-fevrier-2025',
-    type: 'withdrawal',
-    amount: 1500,
-    date: '2025-02-15',
-    status: 'completed',
-    description: 'Retrait'
-  },
-  {
-    id: 'trans-withdrawal-janvier-2025',
-    type: 'withdrawal',
-    amount: 2000,
-    date: '2025-01-20',
-    status: 'completed',
-    description: 'Retrait'
-  },
-  {
     id: 'trans-investment-500',
     type: 'investment',
     amount: -500,
