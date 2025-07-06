@@ -161,6 +161,38 @@ const CreatorDetails = () => {
     
     try {
       console.log("Début du processus d'investissement...");
+      console.log("Solde utilisateur:", userBalance, "Montant à investir:", amount);
+      
+      // Vérifier si l'utilisateur a assez de solde pour investir directement
+      if (userBalance >= amount) {
+        console.log("Solde suffisant, investissement direct");
+        
+        // Investir directement depuis le solde
+        await createInvestment(
+          creatorId!,
+          amount,
+          creatorProfile?.returnRate || 0
+        );
+        
+        toast.success(`Investissement de ${amount}€ effectué avec succès !`);
+        
+        // Fermer le modal
+        setShowInvestModal(false);
+        setInvestmentAmount('');
+        
+        // Actualiser les données
+        queryClient.invalidateQueries({
+          queryKey: ['userBalance', user?.id],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['userInvestments'],
+        });
+        
+        return;
+      }
+      
+      // Si le solde n'est pas suffisant, rediriger vers Stripe
+      console.log("Solde insuffisant, redirection vers Stripe");
       
       // Obtenir la session et le token
       const { data: { session } } = await supabase.auth.getSession();
