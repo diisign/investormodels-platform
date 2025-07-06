@@ -109,45 +109,45 @@ const Dashboard = () => {
 
   const generatePerformanceData = () => {
     const currentDate = new Date();
-    // Utiliser le mois précédent comme référence
-    const referenceDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-    const startDate = new Date(referenceDate.getFullYear() - 1, referenceDate.getMonth() + 1, 1);
+    // Commencer à partir de juillet 2024
+    const startDate = new Date(2024, 6, 1); // juillet 2024 (mois 6 = juillet)
     const data = [];
-    let accumulatedGains = 0;
     
+    // Générer 12 mois à partir de juillet 2024
     for (let i = 0; i < 12; i++) {
       const monthDate = new Date(startDate);
       monthDate.setMonth(startDate.getMonth() + i);
-      
-      const isCurrentOrPast = monthDate <= referenceDate;
       
       let investmentValue = 0;
       let monthlyGains = 0;
       let referralGains = 0;
       
-      if (isCurrentOrPast) {
-        investmentValue = totalInvested;
+      // Calculer les investissements et gains pour ce mois spécifique
+      investments.forEach(inv => {
+        const investmentDate = new Date(inv.created_at);
+        const investmentMonth = new Date(investmentDate.getFullYear(), investmentDate.getMonth(), 1);
         
-        investments.forEach(inv => {
-          const investmentDate = new Date(inv.created_at);
+        // Si l'investissement a été fait ce mois-ci ou avant
+        if (investmentMonth <= monthDate) {
+          // Ajouter le montant de l'investissement
+          investmentValue += Number(inv.amount);
+          
+          // Calculer les gains seulement pour les mois après l'investissement
           const monthsSinceInvestment = 
             (monthDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
             (monthDate.getMonth() - investmentDate.getMonth());
           
           if (monthsSinceInvestment > 0) {
-            const monthlyRate = Number(inv.return_rate) / 3;
-            const monthlyReturn = Number(inv.amount) * (monthlyRate / 100);
-            const totalReturn = monthlyReturn * monthsSinceInvestment;
-            investmentValue += totalReturn;
-            monthlyGains += monthlyReturn;
+            const monthlyRate = Number(inv.return_rate) / 3; // Taux trimestriel converti en mensuel
+            const totalGainsForThisInvestment = Number(inv.amount) * (monthlyRate / 100) * monthsSinceInvestment;
+            investmentValue += totalGainsForThisInvestment;
+            monthlyGains += Number(inv.amount) * (monthlyRate / 100);
           }
-        });
-        
-        // Simulate referral gains (10% of investment gains as example)
-        referralGains = monthlyGains * 0.1;
-        
-        accumulatedGains += monthlyGains;
-      }
+        }
+      });
+      
+      // Simulate referral gains (pour l'instant 0€ comme indiqué dans l'image)
+      referralGains = 0;
       
       data.push({
         month: format(monthDate, 'MMM yy', { locale: fr }),
@@ -158,7 +158,6 @@ const Dashboard = () => {
     }
     
     return data;
-
   };
 
   const fullPerformanceData = generatePerformanceData();
