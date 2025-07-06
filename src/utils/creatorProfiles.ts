@@ -7,6 +7,7 @@ export interface CreatorProfile {
   minRevenue: number;
   maxRevenue: number;
   imageUrl?: string; // Adding imageUrl field to the interface
+  hidden?: boolean; // Adding hidden field to the interface
 }
 
 // Fixed creator profiles with consistent data
@@ -160,7 +161,8 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     followers: 6330,
     minRevenue: 69850,
     maxRevenue: 120350,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg"
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg",
+    hidden: true
   },
   "creator16": {
     id: "creator16",
