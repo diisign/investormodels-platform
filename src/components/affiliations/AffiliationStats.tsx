@@ -26,6 +26,7 @@ interface AffiliationStatsProps {
 
 const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
   const { user } = useAuth();
+  const [showAll, setShowAll] = React.useState(false);
 
   const { data: affiliations = [], isLoading } = useQuery({
     queryKey: ['affiliations', user?.id],
@@ -59,6 +60,7 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
 
   // Use static data if provided
   const displayData = staticData || affiliations;
+  const itemsToShow = showAll ? displayData : displayData.slice(0, 5);
 
   if (isLoading && !staticData) {
     return <div>Chargement...</div>;
@@ -72,7 +74,7 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
       <CardContent>
         {displayData.length > 0 ? (
           <div className="space-y-4">
-            {(staticData || affiliations).map((item, index) => (
+            {itemsToShow.map((item, index) => (
               <div 
                 key={staticData ? index : item.id}
                 className="flex items-center justify-between p-4 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"
@@ -109,6 +111,16 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
                 </div>
               </div>
             ))}
+            {displayData.length > 5 && (
+              <div className="text-center pt-4">
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="text-sm text-purple-600 hover:text-purple-500 font-medium"
+                >
+                  {showAll ? 'Voir moins' : `Voir tous les ${displayData.length} parrainages`}
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="text-center py-8">
