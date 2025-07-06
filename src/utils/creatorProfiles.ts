@@ -346,7 +346,7 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
   const { minRevenue, maxRevenue, monthlyRevenue } = profile;
   const range = maxRevenue - minRevenue;
   
-  const monthNames = ['Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar'];
+  const monthNames = ['Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'];
   
   // Use creatorId to generate deterministic variations
   // This ensures the same creator always gets the same performance chart
@@ -369,7 +369,7 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     const normalized = (uniqueFactor + 1) / 2;
     
     // Convert to a revenue value within the min-max range
-    // For the last month (March), use the exact monthlyRevenue value
+    // For the last month (Juin), use the exact monthlyRevenue value
     if (index === monthNames.length - 1) {
       return monthlyRevenue;
     }
