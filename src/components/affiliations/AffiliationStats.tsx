@@ -26,7 +26,6 @@ interface AffiliationStatsProps {
 
 const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
   const { user } = useAuth();
-  const [showAll, setShowAll] = React.useState(false);
 
   const { data: affiliations = [], isLoading } = useQuery({
     queryKey: ['affiliations', user?.id],
@@ -60,7 +59,6 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
 
   // Use static data if provided
   const displayData = staticData || affiliations;
-  const itemsToShow = showAll ? displayData : displayData.slice(0, 5);
 
   if (isLoading && !staticData) {
     return <div>Chargement...</div>;
@@ -148,11 +146,11 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
 
         {displayData.length > 0 ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-800">
-            <div className="divide-y divide-gray-100 dark:divide-gray-700">
-              {itemsToShow.map((item, index) => (
+            <div className="max-h-96 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-700">
+              {displayData.map((item, index) => (
                 <div 
                   key={staticData ? index : item.id}
-                  className="p-4 flex items-center justify-between"
+                  className="p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                 >
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white">
@@ -181,14 +179,11 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
               ))}
             </div>
             
-            {displayData.length > 5 && (
-              <div className="p-4 border-t border-gray-100 dark:border-gray-700 text-center">
-                <button
-                  onClick={() => setShowAll(!showAll)}
-                  className="text-sm text-purple-600 hover:text-purple-500 font-medium"
-                >
-                  {showAll ? 'Voir moins' : `Voir tous les ${displayData.length} parrainages`}
-                </button>
+            {displayData.length > 8 && (
+              <div className="p-2 bg-gray-50 dark:bg-gray-700/50 text-center border-t border-gray-100 dark:border-gray-700">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  Faites défiler pour voir tous les {displayData.length} parrainages
+                </span>
               </div>
             )}
           </div>
