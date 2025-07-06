@@ -188,8 +188,8 @@ const STATIC_REFERRALS: StaticReferral[] = [
   { name: 'InfiniteWave', date: '02/02/2025', status: 'completed', reward: 50 },
   { name: 'EternalWave', date: '01/02/2025', status: 'completed', reward: 100 },
   
-  // Janvier 2025 - 1200€ total
-  { name: 'NightWalker', date: '31/01/2025', status: 'completed', reward: 50 },
+  // Janvier 2025 - 1250€ total
+  { name: 'NightWalker', date: '31/01/2025', status: 'completed', reward: 100 },
   { name: 'GalaxyHunter', date: '30/01/2025', status: 'completed', reward: 75 },
   { name: 'DarkKnight2', date: '29/01/2025', status: 'completed', reward: 100 },
   { name: 'StarBreaker', date: '28/01/2025', status: 'completed', reward: 50 },
@@ -258,17 +258,11 @@ const STATIC_REFERRALS: StaticReferral[] = [
   { name: 'BlueSkies', date: '28/10/2024', status: 'completed', reward: 50 },
   { name: 'GreenField', date: '27/10/2024', status: 'completed', reward: 75 },
   
-  // Septembre 2024
+  // Septembre 2024 - 200€ total
   { name: 'DarkKnight', date: '30/09/2024', status: 'completed', reward: 50 },
-  { name: 'LightBearer', date: '29/09/2024', status: 'completed', reward: 75 },
-  { name: 'EarthShaker', date: '28/09/2024', status: 'completed', reward: 100 },
-  { name: 'WindWalker', date: '27/09/2024', status: 'completed', reward: 50 },
-  { name: 'FireMage', date: '26/09/2024', status: 'completed', reward: 75 },
-  { name: 'IceWarden', date: '25/09/2024', status: 'completed', reward: 100 },
-  { name: 'ShadowHunter', date: '24/09/2024', status: 'completed', reward: 50 },
-  { name: 'PhoenixRider', date: '23/09/2024', status: 'completed', reward: 75 },
-  { name: 'StormChaser', date: '22/09/2024', status: 'completed', reward: 100 },
-  { name: 'DragonSlayer', date: '21/09/2024', status: 'completed', reward: 50 }
+  { name: 'LightBearer', date: '29/09/2024', status: 'completed', reward: 50 },
+  { name: 'EarthShaker', date: '28/09/2024', status: 'completed', reward: 50 },
+  { name: 'WindWalker', date: '27/09/2024', status: 'completed', reward: 50 }
 ];
 
 export const useStaticReferralData = (): StaticReferralData => {
