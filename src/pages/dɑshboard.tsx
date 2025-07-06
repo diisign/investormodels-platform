@@ -121,7 +121,7 @@ const Dɑshboard = () => {
             </div>
 
             <div className="mt-8">
-              <AffiliationStats />
+              <AffiliationStats staticData={referralData.recentReferrals} />
             </div>
           </div>
         </section>

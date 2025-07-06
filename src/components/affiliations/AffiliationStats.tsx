@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { StaticReferral } from '@/hooks/useStaticReferralData';
 
 // Define a type for the affiliation data structure
 type Affiliation = {
@@ -19,7 +20,11 @@ type Affiliation = {
   } | null;
 }
 
-const AffiliationStats = () => {
+interface AffiliationStatsProps {
+  staticData?: StaticReferral[];
+}
+
+const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
   const { user } = useAuth();
 
   const { data: affiliations = [], isLoading } = useQuery({
@@ -49,10 +54,13 @@ const AffiliationStats = () => {
       // Use type assertion with unknown as intermediate step
       return (data as unknown) as Affiliation[];
     },
-    enabled: !!user?.id,
+    enabled: !!user?.id && !staticData,
   });
 
-  if (isLoading) {
+  // Use static data if provided
+  const displayData = staticData || affiliations;
+
+  if (isLoading && !staticData) {
     return <div>Chargement...</div>;
   }
 
@@ -72,30 +80,51 @@ const AffiliationStats = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {affiliations.length > 0 ? (
-              affiliations.map((affiliation) => (
-                <TableRow key={affiliation.id}>
-                  <TableCell>
-                    {affiliation.referred?.name || 'Utilisateur'}
-                  </TableCell>
-                  <TableCell>
-                    {formatDistance(new Date(affiliation.created_at), new Date(), {
-                      addSuffix: true,
-                      locale: fr,
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      affiliation.status === 'completed' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {affiliation.status === 'completed' ? 'Actif' : 'En attente'}
-                    </span>
-                  </TableCell>
-                  <TableCell>{affiliation.total_earnings || 0}€</TableCell>
-                </TableRow>
-              ))
+            {displayData.length > 0 ? (
+              staticData ? (
+                // Affichage pour les données statiques
+                staticData.map((referral, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{referral.name}</TableCell>
+                    <TableCell>{referral.date}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        referral.status === 'completed' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {referral.status === 'completed' ? 'Actif' : 'En attente'}
+                      </span>
+                    </TableCell>
+                    <TableCell>{referral.reward}€</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                // Affichage pour les données Supabase
+                affiliations.map((affiliation) => (
+                  <TableRow key={affiliation.id}>
+                    <TableCell>
+                      {affiliation.referred?.name || 'Utilisateur'}
+                    </TableCell>
+                    <TableCell>
+                      {formatDistance(new Date(affiliation.created_at), new Date(), {
+                        addSuffix: true,
+                        locale: fr,
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        affiliation.status === 'completed' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {affiliation.status === 'completed' ? 'Actif' : 'En attente'}
+                      </span>
+                    </TableCell>
+                    <TableCell>{affiliation.total_earnings || 0}€</TableCell>
+                  </TableRow>
+                ))
+              )
             ) : (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-4">

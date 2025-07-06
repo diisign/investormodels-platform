@@ -143,7 +143,7 @@ export const useStaticReferralData = (): StaticReferralData => {
       pendingReferrals: pendingReferrals.length,
       completedReferrals: completedReferrals.length,
       earnings: totalEarnings,
-      recentReferrals: STATIC_REFERRALS.slice(-15).reverse(),
+      recentReferrals: STATIC_REFERRALS.filter(r => r.status === 'completed').slice(-8).reverse(), // Afficher les 8 derniers parrainages complétés
       tierProgress,
       currentTier: 'Bronze',
       nextTier: 'Argent',
