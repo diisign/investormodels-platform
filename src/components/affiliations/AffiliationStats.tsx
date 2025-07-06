@@ -6,7 +6,7 @@ import { useAuth } from '@/utils/auth';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { StaticReferral } from '@/hooks/useStaticReferralData';
+import { StaticReferral, filterReferralsByPeriod } from '@/hooks/useStaticReferralData';
 import { Users, Clock, CheckCircle, DollarSign } from 'lucide-react';
 
 // Define a type for the affiliation data structure
@@ -26,6 +26,7 @@ interface AffiliationStatsProps {
 
 const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
   const { user } = useAuth();
+  const [selectedPeriod, setSelectedPeriod] = React.useState('total');
 
   const { data: affiliations = [], isLoading } = useQuery({
     queryKey: ['affiliations', user?.id],
@@ -58,7 +59,8 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
   });
 
   // Use static data if provided
-  const displayData = staticData || affiliations;
+  const baseData = staticData || affiliations;
+  const displayData = staticData ? filterReferralsByPeriod(staticData, selectedPeriod) : baseData;
 
   if (isLoading && !staticData) {
     return <div>Chargement...</div>;
@@ -87,7 +89,9 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
               </div>
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {staticData ? staticData.length : displayData.length}
+              {staticData 
+                ? filterReferralsByPeriod(staticData, selectedPeriod).length
+                : displayData.length}
             </div>
           </div>
 
@@ -100,7 +104,9 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
               </div>
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {staticData ? staticData.filter(r => r.status === 'pending').length : displayData.filter(r => r.status === 'pending').length}
+              {staticData 
+                ? filterReferralsByPeriod(staticData, selectedPeriod).filter(r => r.status === 'pending').length 
+                : displayData.filter(r => r.status === 'pending').length}
             </div>
           </div>
 
@@ -113,7 +119,9 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
               </div>
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {staticData ? staticData.filter(r => r.status === 'completed').length : displayData.filter(r => r.status === 'completed').length}
+              {staticData 
+                ? filterReferralsByPeriod(staticData, selectedPeriod).filter(r => r.status === 'completed').length 
+                : displayData.filter(r => r.status === 'completed').length}
             </div>
           </div>
 
@@ -127,7 +135,7 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
               {staticData 
-                ? staticData.filter(r => r.status === 'completed').reduce((sum, r) => sum + r.reward, 0)
+                ? filterReferralsByPeriod(staticData, selectedPeriod).filter(r => r.status === 'completed').reduce((sum, r) => sum + r.reward, 0)
                 : (affiliations as Affiliation[]).reduce((sum, r) => sum + (r.total_earnings || 0), 0)
               }€
             </div>
@@ -139,15 +147,22 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium">Parrainages récents</h3>
-          <select className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1">
-            <option>30 dernier...</option>
+          <select 
+            className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1"
+            value={selectedPeriod}
+            onChange={(e) => setSelectedPeriod(e.target.value)}
+          >
+            <option value="7days">7 derniers jours</option>
+            <option value="30days">30 derniers jours</option>
+            <option value="6months">6 derniers mois</option>
+            <option value="total">Total</option>
           </select>
         </div>
 
         {displayData.length > 0 ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-800">
             <div className="max-h-96 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-700">
-              {displayData.map((item, index) => (
+              {displayData.slice().reverse().map((item, index) => (
                 <div 
                   key={staticData ? index : item.id}
                   className="p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
@@ -182,7 +197,7 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
             {displayData.length > 8 && (
               <div className="p-2 bg-gray-50 dark:bg-gray-700/50 text-center border-t border-gray-100 dark:border-gray-700">
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                  Faites défiler pour voir tous les {displayData.length} parrainages
+                  {displayData.length} parrainages pour la période sélectionnée
                 </span>
               </div>
             )}
