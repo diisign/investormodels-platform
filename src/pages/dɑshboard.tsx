@@ -77,9 +77,6 @@ const Dɑshboard = () => {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
               <h1 className="text-3xl font-bold">Tableau de bord</h1>
-              <div className="bg-yellow-100 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg px-3 py-1">
-                <span className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Mode Test</span>
-              </div>
             </div>
 
             <DashboardStats 
@@ -155,12 +152,6 @@ const Dɑshboard = () => {
                   </div>
                 </div>
                 
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                    <strong>Mode Test:</strong> Aucun paiement réel ne sera effectué.
-                  </p>
-                </div>
-                
                 <div className="pt-4 flex justify-end space-x-3">
                   <button
                     type="button"
@@ -170,7 +161,7 @@ const Dɑshboard = () => {
                     Annuler
                   </button>
                   <GradientButton type="submit">
-                    Déposer (Test)
+                    Déposer
                   </GradientButton>
                 </div>
               </div>
