@@ -40,7 +40,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     followers: 5920,
     minRevenue: 60000,
     maxRevenue: 99650,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/q/qa/qal/qalejcp5bgn0ulxs4dauwunqom4aouje1705996801/216346524/avatar.jpg"
+    imageUrl: "/lovable-uploads/ecd0dd94-ad68-4661-9980-c1f4cb1a2d37.png"
   },
   "creator4": {
     id: "creator4",
