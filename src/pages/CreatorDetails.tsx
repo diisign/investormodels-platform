@@ -18,7 +18,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
 import { createInvestment } from '@/utils/investments';
-import { CreatorBadge } from '@/components/ui/CreatorBadge';
 
 const CreatorDetails = () => {
   const { creatorId } = useParams<{ creatorId: string }>();
@@ -366,11 +365,9 @@ const CreatorDetails = () => {
                           <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
                             <TrendingUp className="h-5 w-5" />
                           </div>
-                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Statut</span>
+                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Rendement prévu</span>
                         </div>
-                        <div className="flex justify-center">
-                          <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
-                        </div>
+                        <div className="text-2xl font-bold">{creatorProfile?.returnRate || 0}%</div>
                       </div>
                       
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -395,7 +392,10 @@ const CreatorDetails = () => {
                       <div className="mb-4">
                         <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                         <div className="flex items-center mt-2">
-                          <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
+                          <span className="text-green-600 dark:text-green-400 font-medium flex items-center">
+                            <TrendingUp className="h-4 w-4 mr-1" />
+                            {creatorProfile?.returnRate || 0}% de rendement prévu
+                          </span>
                         </div>
                       </div>
                       
