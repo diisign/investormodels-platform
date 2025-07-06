@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/utils/auth';
 import { cn } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
 
 import { Avatar, AvatarFallback, AvatarImage, AvatarUpload } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,12 +37,32 @@ const Profile = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [withdrawIban, setWithdrawIban] = useState('');
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Fetch user balance
+  const { data: balance = 0 } = useQuery({
+    queryKey: ['userBalance', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return 0;
+      
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('amount, status')
+        .eq('user_id', user.id)
+        .eq('status', 'completed');
+      
+      if (error) throw error;
+      
+      return data.reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+    },
+    enabled: !!user,
+  });
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -215,14 +236,50 @@ const Profile = () => {
     window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
   };
 
-  const handleWithdrawSubmit = (e: React.FormEvent) => {
+  const handleWithdrawSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowWithdrawModal(false);
     
-    toast.success(`Demande de retrait de ${withdrawAmount}€ envoyée`, {
-      description: "Votre demande sera traitée dans les 48 heures.",
-    });
-    setWithdrawAmount('');
+    const amount = parseFloat(withdrawAmount);
+    
+    // Vérifier si le solde est suffisant
+    if (balance === 0) {
+      toast.error("Retrait refusé : fonds insuffisants sur le compte");
+      return;
+    }
+    
+    if (amount > balance) {
+      toast.error(`Montant trop élevé. Solde disponible : ${balance.toFixed(2)}€`);
+      return;
+    }
+
+    if (!withdrawIban || !user?.name || !user?.email) {
+      toast.error("Informations manquantes pour le retrait");
+      return;
+    }
+
+    try {
+      // Appeler la fonction edge pour envoyer l'email
+      const { error } = await supabase.functions.invoke('send-withdrawal-request', {
+        body: {
+          amount,
+          iban: withdrawIban,
+          userEmail: user.email,
+          userName: user.name
+        }
+      });
+
+      if (error) throw error;
+
+      setShowWithdrawModal(false);
+      toast.success(`Demande de retrait de ${amount}€ envoyée`, {
+        description: "Votre demande sera traitée dans les 48 heures.",
+      });
+      setWithdrawAmount('');
+      setWithdrawIban('');
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi de la demande:', error);
+      toast.error("Erreur lors de l'envoi de la demande de retrait");
+    }
   };
 
   if (isLoading) {
@@ -558,6 +615,8 @@ const Profile = () => {
                   <input
                     type="text"
                     id="bank-details"
+                    value={withdrawIban}
+                    onChange={(e) => setWithdrawIban(e.target.value)}
                     className="block w-full px-3 py-2 rounded-md border border-input bg-card focus:ring-2 focus:ring-primary focus:border-primary"
                     placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX"
                     required
