@@ -109,12 +109,12 @@ const Dashboard = () => {
 
   const generatePerformanceData = () => {
     const currentDate = new Date();
-    // Commencer à partir de juillet 2024
+    // Commencer à partir de juillet 2024 jusqu'à juillet 2025 (13 mois pour inclure juillet courant)
     const startDate = new Date(2024, 6, 1); // juillet 2024 (mois 6 = juillet)
     const data = [];
     
-    // Générer 12 mois à partir de juillet 2024
-    for (let i = 0; i < 12; i++) {
+    // Générer 13 mois à partir de juillet 2024 pour inclure juillet 2025
+    for (let i = 0; i < 13; i++) {
       const monthDate = new Date(startDate);
       monthDate.setMonth(startDate.getMonth() + i);
       
