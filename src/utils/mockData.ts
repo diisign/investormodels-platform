@@ -233,7 +233,7 @@ export const creators: Creator[] = [
   {
     id: 'creator3',
     name: 'Kayla',
-    imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp',
+    imageUrl: '/lovable-uploads/4cd2c220-569e-43a6-9e6a-b1f3d5f726dd.png',
     coverImageUrl: 'https://images.unsplash.com/photo-1602017322281-85b2e82e3dec?q=80&w=2070&auto=format&fit=crop',
     category: 'Lifestyle',
     returnRate: 11.2,
