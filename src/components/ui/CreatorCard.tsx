@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Users, TrendingUp, CircleDollarSign } from 'lucide-react';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { CreatorBadge } from '@/components/ui/CreatorBadge';
 
 export interface CreatorCardProps {
   id: string;
@@ -84,15 +85,9 @@ const CreatorCard = ({
             <h3 className="font-bold text-sm sm:text-lg text-center">{creatorProfile.name}</h3>
           </div>
           
-          {/* Expected Return Rate - Highlighted */}
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-2 sm:p-3 mb-2 sm:mb-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 text-green-500" />
-                <span className="text-xs sm:text-sm font-medium">Rendement prévu</span>
-              </div>
-              <span className="text-sm sm:text-lg font-bold text-green-500">{creatorProfile.returnRate}%</span>
-            </div>
+          {/* Creator Badge */}
+          <div className="flex justify-center mb-2 sm:mb-3">
+            <CreatorBadge returnRate={creatorProfile.returnRate} />
           </div>
           
           {/* Key Metrics */}
