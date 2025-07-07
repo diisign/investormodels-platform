@@ -96,6 +96,7 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
 ];
 
 const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
+  { month: 'Août', value: 400, withdrawal: 0 },
   { month: 'Sept', value: 500, withdrawal: 0 },
   { month: 'Oct', value: 660, withdrawal: 350 },
   { month: 'Nov', value: 871, withdrawal: 900 },
