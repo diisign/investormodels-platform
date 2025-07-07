@@ -43,9 +43,9 @@ const STATIC_INVESTMENTS_SPECIAL: StaticInvestmentSpecial[] = [
     creatorName: 'Brooks Mills 🍒',
     creatorImage: '/lovable-uploads/e09bb6c4-2388-4ba2-bc33-10429376180d.png',
     planName: 'Growth',
-    amount: 37789, // Valeur actuelle avec bénéfices
+    amount: 13550, // Valeur actuelle avec bénéfices ajustée
     initial: 1000, // Investissement initial de 1000€ en décembre
-    returnRate: 3678.9, // Nouveau taux de retour
+    returnRate: 1255, // Nouveau taux de retour ajusté
     status: 'active'
   }
 ];
@@ -132,14 +132,14 @@ const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
 export const useStaticInvestmentDataSpecial = (): StaticInvestmentDataSpecial => {
   return useMemo(() => {
     const totalInvested = 1000;
-    const totalEarnings = 36789; // Nouveau bénéfice
+    const totalEarnings = 12550; // Ajusté pour que le total avec parrainages = 35 550€
     const balance = 0; // Solde à 0€
     
     return {
       balance,
       totalInvested,
       totalEarnings,
-      totalPercentageReturn: 3678.9,
+      totalPercentageReturn: 1255,
       investments: STATIC_INVESTMENTS_SPECIAL,
       transactions: STATIC_TRANSACTIONS_SPECIAL,
       performanceData: STATIC_PERFORMANCE_DATA_SPECIAL
