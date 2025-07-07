@@ -54,10 +54,34 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
 const STATIC_TRANSACTIONS: StaticTransaction[] = [
   // Retraits spécifiques
   {
+    id: 'trans-withdrawal-juillet-2025',
+    type: 'withdrawal',
+    amount: -10150,
+    date: '2025-07-03',
+    status: 'completed',
+    description: 'Retrait'
+  },
+  {
     id: 'trans-withdrawal-juin-2025',
     type: 'withdrawal',
-    amount: -6000,
+    amount: -6850,
     date: '2025-06-05',
+    status: 'completed',
+    description: 'Retrait'
+  },
+  {
+    id: 'trans-withdrawal-mai-2025',
+    type: 'withdrawal',
+    amount: -6000,
+    date: '2025-05-04',
+    status: 'completed',
+    description: 'Retrait'
+  },
+  {
+    id: 'trans-withdrawal-avril-2025',
+    type: 'withdrawal',
+    amount: -3000,
+    date: '2025-04-05',
     status: 'completed',
     description: 'Retrait'
   },
@@ -65,7 +89,15 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
     id: 'trans-withdrawal-mars-2025',
     type: 'withdrawal',
     amount: -3000,
-    date: '2025-03-03',
+    date: '2025-03-05',
+    status: 'completed',
+    description: 'Retrait'
+  },
+  {
+    id: 'trans-withdrawal-fevrier-2025',
+    type: 'withdrawal',
+    amount: -3500,
+    date: '2025-02-03',
     status: 'completed',
     description: 'Retrait'
   },
