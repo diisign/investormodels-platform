@@ -129,8 +129,7 @@ const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
   { month: 'Mars', value: 2300, withdrawal: 3250 },
   { month: 'Avr', value: 3036, withdrawal: 6000 },
   { month: 'Mai', value: 4007, withdrawal: 6850 },
-  { month: 'Juin', value: 5290, withdrawal: 9100 },
-  { month: 'Juil', value: 5290, withdrawal: 9100 }
+  { month: 'Juin', value: 5290, withdrawal: 9100 }
 ];
 
 export const useStaticInvestmentDataSpecial = (): StaticInvestmentDataSpecial => {
