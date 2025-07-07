@@ -103,7 +103,7 @@ const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
 export const useStaticInvestmentData = (): StaticInvestmentData => {
   return useMemo(() => {
     const totalInvested = 500;
-    const totalEarnings = 5583; // Updated total earnings based on new investment values
+    const totalEarnings = 32183; // Updated total earnings based on new investment values
     const balance = 24773; // Updated balance to 24773€
     
     return {
