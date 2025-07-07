@@ -84,22 +84,10 @@ const Dashboard = () => {
   });
 
   const calculateTotalReturn = () => {
-    const currentDate = new Date();
     const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
     
-    const totalReturn = investments.reduce((sum, inv) => {
-      const investmentDate = new Date(inv.created_at);
-      const monthsDiff = (currentDate.getFullYear() - investmentDate.getFullYear()) * 12 + 
-                       (currentDate.getMonth() - investmentDate.getMonth());
-      
-      if (monthsDiff < 1) {
-        return sum;
-      }
-      
-      const monthlyRate = Number(inv.return_rate) / 3;
-      return sum + (Number(inv.amount) * (monthlyRate / 100) * monthsDiff);
-    }, 0);
-
+    // Forcer les gains totaux à 26 600€ pour cette page
+    const totalReturn = 26600;
     const percentageReturn = totalInvested > 0 ? (totalReturn / totalInvested) * 100 : 0;
 
     return { totalInvested, totalReturn, percentageReturn };
