@@ -180,6 +180,60 @@ serve(async (req: Request) => {
           }
           
           console.log("Transaction enregistrée avec succès:", transaction);
+          
+          // Vérifier si c'est le premier dépôt d'un utilisateur affilié et s'il dépôt au moins 100€
+          if (amount >= 100 && userId !== "00000000-0000-0000-0000-000000000000") {
+            // Vérifier s'il existe une affiliation pour cet utilisateur
+            const { data: affiliation } = await supabase
+              .from("affiliations")
+              .select("*")
+              .eq("referred_id", userId)
+              .eq("status", "pending")
+              .maybeSingle();
+            
+            if (affiliation) {
+              console.log("Affiliation trouvée pour l'utilisateur:", userId);
+              
+              // Vérifier que c'est bien son premier dépôt (pas d'autres transactions)
+              const { data: previousTransactions } = await supabase
+                .from("transactions")
+                .select("id")
+                .eq("user_id", userId)
+                .neq("id", transaction[0].id); // Exclure la transaction actuelle
+              
+              if (!previousTransactions || previousTransactions.length === 0) {
+                console.log("Premier dépôt détecté, attribution du bonus de 50€");
+                
+                // Créditer 50€ de bonus
+                const { error: bonusError } = await supabase
+                  .from("transactions")
+                  .insert({
+                    user_id: userId,
+                    amount: 50,
+                    currency: "eur",
+                    status: "completed",
+                    payment_id: `bonus_${paymentId}`,
+                    payment_method: "affiliation_bonus"
+                  });
+                
+                if (bonusError) {
+                  console.error("Erreur lors de l'attribution du bonus:", bonusError);
+                } else {
+                  console.log("Bonus de 50€ attribué avec succès");
+                  
+                  // Mettre à jour l'affiliation
+                  await supabase
+                    .from("affiliations")
+                    .update({
+                      first_investment_amount: amount,
+                      first_investment_date: new Date().toISOString(),
+                      status: "confirmed"
+                    })
+                    .eq("id", affiliation.id);
+                }
+              }
+            }
+          }
         }
         
         // Marquer l'événement comme traité
