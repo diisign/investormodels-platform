@@ -1,10 +1,9 @@
-
 import { CircleDollarSign, TrendingUp, Users, Plus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import FadeIn from '@/components/animations/FadeIn';
 import { Link } from 'react-router-dom';
 
-interface DashboardStatsProps {
+interface DashboardStatsSpecialProps {
   totalInvested: number;
   totalReturn: number;
   investmentsCount: number;
@@ -12,15 +11,13 @@ interface DashboardStatsProps {
   onDepositClick: () => void;
 }
 
-const DashboardStats = ({
+const DashboardStatsSpecial = ({
   totalInvested,
   totalReturn,
   investmentsCount,
   balance,
   onDepositClick
-}: DashboardStatsProps) => {
-  const percentageReturn = totalInvested > 0 ? (totalReturn / totalInvested) * 100 : 0;
-  
+}: DashboardStatsSpecialProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
       <FadeIn direction="up" delay={100}>
@@ -59,18 +56,13 @@ const DashboardStats = ({
       <FadeIn direction="up" delay={300}>
         <Card className="p-4 sm:p-5 hover:bg-gray-50/80 dark:hover:bg-gray-800/60 transition-colors">
           <div className="flex items-center justify-between mb-2 sm:mb-3">
-            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Rendement</h3>
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Bénéfices</h3>
             <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
           <div className="flex items-end">
-            <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{totalReturn.toFixed(2)}€</span>
-            {percentageReturn > 0 && (
-              <span className="ml-2 text-sm text-green-500">
-                +{percentageReturn.toFixed(1)}%
-              </span>
-            )}
+            <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">36 789€</span>
           </div>
         </Card>
       </FadeIn>
@@ -99,4 +91,4 @@ const DashboardStats = ({
   );
 };
 
-export default DashboardStats;
+export default DashboardStatsSpecial;
