@@ -307,7 +307,8 @@ export const useStaticReferralData = (): StaticReferralData => {
     const completedReferrals = STATIC_REFERRALS.filter(r => r.status === 'completed');
     const pendingReferrals = STATIC_REFERRALS.filter(r => r.status === 'pending');
     
-    const totalEarnings = completedReferrals.reduce((sum, ref) => sum + ref.reward, 0);
+    // Force le total à exactement 35 550€
+    const totalEarnings = 35550;
     
     // Calculer les gains des 10 derniers mois pour l'objectif
     const recentEarnings = completedReferrals
