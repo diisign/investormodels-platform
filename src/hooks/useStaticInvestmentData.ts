@@ -44,9 +44,9 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
     creatorName: 'Brooks Mills 🍒',
     creatorImage: '/lovable-uploads/e09bb6c4-2388-4ba2-bc33-10429376180d.png',
     planName: 'Growth',
-    amount: 5289, // Updated to show 5289€
-    initial: 1000,
-    returnRate: 428.9, // Updated to show +428.9%
+    amount: 6083, // Updated to match June 2025 value
+    initial: 500,
+    returnRate: 1116.6, // Updated return rate based on new total
     status: 'active'
   }
 ];
@@ -54,34 +54,10 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
 const STATIC_TRANSACTIONS: StaticTransaction[] = [
   // Retraits spécifiques
   {
-    id: 'trans-withdrawal-juillet-2025',
-    type: 'withdrawal',
-    amount: -10150,
-    date: '2025-07-03',
-    status: 'completed',
-    description: 'Retrait'
-  },
-  {
     id: 'trans-withdrawal-juin-2025',
     type: 'withdrawal',
-    amount: -6850,
-    date: '2025-06-05',
-    status: 'completed',
-    description: 'Retrait'
-  },
-  {
-    id: 'trans-withdrawal-mai-2025',
-    type: 'withdrawal',
     amount: -6000,
-    date: '2025-05-04',
-    status: 'completed',
-    description: 'Retrait'
-  },
-  {
-    id: 'trans-withdrawal-avril-2025',
-    type: 'withdrawal',
-    amount: -3000,
-    date: '2025-04-05',
+    date: '2025-06-05',
     status: 'completed',
     description: 'Retrait'
   },
@@ -89,60 +65,52 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
     id: 'trans-withdrawal-mars-2025',
     type: 'withdrawal',
     amount: -3000,
-    date: '2025-03-05',
+    date: '2025-03-03',
     status: 'completed',
     description: 'Retrait'
   },
   {
-    id: 'trans-withdrawal-fevrier-2025',
-    type: 'withdrawal',
-    amount: -3500,
-    date: '2025-02-03',
-    status: 'completed',
-    description: 'Retrait'
-  },
-  {
-    id: 'trans-investment-1000',
+    id: 'trans-investment-500',
     type: 'investment',
-    amount: -1000,
-    date: '2024-12-15',
+    amount: -500,
+    date: '2024-09-10',
     status: 'completed',
     description: 'Investissement - Brooks Mills 🍒'
   },
   {
-    id: 'trans-deposit-1000',
+    id: 'trans-deposit-500',
     type: 'deposit',
-    amount: 1000,
-    date: '2024-12-15',
+    amount: 500,
+    date: '2024-09-10',
     status: 'completed',
     description: 'Dépôt initial'
   }
 ];
 
 const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
-  { month: 'Sept', value: 0, withdrawal: 0 },
-  { month: 'Oct', value: 0, withdrawal: 0 },
-  { month: 'Nov', value: 0, withdrawal: 0 },
-  { month: 'Déc', value: 1000, withdrawal: 1700 },
-  { month: 'Jan', value: 1320, withdrawal: 2900 },
-  { month: 'Fév', value: 1742, withdrawal: 2700 },
-  { month: 'Mars', value: 2300, withdrawal: 3250 },
-  { month: 'Avr', value: 3036, withdrawal: 6000 },
-  { month: 'Mai', value: 4007, withdrawal: 6850 },
-  { month: 'Juin', value: 5289, withdrawal: 9100 }
+  { month: 'Sept', value: 500, withdrawal: 0 },
+  { month: 'Oct', value: 660, withdrawal: 350 },
+  { month: 'Nov', value: 871, withdrawal: 900 },
+  { month: 'Déc', value: 1150, withdrawal: 750 },
+  { month: 'Jan', value: 1518, withdrawal: 1200 },
+  { month: 'Fév', value: 2003, withdrawal: 3500 },
+  { month: 'Mars', value: 2645, withdrawal: 4850 },
+  { month: 'Avr', value: 3491, withdrawal: 4100 },
+  { month: 'Mai', value: 4608, withdrawal: 5150 },
+  { month: 'Juin', value: 6083, withdrawal: 5800 }
 ];
 
 export const useStaticInvestmentData = (): StaticInvestmentData => {
   return useMemo(() => {
-    const totalInvested = 1000;
-    const totalEarnings = 4289; // Total current value minus initial investment
-    const balance = 0; // Updated balance to 0€
+    const totalInvested = 500;
+    const totalEarnings = 5583; // Updated total earnings based on new investment values
+    const balance = 24773; // Updated balance to 24773€
     
     return {
       balance,
       totalInvested,
       totalEarnings,
-      totalPercentageReturn: 428.9, // (4289/1000)*100
+      totalPercentageReturn: 1116.6, // Updated percentage return
       investments: STATIC_INVESTMENTS,
       transactions: STATIC_TRANSACTIONS,
       performanceData: STATIC_PERFORMANCE_DATA

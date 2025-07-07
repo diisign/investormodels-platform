@@ -146,19 +146,8 @@ const Dashboard = () => {
         }
       });
       
-      // Gains de parrainage par mois spécifiques
-      const monthKey = format(monthDate, 'MMM yy', { locale: fr });
-      const referralGainsMap: { [key: string]: number } = {
-        'déc. 24': 1700,
-        'janv. 25': 2900,
-        'févr. 25': 2700,
-        'mars 25': 3250,
-        'avr. 25': 6000,
-        'mai 25': 6850,
-        'juin 25': 9100,
-        'juil. 25': 0 // mois actuel
-      };
-      referralGains = referralGainsMap[monthKey] || 0;
+      // Simulate referral gains (pour l'instant 0€ comme indiqué dans l'image)
+      referralGains = 0;
       
       data.push({
         month: format(monthDate, 'MMM yy', { locale: fr }),
