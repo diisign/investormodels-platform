@@ -134,10 +134,7 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
               </div>
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {staticData 
-                ? filterReferralsByPeriod(staticData, selectedPeriod).filter(r => r.status === 'completed').reduce((sum, r) => sum + r.reward, 0)
-                : (affiliations as Affiliation[]).reduce((sum, r) => sum + (r.total_earnings || 0), 0)
-              }€
+              35550€
             </div>
           </div>
         </div>
