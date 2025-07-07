@@ -35,8 +35,8 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
         </div>
         
         {transactions.length > 0 ? (
-          <div className="space-y-4">
-            {transactions.slice(0, 5).map((transaction) => {
+          <div className="h-80 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800">
+            {transactions.map((transaction) => {
               const type = transaction.payment_method === 'investment' ? 'investment' :
                           transaction.amount > 0 ? 'deposit' : 'withdrawal';
               
