@@ -119,6 +119,10 @@ const STATIC_TRANSACTIONS_SPECIAL: StaticTransactionSpecial[] = [
 ];
 
 const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
+  { month: 'Août', value: 800, withdrawal: 0 },
+  { month: 'Sept', value: 850, withdrawal: 0 },
+  { month: 'Oct', value: 900, withdrawal: 0 },
+  { month: 'Nov', value: 950, withdrawal: 0 },
   { month: 'Déc', value: 1000, withdrawal: 0 },
   { month: 'Jan', value: 1580, withdrawal: 0 },
   { month: 'Fév', value: 2500, withdrawal: 3500 },
