@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStaticReferralData } from '@/hooks/useStaticReferralData';
-import { useStaticInvestmentData } from '@/hooks/useStaticInvestmentData';
+import { useStaticInvestmentDataSpecial } from '@/hooks/useStaticInvestmentDataSpecial';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -17,7 +17,7 @@ import { fr } from 'date-fns/locale';
 
 const Dɑshboard = () => {
   const referralData = useStaticReferralData();
-  const investmentData = useStaticInvestmentData();
+  const investmentData = useStaticInvestmentDataSpecial();
   
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
