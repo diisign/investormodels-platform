@@ -22,8 +22,8 @@ export interface StaticReferralData {
 // Données statiques persistantes avec gains selon montants spécifiés (triées du plus récent au plus ancien)
 const STATIC_REFERRALS: StaticReferral[] = [
   // Juin 2025 - 6500€ total
-  { name: 'SkyllaGaming', date: '30/06/2025', status: 'completed', reward: 250 },
-  { name: 'MoonPhoenix', date: '30/06/2025', status: 'completed', reward: 200 },
+  { name: 'SkyllaGaming', date: '30/06/2025', status: 'completed', reward: 270 },
+  { name: 'MoonPhoenix', date: '30/06/2025', status: 'completed', reward: 215 },
   { name: 'CyberWolfX', date: '29/06/2025', status: 'completed', reward: 180 },
   { name: 'NeonDreamer', date: '29/06/2025', status: 'pending', reward: 180 },
   { name: 'PixelHunter', date: '28/06/2025', status: 'completed', reward: 200 },
