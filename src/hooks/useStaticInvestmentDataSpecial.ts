@@ -43,9 +43,9 @@ const STATIC_INVESTMENTS_SPECIAL: StaticInvestmentSpecial[] = [
     creatorName: 'Brooks Mills 🍒',
     creatorImage: '/lovable-uploads/e09bb6c4-2388-4ba2-bc33-10429376180d.png',
     planName: 'Growth',
-    amount: 13550, // Valeur actuelle avec bénéfices ajustée
+    amount: 5290, // Valeur actuelle avec bénéfices ajustée
     initial: 1000, // Investissement initial de 1000€ en décembre
-    returnRate: 1255, // Nouveau taux de retour ajusté
+    returnRate: 429, // Nouveau taux de retour ajusté
     status: 'active'
   }
 ];
