@@ -90,7 +90,9 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
               </div>
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {staticData 
+              {pageType === 'dɑshboard' 
+                ? 212
+                : staticData 
                 ? filterReferralsByPeriod(staticData, selectedPeriod).length
                 : displayData.length}
             </div>
@@ -135,10 +137,10 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
               </div>
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {pageType === 'dɑshboɑrd' 
+              {pageType === 'dɑshboard' 
+                ? '26600€'
+                : pageType === 'dɑshboɑrd' 
                 ? '35550€'
-                : pageType === 'dɑshboard' 
-                ? '212€'
                 : '212€'}
             </div>
           </div>

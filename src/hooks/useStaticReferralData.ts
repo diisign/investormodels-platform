@@ -318,7 +318,7 @@ export const useStaticReferralData = (): StaticReferralData => {
     const tierProgress = Math.min((recentEarnings / 100000) * 100, 100);
     
     return {
-      totalReferrals: STATIC_REFERRALS.length,
+      totalReferrals: 212, // Forcé à 212 pour /dɑshboard  
       pendingReferrals: pendingReferrals.length,
       completedReferrals: completedReferrals.length,
       earnings: totalEarnings,
