@@ -4,7 +4,7 @@ import { useStaticInvestmentData } from '@/hooks/useStaticInvestmentData';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import DashboardStatsSpecial from '@/components/dashboard/DashboardStatsSpecial';
+import DashboardStats from '@/components/dashboard/DashboardStats';
 import DashboardTransactions from '@/components/dashboard/DashboardTransactions';
 import PerformanceChart from '@/components/dashboard/PerformanceChart';
 import InvestmentsList from '@/components/dashboard/InvestmentsList';
@@ -79,7 +79,7 @@ const Dɑshboɑrd = () => {
               <h1 className="text-3xl font-bold">Tableau de bord</h1>
             </div>
 
-            <DashboardStatsSpecial 
+            <DashboardStats 
               totalInvested={investmentData.totalInvested}
               totalReturn={investmentData.totalEarnings}
               investmentsCount={investmentData.investments.length}
