@@ -52,7 +52,15 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
 ];
 
 const STATIC_TRANSACTIONS: StaticTransaction[] = [
-  // Retraits spécifiques
+  // Nouveau retrait ajouté
+  {
+    id: 'trans-withdrawal-juillet-2025-2',
+    type: 'withdrawal',
+    amount: -10000,
+    date: '2025-07-06',
+    status: 'completed',
+    description: 'Retrait'
+  },
   {
     id: 'trans-withdrawal-juin-2025',
     type: 'withdrawal',
