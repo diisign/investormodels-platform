@@ -123,13 +123,13 @@ const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
   { month: 'Sept', value: 850, withdrawal: 0 },
   { month: 'Oct', value: 900, withdrawal: 0 },
   { month: 'Nov', value: 950, withdrawal: 0 },
-  { month: 'Déc', value: 1000, withdrawal: 0 },
-  { month: 'Jan', value: 1580, withdrawal: 0 },
-  { month: 'Fév', value: 2500, withdrawal: 3500 },
-  { month: 'Mars', value: 3950, withdrawal: 3000 },
-  { month: 'Avr', value: 6240, withdrawal: 3000 },
-  { month: 'Mai', value: 9850, withdrawal: 6000 },
-  { month: 'Juin', value: 15570, withdrawal: 6850 }
+  { month: 'Déc', value: 1000, withdrawal: 1700 },
+  { month: 'Jan', value: 1580, withdrawal: 2900 },
+  { month: 'Fév', value: 2500, withdrawal: 2700 },
+  { month: 'Mars', value: 3950, withdrawal: 3250 },
+  { month: 'Avr', value: 6240, withdrawal: 6000 },
+  { month: 'Mai', value: 9850, withdrawal: 6850 },
+  { month: 'Juin', value: 15570, withdrawal: 9100 }
 ];
 
 export const useStaticInvestmentDataSpecial = (): StaticInvestmentDataSpecial => {
