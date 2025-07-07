@@ -135,7 +135,7 @@ const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
 export const useStaticInvestmentDataSpecial = (): StaticInvestmentDataSpecial => {
   return useMemo(() => {
     const totalInvested = 1000;
-    const totalEarnings = 12550; // Ajusté pour que le total avec parrainages = 35 550€
+    const totalEarnings = 39840; // Ajusté pour que le bénéfice soit de 39 840€
     const balance = 0; // Solde à 0€
     
     return {
