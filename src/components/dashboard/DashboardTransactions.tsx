@@ -35,8 +35,9 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
         </div>
         
         {transactions.length > 0 ? (
-          <div className="space-y-4">
-            {transactions.slice(0, 5).map((transaction) => {
+          <div className="max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+            <div className="space-y-4 pr-2">
+            {transactions.map((transaction) => {
               const type = transaction.payment_method === 'investment' ? 'investment' :
                           transaction.amount > 0 ? 'deposit' : 'withdrawal';
               
@@ -101,7 +102,8 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                   </div>
                 </div>
               );
-            })}
+             })}
+            </div>
           </div>
         ) : (
           <div className="text-center py-8">
