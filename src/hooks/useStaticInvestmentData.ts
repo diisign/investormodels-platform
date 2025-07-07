@@ -44,9 +44,9 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
     creatorName: 'Brooks Mills 🍒',
     creatorImage: '/lovable-uploads/e09bb6c4-2388-4ba2-bc33-10429376180d.png',
     planName: 'Growth',
-    amount: 12166, // Updated to match June 2025 value with 1000€ initial
+    amount: 5289, // Updated to show 5289€
     initial: 1000,
-    returnRate: 1116.6, // Updated return rate based on new total
+    returnRate: 428.9, // Updated to show +428.9%
     status: 'active'
   }
 ];
