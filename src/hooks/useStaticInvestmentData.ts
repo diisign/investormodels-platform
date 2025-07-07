@@ -136,7 +136,7 @@ export const useStaticInvestmentData = (): StaticInvestmentData => {
   return useMemo(() => {
     const totalInvested = 1000;
     const totalEarnings = 4289; // Total current value minus initial investment
-    const balance = 24773; // Updated balance to 24773€
+    const balance = 0; // Updated balance to 0€
     
     return {
       balance,
