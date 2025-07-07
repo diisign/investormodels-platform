@@ -135,7 +135,7 @@ const AffiliationStats = ({ staticData }: AffiliationStatsProps = {}) => {
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
               {staticData 
-                ? '35550€' 
+                ? '212€' 
                 : '212€'}
             </div>
           </div>
