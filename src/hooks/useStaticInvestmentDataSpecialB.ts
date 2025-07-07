@@ -36,7 +36,7 @@ export interface StaticInvestmentDataSpecial {
   performanceData: StaticPerformanceDataSpecial[];
 }
 
-// Données statiques persistantes
+// Données statiques persistantes pour /dɑshboɑrd
 const STATIC_INVESTMENTS_SPECIAL: StaticInvestmentSpecial[] = [
   {
     id: '1',
@@ -132,10 +132,10 @@ const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
   { month: 'Juin', value: 5290, withdrawal: 9100 }
 ];
 
-export const useStaticInvestmentDataSpecial = (): StaticInvestmentDataSpecial => {
+export const useStaticInvestmentDataSpecialB = (): StaticInvestmentDataSpecial => {
   return useMemo(() => {
     const totalInvested = 1000;
-    const totalEarnings = 32183; // Bénéfice à 32 183€ pour /dɑshboard
+    const totalEarnings = 39840; // Bénéfice à 39 840€ pour /dɑshboɑrd
     const balance = 0; // Solde à 0€
     
     return {
