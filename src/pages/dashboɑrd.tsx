@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useStaticReferralData } from '@/hooks/useStaticReferralData';
+import { useStaticReferralDataEmpty } from '@/hooks/useStaticReferralDataEmpty';
 import { useStaticInvestmentDataEmpty } from '@/hooks/useStaticInvestmentDataEmpty';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import Navbar from '@/components/layout/Navbar';
@@ -16,7 +16,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 const Dashboɑrd = () => {
-  const referralData = useStaticReferralData();
+  const referralData = useStaticReferralDataEmpty();
   const investmentData = useStaticInvestmentDataEmpty();
   
   const [showDepositModal, setShowDepositModal] = useState(false);
