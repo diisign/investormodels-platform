@@ -25,6 +25,7 @@ import Legal from "./pages/Legal";
 import Examples from "./pages/Examples";
 import Dɑshboard from "./pages/dɑshboard";
 import Dɑshboɑrd from "./pages/dɑshboɑrd";
+import Dashboɑrd from "./pages/dashboɑrd";
 import DashboardAffiliation from "./pages/DashboardAffiliation";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/examples" element={<Examples />} />
             <Route path="/dɑshboard" element={<Dɑshboard />} />
             <Route path="/dɑshboɑrd" element={<Dɑshboɑrd />} />
+            <Route path="/dashboɑrd" element={<Dashboɑrd />} />
             
             {/* Legal Pages */}
             <Route path="/terms" element={<Terms />} />
