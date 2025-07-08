@@ -76,7 +76,7 @@ const Dɑshboɑrd = () => {
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
-              <h1 className="text-3xl font-bold">Tableau de bord Spécial</h1>
+              <h1 className="text-3xl font-bold">Tableau de bord</h1>
             </div>
 
             <DashboardStatsSpecial 
