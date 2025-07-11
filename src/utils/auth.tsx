@@ -48,7 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             id: newSession.user.id,
             email: newSession.user.email || '',
             name: newSession.user.user_metadata?.name,
-            balance: 1000,
+            balance: 0, // Will be calculated from real transactions
             transactions: [],
             investments: []
           };
@@ -95,7 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: currentSession.user.id,
           email: currentSession.user.email || '',
           name: currentSession.user.user_metadata?.name,
-          balance: 1000,
+          balance: 0, // Will be calculated from real transactions
           transactions: [],
           investments: []
         };
@@ -158,7 +158,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: data.user.id,
           email: data.user.email || '',
           name: data.user.user_metadata?.name,
-          balance: 1000,
+          balance: 0, // Will be calculated from real transactions
           transactions: [],
           investments: []
         };
@@ -185,6 +185,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email,
         password,
         options: {
+          emailRedirectTo: `${window.location.origin}/`,
           data: {
             name,
           },
