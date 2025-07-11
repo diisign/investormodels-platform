@@ -8,6 +8,8 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
+import { processReferralSignup, getReferralCodeFromUrl } from '@/utils/referrals';
+import { supabase } from '@/integrations/supabase/client';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -16,6 +18,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [referralCode, setReferralCode] = useState('');
   const [errors, setErrors] = useState({
     name: '',
     email: '',
@@ -23,6 +26,14 @@ const Register = () => {
     confirmPassword: '',
     terms: ''
   });
+  
+  // Check for referral code in URL on component mount
+  React.useEffect(() => {
+    const refCode = getReferralCodeFromUrl();
+    if (refCode) {
+      setReferralCode(refCode);
+    }
+  }, []);
   
   const { register, isLoading } = useAuth();
 
@@ -89,7 +100,21 @@ const Register = () => {
       try {
         console.log('Attempting registration with form validation passed');
         // Updated to match the function signature in auth.tsx
-        await register(email, password, name);
+        const success = await register(email, password, name);
+        
+        // If registration successful and there's a referral code, process it
+        if (success && referralCode) {
+          try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              await processReferralSignup(user.id, referralCode);
+              console.log('Referral processed successfully');
+            }
+          } catch (referralError) {
+            console.error('Error processing referral:', referralError);
+            // Don't fail the registration for referral errors
+          }
+        }
       } catch (error) {
         console.error('Registration error:', error);
       }

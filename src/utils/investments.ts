@@ -54,6 +54,35 @@ export const createInvestment = async (
     toast.error("Erreur lors de la mise à jour du solde");
   }
 
+  // Process referral bonuses if applicable
+  try {
+    console.log('Processing referral bonuses for investment:', investment.id);
+    const { data: bonusResult, error: bonusError } = await supabase.functions.invoke('process-referral-bonus', {
+      body: {
+        investmentId: investment.id,
+        userId: user.id,
+        amount: amount
+      }
+    });
+
+    if (bonusError) {
+      console.error('Error processing referral bonuses:', bonusError);
+    } else if (bonusResult) {
+      console.log('Referral bonuses processed:', bonusResult);
+      
+      // Show success messages for bonuses
+      if (bonusResult.filleulBonus > 0) {
+        toast.success(`Bonus de parrainage : +${bonusResult.filleulBonus}€ ajouté à votre solde !`);
+      }
+      
+      if (bonusResult.parrainCommission > 0) {
+        toast.success(`Commission de parrainage générée : ${bonusResult.parrainCommission}€`);
+      }
+    }
+  } catch (error) {
+    console.error('Error calling referral bonus function:', error);
+  }
+
   // Invalidate any cache for the user balance
   return investment;
 };
