@@ -135,7 +135,9 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
               </div>
             </div>
             <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {pageType === 'dɑshboɑrd' 
+              {pageType === 'dɑshboard' 
+                ? '26600€'
+                : pageType === 'dɑshboɑrd' 
                 ? '35550€'
                 : staticData 
                 ? filterReferralsByPeriod(staticData, selectedPeriod).reduce((sum, r) => sum + (r.reward || 0), 0) + '€'
