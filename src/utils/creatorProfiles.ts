@@ -153,17 +153,6 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     maxRevenue: 71150,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tr/tre/treu426uagi2nu0ppnuhscgqhz1vajrb1614919839/avatar.jpg"
   },
-  "creator15": {
-    id: "creator15",
-    name: "Brooke Mills🍒",
-    monthlyRevenue: 94950,
-    returnRate: 130,
-    followers: 6330,
-    minRevenue: 69850,
-    maxRevenue: 120350,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg",
-    hidden: true
-  },
   "creator16": {
     id: "creator16",
     name: "Sophia Rose 💫",
