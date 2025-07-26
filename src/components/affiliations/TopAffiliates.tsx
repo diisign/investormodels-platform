@@ -9,31 +9,31 @@ import FadeIn from '@/components/animations/FadeIn';
 const topAffiliates = [
   {
     id: 1,
-    name: "CryptoSophie_",
+    name: "Alexandre",
     referrals: 743,
     earnings: 111450,  // 743 × 150 (gain moyen de 150€ par filleul)
   },
   {
     id: 2,
-    name: "TomInvest92",
+    name: "MarieK_Official",
     referrals: 612,
     earnings: 91800,   // 612 × 150
   },
   {
     id: 3,
-    name: "EmmaTrader",
+    name: "Jordan.crypto",
     referrals: 589,
     earnings: 88350,   // 589 × 150
   },
   {
     id: 4,
-    name: "LuckyLucas_",
+    name: "LeaInvestments",
     referrals: 534,
     earnings: 80100,   // 534 × 150
   },
   {
     id: 5,
-    name: "CamInvestor",
+    name: "MaximilienTrader",
     referrals: 487,
     earnings: 73050,   // 487 × 150
   },
