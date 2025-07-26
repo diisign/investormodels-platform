@@ -22,12 +22,6 @@ export interface StaticReferralData {
 // Données statiques persistantes avec gains selon montants spécifiés (triées du plus récent au plus ancien)
 const STATIC_REFERRALS: StaticReferral[] = [
   // Juillet 2025 - 4100€ total (réduit pour atteindre 35 550€ au total)
-  { name: 'Alex92', date: '30/07/2025', status: 'completed', reward: 150 },
-  { name: 'Marie-K', date: '30/07/2025', status: 'completed', reward: 120 },
-  { name: 'Tom_Invest', date: '29/07/2025', status: 'completed', reward: 150 },
-  { name: 'Juju.crypto', date: '29/07/2025', status: 'pending', reward: 100 },
-  { name: 'ThInv3st0r', date: '28/07/2025', status: 'completed', reward: 120 },
-  { name: 'CamTrader', date: '28/07/2025', status: 'completed', reward: 80 },
   { name: 'Lulu_Finance', date: '27/07/2025', status: 'pending', reward: 100 },
   { name: 'EmmyT', date: '27/07/2025', status: 'completed', reward: 150 },
   { name: 'Adri3n', date: '26/07/2025', status: 'completed', reward: 80 },
