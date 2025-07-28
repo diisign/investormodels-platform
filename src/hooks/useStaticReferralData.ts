@@ -26,10 +26,10 @@ export interface StaticReferralData {
 const STATIC_REFERRALS: StaticReferral[] = [
   // Juillet 2025 - 4100€ total (réduit pour atteindre 35 550€ au total)
   // Nouveaux filleuls récents
-  { name: 'Sophie_Invest', date: '28/07/2025', status: 'completed', reward: 120 },
-  { name: 'Max.trader', date: '28/07/2025', status: 'completed', reward: 100 },
-  { name: 'Chloe_Finance', date: '28/07/2025', status: 'pending', reward: 80 },
-  { name: 'Ben_Capital', date: '28/07/2025', status: 'completed', reward: 150 },
+  { name: 'xKylo92', date: '28/07/2025', status: 'completed', reward: 120 },
+  { name: 'Luna_Moonwalk', date: '28/07/2025', status: 'completed', reward: 100 },
+  { name: 'RocketBoost', date: '28/07/2025', status: 'pending', reward: 80 },
+  { name: 'ZenMaster_7', date: '28/07/2025', status: 'completed', reward: 150 },
   { name: 'Lulu_Finance', date: '27/07/2025', status: 'completed', reward: 100 },
   { name: 'EmmyT', date: '27/07/2025', status: 'completed', reward: 150 },
   { name: 'Adri3n', date: '26/07/2025', status: 'completed', reward: 80 },
