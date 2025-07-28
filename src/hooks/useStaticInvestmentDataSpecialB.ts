@@ -135,7 +135,7 @@ const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
 export const useStaticInvestmentDataSpecialB = (): StaticInvestmentDataSpecial => {
   return useMemo(() => {
     const totalInvested = 1000;
-    const totalEarnings = 39840; // Bénéfice à 39 840€ pour /dɑshboɑrd
+    const totalEarnings = 40590; // Bénéfice à 40 590€ pour /dɑshboɑrd
     const balance = 0; // Solde à 0€
     
     return {
