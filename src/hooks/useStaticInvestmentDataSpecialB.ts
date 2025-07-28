@@ -136,7 +136,7 @@ export const useStaticInvestmentDataSpecialB = (): StaticInvestmentDataSpecial =
   return useMemo(() => {
     const totalInvested = 1000;
     const totalEarnings = 40590; // Bénéfice à 40 590€ pour /dɑshboɑrd
-    const balance = 4550; // Solde à 4550€
+    const balance = 750; // Solde à 750€
     
     return {
       balance,
