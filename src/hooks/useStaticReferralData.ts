@@ -12,6 +12,9 @@ export interface StaticReferralData {
   pendingReferrals: number;
   completedReferrals: number;
   earnings: number;
+  completedEarnings7d?: number;
+  completedEarnings30d?: number;
+  completedEarnings6m?: number;
   recentReferrals: StaticReferral[];
   tierProgress: number;
   currentTier: string;
@@ -22,7 +25,12 @@ export interface StaticReferralData {
 // Données statiques persistantes avec gains selon montants spécifiés (triées du plus récent au plus ancien)
 const STATIC_REFERRALS: StaticReferral[] = [
   // Juillet 2025 - 4100€ total (réduit pour atteindre 35 550€ au total)
-  { name: 'Lulu_Finance', date: '27/07/2025', status: 'pending', reward: 100 },
+  // Nouveaux filleuls récents
+  { name: 'Sophie_Invest', date: '28/07/2025', status: 'completed', reward: 120 },
+  { name: 'Max.trader', date: '28/07/2025', status: 'completed', reward: 100 },
+  { name: 'Chloe_Finance', date: '28/07/2025', status: 'pending', reward: 80 },
+  { name: 'Ben_Capital', date: '28/07/2025', status: 'completed', reward: 150 },
+  { name: 'Lulu_Finance', date: '27/07/2025', status: 'completed', reward: 100 },
   { name: 'EmmyT', date: '27/07/2025', status: 'completed', reward: 150 },
   { name: 'Adri3n', date: '26/07/2025', status: 'completed', reward: 80 },
   { name: 'LeaInv', date: '26/07/2025', status: 'completed', reward: 120 },
@@ -310,12 +318,28 @@ export const useStaticReferralData = (): StaticReferralData => {
       .reduce((sum, ref) => sum + ref.reward, 0);
 
     const tierProgress = Math.min((recentEarnings / 100000) * 100, 100);
+
+    // Calculer les gains complétés par période
+    const completedEarnings7d = filterReferralsByPeriod(STATIC_REFERRALS, '7days')
+      .filter(ref => ref.status === 'completed')
+      .reduce((sum, ref) => sum + ref.reward, 0);
+
+    const completedEarnings30d = filterReferralsByPeriod(STATIC_REFERRALS, '30days')
+      .filter(ref => ref.status === 'completed')
+      .reduce((sum, ref) => sum + ref.reward, 0);
+
+    const completedEarnings6m = filterReferralsByPeriod(STATIC_REFERRALS, '6months')
+      .filter(ref => ref.status === 'completed')
+      .reduce((sum, ref) => sum + ref.reward, 0);
     
     return {
       totalReferrals: 212, // Forcé à 212 pour /dɑshboard  
       pendingReferrals: pendingReferrals.length,
       completedReferrals: completedReferrals.length,
       earnings: totalEarnings,
+      completedEarnings7d,
+      completedEarnings30d,
+      completedEarnings6m,
       recentReferrals: STATIC_REFERRALS, // Retourner tous les parrainages
       tierProgress,
       currentTier: 'Bronze',

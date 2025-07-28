@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useStaticReferralData } from '@/hooks/useStaticReferralData';
+import { useStaticReferralData, filterReferralsByPeriod } from '@/hooks/useStaticReferralData';
 import { useStaticInvestmentData } from '@/hooks/useStaticInvestmentData';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import Navbar from '@/components/layout/Navbar';
