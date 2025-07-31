@@ -291,57 +291,54 @@ const CreatorDetails = () => {
           </div>
         </section>
         
-        {/* Performance des revenus - Section 1 - Pleine largeur */}
-        <section className="py-8">
-          <FadeIn direction="up">
-            <div className="w-full">
-              <div className="container mx-auto px-4 mb-6">
-                <h2 className="text-2xl font-semibold">Performance des revenus</h2>
-              </div>
-              <div className="h-72 bg-white dark:bg-gray-800 border-y border-gray-100 dark:border-gray-700">
-                <div className="container mx-auto px-4 h-full">
-                  <div className="h-full pt-6">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={monthlyRevenueData} margin={{
-                      top: 5,
-                      right: 5,
-                      left: 5,
-                      bottom: 5
-                    }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                        <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
-                        <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
-                        <defs>
-                          <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
-                            <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
-                          </linearGradient>
-                        </defs>
-                        <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
-                        r: 0
-                      }} activeDot={{
-                        r: 6,
-                        strokeWidth: 0,
-                        fill: "#8B5CF6"
-                      }} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-        </section>
-        
         <section className="py-[19px]">
           <div className="container mx-auto px-4 space-y-16">
-            
-            <FadeIn direction="up" delay={200}>
+            {/* Performance des revenus - Section 1 */}
+            <FadeIn direction="up">
               <div className="w-full">
-                <h2 className="text-2xl font-semibold mb-6 text-center">Investir</h2>
+                <h2 className="text-2xl font-semibold mb-6">Performance des revenus</h2>
+                <div className="h-72 bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={monthlyRevenueData} margin={{
+                    top: 5,
+                    right: 5,
+                    left: 5,
+                    bottom: 5
+                  }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                      <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                      <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
+                      <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
+                      <defs>
+                        <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
+                          <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
+                        </linearGradient>
+                      </defs>
+                      <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
+                      r: 0
+                    }} activeDot={{
+                      r: 6,
+                      strokeWidth: 0,
+                      fill: "#8B5CF6"
+                    }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </FadeIn>
+            
+            {/* Statistiques clés - Section 2 */}
+            <FadeIn direction="up" delay={200}>
+              
+            </FadeIn>
+            
+            {/* Investir - Section 3 */}
+            <FadeIn direction="up" delay={300} className="mx-0 my-0">
+              <div className="w-full">
+                <h2 className="text-2xl font-semibold mb-6">Investir</h2>
                 <div className="max-w-md mx-auto">
-                  <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+                  <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                     <div className="mb-4">
                       <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                     </div>
@@ -371,20 +368,21 @@ const CreatorDetails = () => {
             <FadeIn direction="up" delay={400}>
               <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
-                <ScrollArea className="h-[800px] w-full rounded-lg border border-gray-100 dark:border-gray-800">
+                <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
                   <div className="p-4 space-y-4">
-                    {Object.values(creatorProfiles).map(profileCreator => {
-                      return <Link key={profileCreator.id} to={`/creator/${profileCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
+                    {creators.map(similarCreator => {
+                    const similarProfile = getCreatorProfile(similarCreator.id);
+                    return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
                           <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
-                            <img src={profileCreator.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profileCreator.id}`} alt={profileCreator.name} className="h-full w-full object-cover" />
+                            <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
                           </div>
                           <div className="flex-grow min-w-0">
-                            <h4 className="font-medium truncate">{profileCreator.name}</h4>
+                            <h4 className="font-medium truncate">{similarProfile.name}</h4>
                             <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                              {Math.floor(profileCreator.followers / 15)} investisseurs
+                              {similarCreator.investorsCount} investisseurs
                             </div>
                             <div className="text-sm text-primary mt-1">
-                              {profileCreator.returnRate}% rendement
+                              {similarProfile.returnRate}% rendement
                             </div>
                           </div>
                         </Link>;
