@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { 
-  BarChart3, CircleDollarSign, TrendingUp, Users, 
-  Calendar, ArrowRight, ArrowLeft, Trophy
-} from 'lucide-react';
+import { BarChart3, CircleDollarSign, TrendingUp, Users, Calendar, ArrowRight, ArrowLeft, Trophy } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
@@ -19,23 +16,26 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
 import { createInvestment } from '@/utils/investments';
 import CreatorBadge from '@/components/ui/CreatorBadge';
-
 const CreatorDetails = () => {
-  const { creatorId } = useParams<{ creatorId: string }>();
-  const { isAuthenticated, user } = useAuth();
+  const {
+    creatorId
+  } = useParams<{
+    creatorId: string;
+  }>();
+  const {
+    isAuthenticated,
+    user
+  } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
   const queryClient = useQueryClient();
-  
   const mockCreator = creators.find(c => c.id === creatorId);
-  
   const profileExists = creatorId && creatorProfiles[creatorId];
-  
   const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
-  
+
   // Debug logging for Kayla specifically
   if (creatorId === 'creator3' && creatorProfile) {
     console.log('CreatorDetails - Kayla debug:', {
@@ -45,34 +45,25 @@ const CreatorDetails = () => {
       creatorProfileName: creatorProfile.name
     });
   }
-  
   const creatorExists = !!mockCreator || !!profileExists;
-  
-  const { data: userBalance = 0 } = useQuery({
+  const {
+    data: userBalance = 0
+  } = useQuery({
     queryKey: ['userBalance', user?.id],
     queryFn: async () => {
       if (!user) return 0;
-      
       try {
         console.log('Récupération du solde pour l\'utilisateur:', user.id);
-        
-        const { data, error } = await supabase
-          .from('transactions')
-          .select('amount, status')
-          .eq('user_id', user.id)
-          .eq('status', 'completed');
-        
+        const {
+          data,
+          error
+        } = await supabase.from('transactions').select('amount, status').eq('user_id', user.id).eq('status', 'completed');
         if (error) {
           console.error('Erreur lors de la récupération des transactions:', error);
           throw error;
         }
-        
         console.log('Transactions récupérées:', data);
-        
-        const total = data && data.length > 0 
-          ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) 
-          : 0;
-        
+        const total = data && data.length > 0 ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) : 0;
         console.log('Solde calculé:', total);
         return total;
       } catch (error) {
@@ -81,26 +72,22 @@ const CreatorDetails = () => {
       }
     },
     enabled: !!user && isAuthenticated,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: true
   });
-  
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
       const investmentValue = parseFloat(investmentAmount);
       const returnRate = creatorProfile.returnRate; // Taux en pourcentage
-      
+
       // Calcul direct: returnRate% de investmentValue
-      const gain = (investmentValue * returnRate) / 100;
-      
+      const gain = investmentValue * returnRate / 100;
       setEstimatedReturn(gain);
     } else {
       setEstimatedReturn(0);
     }
   }, [investmentAmount, creatorProfile]);
-  
   if (!creatorExists || !creatorProfile) {
-    return (
-      <div className="min-h-screen flex flex-col">
+    return <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
         <main className="flex-grow pt-20">
           <div className="container mx-auto px-4 py-12 text-center">
@@ -114,10 +101,8 @@ const CreatorDetails = () => {
           </div>
         </main>
         <Footer />
-      </div>
-    );
+      </div>;
   }
-  
   const creator = mockCreator || {
     id: creatorProfile.id,
     name: creatorProfile.name,
@@ -131,128 +116,108 @@ const CreatorDetails = () => {
     creationDate: new Date(Date.now() - Math.random() * 126144000000).toISOString(),
     coverImageUrl: 'https://images.unsplash.com/photo-1579762593131-b8945254345c?q=80&w=2071&auto=format&fit=crop'
   };
-  
   const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
-  
   const openInvestModal = () => {
     if (!isAuthenticated) {
       toast.error("Veuillez vous connecter pour investir");
       return;
     }
-    
     setShowInvestModal(true);
   };
-  
   const handleInvest = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!isAuthenticated) {
       toast.error("Veuillez vous connecter pour investir");
       return;
     }
-    
     const amount = Number(investmentAmount);
     if (isNaN(amount) || amount < 100) {
       toast.error("Le montant minimum d'investissement est de 100€");
       return;
     }
-    
     setLoading(true);
-    
     try {
       console.log("Début du processus d'investissement...");
       console.log("Solde utilisateur:", userBalance, "Montant à investir:", amount);
-      
+
       // Vérifier si l'utilisateur a assez de solde pour investir directement
       if (userBalance >= amount) {
         console.log("Solde suffisant, investissement direct");
-        
+
         // Investir directement depuis le solde
-        await createInvestment(
-          creatorId!,
-          amount,
-          creatorProfile?.returnRate || 0
-        );
-        
+        await createInvestment(creatorId!, amount, creatorProfile?.returnRate || 0);
         toast.success(`Investissement de ${amount}€ effectué avec succès !`);
-        
+
         // Fermer le modal
         setShowInvestModal(false);
         setInvestmentAmount('');
-        
+
         // Actualiser les données
         queryClient.invalidateQueries({
-          queryKey: ['userBalance', user?.id],
+          queryKey: ['userBalance', user?.id]
         });
         queryClient.invalidateQueries({
-          queryKey: ['userInvestments'],
+          queryKey: ['userInvestments']
         });
-        
         return;
       }
-      
+
       // Si le solde n'est pas suffisant, rediriger vers Stripe
       console.log("Solde insuffisant, redirection vers Stripe");
-      
+
       // Obtenir la session et le token
-      const { data: { session } } = await supabase.auth.getSession();
-      
+      const {
+        data: {
+          session
+        }
+      } = await supabase.auth.getSession();
       if (!session) {
         throw new Error("Session utilisateur expirée");
       }
-      
+
       // Afficher un message informatif pour l'utilisateur
       toast.info("Redirection vers le paiement...");
-      
+
       // Appel à la fonction Edge Supabase pour créer le paiement
-      const response = await fetch(
-        "https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment",
-        {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6cXNndnlwcnR0ZmNweW9mZ250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1MDIyNzQsImV4cCI6MjA1ODA3ODI3NH0.Tdl-ViV44yvnpIXEisYsHcWFCnkBd2yvmuIiudGAVlY'
-          },
-          body: JSON.stringify({
-            amount: amount,
-            userId: user.id,
-            returnUrl: `${window.location.origin}/creator/${creatorId}?investment_success=true`,
-            creatorId: creatorId,
-            returnRate: creatorProfile?.returnRate || 0
-          }),
-        }
-      );
-      
+      const response = await fetch("https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6cXNndnlwcnR0ZmNweW9mZ250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1MDIyNzQsImV4cCI6MjA1ODA3ODI3NH0.Tdl-ViV44yvnpIXEisYsHcWFCnkBd2yvmuIiudGAVlY'
+        },
+        body: JSON.stringify({
+          amount: amount,
+          userId: user.id,
+          returnUrl: `${window.location.origin}/creator/${creatorId}?investment_success=true`,
+          creatorId: creatorId,
+          returnRate: creatorProfile?.returnRate || 0
+        })
+      });
       const data = await response.json();
       console.log("Réponse de l'API de paiement:", data);
-      
       if (!response.ok && !data.url) {
         throw new Error(data.error || "Une erreur est survenue lors de la création du paiement");
       }
-      
+
       // Rediriger vers la page de paiement Stripe
       const paymentUrl = data.url;
-      
       console.log("Redirection vers:", paymentUrl);
       toast.success("Redirection vers la page de paiement...");
-      
+
       // Fermer le modal avant la redirection
       setShowInvestModal(false);
-      
+
       // Rediriger vers la page de paiement Stripe
       window.location.href = paymentUrl;
     } catch (error) {
       console.error("Erreur lors de la création du paiement:", error);
-      
+
       // En cas d'erreur, proposer l'URL fixe comme solution de secours
-      toast.error(
-        "Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.",
-        {
-          duration: 5000,
-        }
-      );
-      
+      toast.error("Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.", {
+        duration: 5000
+      });
+
       // Attendre que l'utilisateur voie le message d'erreur puis rediriger
       setTimeout(() => {
         window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
@@ -261,18 +226,12 @@ const CreatorDetails = () => {
       setLoading(false);
     }
   };
-  
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
         <div className="container mx-auto px-4 py-4">
-          <Button 
-            variant="ghost" 
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-            onClick={() => navigate(-1)}
-          >
+          <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4" />
             <span>Retour</span>
           </Button>
@@ -287,21 +246,15 @@ const CreatorDetails = () => {
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8 text-white">
               <FadeIn direction="up">
                 <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white overflow-hidden shadow-xl">
-                  <img 
-                    src={creator.imageUrl} 
-                    alt={creatorProfile.name} 
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      console.log(`CreatorDetails - Image failed to load for ${creatorProfile.name}:`, creator.imageUrl);
-                      target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
-                    }}
-                    onLoad={() => {
-                      if (creatorId === 'creator3') {
-                        console.log(`CreatorDetails - Image loaded successfully for Kayla:`, creator.imageUrl);
-                      }
-                    }}
-                  />
+                  <img src={creator.imageUrl} alt={creatorProfile.name} className="w-full h-full object-cover" onError={e => {
+                  const target = e.target as HTMLImageElement;
+                  console.log(`CreatorDetails - Image failed to load for ${creatorProfile.name}:`, creator.imageUrl);
+                  target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
+                }} onLoad={() => {
+                  if (creatorId === 'creator3') {
+                    console.log(`CreatorDetails - Image loaded successfully for Kayla:`, creator.imageUrl);
+                  }
+                }} />
                 </div>
               </FadeIn>
               
@@ -314,7 +267,10 @@ const CreatorDetails = () => {
                   </div>
                   <div className="flex items-center">
                     <Calendar className="h-5 w-5 mr-2 text-purple-500" />
-                    <span>Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}</span>
+                    <span>Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long'
+                    })}</span>
                   </div>
                   <div className="flex items-center">
                     <CircleDollarSign className="h-5 w-5 mr-2 text-purple-500" />
@@ -330,7 +286,7 @@ const CreatorDetails = () => {
           </div>
         </section>
         
-        <section className="py-12">
+        <section className="py-[19px]">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-8">
@@ -339,40 +295,29 @@ const CreatorDetails = () => {
                     <h2 className="text-xl font-semibold mb-4">Performance des revenus</h2>
                     <div className="h-72">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart
-                          data={monthlyRevenueData}
-                          margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-                        >
+                        <LineChart data={monthlyRevenueData} margin={{
+                        top: 5,
+                        right: 5,
+                        left: 5,
+                        bottom: 5
+                      }}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                           <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                          <YAxis 
-                            axisLine={false} 
-                            tickLine={false} 
-                            tickFormatter={(value) => `${Math.floor(value / 1000)}k€`}
-                            domain={[
-                              (dataMin) => Math.floor(dataMin / 10000) * 10000, 
-                              (dataMax) => Math.ceil(dataMax / 10000) * 10000
-                            ]}
-                            tickCount={5}
-                          />
-                          <Tooltip 
-                            formatter={(value) => [`${value}€`, 'Revenu']} 
-                            labelFormatter={(label) => `Mois: ${label}`}
-                          />
+                          <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
+                          <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
                           <defs>
                             <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
-                              <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1}/>
+                              <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
+                              <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
                             </linearGradient>
                           </defs>
-                          <Line
-                            type="monotone"
-                            dataKey="revenue"
-                            stroke="#8B5CF6"
-                            strokeWidth={3}
-                            dot={{ r: 0 }}
-                            activeDot={{ r: 6, strokeWidth: 0, fill: "#8B5CF6" }}
-                          />
+                          <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
+                          r: 0
+                        }} activeDot={{
+                          r: 6,
+                          strokeWidth: 0,
+                          fill: "#8B5CF6"
+                        }} />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
@@ -432,20 +377,12 @@ const CreatorDetails = () => {
                         </div>
                       </div>
                       
-                      <GradientButton 
-                        fullWidth 
-                        size="lg"
-                        onClick={openInvestModal}
-                        variant="primary"
-                        gradientDirection="to-r"
-                        className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300"
-                      >
+                      <GradientButton fullWidth size="lg" onClick={openInvestModal} variant="primary" gradientDirection="to-r" className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300">
                         Investir maintenant
                       </GradientButton>
                     </div>
                     
-                    {!isAuthenticated && (
-                      <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                    {!isAuthenticated && <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
                         <span>Vous devez être connecté pour investir.</span>
                         <div className="mt-2 flex justify-center space-x-3">
                           <Link to="/login" className="text-investment-600 hover:text-investment-500 font-medium">
@@ -456,8 +393,7 @@ const CreatorDetails = () => {
                             S'inscrire
                           </Link>
                         </div>
-                      </div>
-                    )}
+                      </div>}
                   </div>
                 </FadeIn>
                 
@@ -465,23 +401,11 @@ const CreatorDetails = () => {
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-4">Créatrices similaires</h2>
                     <div className="space-y-4">
-                      {creators
-                        .filter(c => c.id !== creator.id)
-                        .slice(0, 3)
-                        .map((similarCreator) => {
-                          const similarProfile = getCreatorProfile(similarCreator.id);
-                          return (
-                            <Link 
-                              key={similarCreator.id}
-                              to={`/creator/${similarCreator.id}`}
-                              className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-investment-300 dark:hover:border-investment-600 transition-colors"
-                            >
+                      {creators.filter(c => c.id !== creator.id).slice(0, 3).map(similarCreator => {
+                      const similarProfile = getCreatorProfile(similarCreator.id);
+                      return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-investment-300 dark:hover:border-investment-600 transition-colors">
                               <div className="h-12 w-12 rounded-full overflow-hidden mr-3">
-                                <img 
-                                  src={similarCreator.imageUrl} 
-                                  alt={similarProfile.name} 
-                                  className="h-full w-full object-cover"
-                                />
+                                <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
                               </div>
                               <div className="flex-grow">
                                 <div className="flex justify-between items-center">
@@ -492,16 +416,12 @@ const CreatorDetails = () => {
                                   {similarCreator.investorsCount} investisseurs
                                 </div>
                               </div>
-                            </Link>
-                          );
-                        })}
+                            </Link>;
+                    })}
                     </div>
                     
                     <div className="mt-4">
-                      <Link 
-                        to="/creators" 
-                        className="text-investment-600 hover:text-investment-500 text-sm font-medium flex items-center justify-center"
-                      >
+                      <Link to="/creators" className="text-investment-600 hover:text-investment-500 text-sm font-medium flex items-center justify-center">
                         <span>Voir toutes les créatrices</span>
                         <ArrowRight className="h-4 w-4 ml-1" />
                       </Link>
@@ -514,8 +434,7 @@ const CreatorDetails = () => {
         </section>
       </main>
       
-      {showInvestModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      {showInvestModal && <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
             <h2 className="text-xl font-bold mb-4">Confirmer votre investissement</h2>
             
@@ -525,13 +444,7 @@ const CreatorDetails = () => {
                   <label htmlFor="creator" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Créatrice
                   </label>
-                  <input
-                    type="text"
-                    id="creator"
-                    value={creator.name}
-                    className="input-field bg-gray-50 dark:bg-gray-700 pointer-events-none"
-                    readOnly
-                  />
+                  <input type="text" id="creator" value={creator.name} className="input-field bg-gray-50 dark:bg-gray-700 pointer-events-none" readOnly />
                 </div>
                 
                 <div>
@@ -542,16 +455,7 @@ const CreatorDetails = () => {
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <CircleDollarSign className="h-5 w-5 text-gray-400" />
                     </div>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={investmentAmount}
-                      onChange={(e) => setInvestmentAmount(e.target.value)}
-                      min={100}
-                      step="1"
-                      className="input-field pl-10"
-                      required
-                    />
+                    <input type="number" id="amount" value={investmentAmount} onChange={e => setInvestmentAmount(e.target.value)} min={100} step="1" className="input-field pl-10" required />
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
                     Montant minimum : 100€
@@ -571,32 +475,19 @@ const CreatorDetails = () => {
                 </div>
                 
                 <div className="pt-4 flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowInvestModal(false)}
-                    className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                  >
+                  <button type="button" onClick={() => setShowInvestModal(false)} className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                     Annuler
                   </button>
-                  <GradientButton 
-                    type="submit"
-                    variant="primary"
-                    gradientDirection="to-r"
-                    className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-lg transition-all duration-300"
-                    disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user}
-                  >
+                  <GradientButton type="submit" variant="primary" gradientDirection="to-r" className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-lg transition-all duration-300" disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user}>
                     {loading ? 'Redirection...' : 'Investir maintenant'}
                   </GradientButton>
                 </div>
               </div>
             </form>
           </FadeIn>
-        </div>
-      )}
+        </div>}
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default CreatorDetails;
