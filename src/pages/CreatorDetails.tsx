@@ -293,7 +293,7 @@ const CreatorDetails = () => {
         
         {/* Performance des revenus - Section pleine largeur */}
         <section className="py-[19px] w-full border-t border-b border-gray-200 dark:border-gray-700">
-          <div className="px-4 md:px-8">
+          <div className="w-full">
             <FadeIn direction="up">
               <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-6 text-center">Performance des revenus</h2>
