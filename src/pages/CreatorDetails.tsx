@@ -261,6 +261,10 @@ const CreatorDetails = () => {
               
               <FadeIn direction="up" delay={100} className="flex-grow">
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
+                <div className="flex items-center mb-4">
+                  <Users className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-lg font-medium text-primary">{creator.investorsCount} investisseurs</span>
+                </div>
                 <div className="flex flex-wrap gap-6 mt-4">
                   <div className="flex items-center">
                     <Users className="h-5 w-5 mr-2 text-purple-500" />
