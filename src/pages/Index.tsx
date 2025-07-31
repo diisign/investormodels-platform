@@ -250,29 +250,20 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
+        <section className="py-12 md:py-20 bg-white">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
-                Un Marché en <span className="text-investment-600">Pleine Expansion</span>
+                Un Marché en <span className="text-yellow-300">Pleine Explosion</span>
               </h2>
               <div className="space-y-6">
                 <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
                   OnlyFans connaît une croissance explosive depuis sa création, avec des revenus qui ont été multipliés par plus de 10 en seulement 4 ans.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">4.5M+</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Créateurs actifs</div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">1.6B$</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">CA en 2024</div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">+150%</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Croissance annuelle</div>
-                  </div>
+                  
+                  
+                  
                 </div>
               </div>
             </FadeIn>
@@ -287,16 +278,16 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-12" direction="up">
               <div className="flex items-center justify-center gap-1 mb-4">
-                <div className="bg-[#00b67a] text-white px-2 py-1 rounded">
+                <div className="text-white px-2 py-1 rounded bg-black">
                   <span className="font-bold">Trustpilot</span>
                 </div>
                 <div className="flex items-center">
                   {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-5 w-5 fill-current", star <= 4 ? "text-[#00b67a]" : "", star === 5 ? "text-[#00b67a] fill-[#00b67a]/70" : "")} />)}
                 </div>
-                <span className="font-bold text-[#00b67a]">4.7/5</span>
+                <span className="text-base font-bold text-inherit">4.7/5</span>
               </div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-                Ce que disent <span className="text-investment-600">nos utilisateurs</span>
+                Ce que disent <span className="text-yellow-300">nos utilisateurs</span>
               </h2>
               <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
                 Rejoignez plus de 20 000 investisseurs satisfaits qui ont déjà fait confiance à notre plateforme.
@@ -311,7 +302,7 @@ const Index = () => {
                 <CarouselContent>
                   {trustpilotReviews.map(review => <CarouselItem key={review.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                       <FadeIn className="bg-white dark:bg-gray-800 h-full rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up">
-                        <div className="flex items-center mb-4">
+                        <div className="flex items-center mb-4 bg-transparent">
                           {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-4 w-4 fill-current", star <= review.rating ? "text-[#00b67a]" : "text-gray-300 dark:text-gray-600")} />)}
                         </div>
                         <p className={cn("text-gray-700 dark:text-gray-300 mb-4", review.style)}>"{review.comment}"</p>
