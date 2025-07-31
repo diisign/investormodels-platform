@@ -58,7 +58,7 @@ const Navbar: React.FC<NavbarProps> = ({
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <button onClick={handleLogoClick} className="flex items-center">
-            <img src="/lovable-uploads/3d2823d0-03f5-4650-92e6-39d1c77529a2.png" alt="SPLITZ" className="h-6 w-auto" />
+            <img src="/lovable-uploads/3d2823d0-03f5-4650-92e6-39d1c77529a2.png" alt="SPLITZ" className="h-5 w-auto" />
           </button>
 
           <div className="hidden md:flex items-center space-x-8">
