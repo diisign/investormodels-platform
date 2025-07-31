@@ -191,23 +191,23 @@ const Index = () => {
             </FadeIn>
             
             <FadeIn direction="up" delay={100}>
-              <div className="relative px-8 md:px-12 pb-6 md:pb-10">
+              <div className="relative pb-6 md:pb-10">
                 <Carousel opts={{
                 align: "center",
                 loop: true
               }} className="w-full">
-                  <CarouselContent className="-ml-2 md:-ml-4">
+                  <CarouselContent className="ml-0">
                     {topCreators.map((creator, index) => {
                     const creatorProfile = getCreatorProfile(creator.id);
-                    return <CarouselItem key={creator.id} className={`pl-2 md:pl-4 basis-1/${slidesPerView}`}>
+                    return <CarouselItem key={creator.id} className={`pl-2 basis-1/${slidesPerView}`}>
                           <div className="p-1">
                             <CreatorCard id={creator.id} name={creator.name || creatorProfile.name} imageUrl={creator.imageUrl} category={creator.category} investorsCount={creator.investorsCount} totalInvested={creator.totalInvested} monthlyRevenue={creatorProfile.monthlyRevenue} rank={index + 1} />
                           </div>
                         </CarouselItem>;
                   })}
                   </CarouselContent>
-                  <CarouselPrevious className="-left-2 md:-left-6 h-9 w-9 rounded-full" />
-                  <CarouselNext className="-right-2 md:-right-6 h-9 w-9 rounded-full" />
+                  <CarouselPrevious className="left-2 h-9 w-9 rounded-full" />
+                  <CarouselNext className="right-2 h-9 w-9 rounded-full" />
                 </Carousel>
               </div>
             </FadeIn>
