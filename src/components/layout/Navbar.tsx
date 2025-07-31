@@ -109,7 +109,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   </div>}
               </div> : <>
                 <Link to="/login">
-                  <GradientButton variant="secondary" size="default" className="px-5">
+                  <GradientButton variant="secondary" size="default" className="px-5 bg-white text-black border border-gray-300 hover:bg-gray-50">
                     Connexion
                   </GradientButton>
                 </Link>
