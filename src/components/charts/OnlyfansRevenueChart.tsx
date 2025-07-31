@@ -109,7 +109,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
   // Définir des graduations fixes pour l'axe Y: 0, 2500, 5000, 7500, 10000
   const fixedTicks = [0, 2500, 5000, 7500, 10000];
   return <div className="relative w-full h-full">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-investment-500 to-investment-600 rounded-2xl blur opacity-30 animate-pulse-light bg-inherit"></div>
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-300 to-yellow-300 rounded-2xl blur opacity-30 animate-pulse-light bg-inherit"></div>
       <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 p-2 sm:p-4 h-full">
         <h3 className="text-lg font-semibold mb-1 sm:mb-2">
           {isMonthlyData ? "Évolution de l'Investissement" : "Croissance du Chiffre d'Affaires OnlyFans"}
