@@ -138,9 +138,7 @@ const Index = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
-                <div className="inline-block rounded-full px-3 py-1 text-sm font-medium text-purple-600 dark:text-purple-400 mb-3 md:mb-4 bg-slate-950">
-                  <span className="text-yellow-300">Nouvelle façon d'investir</span>
-                </div>
+                
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight xl:text-4xl text-zinc-950">
                   Investissez dans les <span className="text-3xl text-yellow-300">créatrices OnlyFans.</span>
                 </h1>
