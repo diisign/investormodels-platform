@@ -367,11 +367,11 @@ const CreatorDetails = () => {
                   {!isAuthenticated && <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
                       <span>Vous devez être connecté pour investir.</span>
                       <div className="mt-2 flex justify-center space-x-3">
-                        <Link to="/login" className="text-investment-600 hover:text-investment-500 font-medium">
+                        <Link to="/login" className="text-yellow-300 hover:text-yellow-400 font-medium">
                           Se connecter
                         </Link>
                         <span>ou</span>
-                        <Link to="/register" className="text-investment-600 hover:text-investment-500 font-medium">
+                        <Link to="/register" className="text-yellow-300 hover:text-yellow-400 font-medium">
                           S'inscrire
                         </Link>
                       </div>
