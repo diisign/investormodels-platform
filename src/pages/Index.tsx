@@ -148,11 +148,11 @@ const Index = () => {
                 
                 <div className="pt-2">
                   {isAuthenticated ? <button onClick={scrollToCreators}>
-                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-teal-400 to-blue-500 text-white">
+                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                         Commencer maintenant
                       </GradientButton>
                     </button> : <Link to="/login">
-                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-teal-400 to-blue-500 text-white">
+                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                         Commencer maintenant
                       </GradientButton>
                     </Link>}
