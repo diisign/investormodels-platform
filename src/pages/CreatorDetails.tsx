@@ -75,6 +75,11 @@ const CreatorDetails = () => {
     enabled: !!user && isAuthenticated,
     refetchOnWindowFocus: true
   });
+
+  // Scroll to top when creator changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [creatorId]);
   useEffect(() => {
     if (creatorProfile && investmentAmount) {
       const investmentValue = parseFloat(investmentAmount);
