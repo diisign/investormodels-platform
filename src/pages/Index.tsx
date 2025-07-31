@@ -130,7 +130,7 @@ const Index = () => {
       
       <main className="flex-grow pt-16 md:pt-20">
         <section className="relative overflow-hidden pb-12 md:pb-20 pt-16 md:pt-24 lg:pt-32">
-          <div className="absolute inset-0 overflow-hidden rounded">
+          <div className="absolute inset-0 overflow-hidden rounded bg-[purple-gradient-to] bg-transparent">
             
             
           </div>
@@ -177,11 +177,11 @@ const Index = () => {
           </div>
         </section>
         
-        <section ref={creatorsRef} className="py-12 md:py-20">
+        <section ref={creatorsRef} className="py-12 md:py-20 bg-transparent">
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
               <div>
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-[#8B5CF6]">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-yellow-300 lg:text-3xl">
                   Top créatrices
                 </h2>
                 <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
@@ -189,8 +189,8 @@ const Index = () => {
                 </p>
               </div>
               <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
-                <span>Voir toutes les créatrices</span>
-                <ArrowRight className="h-4 w-4 ml-1" />
+                <span className="text-zinc-950">Voir toutes les créatrices</span>
+                <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent" />
               </Link>
             </FadeIn>
             
@@ -228,11 +228,11 @@ const Index = () => {
         </section>
 
         {/* Top Affiliés Section - Nouvelle section */}
-        <section className="py-10 md:py-16 bg-white dark:bg-gray-950">
+        <section className="py-10 md:py-16 bg-transparent">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
               <h2 className="text-2xl md:text-3xl font-bold mb-3 text-center">
-                Nos <span className="text-investment-600">Meilleurs Parrains</span>
+                Nos <span className="text-yellow-300">Meilleurs Parrains</span>
               </h2>
               <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
                 Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?
@@ -330,60 +330,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section className="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-16" direction="up">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-                Plateforme <span className="text-investment-600">visionnaire</span> unique au monde
-              </h2>
-              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
-                Découvrez pourquoi de plus en plus d'investisseurs nous font confiance pour diversifier leur portefeuille.
-              </p>
-            </FadeIn>
-            
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={100}>
-                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
-                  <BarChart3 className="h-5 w-5 md:h-6 md:w-6" />
-                </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Rendements attractifs</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
-                  Nos créatrices offrent des rendements moyens de 80% à 150% par trimestre.
-                </p>
-              </FadeIn>
-              
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={200}>
-                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
-                  <Users className="h-5 w-5 md:h-6 md:w-6" />
-                </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Diversité des créatrices</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
-                  Plus de 250 créatrices de contenu avec statistique détaillé sur du long terme.
-                </p>
-              </FadeIn>
-              
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={300}>
-                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
-                  <ShieldCheck className="h-5 w-5 md:h-6 md:w-6" />
-                </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Sécurité maximale</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
-                  Toutes les créatrices sont recrutés sous certains critère spéciaux pour vous proposez les plus performantes.
-                </p>
-              </FadeIn>
-              
-              <FadeIn className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up" delay={400}>
-                <div className="h-9 w-9 md:h-12 md:w-12 flex items-center justify-center rounded-lg bg-investment-100 dark:bg-investment-900/30 text-[#8B5CF6] mb-3 md:mb-5">
-                  <Zap className="h-5 w-5 md:h-6 md:w-6" />
-                </div>
-                <h3 className="text-base md:text-xl font-semibold mb-1 md:mb-3">Investissement facile</h3>
-                <p className="text-xs md:text-base text-gray-600 dark:text-gray-300">
-                  Interface intuitive et processus simplifié pour investir en quelques clics, même pour les débutants.
-                </p>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
+        
       </main>
       
       <Footer />
