@@ -283,7 +283,7 @@ const CreatorDetails = () => {
                   <span className="text-gray-700 dark:text-gray-300">{creator.investorsCount} investisseurs</span>
                 </div>
                 <div className="flex items-center">
-                  <Users className="h-4 w-4 mr-2 text-yellow-300" />
+                  <img src="/lovable-uploads/3cf07b2d-bc6b-4815-92f6-66b7a1df200a.png" alt="Followers" className="h-4 w-4 mr-2" style={{filter: 'brightness(0) saturate(100%) invert(81%) sepia(79%) saturate(452%) hue-rotate(6deg) brightness(102%) contrast(101%)'}} />
                   <span className="text-gray-700 dark:text-gray-300">{creatorProfile.followers.toLocaleString() || 0} followers</span>
                 </div>
                 <div className="flex items-center">
