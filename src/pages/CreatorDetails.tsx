@@ -244,7 +244,7 @@ const CreatorDetails = () => {
         </div>
 
         <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--hero-gradient-from))] to-[hsl(var(--hero-gradient-to))] opacity-95"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black to-white opacity-95"></div>
           <div className="absolute -top-[10%] -right-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-r from-investment-200/10 to-investment-400/5 blur-3xl"></div>
           <div className="absolute -bottom-[20%] -left-[10%] z-0 h-[300px] w-[300px] rounded-full bg-gradient-to-l from-investment-200/20 to-investment-300/10 blur-3xl"></div>
           
