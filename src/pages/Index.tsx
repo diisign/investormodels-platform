@@ -118,7 +118,7 @@ const Index = () => {
       totalInvested: creator.totalInvested
     };
   }).sort((a, b) => b.returnRate - a.returnRate).slice(0, 10);
-  const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
+  const slidesPerView = width < 640 ? 4 : width < 768 ? 5 : width < 1024 ? 6 : 7;
 
   // Function to handle navigation to affiliation page and scroll to top
   const handleAffiliationClick = (e: React.MouseEvent) => {
@@ -191,7 +191,7 @@ const Index = () => {
             </FadeIn>
             
             <FadeIn direction="up" delay={100}>
-              <div className="relative px-8 md:px-12 pb-6 md:pb-10">
+              <div className="relative px-2 md:px-4 pb-6 md:pb-10">
                 <Carousel opts={{
                 align: "center",
                 loop: true
