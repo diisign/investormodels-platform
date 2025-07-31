@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -6,42 +5,34 @@ import { Award, TrendingUp, Users } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 
 // Les données simulées pour les meilleurs parrains avec pseudonymes et nouveau calcul
-const topAffiliates = [
-  {
-    id: 1,
-    name: "Alexandre",
-    referrals: 743,
-    earnings: 111450,  // 743 × 150 (gain moyen de 150€ par filleul)
-  },
-  {
-    id: 2,
-    name: "MarieK_Official",
-    referrals: 612,
-    earnings: 91800,   // 612 × 150
-  },
-  {
-    id: 3,
-    name: "Jordan.crypto",
-    referrals: 589,
-    earnings: 88350,   // 589 × 150
-  },
-  {
-    id: 4,
-    name: "LeaInvestments",
-    referrals: 534,
-    earnings: 80100,   // 534 × 150
-  },
-  {
-    id: 5,
-    name: "MaximilienTrader",
-    referrals: 487,
-    earnings: 73050,   // 487 × 150
-  },
-];
-
+const topAffiliates = [{
+  id: 1,
+  name: "Alexandre",
+  referrals: 743,
+  earnings: 111450 // 743 × 150 (gain moyen de 150€ par filleul)
+}, {
+  id: 2,
+  name: "MarieK_Official",
+  referrals: 612,
+  earnings: 91800 // 612 × 150
+}, {
+  id: 3,
+  name: "Jordan.crypto",
+  referrals: 589,
+  earnings: 88350 // 589 × 150
+}, {
+  id: 4,
+  name: "LeaInvestments",
+  referrals: 534,
+  earnings: 80100 // 534 × 150
+}, {
+  id: 5,
+  name: "MaximilienTrader",
+  referrals: 487,
+  earnings: 73050 // 487 × 150
+}];
 const TopAffiliates = () => {
-  return (
-    <FadeIn direction="up" delay={100}>
+  return <FadeIn direction="up" delay={100}>
       <Card className="shadow-sm border border-gray-100 dark:border-gray-800">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
@@ -57,7 +48,7 @@ const TopAffiliates = () => {
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="rounded">
           <Table className="text-sm">
             <TableHeader>
               <TableRow>
@@ -72,19 +63,10 @@ const TopAffiliates = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {topAffiliates.map((affiliate, index) => (
-                <TableRow key={affiliate.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+              {topAffiliates.map((affiliate, index) => <TableRow key={affiliate.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                   <TableCell className="py-2 px-3 font-medium">
                     <div className="flex items-center gap-2">
-                      <div className={`h-5 w-5 rounded-full flex items-center justify-center text-xs font-semibold ${
-                        index === 0 
-                          ? "bg-yellow-100 text-yellow-700" 
-                          : index === 1 
-                            ? "bg-gray-200 text-gray-700" 
-                            : index === 2 
-                              ? "bg-amber-100 text-amber-700"
-                              : "bg-yellow-100 text-yellow-700"
-                      }`}>
+                      <div className={`h-5 w-5 rounded-full flex items-center justify-center text-xs font-semibold ${index === 0 ? "bg-yellow-100 text-yellow-700" : index === 1 ? "bg-gray-200 text-gray-700" : index === 2 ? "bg-amber-100 text-amber-700" : "bg-yellow-100 text-yellow-700"}`}>
                         {index + 1}
                       </div>
                       {affiliate.name}
@@ -92,14 +74,11 @@ const TopAffiliates = () => {
                   </TableCell>
                   <TableCell className="py-2 px-3 text-center">{affiliate.referrals}</TableCell>
                   <TableCell className="py-2 px-3 text-right font-medium text-yellow-300">{affiliate.earnings}€</TableCell>
-                </TableRow>
-              ))}
+                </TableRow>)}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-    </FadeIn>
-  );
+    </FadeIn>;
 };
-
 export default TopAffiliates;

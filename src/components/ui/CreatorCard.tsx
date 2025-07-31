@@ -110,7 +110,7 @@ const CreatorCard = ({
           <div className="pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <span className="text-xs sm:text-base font-medium">Total investi</span>
-              <span className="text-xs sm:text-base font-semibold text-investment-600 dark:text-investment-400">{totalInvested.toLocaleString()}€</span>
+              <span className="text-xs sm:text-base font-semibold text-yellow-300">{totalInvested.toLocaleString()}€</span>
             </div>
           </div>
         </div>

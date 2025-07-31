@@ -144,7 +144,7 @@ const Index = () => {
                 </h1>
                 
                 
-                <div className="pt-2">
+                <div className="pt-2 bg-transparent">
                   {isAuthenticated ? <button onClick={scrollToCreators}>
                       <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                         Commencer maintenant
@@ -212,7 +212,7 @@ const Index = () => {
               </div>
             </FadeIn>
             
-            <div className="mt-8 md:mt-12 text-center md:hidden">
+            <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
                 <GradientButton variant="outline" className="text-[#8B5CF6] border-[#8B5CF6] hover:bg-[#8B5CF6]/10">
                   Voir toutes les créatrices
@@ -227,10 +227,10 @@ const Index = () => {
         <section className="py-10 md:py-16 bg-transparent">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-center">
+              <h2 className="md:text-3xl font-bold mb-3 text-center text-xl">
                 Nos <span className="text-yellow-300">Meilleurs Parrains</span>
               </h2>
-              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
+              <p className="text-base md:text-lg text-center text-gray-950">
                 Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?
               </p>
             </FadeIn>
@@ -239,7 +239,7 @@ const Index = () => {
               <TopAffiliates />
             </div>
             
-            <div className="mt-8 text-center">
+            <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
                 <GradientButton size="default" variant="outline" className="text-investment-600 border-investment-600 hover:bg-investment-50">
                   Rejoindre le programme d'affiliation
@@ -257,9 +257,7 @@ const Index = () => {
                 Un Marché en <span className="text-yellow-300">Pleine Explosion</span>
               </h2>
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
-                  OnlyFans connaît une croissance explosive depuis sa création, avec des revenus qui ont été multipliés par plus de 10 en seulement 4 ans.
-                </p>
+                <p className="text-base md:text-lg text-center text-gray-950">OnlyFans connaît une croissance explosive depuis sa création en 2017 son Chiffre d'affaire a été multiplié par 300.</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
                   
                   

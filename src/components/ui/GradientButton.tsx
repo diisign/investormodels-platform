@@ -51,8 +51,8 @@ const GradientButton: React.FC<GradientButtonProps> = ({
     }
   };
   return <button className={cn('relative font-medium rounded-lg transform transition-all duration-300', 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-50', 'active:scale-[0.98] hover:-translate-y-0.5', getVariantClasses(), getSizeClasses(), fullWidth ? 'w-full' : '', 'overflow-hidden group', className)} {...props}>
-      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 animate-pulse-light opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-      <span className="relative flex items-center justify-center gap-2 text-yellow-300">
+      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 animate-pulse-light opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-zinc-950"></span>
+      <span className="relative flex items-center justify-center gap-2 text-slate-50">
         {icon && iconPosition === 'left' && <span className="transition-transform duration-300 group-hover:-translate-x-0.5">{icon}</span>}
         {children}
         {icon && iconPosition === 'right' && <span className="transition-transform duration-300 group-hover:translate-x-0.5">{icon}</span>}
