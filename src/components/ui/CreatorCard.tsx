@@ -78,30 +78,15 @@ const CreatorCard = ({
           {/* Creator Badge */}
           
           
-          {/* Key Metrics */}
-          <div className="space-y-1.5 sm:space-y-2.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
-                <span className="text-xs sm:text-sm">Followers</span>
+          {/* Variation Percentage */}
+          <div className="flex justify-center">
+            <div className="text-center">
+              <div className="text-2xl sm:text-3xl font-bold text-green-500">
+                +{creatorProfile.returnRate}%
               </div>
-              <span className="text-xs sm:text-sm font-medium">{creatorProfile.followers.toLocaleString()}</span>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <CircleDollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
-                <span className="text-xs sm:text-sm">Revenu mensuel</span>
+              <div className="text-xs sm:text-sm text-gray-500">
+                Dernière variation
               </div>
-              <span className="text-xs sm:text-sm font-medium">{monthlyRevenue.toLocaleString()}€</span>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
-                <span className="text-xs sm:text-sm">Investisseurs</span>
-              </div>
-              <span className="text-xs sm:text-sm font-medium">{investorsCount}</span>
             </div>
           </div>
         </div>
