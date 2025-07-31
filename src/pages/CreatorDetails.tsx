@@ -264,33 +264,41 @@ const CreatorDetails = () => {
               
               <FadeIn direction="up" delay={100} className="flex-grow">
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
-                <div className="flex flex-wrap gap-6 mt-4">
-                  <div className="flex items-center">
-                    <Users className="h-5 w-5 mr-2 text-purple-500" />
-                    <span>{creator.investorsCount} investisseurs</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Users className="h-5 w-5 mr-2 text-purple-500" />
-                    <span>{creatorProfile.followers.toLocaleString() || 0} followers</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Calendar className="h-5 w-5 mr-2 text-purple-500" />
-                    <span>Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', {
-                      year: 'numeric',
-                      month: 'long'
-                    })}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CircleDollarSign className="h-5 w-5 mr-2 text-purple-500" />
-                    <span>{creator.totalInvested.toLocaleString()}€ investis</span>
-                  </div>
-                </div>
               </FadeIn>
             </div>
             
             <div className="mt-6">
               <ActiveInvestors creatorId={creatorId || ''} />
             </div>
+          </div>
+        </section>
+        
+        {/* Statistiques - Section entre dégradé et performance */}
+        <section className="py-8 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+          <div className="container mx-auto px-4">
+            <FadeIn direction="up" delay={200}>
+              <div className="flex flex-wrap justify-center gap-8">
+                <div className="flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-gray-700 dark:text-gray-300">{creator.investorsCount} investisseurs</span>
+                </div>
+                <div className="flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-gray-700 dark:text-gray-300">{creatorProfile.followers.toLocaleString() || 0} followers</span>
+                </div>
+                <div className="flex items-center">
+                  <Calendar className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-gray-700 dark:text-gray-300">Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long'
+                  })}</span>
+                </div>
+                <div className="flex items-center">
+                  <CircleDollarSign className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-gray-700 dark:text-gray-300">{creator.totalInvested.toLocaleString()}€ investis</span>
+                </div>
+              </div>
+            </FadeIn>
           </div>
         </section>
         
