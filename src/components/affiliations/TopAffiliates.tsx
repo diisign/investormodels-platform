@@ -46,7 +46,7 @@ const TopAffiliates = () => {
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600">
+              <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300">
                 <Award className="h-4 w-4" />
               </div>
               <CardTitle className="text-lg font-medium">Top 5 des parrains (juin)</CardTitle>
@@ -83,7 +83,7 @@ const TopAffiliates = () => {
                             ? "bg-gray-200 text-gray-700" 
                             : index === 2 
                               ? "bg-amber-100 text-amber-700"
-                              : "bg-purple-100 text-purple-700"
+                              : "bg-yellow-100 text-yellow-700"
                       }`}>
                         {index + 1}
                       </div>
@@ -91,7 +91,7 @@ const TopAffiliates = () => {
                     </div>
                   </TableCell>
                   <TableCell className="py-2 px-3 text-center">{affiliate.referrals}</TableCell>
-                  <TableCell className="py-2 px-3 text-right font-medium text-purple-600">{affiliate.earnings}€</TableCell>
+                  <TableCell className="py-2 px-3 text-right font-medium text-yellow-300">{affiliate.earnings}€</TableCell>
                 </TableRow>
               ))}
             </TableBody>

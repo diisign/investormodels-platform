@@ -55,7 +55,7 @@ const CreatorCard = ({
     type: 'spring',
     stiffness: 300
   }} className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative`}>
-      {rank !== undefined && <div className="absolute top-2 left-2 z-10 h-7 w-7 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 flex items-center justify-center text-white font-bold text-sm shadow-md bg-zinc-950">
+      {rank !== undefined && <div className="absolute top-2 left-2 z-10 h-7 w-7 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center text-white font-bold text-sm shadow-md bg-zinc-950">
           {rank}
         </div>}
       <div onClick={handleClick} className="block h-full cursor-pointer">
@@ -82,7 +82,7 @@ const CreatorCard = ({
           <div className="space-y-1.5 sm:space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-500" />
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
                 <span className="text-xs sm:text-sm">Followers</span>
               </div>
               <span className="text-xs sm:text-sm font-medium">{creatorProfile.followers.toLocaleString()}</span>
@@ -90,7 +90,7 @@ const CreatorCard = ({
             
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <CircleDollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-500" />
+                <CircleDollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
                 <span className="text-xs sm:text-sm">Revenu mensuel</span>
               </div>
               <span className="text-xs sm:text-sm font-medium">{monthlyRevenue.toLocaleString()}€</span>
@@ -98,7 +98,7 @@ const CreatorCard = ({
             
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-purple-500" />
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
                 <span className="text-xs sm:text-sm">Investisseurs</span>
               </div>
               <span className="text-xs sm:text-sm font-medium">{investorsCount}</span>

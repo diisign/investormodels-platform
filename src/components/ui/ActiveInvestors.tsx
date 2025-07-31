@@ -38,7 +38,7 @@ const ActiveInvestors = ({ creatorId }: ActiveInvestorsProps) => {
     >
       <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
       <p className="text-sm md:text-base">
-        <span className="text-[#8B5CF6] font-bold">{count} {count > 1 ? "personnes sont" : "personne est"}</span>
+        <span className="text-yellow-300 font-bold">{count} {count > 1 ? "personnes sont" : "personne est"}</span>
         {" "}actuellement en train d'investir sur cette créatrice
       </p>
     </motion.div>
