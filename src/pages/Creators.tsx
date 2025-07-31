@@ -124,7 +124,7 @@ const Creators = () => {
       
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
-          <div className="container mx-auto px-4">
+          <div className="w-full px-6">
             <FadeIn direction="up" className="mb-8">
               <h1 className="text-3xl font-bold mb-2 text-yellow-300">Découvrez nos créatrices</h1>
               
@@ -201,7 +201,7 @@ const Creators = () => {
               </div>
             </FadeIn>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
               {currentCreators.map((creator, index) => <FadeIn key={creator.id} direction="up" delay={100 + index % 8 * 50}>
                   <CreatorCard id={creator.id} name={creator.name} imageUrl={creator.imageUrl} category={creator.category} investorsCount={creator.investorsCount} totalInvested={creator.totalInvested} monthlyRevenue={creator.monthlyRevenue} />
                 </FadeIn>)}
