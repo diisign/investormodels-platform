@@ -405,7 +405,7 @@ const CreatorDetails = () => {
                 <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
                 <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
                   <div className="p-4 space-y-4">
-                    {creators.filter(c => c.id !== creator.id).map(similarCreator => {
+                    {creators.map(similarCreator => {
                       const similarProfile = getCreatorProfile(similarCreator.id);
                       return (
                         <Link 
