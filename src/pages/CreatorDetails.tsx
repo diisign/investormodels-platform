@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { BarChart3, CircleDollarSign, TrendingUp, Users, Calendar, ArrowRight, ArrowLeft, Trophy } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
@@ -287,149 +288,153 @@ const CreatorDetails = () => {
         </section>
         
         <section className="py-[19px]">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-8">
-                <FadeIn direction="up" className="glass-card">
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-4">Performance des revenus</h2>
-                    <div className="h-72">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={monthlyRevenueData} margin={{
-                        top: 5,
-                        right: 5,
-                        left: 5,
-                        bottom: 5
-                      }}>
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                          <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                          <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
-                          <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
-                          <defs>
-                            <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
-                              <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
-                            </linearGradient>
-                          </defs>
-                          <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
-                          r: 0
-                        }} activeDot={{
-                          r: 6,
-                          strokeWidth: 0,
-                          fill: "#8B5CF6"
-                        }} />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={200} className="glass-card">
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-4">Statistiques clés</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                      <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-                        <div className="flex items-center mb-3">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
-                            <Users className="h-5 w-5" />
-                          </div>
-                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Investisseurs</span>
-                        </div>
-                        <div className="text-2xl font-bold">{creator.investorsCount}</div>
-                      </div>
-                      
-                      <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-                        <div className="flex items-center mb-3">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
-                            <Trophy className="h-5 w-5" />
-                          </div>
-                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Classement</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="text-2xl font-bold">#{creatorId ? getCreatorRanking(creatorId) : 30}</div>
-                          <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-                        <div className="flex items-center mb-3">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
-                            <BarChart3 className="h-5 w-5" />
-                          </div>
-                          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Revenu mensuel</span>
-                        </div>
-                        <div className="text-2xl font-bold">{creatorProfile?.monthlyRevenue.toLocaleString() || 0}€</div>
-                      </div>
-                    </div>
-                  </div>
-                </FadeIn>
+          <div className="container mx-auto px-4 space-y-16">
+            {/* Performance des revenus - Section 1 */}
+            <FadeIn direction="up">
+              <div className="w-full">
+                <h2 className="text-2xl font-semibold mb-6">Performance des revenus</h2>
+                <div className="h-72 bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={monthlyRevenueData} margin={{
+                    top: 5,
+                    right: 5,
+                    left: 5,
+                    bottom: 5
+                  }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                      <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                      <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
+                      <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
+                      <defs>
+                        <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
+                          <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
+                        </linearGradient>
+                      </defs>
+                      <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
+                      r: 0
+                    }} activeDot={{
+                      r: 6,
+                      strokeWidth: 0,
+                      fill: "#8B5CF6"
+                    }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
-              
-              <div className="space-y-8">
-                <FadeIn direction="up" className="glass-card">
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-4">Investir</h2>
-                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                      <div className="mb-4">
-                        <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
-                        <div className="flex items-center mt-2">
-                          <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
-                        </div>
+            </FadeIn>
+            
+            {/* Statistiques clés - Section 2 */}
+            <FadeIn direction="up" delay={200}>
+              <div className="w-full">
+                <h2 className="text-2xl font-semibold mb-6">Statistiques clés</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+                    <div className="flex items-center mb-3">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
+                        <Users className="h-5 w-5" />
                       </div>
-                      
-                      <GradientButton fullWidth size="lg" onClick={openInvestModal} variant="primary" gradientDirection="to-r" className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300">
-                        Investir maintenant
-                      </GradientButton>
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Investisseurs</span>
+                    </div>
+                    <div className="text-2xl font-bold">{creator.investorsCount}</div>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+                    <div className="flex items-center mb-3">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
+                        <Trophy className="h-5 w-5" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Classement</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-2xl font-bold">#{creatorId ? getCreatorRanking(creatorId) : 30}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+                    <div className="flex items-center mb-3">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
+                        <BarChart3 className="h-5 w-5" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Revenu mensuel</span>
+                    </div>
+                    <div className="text-2xl font-bold">{creatorProfile?.monthlyRevenue.toLocaleString() || 0}€</div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+            
+            {/* Investir - Section 3 */}
+            <FadeIn direction="up" delay={300}>
+              <div className="w-full">
+                <h2 className="text-2xl font-semibold mb-6">Investir</h2>
+                <div className="max-w-md mx-auto">
+                  <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <div className="mb-4">
+                      <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                     </div>
                     
-                    {!isAuthenticated && <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                        <span>Vous devez être connecté pour investir.</span>
-                        <div className="mt-2 flex justify-center space-x-3">
-                          <Link to="/login" className="text-investment-600 hover:text-investment-500 font-medium">
-                            Se connecter
-                          </Link>
-                          <span>ou</span>
-                          <Link to="/register" className="text-investment-600 hover:text-investment-500 font-medium">
-                            S'inscrire
-                          </Link>
-                        </div>
-                      </div>}
+                    <GradientButton fullWidth size="lg" onClick={openInvestModal} variant="primary" gradientDirection="to-r" className="bg-primary text-primary-foreground shadow-xl hover:shadow-2xl transition-all duration-300">
+                      Investir maintenant
+                    </GradientButton>
                   </div>
-                </FadeIn>
-                
-                <FadeIn direction="up" delay={100} className="glass-card">
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-4">Créatrices similaires</h2>
-                    <div className="space-y-4">
-                      {creators.filter(c => c.id !== creator.id).slice(0, 3).map(similarCreator => {
+                  
+                  {!isAuthenticated && <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                      <span>Vous devez être connecté pour investir.</span>
+                      <div className="mt-2 flex justify-center space-x-3">
+                        <Link to="/login" className="text-investment-600 hover:text-investment-500 font-medium">
+                          Se connecter
+                        </Link>
+                        <span>ou</span>
+                        <Link to="/register" className="text-investment-600 hover:text-investment-500 font-medium">
+                          S'inscrire
+                        </Link>
+                      </div>
+                    </div>}
+                </div>
+              </div>
+            </FadeIn>
+            
+            {/* Créatrices similaires - Section 4 avec Carousel */}
+            <FadeIn direction="up" delay={400}>
+              <div className="w-full">
+                <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
+                <Carousel className="w-full">
+                  <CarouselContent className="ml-0">
+                    {creators.filter(c => c.id !== creator.id).map(similarCreator => {
                       const similarProfile = getCreatorProfile(similarCreator.id);
-                      return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-investment-300 dark:hover:border-investment-600 transition-colors">
-                              <div className="h-12 w-12 rounded-full overflow-hidden mr-3">
-                                <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
+                      return (
+                        <CarouselItem key={similarCreator.id} className="basis-full sm:basis-1/2 lg:basis-1/3 pl-4">
+                          <Link to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors h-full">
+                            <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
+                              <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
+                            </div>
+                            <div className="flex-grow min-w-0">
+                              <h4 className="font-medium truncate">{similarProfile.name}</h4>
+                              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                {similarCreator.investorsCount} investisseurs
                               </div>
-                              <div className="flex-grow">
-                                <div className="flex justify-between items-center">
-                                  <h4 className="font-medium">{similarProfile.name}</h4>
-                                  <CreatorBadge returnRate={similarProfile.returnRate} />
-                                </div>
-                                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                  {similarCreator.investorsCount} investisseurs
-                                </div>
+                              <div className="text-sm text-primary mt-1">
+                                {similarProfile.returnRate}% rendement
                               </div>
-                            </Link>;
+                            </div>
+                          </Link>
+                        </CarouselItem>
+                      );
                     })}
-                    </div>
-                    
-                    <div className="mt-4">
-                      <Link to="/creators" className="text-investment-600 hover:text-investment-500 text-sm font-medium flex items-center justify-center">
-                        <span>Voir toutes les créatrices</span>
-                        <ArrowRight className="h-4 w-4 ml-1" />
-                      </Link>
-                    </div>
-                  </div>
-                </FadeIn>
+                  </CarouselContent>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </Carousel>
+                
+                <div className="mt-6 text-center">
+                  <Link to="/creators" className="text-primary hover:text-primary/80 text-sm font-medium flex items-center justify-center">
+                    <span>Voir toutes les créatrices</span>
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Link>
+                </div>
               </div>
-            </div>
+            </FadeIn>
           </div>
         </section>
       </main>
@@ -464,10 +469,6 @@ const CreatorDetails = () => {
                 
                 <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
                   <h3 className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Estimation du rendement (3 mois)</h3>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Badge:</span>
-                    <CreatorBadge returnRate={creatorProfile?.returnRate || 0} />
-                  </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés (3 mois):</span>
                     <span className="font-medium text-purple-600 dark:text-purple-400">{estimatedReturn.toFixed(2)}€</span>
@@ -478,7 +479,7 @@ const CreatorDetails = () => {
                   <button type="button" onClick={() => setShowInvestModal(false)} className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                     Annuler
                   </button>
-                  <GradientButton type="submit" variant="primary" gradientDirection="to-r" className="from-teal-400 to-blue-500 text-white shadow-xl hover:shadow-lg transition-all duration-300" disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user}>
+                  <GradientButton type="submit" variant="primary" gradientDirection="to-r" className="bg-primary text-primary-foreground shadow-xl hover:shadow-lg transition-all duration-300" disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user}>
                     {loading ? 'Redirection...' : 'Investir maintenant'}
                   </GradientButton>
                 </div>
