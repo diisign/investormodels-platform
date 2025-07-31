@@ -214,9 +214,8 @@ const Index = () => {
             
             <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
-                <GradientButton variant="outline" className="text-[#8B5CF6] border-[#8B5CF6] hover:bg-[#8B5CF6]/10">
+                <GradientButton variant="primary" icon={<ArrowRight className="h-4 w-4" />} iconPosition="right">
                   Voir toutes les créatrices
-                  <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
             </div>
@@ -241,9 +240,8 @@ const Index = () => {
             
             <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
-                <GradientButton size="default" variant="outline" className="text-investment-600 border-investment-600 hover:bg-investment-50">
+                <GradientButton size="default" variant="primary" icon={<ArrowRight className="h-4 w-4" />} iconPosition="right">
                   Rejoindre le programme d'affiliation
-                  <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
             </div>
