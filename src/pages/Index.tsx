@@ -189,29 +189,31 @@ const Index = () => {
                 <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent" />
               </Link>
             </FadeIn>
-            
-            <FadeIn direction="up" delay={100}>
-              <div className="relative pb-6 md:pb-10">
-                <Carousel opts={{
-                align: "center",
-                loop: true
-              }} className="w-full">
-                  <CarouselContent className="ml-0">
-                    {topCreators.map((creator, index) => {
-                    const creatorProfile = getCreatorProfile(creator.id);
-                    return <CarouselItem key={creator.id} className={`pl-2 basis-1/${slidesPerView}`}>
-                          <div className="p-1">
-                            <CreatorCard id={creator.id} name={creator.name || creatorProfile.name} imageUrl={creator.imageUrl} category={creator.category} investorsCount={creator.investorsCount} totalInvested={creator.totalInvested} monthlyRevenue={creatorProfile.monthlyRevenue} rank={index + 1} />
-                          </div>
-                        </CarouselItem>;
-                  })}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-2 h-9 w-9 rounded-full" />
-                  <CarouselNext className="right-2 h-9 w-9 rounded-full" />
-                </Carousel>
-              </div>
-            </FadeIn>
-            
+          </div>
+          
+          <FadeIn direction="up" delay={100}>
+            <div className="w-full pb-6 md:pb-10">
+              <Carousel opts={{
+              align: "center",
+              loop: true
+            }} className="w-full">
+                <CarouselContent className="ml-0">
+                  {topCreators.map((creator, index) => {
+                  const creatorProfile = getCreatorProfile(creator.id);
+                  return <CarouselItem key={creator.id} className={`pl-2 basis-1/${slidesPerView}`}>
+                        <div className="p-1">
+                          <CreatorCard id={creator.id} name={creator.name || creatorProfile.name} imageUrl={creator.imageUrl} category={creator.category} investorsCount={creator.investorsCount} totalInvested={creator.totalInvested} monthlyRevenue={creatorProfile.monthlyRevenue} rank={index + 1} />
+                        </div>
+                      </CarouselItem>;
+                })}
+                </CarouselContent>
+                <CarouselPrevious className="left-2 h-9 w-9 rounded-full" />
+                <CarouselNext className="right-2 h-9 w-9 rounded-full" />
+              </Carousel>
+            </div>
+          </FadeIn>
+          
+          <div className="container mx-auto px-4">
             <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
                 <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
