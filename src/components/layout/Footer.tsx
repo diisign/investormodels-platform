@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 const Footer: React.FC = () => {
-  return <footer className="bg-secondary dark:bg-secondary border-t border-border dark:border-border pt-16 pb-8">
+  return <footer className="border-t border-border dark:border-border pt-16 pb-8 bg-inherit">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand & About */}
