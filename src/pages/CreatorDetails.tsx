@@ -409,16 +409,17 @@ const CreatorDetails = () => {
                     className="w-full h-full"
                     opts={{
                       align: "start",
-                      loop: true,
+                      loop: false,
                       skipSnaps: false,
-                      dragFree: true
+                      dragFree: false,
+                      containScroll: "trimSnaps"
                     }}
                   >
                     <CarouselContent className="h-full -mt-1">
                       {creators.filter(c => c.id !== creator.id).map(similarCreator => {
                         const similarProfile = getCreatorProfile(similarCreator.id);
                         return (
-                          <CarouselItem key={similarCreator.id} className="pt-1 basis-1/2">
+                          <CarouselItem key={similarCreator.id} className="pt-1 basis-auto min-h-[120px]">
                             <Link to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors h-full">
                               <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
                                 <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
