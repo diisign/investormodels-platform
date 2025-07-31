@@ -63,7 +63,7 @@ const WithdrawReturnsButton = ({ investment, onWithdraw }: WithdrawReturnsButton
     <Button
       onClick={handleWithdraw}
       size="sm"
-      className="w-full mt-2 bg-green-500 hover:bg-green-600"
+      className="w-full mt-2 bg-primary hover:bg-primary/90"
     >
       <Plus className="h-4 w-4 mr-1" />
       Retirer {returnAmount.toFixed(2)}€

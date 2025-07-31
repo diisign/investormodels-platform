@@ -20,8 +20,8 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
     >
       <div className={cn(
         "h-10 w-10 rounded-full flex items-center justify-center mr-3",
-        transaction.type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
-        transaction.type === 'withdrawal' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
+        transaction.type === 'deposit' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" :
+        transaction.type === 'withdrawal' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" :
         "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
       )}>
         {transaction.type === 'deposit' && <Plus className="h-5 w-5" />}
@@ -33,8 +33,8 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
           <h4 className="font-medium text-sm">{transaction.description || 'Transaction'}</h4>
           <span className={cn(
             "text-sm font-semibold",
-            transaction.type === 'deposit' ? "text-blue-500" : 
-            transaction.type === 'withdrawal' ? "text-green-500" : 
+            transaction.type === 'deposit' ? "text-primary" : 
+            transaction.type === 'withdrawal' ? "text-primary" :
             "text-red-500"
           )}>
             {transaction.type === 'deposit' ? '+' : ''}
@@ -47,7 +47,7 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
           </span>
           <span className={cn(
             "text-xs px-2 py-0.5 rounded-full",
-            transaction.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+            transaction.status === 'completed' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" :
             transaction.status === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" :
             "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
           )}>

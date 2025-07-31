@@ -81,7 +81,7 @@ const CreatorCard = ({
           {/* Variation Percentage */}
           <div className="flex justify-center">
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-green-500">
+              <div className="text-2xl sm:text-3xl font-bold text-primary">
                 +{creatorProfile.returnRate}%
               </div>
               <div className="text-xs sm:text-sm text-gray-500">
@@ -95,7 +95,7 @@ const CreatorCard = ({
           <div className="pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <span className="text-xs sm:text-base font-medium">Total investi</span>
-              <span className="text-xs sm:text-base font-semibold text-yellow-300">{totalInvested.toLocaleString()}€</span>
+              <span className="text-xs sm:text-base font-semibold text-primary">{totalInvested.toLocaleString()}€</span>
             </div>
           </div>
         </div>

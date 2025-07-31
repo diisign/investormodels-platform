@@ -59,7 +59,7 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
                       <span className="text-xs text-gray-500">
                         Initial: {investment.initial}€
                       </span>
-                      <span className="text-xs font-medium text-green-500">
+                      <span className="text-xs font-medium text-primary">
                         +{investment.return_rate}%
                       </span>
                     </div>
@@ -80,7 +80,7 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
             <Button 
               onClick={() => navigate('/creators')}
               size="sm"
-              className="bg-gradient-to-r from-teal-400 to-blue-500 text-white"
+              className="bg-primary text-primary-foreground"
             >
               Découvrir des créatrices
             </Button>

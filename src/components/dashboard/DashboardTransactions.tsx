@@ -56,8 +56,8 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                   ) : (
                     <div className={cn(
                       "h-10 w-10 rounded-full flex items-center justify-center mr-3",
-                      type === 'deposit' ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" :
-                      type === 'withdrawal' ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" :
+                      type === 'deposit' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" :
+                      type === 'withdrawal' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" :
                       "bg-investment-100 text-investment-600 dark:bg-investment-900/30 dark:text-investment-400"
                     )}>
                       {type === 'deposit' && <Plus className="h-5 w-5" />}
@@ -76,9 +76,9 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                       </h4>
                       <span className={cn(
                         "text-sm font-semibold",
-                        type === 'deposit' ? "text-blue-500" : 
-                        type === 'withdrawal' ? "text-green-500" : 
-                        "text-green-500"
+                        type === 'deposit' ? "text-primary" : 
+                        type === 'withdrawal' ? "text-primary" : 
+                        "text-primary"
                       )}>
                         {type === 'deposit' ? '+' : ''}
                         {Math.abs(transaction.amount)}€
@@ -90,7 +90,7 @@ const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => 
                       </span>
                       <span className={cn(
                         "text-xs px-2 py-0.5 rounded-full",
-                        transaction.status === 'completed' ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                        transaction.status === 'completed' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" :
                         transaction.status === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" :
                         "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
                       )}>

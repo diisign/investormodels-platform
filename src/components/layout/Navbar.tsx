@@ -91,7 +91,7 @@ const Navbar: React.FC<NavbarProps> = ({
                       <User className="h-4 w-4 mr-2" />
                       <span>Mon profil</span>
                     </Link>
-                    <Link to="/deposit" className="flex items-center px-4 py-3 text-sm text-green-600 dark:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200" onClick={() => setIsUserMenuOpen(false)}>
+                    <Link to="/deposit" className="flex items-center px-4 py-3 text-sm text-primary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200" onClick={() => setIsUserMenuOpen(false)}>
                       <Plus className="h-4 w-4 mr-2" />
                       <span>Déposer des fonds</span>
                     </Link>
@@ -152,7 +152,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   <Link to="/profile" className="block py-2 font-medium text-gray-700 dark:text-gray-300" onClick={closeMenu}>
                     Mon profil
                   </Link>
-                  <Link to="/deposit" className="block py-2 font-medium text-green-600 dark:text-green-400" onClick={closeMenu}>
+                  <Link to="/deposit" className="block py-2 font-medium text-primary" onClick={closeMenu}>
                     Déposer des fonds
                   </Link>
                   <Link to="/profile?action=withdraw" className="block py-2 font-medium text-orange-600 dark:text-orange-400" onClick={closeMenu}>

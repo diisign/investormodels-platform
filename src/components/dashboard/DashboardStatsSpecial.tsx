@@ -59,7 +59,7 @@ const DashboardStatsSpecial = ({
         <Card className="p-4 sm:p-5 hover:bg-gray-50/80 dark:hover:bg-gray-800/60 transition-colors">
           <div className="flex items-center justify-between mb-2 sm:mb-3">
             <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Bénéfice</h3>
-            <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
+            <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/20 text-primary">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
