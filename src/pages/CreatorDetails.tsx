@@ -291,13 +291,13 @@ const CreatorDetails = () => {
           </div>
         </section>
         
-        <section className="py-[19px]">
-          <div className="container mx-auto px-4 space-y-16">
-            {/* Performance des revenus - Section 1 */}
+        {/* Performance des revenus - Section pleine largeur */}
+        <section className="py-[19px] w-full border-t border-b border-gray-200 dark:border-gray-700">
+          <div className="px-4 md:px-8">
             <FadeIn direction="up">
               <div className="w-full">
-                <h2 className="text-2xl font-semibold mb-6">Performance des revenus</h2>
-                <div className="h-72 bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
+                <h2 className="text-2xl font-semibold mb-6 text-center">Performance des revenus</h2>
+                <div className="h-72 bg-white dark:bg-gray-800 p-6">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={monthlyRevenueData} margin={{
                     top: 5,
@@ -327,10 +327,15 @@ const CreatorDetails = () => {
                 </div>
               </div>
             </FadeIn>
+          </div>
+        </section>
+        
+        <section className="py-[19px]">
+          <div className="container mx-auto px-4 space-y-16">
             
             {/* Statistiques clés - Section 2 */}
             <FadeIn direction="up" delay={200}>
-              
+              <div></div>
             </FadeIn>
             
             {/* Investir - Section 3 */}
