@@ -337,43 +337,7 @@ const CreatorDetails = () => {
         <section className="py-[19px]">
           <div className="container mx-auto px-4 space-y-16">
             
-            {/* Statistiques clés - Section 2 */}
             <FadeIn direction="up" delay={200}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Taux de rendement</p>
-                      <p className="text-2xl font-bold text-investment-600">{creatorProfile.returnRate}%</p>
-                    </div>
-                    <TrendingUp className="h-8 w-8 text-investment-500" />
-                  </div>
-                </div>
-                
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Revenus mensuels</p>
-                      <p className="text-2xl font-bold text-investment-600">{creatorProfile.monthlyRevenue.toLocaleString()}€</p>
-                    </div>
-                    <BarChart3 className="h-8 w-8 text-investment-500" />
-                  </div>
-                </div>
-                
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Classement</p>
-                      <p className="text-2xl font-bold text-investment-600">#{getCreatorRanking(creatorId!)}</p>
-                    </div>
-                    <Trophy className="h-8 w-8 text-investment-500" />
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-            
-            {/* Investir - Section 3 */}
-            <FadeIn direction="up" delay={300}>
               <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-6 text-center">Investir</h2>
                 <div className="max-w-md mx-auto">
