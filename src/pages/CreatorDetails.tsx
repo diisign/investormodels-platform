@@ -330,7 +330,37 @@ const CreatorDetails = () => {
             
             {/* Statistiques clés - Section 2 */}
             <FadeIn direction="up" delay={200}>
-              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Taux de rendement</p>
+                      <p className="text-2xl font-bold text-investment-600">{creatorProfile.returnRate}%</p>
+                    </div>
+                    <TrendingUp className="h-8 w-8 text-investment-500" />
+                  </div>
+                </div>
+                
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Revenus mensuels</p>
+                      <p className="text-2xl font-bold text-investment-600">{creatorProfile.monthlyRevenue.toLocaleString()}€</p>
+                    </div>
+                    <BarChart3 className="h-8 w-8 text-investment-500" />
+                  </div>
+                </div>
+                
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Classement</p>
+                      <p className="text-2xl font-bold text-investment-600">#{getCreatorRanking(creatorId!)}</p>
+                    </div>
+                    <Trophy className="h-8 w-8 text-investment-500" />
+                  </div>
+                </div>
+              </div>
             </FadeIn>
             
             {/* Investir - Section 3 */}
@@ -368,21 +398,20 @@ const CreatorDetails = () => {
             <FadeIn direction="up" delay={400}>
               <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
-                <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
+                <ScrollArea className="h-[800px] w-full rounded-lg border border-gray-100 dark:border-gray-800">
                   <div className="p-4 space-y-4">
-                    {creators.map(similarCreator => {
-                    const similarProfile = getCreatorProfile(similarCreator.id);
-                    return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
+                    {Object.values(creatorProfiles).map(profileCreator => {
+                      return <Link key={profileCreator.id} to={`/creator/${profileCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
                           <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
-                            <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
+                            <img src={profileCreator.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profileCreator.id}`} alt={profileCreator.name} className="h-full w-full object-cover" />
                           </div>
                           <div className="flex-grow min-w-0">
-                            <h4 className="font-medium truncate">{similarProfile.name}</h4>
+                            <h4 className="font-medium truncate">{profileCreator.name}</h4>
                             <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                              {similarCreator.investorsCount} investisseurs
+                              {Math.floor(profileCreator.followers / 15)} investisseurs
                             </div>
                             <div className="text-sm text-primary mt-1">
-                              {similarProfile.returnRate}% rendement
+                              {profileCreator.returnRate}% rendement
                             </div>
                           </div>
                         </Link>;
