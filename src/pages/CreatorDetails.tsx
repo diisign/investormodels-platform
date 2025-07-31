@@ -366,9 +366,9 @@ const CreatorDetails = () => {
             {/* Investir - Section 3 */}
             <FadeIn direction="up" delay={300}>
               <div className="w-full">
-                <h2 className="text-2xl font-semibold mb-6">Investir</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-center">Investir</h2>
                 <div className="max-w-md mx-auto">
-                  <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
                     <div className="mb-4">
                       <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                     </div>
