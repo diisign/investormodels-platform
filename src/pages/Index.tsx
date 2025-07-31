@@ -214,8 +214,9 @@ const Index = () => {
             
             <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
-                <GradientButton variant="primary" icon={<ArrowRight className="h-4 w-4" />} iconPosition="right">
+                <GradientButton variant="outline" className="text-[#8B5CF6] border-[#8B5CF6] hover:bg-[#8B5CF6]/10">
                   Voir toutes les créatrices
+                  <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
             </div>
@@ -226,7 +227,7 @@ const Index = () => {
         <section className="py-10 md:py-16 bg-transparent">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
-              <h2 className="md:text-3xl font-bold mb-3 text-center text-xl">
+              <h2 className="md:text-3xl font-bold mb-3 text-center text-2xl">
                 Nos <span className="text-yellow-300">Meilleurs Parrains</span>
               </h2>
               <p className="text-base md:text-lg text-center text-gray-950">
@@ -240,8 +241,9 @@ const Index = () => {
             
             <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
-                <GradientButton size="default" variant="primary" icon={<ArrowRight className="h-4 w-4" />} iconPosition="right">
+                <GradientButton size="default" variant="outline" className="text-investment-600 border-investment-600 hover:bg-investment-50">
                   Rejoindre le programme d'affiliation
+                  <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
             </div>
@@ -250,7 +252,7 @@ const Index = () => {
 
         <section className="py-12 md:py-20 bg-white">
           <div className="container mx-auto px-4">
-            <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
+            <FadeIn direction="up" className="max-w-3xl mx-auto mb-10 text-2xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
                 Un Marché en <span className="text-yellow-300">Pleine Explosion</span>
               </h2>
