@@ -214,7 +214,7 @@ const Index = () => {
             
             <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
-                <GradientButton variant="outline" className="text-[#8B5CF6] border-[#8B5CF6] hover:bg-[#8B5CF6]/10">
+                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                   Voir toutes les créatrices
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
@@ -241,7 +241,7 @@ const Index = () => {
             
             <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
-                <GradientButton size="default" variant="outline" className="text-investment-600 border-investment-600 hover:bg-investment-50">
+                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                   Rejoindre le programme d'affiliation
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
@@ -280,7 +280,7 @@ const Index = () => {
                   <span className="font-bold">Trustpilot</span>
                 </div>
                 <div className="flex items-center">
-                  {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-5 w-5 fill-current", star <= 4 ? "text-[#00b67a]" : "", star === 5 ? "text-[#00b67a] fill-[#00b67a]/70" : "")} />)}
+                  {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-5 w-5 fill-current", star <= 4 ? "text-yellow-300" : "", star === 5 ? "text-yellow-300 fill-yellow-300/70" : "")} />)}
                 </div>
                 <span className="text-base font-bold text-inherit">4.7/5</span>
               </div>
@@ -301,7 +301,7 @@ const Index = () => {
                   {trustpilotReviews.map(review => <CarouselItem key={review.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                       <FadeIn className="bg-white dark:bg-gray-800 h-full rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up">
                         <div className="flex items-center mb-4 bg-transparent">
-                          {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-4 w-4 fill-current", star <= review.rating ? "text-[#00b67a]" : "text-gray-300 dark:text-gray-600")} />)}
+                          {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-4 w-4 fill-current", star <= review.rating ? "text-yellow-300" : "text-gray-300 dark:text-gray-600")} />)}
                         </div>
                         <p className={cn("text-gray-700 dark:text-gray-300 mb-4", review.style)}>"{review.comment}"</p>
                         <div className="text-sm font-medium mt-auto">{review.name}</div>
