@@ -283,7 +283,7 @@ const CreatorDetails = () => {
                   <span className="text-gray-700 dark:text-gray-300">{creator.investorsCount} investisseurs</span>
                 </div>
                 <div className="flex items-center">
-                  <Users className="h-5 w-5 mr-2 text-primary" />
+                  <Users className="h-6 w-6 mr-2 text-gray-800 dark:text-gray-200" />
                   <span className="text-gray-700 dark:text-gray-300">{creatorProfile.followers.toLocaleString() || 0} followers</span>
                 </div>
                 <div className="flex items-center">
