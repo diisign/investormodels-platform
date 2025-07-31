@@ -35,7 +35,7 @@ const ActiveInvestors = ({
     y: 0
   }} className="flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 shadow-lg">
       <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-      <p className="text-sm md:text-base text-zinc-50">
+      <p className="text-sm md:text-base text-gray-950">
         <span className="text-yellow-300 font-bold">{count} {count > 1 ? "personnes sont" : "personne est"}</span>
         {" "}actuellement en train d'investir sur cette créatrice
       </p>
