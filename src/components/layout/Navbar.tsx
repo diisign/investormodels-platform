@@ -109,7 +109,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   </div>}
               </div> : <>
                 <Link to="/login">
-                  <GradientButton variant="outline" size="default" className="px-5">
+                  <GradientButton variant="secondary" size="default" className="px-5">
                     Connexion
                   </GradientButton>
                 </Link>
@@ -163,7 +163,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   </button>
                 </> : <div className="flex flex-col space-y-3">
                   <Link to="/login" onClick={closeMenu}>
-                    <GradientButton variant="outline" fullWidth>
+                    <GradientButton variant="secondary" fullWidth>
                       Connexion
                     </GradientButton>
                   </Link>

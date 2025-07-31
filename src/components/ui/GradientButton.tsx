@@ -28,9 +28,9 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return `bg-gradient-${gradientDirection} from-yellow-300 to-black text-white hover:shadow-2xl hover:shadow-yellow-400/40 focus:ring-yellow-500/50 shadow-xl`;
+        return `bg-black text-white hover:bg-gray-800 focus:ring-gray-500/50 shadow-xl`;
       case 'secondary':
-        return `bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 hover:shadow-md focus:ring-gray-400/50`;
+        return `bg-white text-black hover:bg-gray-50 border border-gray-200 hover:shadow-md focus:ring-gray-400/50`;
       case 'outline':
         return `bg-transparent border border-yellow-400 text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 focus:ring-yellow-400/50`;
       case 'ghost':
