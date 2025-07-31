@@ -136,9 +136,9 @@ const Creators = () => {
                 <div className="text-gray-400 mb-3">
                   <Search className="h-12 w-12 mx-auto opacity-30" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Aucun résultat trouvé</h3>
+                <h3 className="text-xl font-semibold mb-2">Aucune créatrice trouvée</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                  Nous n'avons trouvé aucune créatrice correspondant à votre recherche. Essayez avec d'autres termes ou filtres.
+                  Aucune créatrice n'est disponible pour le moment.
                 </p>
               </FadeIn>}
             
