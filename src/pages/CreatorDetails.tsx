@@ -330,42 +330,7 @@ const CreatorDetails = () => {
             
             {/* Statistiques clés - Section 2 */}
             <FadeIn direction="up" delay={200}>
-              <div className="w-full">
-                <h2 className="text-2xl font-semibold mb-6">Statistiques clés</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
-                        <Users className="h-5 w-5" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Investisseurs</span>
-                    </div>
-                    <div className="text-2xl font-bold">{creator.investorsCount}</div>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
-                        <Trophy className="h-5 w-5" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Classement</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-2xl font-bold">#{creatorId ? getCreatorRanking(creatorId) : 30}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-3">
-                        <BarChart3 className="h-5 w-5" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Revenu mensuel</span>
-                    </div>
-                    <div className="text-2xl font-bold">{creatorProfile?.monthlyRevenue.toLocaleString() || 0}€</div>
-                  </div>
-                </div>
-              </div>
+              
             </FadeIn>
             
             {/* Investir - Section 3 */}
@@ -406,13 +371,8 @@ const CreatorDetails = () => {
                 <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
                   <div className="p-4 space-y-4">
                     {creators.map(similarCreator => {
-                      const similarProfile = getCreatorProfile(similarCreator.id);
-                      return (
-                        <Link 
-                          key={similarCreator.id} 
-                          to={`/creator/${similarCreator.id}`} 
-                          className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block"
-                        >
+                    const similarProfile = getCreatorProfile(similarCreator.id);
+                    return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
                           <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
                             <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
                           </div>
@@ -425,9 +385,8 @@ const CreatorDetails = () => {
                               {similarProfile.returnRate}% rendement
                             </div>
                           </div>
-                        </Link>
-                      );
-                    })}
+                        </Link>;
+                  })}
                   </div>
                 </ScrollArea>
                 
