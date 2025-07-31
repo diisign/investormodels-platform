@@ -10,109 +10,109 @@
     --popover: 210 40% 96%;
     --popover-foreground: 222 30% 18%;
 
-    --primary: 180 70% 90%;
-    --primary-foreground: 222 30% 18%;
+    --primary: 45 95% 50%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 180 70% 90%;
-    --secondary-foreground: 222 30% 18%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 45 95% 85%;
 
-    --muted: 215 25% 85%;
-    --muted-foreground: 222 15% 40%;
+    --muted: 45 20% 85%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 140 60% 55%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 45 95% 60%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 80% 50%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 215 25% 85%;
     --input: 215 25% 85%;
-    --ring: 180 70% 90%;
+    --ring: 45 95% 50%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 180 50% 30%;
-    --sidebar-foreground: 215 15% 90%;
-    --sidebar-primary: 180 70% 90%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 180 50% 30%;
-    --sidebar-accent-foreground: 215 15% 90%;
-    --sidebar-border: 180 50% 30%;
-    --sidebar-ring: 180 75% 65%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 45 95% 85%;
+    --sidebar-primary: 45 95% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 20%;
+    --sidebar-accent-foreground: 45 95% 85%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 45 95% 60%;
 
-    --creator-gradient-from: 180 40% 70%;
-    --creator-gradient-to: 210 40% 60%;
+    --creator-gradient-from: 45 95% 70%;
+    --creator-gradient-to: 0 0% 20%;
     
-    --hero-gradient-from: 210 50% 90%;
-    --hero-gradient-to: 180 70% 50%;
+    --hero-gradient-from: 45 95% 70%;
+    --hero-gradient-to: 0 0% 15%;
     
-    --hero-icon-color: 180 70% 30%;
+    --hero-icon-color: 45 95% 50%;
 
-    --affiliation-gradient-from: 210 50% 90%;
-    --affiliation-gradient-to: 180 70% 50%;
+    --affiliation-gradient-from: 45 95% 70%;
+    --affiliation-gradient-to: 0 0% 15%;
     
-    /* New purple gradient variables */
-    --purple-gradient-from: 265 80% 70%;
-    --purple-gradient-to: 250 70% 50%;
-    --purple-accent: 265 70% 60%;
-    --purple-light: 265 80% 90%;
-    --purple-dark: 265 60% 40%;
+    /* New yellow gradient variables */
+    --purple-gradient-from: 45 95% 70%;
+    --purple-gradient-to: 0 0% 20%;
+    --purple-accent: 45 95% 60%;
+    --purple-light: 45 95% 90%;
+    --purple-dark: 0 0% 15%;
   }
 
   .dark {
-    --background: 265 30% 11%;
-    --foreground: 215 15% 90%;
+    --background: 0 0% 5%;
+    --foreground: 45 95% 85%;
 
-    --card: 265 30% 13%;
-    --card-foreground: 215 15% 90%;
+    --card: 0 0% 8%;
+    --card-foreground: 45 95% 85%;
 
-    --popover: 265 30% 13%;
-    --popover-foreground: 215 15% 90%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 45 95% 85%;
 
-    --primary: 180 70% 90%;
-    --primary-foreground: 222 30% 18%;
+    --primary: 45 95% 60%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 180 25% 20%;
-    --secondary-foreground: 215 15% 90%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 45 95% 85%;
 
-    --muted: 180 25% 20%;
-    --muted-foreground: 215 15% 65%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 45 50% 70%;
 
-    --accent: 140 60% 55%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 45 95% 70%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 350 80% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 180 25% 20%;
-    --input: 180 25% 20%;
-    --ring: 180 70% 90%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 45 95% 60%;
     
-    --sidebar-background: 180 35% 9%;
-    --sidebar-foreground: 215 15% 85%;
-    --sidebar-primary: 180 75% 65%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 180 35% 16%;
-    --sidebar-accent-foreground: 215 15% 90%;
-    --sidebar-border: 180 35% 16%;
-    --sidebar-ring: 180 75% 65%;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 45 95% 85%;
+    --sidebar-primary: 45 95% 60%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 45 95% 85%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 45 95% 60%;
 
-    --creator-gradient-from: 180 30% 40%;
-    --creator-gradient-to: 210 30% 35%;
+    --creator-gradient-from: 45 90% 60%;
+    --creator-gradient-to: 0 0% 10%;
     
-    --hero-gradient-from: 210 40% 25%;
-    --hero-gradient-to: 180 50% 20%;
+    --hero-gradient-from: 45 90% 50%;
+    --hero-gradient-to: 0 0% 8%;
     
-    --hero-icon-color: 180 85% 30%;
+    --hero-icon-color: 45 95% 60%;
 
-    --affiliation-gradient-from: 210 40% 25%;
-    --affiliation-gradient-to: 180 50% 20%;
+    --affiliation-gradient-from: 45 90% 50%;
+    --affiliation-gradient-to: 0 0% 8%;
     
-    /* New purple gradient variables for dark mode */
-    --purple-gradient-from: 265 50% 40%;
-    --purple-gradient-to: 250 40% 30%;
-    --purple-accent: 265 60% 50%;
-    --purple-light: 265 40% 70%;
-    --purple-dark: 265 60% 25%;
+    /* New yellow gradient variables for dark mode */
+    --purple-gradient-from: 45 90% 60%;
+    --purple-gradient-to: 0 0% 10%;
+    --purple-accent: 45 95% 60%;
+    --purple-light: 45 80% 70%;
+    --purple-dark: 0 0% 10%;
   }
 }
