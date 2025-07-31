@@ -49,31 +49,31 @@ const TopAffiliates = () => {
           </div>
         </CardHeader>
         <CardContent className="rounded">
-          <Table className="text-sm">
+          <Table className="text-xs">
             <TableHeader>
               <TableRow>
-                <TableHead className="py-2 px-3">Parrain</TableHead>
-                <TableHead className="py-2 px-3 text-center">
+                <TableHead className="py-1 px-2 text-xs">Parrain</TableHead>
+                <TableHead className="py-1 px-2 text-center text-xs">
                   <div className="flex items-center justify-center gap-1">
-                    <Users className="h-3.5 w-3.5" />
+                    <Users className="h-3 w-3" />
                     <span>Filleuls</span>
                   </div>
                 </TableHead>
-                <TableHead className="py-2 px-3 text-right">Gains</TableHead>
+                <TableHead className="py-1 px-2 text-right text-xs">Gains</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {topAffiliates.map((affiliate, index) => <TableRow key={affiliate.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                  <TableCell className="py-2 px-3 font-medium">
-                    <div className="flex items-center gap-2">
-                      <div className={`h-5 w-5 rounded-full flex items-center justify-center text-xs font-semibold ${index === 0 ? "bg-yellow-100 text-yellow-700" : index === 1 ? "bg-gray-200 text-gray-700" : index === 2 ? "bg-amber-100 text-amber-700" : "bg-yellow-100 text-yellow-700"}`}>
+                  <TableCell className="py-1 px-2 text-xs font-medium">
+                    <div className="flex items-center gap-1">
+                      <div className={`h-4 w-4 rounded-full flex items-center justify-center text-xs font-semibold ${index === 0 ? "bg-yellow-100 text-yellow-700" : index === 1 ? "bg-gray-200 text-gray-700" : index === 2 ? "bg-amber-100 text-amber-700" : "bg-yellow-100 text-yellow-700"}`}>
                         {index + 1}
                       </div>
                       {affiliate.name}
                     </div>
                   </TableCell>
-                  <TableCell className="py-2 px-3 text-center">{affiliate.referrals}</TableCell>
-                  <TableCell className="py-2 px-3 text-right font-medium text-yellow-300">{affiliate.earnings}€</TableCell>
+                  <TableCell className="py-1 px-2 text-center text-xs">{affiliate.referrals}</TableCell>
+                  <TableCell className="py-1 px-2 text-right text-xs font-medium text-yellow-300">{affiliate.earnings}€</TableCell>
                 </TableRow>)}
             </TableBody>
           </Table>
