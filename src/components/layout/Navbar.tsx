@@ -57,7 +57,9 @@ const Navbar: React.FC<NavbarProps> = ({
   return <nav className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4', isScrolled ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md' : 'bg-transparent')}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <button onClick={handleLogoClick} className="text-2xl font-bold text-gradient"></button>
+          <button onClick={handleLogoClick} className="flex items-center">
+            <img src="/lovable-uploads/da8a69c1-89c4-4d03-a24f-1bb2772c7e95.png" alt="SPLITZ" className="h-10 w-auto" />
+          </button>
 
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400')}>
