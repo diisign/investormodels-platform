@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { BarChart3, CircleDollarSign, TrendingUp, Users, Calendar, ArrowRight, ArrowLeft, Trophy } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
@@ -399,47 +399,37 @@ const CreatorDetails = () => {
               </div>
             </FadeIn>
             
-            {/* Créatrices similaires - Section 4 avec Carousel vertical */}
+            {/* Créatrices similaires - Section 4 avec ScrollArea */}
             <FadeIn direction="up" delay={400}>
               <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
-                <div className="h-96 overflow-hidden">
-                  <Carousel 
-                    orientation="vertical" 
-                    className="w-full h-full"
-                    opts={{
-                      align: "start",
-                      loop: false,
-                      skipSnaps: false,
-                      dragFree: false,
-                      containScroll: "trimSnaps"
-                    }}
-                  >
-                    <CarouselContent className="h-full -mt-1">
-                      {creators.filter(c => c.id !== creator.id).map(similarCreator => {
-                        const similarProfile = getCreatorProfile(similarCreator.id);
-                        return (
-                          <CarouselItem key={similarCreator.id} className="pt-1 basis-auto min-h-[120px]">
-                            <Link to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors h-full">
-                              <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
-                                <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
-                              </div>
-                              <div className="flex-grow min-w-0">
-                                <h4 className="font-medium truncate">{similarProfile.name}</h4>
-                                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                  {similarCreator.investorsCount} investisseurs
-                                </div>
-                                <div className="text-sm text-primary mt-1">
-                                  {similarProfile.returnRate}% rendement
-                                </div>
-                              </div>
-                            </Link>
-                          </CarouselItem>
-                        );
-                      })}
-                    </CarouselContent>
-                  </Carousel>
-                </div>
+                <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
+                  <div className="p-4 space-y-4">
+                    {creators.filter(c => c.id !== creator.id).map(similarCreator => {
+                      const similarProfile = getCreatorProfile(similarCreator.id);
+                      return (
+                        <Link 
+                          key={similarCreator.id} 
+                          to={`/creator/${similarCreator.id}`} 
+                          className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block"
+                        >
+                          <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
+                            <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
+                          </div>
+                          <div className="flex-grow min-w-0">
+                            <h4 className="font-medium truncate">{similarProfile.name}</h4>
+                            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                              {similarCreator.investorsCount} investisseurs
+                            </div>
+                            <div className="text-sm text-primary mt-1">
+                              {similarProfile.returnRate}% rendement
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
                 
                 <div className="mt-6 text-center">
                   <Link to="/creators" className="text-primary hover:text-primary/80 text-sm font-medium flex items-center justify-center">
