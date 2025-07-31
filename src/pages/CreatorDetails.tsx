@@ -291,42 +291,51 @@ const CreatorDetails = () => {
           </div>
         </section>
         
-        <section className="py-[19px]">
-          <div className="container mx-auto px-4 space-y-16">
-            {/* Performance des revenus - Section 1 */}
-            <FadeIn direction="up">
-              <div className="w-full">
-                <h2 className="text-2xl font-semibold mb-6">Performance des revenus</h2>
-                <div className="h-72 bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-100 dark:border-gray-700">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={monthlyRevenueData} margin={{
-                    top: 5,
-                    right: 5,
-                    left: 5,
-                    bottom: 5
-                  }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                      <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                      <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
-                      <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
-                      <defs>
-                        <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
-                          <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
-                        </linearGradient>
-                      </defs>
-                      <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
-                      r: 0
-                    }} activeDot={{
-                      r: 6,
-                      strokeWidth: 0,
-                      fill: "#8B5CF6"
-                    }} />
-                    </LineChart>
-                  </ResponsiveContainer>
+        {/* Performance des revenus - Section 1 - Pleine largeur */}
+        <section className="py-8">
+          <FadeIn direction="up">
+            <div className="w-full">
+              <div className="container mx-auto px-4 mb-6">
+                <h2 className="text-2xl font-semibold">Performance des revenus</h2>
+              </div>
+              <div className="h-72 bg-white dark:bg-gray-800 border-y border-gray-100 dark:border-gray-700">
+                <div className="container mx-auto px-4 h-full">
+                  <div className="h-full pt-6">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={monthlyRevenueData} margin={{
+                      top: 5,
+                      right: 5,
+                      left: 5,
+                      bottom: 5
+                    }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                        <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
+                        <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
+                        <defs>
+                          <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
+                          </linearGradient>
+                        </defs>
+                        <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
+                        r: 0
+                      }} activeDot={{
+                        r: 6,
+                        strokeWidth: 0,
+                        fill: "#8B5CF6"
+                      }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
-            </FadeIn>
+            </div>
+          </FadeIn>
+        </section>
+        
+        <section className="py-[19px]">
+          <div className="container mx-auto px-4 space-y-16">
             
             {/* Statistiques clés - Section 2 */}
             <FadeIn direction="up" delay={200}>
