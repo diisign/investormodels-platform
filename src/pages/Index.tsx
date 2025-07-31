@@ -181,12 +181,10 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
               <div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-yellow-300 lg:text-3xl">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 lg:text-3xl text-zinc-950 mx-0 px-0 py-0 my-0 text-center">
                   Top créatrices
                 </h2>
-                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
-                  Découvrez les créatrices avec les rendements prévus les plus élevés.
-                </p>
+                
               </div>
               <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
                 <span className="text-zinc-950">Voir toutes les créatrices</span>
