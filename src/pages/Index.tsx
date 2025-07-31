@@ -118,7 +118,7 @@ const Index = () => {
       totalInvested: creator.totalInvested
     };
   }).sort((a, b) => b.returnRate - a.returnRate).slice(0, 10);
-  const slidesPerView = width < 640 ? 4 : width < 768 ? 5 : width < 1024 ? 6 : 7;
+  const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
   const handleAffiliationClick = (e: React.MouseEvent) => {
@@ -144,7 +144,7 @@ const Index = () => {
                 </h1>
                 
                 
-                <div className="pt-2">
+                <div className="pt-2 bg-transparent">
                   {isAuthenticated ? <button onClick={scrollToCreators}>
                       <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                         Commencer maintenant
@@ -191,7 +191,7 @@ const Index = () => {
             </FadeIn>
             
             <FadeIn direction="up" delay={100}>
-              <div className="relative px-2 md:px-4 pb-6 md:pb-10">
+              <div className="relative px-8 md:px-12 pb-6 md:pb-10">
                 <Carousel opts={{
                 align: "center",
                 loop: true
@@ -200,7 +200,7 @@ const Index = () => {
                     {topCreators.map((creator, index) => {
                     const creatorProfile = getCreatorProfile(creator.id);
                     return <CarouselItem key={creator.id} className={`pl-2 md:pl-4 basis-1/${slidesPerView}`}>
-                          <div className="p-1 rounded-sm">
+                          <div className="p-1">
                             <CreatorCard id={creator.id} name={creator.name || creatorProfile.name} imageUrl={creator.imageUrl} category={creator.category} investorsCount={creator.investorsCount} totalInvested={creator.totalInvested} monthlyRevenue={creatorProfile.monthlyRevenue} rank={index + 1} />
                           </div>
                         </CarouselItem>;
@@ -212,9 +212,9 @@ const Index = () => {
               </div>
             </FadeIn>
             
-            <div className="mt-8 md:mt-12 text-center md:hidden">
+            <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
-                <GradientButton variant="outline" className="text-[#8B5CF6] border-[#8B5CF6] hover:bg-[#8B5CF6]/10">
+                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                   Voir toutes les créatrices
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
@@ -227,10 +227,10 @@ const Index = () => {
         <section className="py-10 md:py-16 bg-transparent">
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-center">
+              <h2 className="md:text-3xl font-bold mb-3 text-center text-2xl">
                 Nos <span className="text-yellow-300">Meilleurs Parrains</span>
               </h2>
-              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
+              <p className="text-base md:text-lg text-center text-gray-950">
                 Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?
               </p>
             </FadeIn>
@@ -239,9 +239,9 @@ const Index = () => {
               <TopAffiliates />
             </div>
             
-            <div className="mt-8 text-center">
+            <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
-                <GradientButton size="default" variant="outline" className="text-investment-600 border-investment-600 hover:bg-investment-50">
+                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                   Rejoindre le programme d'affiliation
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
@@ -250,29 +250,18 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
+        <section className="py-12 md:py-20 bg-white">
           <div className="container mx-auto px-4">
-            <FadeIn className="max-w-3xl mx-auto mb-10" direction="up">
+            <FadeIn direction="up" className="max-w-3xl mx-auto mb-10 text-2xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
-                Un Marché en <span className="text-investment-600">Pleine Expansion</span>
+                Un Marché en <span className="text-yellow-300">Pleine Explosion</span>
               </h2>
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 text-center">
-                  OnlyFans connaît une croissance explosive depuis sa création, avec des revenus qui ont été multipliés par plus de 10 en seulement 4 ans.
-                </p>
+                <p className="text-base md:text-lg text-center text-gray-950">OnlyFans connaît une croissance explosive depuis sa création en 2017 son Chiffre d'affaire a été multiplié par 300.</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">4.5M+</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Créateurs actifs</div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">1.6B$</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">CA en 2024</div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-investment-600 mb-1">+150%</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Croissance annuelle</div>
-                  </div>
+                  
+                  
+                  
                 </div>
               </div>
             </FadeIn>
@@ -287,16 +276,16 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="text-center max-w-3xl mx-auto mb-10 md:mb-12" direction="up">
               <div className="flex items-center justify-center gap-1 mb-4">
-                <div className="bg-[#00b67a] text-white px-2 py-1 rounded">
+                <div className="text-white px-2 py-1 rounded bg-black">
                   <span className="font-bold">Trustpilot</span>
                 </div>
                 <div className="flex items-center">
-                  {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-5 w-5 fill-current", star <= 4 ? "text-[#00b67a]" : "", star === 5 ? "text-[#00b67a] fill-[#00b67a]/70" : "")} />)}
+                  {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-5 w-5 fill-current", star <= 4 ? "text-yellow-300" : "", star === 5 ? "text-yellow-300 fill-yellow-300/70" : "")} />)}
                 </div>
-                <span className="font-bold text-[#00b67a]">4.7/5</span>
+                <span className="text-base font-bold text-inherit">4.7/5</span>
               </div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-                Ce que disent <span className="text-investment-600">nos utilisateurs</span>
+                Ce que disent <span className="text-yellow-300">nos utilisateurs</span>
               </h2>
               <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
                 Rejoignez plus de 20 000 investisseurs satisfaits qui ont déjà fait confiance à notre plateforme.
@@ -311,8 +300,8 @@ const Index = () => {
                 <CarouselContent>
                   {trustpilotReviews.map(review => <CarouselItem key={review.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                       <FadeIn className="bg-white dark:bg-gray-800 h-full rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up">
-                        <div className="flex items-center mb-4">
-                          {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-4 w-4 fill-current", star <= review.rating ? "text-[#00b67a]" : "text-gray-300 dark:text-gray-600")} />)}
+                        <div className="flex items-center mb-4 bg-transparent">
+                          {[1, 2, 3, 4, 5].map(star => <Star key={star} className={cn("h-4 w-4 fill-current", star <= review.rating ? "text-yellow-300" : "text-gray-300 dark:text-gray-600")} />)}
                         </div>
                         <p className={cn("text-gray-700 dark:text-gray-300 mb-4", review.style)}>"{review.comment}"</p>
                         <div className="text-sm font-medium mt-auto">{review.name}</div>

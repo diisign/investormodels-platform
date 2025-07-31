@@ -59,9 +59,9 @@ const CreatorCard = ({
           {rank}
         </div>}
       <div onClick={handleClick} className="block h-full cursor-pointer">
-        <div className="relative p-1 sm:p-2 bg-slate-100">
-          <div className="flex flex-col items-center mb-1 sm:mb-2 bg-transparent">
-            <Avatar className="h-8 w-8 sm:h-12 sm:w-12 border-2 border-white dark:border-gray-700 shadow-lg mb-1">
+        <div className="relative p-2 sm:p-4 bg-slate-100">
+          <div className="flex flex-col items-center mb-2 sm:mb-4 bg-transparent">
+            <Avatar className="h-16 w-16 sm:h-24 sm:w-24 border-4 border-white dark:border-gray-700 shadow-lg mb-2 sm:mb-3">
               <AvatarImage src={finalImageUrl} alt={creatorProfile.name} className="object-cover" onError={e => {
               console.log(`Image failed to load for ${creatorProfile.name}:`, finalImageUrl);
             }} onLoad={() => {
@@ -69,30 +69,48 @@ const CreatorCard = ({
                 console.log(`Image loaded successfully for Kayla:`, finalImageUrl);
               }
             }} />
-              <AvatarFallback className="text-xs">{creatorProfile.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
             </Avatar>
             
-            <h3 className="font-bold text-xs sm:text-sm text-center truncate w-full px-1">{creatorProfile.name}</h3>
+            <h3 className="font-bold text-sm sm:text-lg text-center">{creatorProfile.name}</h3>
           </div>
           
-          {/* Key Metrics - Simplified */}
-          <div className="space-y-0.5 sm:space-y-1">
+          {/* Creator Badge */}
+          
+          
+          {/* Key Metrics */}
+          <div className="space-y-1.5 sm:space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-xs">Revenus</span>
-              <span className="text-xs font-medium">{(monthlyRevenue/1000).toFixed(0)}k€</span>
+              <div className="flex items-center">
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
+                <span className="text-xs sm:text-sm">Followers</span>
+              </div>
+              <span className="text-xs sm:text-sm font-medium">{creatorProfile.followers.toLocaleString()}</span>
             </div>
             
             <div className="flex items-center justify-between">
-              <span className="text-xs">Investisseurs</span>
-              <span className="text-xs font-medium">{investorsCount}</span>
+              <div className="flex items-center">
+                <CircleDollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
+                <span className="text-xs sm:text-sm">Revenu mensuel</span>
+              </div>
+              <span className="text-xs sm:text-sm font-medium">{monthlyRevenue.toLocaleString()}€</span>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-yellow-300" />
+                <span className="text-xs sm:text-sm">Investisseurs</span>
+              </div>
+              <span className="text-xs sm:text-sm font-medium">{investorsCount}</span>
             </div>
           </div>
         </div>
         
-        <div className="px-1 sm:px-2 pb-1 sm:pb-2">
-          <div className="pt-1 border-t border-gray-100 dark:border-gray-700">
-            <div className="text-center">
-              <span className="text-xs font-semibold text-yellow-300">{(totalInvested/1000).toFixed(0)}k€ investi</span>
+        <div className="px-2 sm:px-4 pb-2 sm:pb-4">
+          <div className="pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <span className="text-xs sm:text-base font-medium">Total investi</span>
+              <span className="text-xs sm:text-base font-semibold text-yellow-300">{totalInvested.toLocaleString()}€</span>
             </div>
           </div>
         </div>
