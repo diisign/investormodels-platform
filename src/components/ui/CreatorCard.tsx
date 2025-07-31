@@ -61,7 +61,7 @@ const CreatorCard = ({
       <div onClick={handleClick} className="block h-full cursor-pointer">
         <div className="relative p-2 sm:p-4 bg-slate-100">
           <div className="flex flex-col items-center mb-2 sm:mb-4 bg-transparent">
-            <Avatar className="h-16 w-16 sm:h-24 sm:w-24 border-4 border-white dark:border-gray-700 shadow-lg mb-2 sm:mb-3">
+            <Avatar className="h-12 w-12 sm:h-16 sm:w-16 border-3 border-white dark:border-gray-700 shadow-lg mb-1 sm:mb-2">
               <AvatarImage src={finalImageUrl} alt={creatorProfile.name} className="object-cover" onError={e => {
               console.log(`Image failed to load for ${creatorProfile.name}:`, finalImageUrl);
             }} onLoad={() => {
