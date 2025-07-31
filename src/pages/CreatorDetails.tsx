@@ -399,37 +399,46 @@ const CreatorDetails = () => {
               </div>
             </FadeIn>
             
-            {/* Créatrices similaires - Section 4 avec Carousel */}
+            {/* Créatrices similaires - Section 4 avec Carousel vertical */}
             <FadeIn direction="up" delay={400}>
               <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
-                <Carousel className="w-full">
-                  <CarouselContent className="ml-0">
-                    {creators.filter(c => c.id !== creator.id).map(similarCreator => {
-                      const similarProfile = getCreatorProfile(similarCreator.id);
-                      return (
-                        <CarouselItem key={similarCreator.id} className="basis-full sm:basis-1/2 lg:basis-1/3 pl-4">
-                          <Link to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors h-full">
-                            <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
-                              <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
-                            </div>
-                            <div className="flex-grow min-w-0">
-                              <h4 className="font-medium truncate">{similarProfile.name}</h4>
-                              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                {similarCreator.investorsCount} investisseurs
+                <div className="h-96 overflow-hidden">
+                  <Carousel 
+                    orientation="vertical" 
+                    className="w-full h-full"
+                    opts={{
+                      align: "start",
+                      loop: true,
+                      skipSnaps: false,
+                      dragFree: true
+                    }}
+                  >
+                    <CarouselContent className="h-full -mt-1">
+                      {creators.filter(c => c.id !== creator.id).map(similarCreator => {
+                        const similarProfile = getCreatorProfile(similarCreator.id);
+                        return (
+                          <CarouselItem key={similarCreator.id} className="pt-1 basis-1/2">
+                            <Link to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors h-full">
+                              <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
+                                <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
                               </div>
-                              <div className="text-sm text-primary mt-1">
-                                {similarProfile.returnRate}% rendement
+                              <div className="flex-grow min-w-0">
+                                <h4 className="font-medium truncate">{similarProfile.name}</h4>
+                                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                  {similarCreator.investorsCount} investisseurs
+                                </div>
+                                <div className="text-sm text-primary mt-1">
+                                  {similarProfile.returnRate}% rendement
+                                </div>
                               </div>
-                            </div>
-                          </Link>
-                        </CarouselItem>
-                      );
-                    })}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-2" />
-                  <CarouselNext className="right-2" />
-                </Carousel>
+                            </Link>
+                          </CarouselItem>
+                        );
+                      })}
+                    </CarouselContent>
+                  </Carousel>
+                </div>
                 
                 <div className="mt-6 text-center">
                   <Link to="/creators" className="text-primary hover:text-primary/80 text-sm font-medium flex items-center justify-center">
