@@ -73,7 +73,7 @@ const TopAffiliates = () => {
                     </div>
                   </TableCell>
                   <TableCell className="py-1 px-2 text-center text-xs">{affiliate.referrals}</TableCell>
-                  <TableCell className="py-1 px-2 text-right text-xs font-medium text-yellow-300">{affiliate.earnings}€</TableCell>
+                  <TableCell className="py-1 px-2 text-right text-xs font-medium text-black dark:text-white">{affiliate.earnings}€</TableCell>
                 </TableRow>)}
             </TableBody>
           </Table>
