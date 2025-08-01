@@ -175,7 +175,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section ref={creatorsRef} className="py-12 bg-transparent md:py-[40px]">
+        <section ref={creatorsRef} className="bg-transparent md:py-[40px] py-[40px]">
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
               <div>
