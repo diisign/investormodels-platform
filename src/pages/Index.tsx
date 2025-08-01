@@ -158,7 +158,7 @@ const Index = () => {
                 
                 <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 pt-4 md:pt-6">
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl md:text-3xl font-bold text-gray-950">250+</span>
+                    <span className="text-2xl md:text-3xl font-bold text-gray-950">50+</span>
                     <span className="text-sm text-gray-500">Créatrices</span>
                   </div>
                   <div className="flex flex-col items-center">
