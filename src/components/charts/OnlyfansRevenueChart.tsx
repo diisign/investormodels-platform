@@ -4,6 +4,16 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 
 // Default yearly OnlyFans revenue data (in billions/millions USD)
 const defaultRevenueData = [{
+  year: '2017',
+  revenue: 0.005
+},
+// 5 millions
+{
+  year: '2018',
+  revenue: 0.05
+},
+// 50 millions
+{
   year: '2019',
   revenue: 0.12
 },
@@ -115,7 +125,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
           {isMonthlyData ? "Évolution de l'Investissement" : "Croissance du Chiffre d'Affaires OnlyFans"}
         </h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-4">
-          {isMonthlyData ? "Performance mensuelle (investissement vs rendement)" : "Évolution annuelle (2019-2024)"}
+          {isMonthlyData ? "Performance mensuelle (investissement vs rendement)" : "Évolution annuelle (2017-2024)"}
         </p>
 
         <ChartContainer className="aspect-[5/4] h-[240px] sm:h-[320px]" config={chartConfig}>
@@ -218,7 +228,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
         </ChartContainer>
 
         <div className="mt-2 sm:mt-4 text-xs text-gray-500 dark:text-gray-400">
-          Source: {isMonthlyData ? "Données de votre portefeuille" : "Rapports financiers publics OnlyFans 2019-2024"}
+          Source: {isMonthlyData ? "Données de votre portefeuille" : "Rapports financiers publics OnlyFans 2017-2024"}
         </div>
       </div>
     </div>;
