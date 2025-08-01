@@ -110,7 +110,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
   const fixedTicks = [0, 2500, 5000, 7500, 10000];
   return <div className="relative w-full h-full">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-300 to-yellow-300 rounded-2xl blur opacity-30 animate-pulse-light bg-inherit"></div>
-      <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 p-2 sm:p-4 h-full">
+      <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border-2 border-black dark:border-black p-2 sm:p-4 h-full">
         <h3 className="text-lg font-semibold mb-1 sm:mb-2">
           {isMonthlyData ? "Évolution de l'Investissement" : "Croissance du Chiffre d'Affaires OnlyFans"}
         </h3>
@@ -182,8 +182,8 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
         }}>
               <defs>
                 <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#000000" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#000000" stopOpacity={0.1} />
+                  <stop offset="5%" stopColor="#eab308" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#eab308" stopOpacity={0.1} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -212,7 +212,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
             }
             return null;
           }} />
-              <Area type="monotone" dataKey="revenue" stroke="#000000" fillOpacity={1} fill="url(#revenueGradient)" name="Chiffre d'affaires" />
+              <Area type="monotone" dataKey="revenue" stroke="#eab308" fillOpacity={1} fill="url(#revenueGradient)" name="Chiffre d'affaires" />
               <Legend />
             </AreaChart>}
         </ChartContainer>
