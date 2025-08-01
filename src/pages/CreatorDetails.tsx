@@ -236,7 +236,7 @@ const CreatorDetails = () => {
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-0 my-0 py-[8px]">
           <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4" />
             <span>Retour</span>
@@ -283,7 +283,9 @@ const CreatorDetails = () => {
                   <span className="text-gray-700 dark:text-gray-300">{creator.investorsCount} investisseurs</span>
                 </div>
                 <div className="flex items-center">
-                  <img src="/lovable-uploads/524b83a2-faac-4024-b292-0aacd341b37c.png" alt="Followers" className="h-5 w-5 mr-2" style={{filter: 'brightness(0) saturate(100%) invert(66%) sepia(76%) saturate(1392%) hue-rotate(5deg) brightness(103%) contrast(103%)'}} />
+                  <img src="/lovable-uploads/524b83a2-faac-4024-b292-0aacd341b37c.png" alt="Followers" className="h-5 w-5 mr-2" style={{
+                  filter: 'brightness(0) saturate(100%) invert(66%) sepia(76%) saturate(1392%) hue-rotate(5deg) brightness(103%) contrast(103%)'
+                }} />
                   <span className="text-gray-700 dark:text-gray-300">{creatorProfile.followers.toLocaleString() || 0} followers</span>
                 </div>
                 <div className="flex items-center">
