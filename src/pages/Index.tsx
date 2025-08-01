@@ -130,7 +130,7 @@ const Index = () => {
       
       <main className="flex-grow pt-16 md:pt-20">
         <section className="relative overflow-hidden pb-12 md:pb-20 pt-16 md:pt-24 lg:pt-32">
-          <div className="absolute inset-0 overflow-hidden bg-[purple-gradient-to] bg-transparent rounded-md py-0">
+          <div className="absolute inset-0 overflow-hidden rounded bg-[purple-gradient-to] bg-transparent">
             
             
           </div>
@@ -175,7 +175,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section ref={creatorsRef} className="py-12 bg-transparent md:py-0">
+        <section ref={creatorsRef} className="py-12 bg-transparent md:py-[40px]">
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
               <div>
