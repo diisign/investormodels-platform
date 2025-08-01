@@ -94,7 +94,7 @@ const CreatorCard = ({
         <div className="px-2 sm:px-4 pb-2 sm:pb-4">
           <div className="pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between">
-              <span className="text-xs sm:text-base font-medium">Total investi</span>
+              <span className="text-xs sm:text-base font-medium">Market Cap</span>
               <span className="text-xs sm:text-base font-semibold text-primary">{totalInvested.toLocaleString()}€</span>
             </div>
           </div>
