@@ -85,7 +85,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Investissements & Gains</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: 'hsl(var(--accent))' }}></div>
+          <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: 'hsl(0 0% 0%)' }}></div>
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Gains Parrainage</span>
         </div>
       </div>
@@ -140,7 +140,7 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
             />
             <Bar
               dataKey="referralGains"
-              fill="hsl(var(--accent))"
+              fill="hsl(0 0% 0%)"
               name="Gains Parrainage"
               radius={[2, 2, 0, 0]}
             />
