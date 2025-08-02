@@ -117,7 +117,7 @@ const Index = () => {
       returnRate: profile.returnRate,
       totalInvested: creator.totalInvested
     };
-  }).sort((a, b) => b.returnRate - a.returnRate).slice(0, 10);
+  }).sort((a, b) => b.totalInvested - a.totalInvested).slice(0, 10);
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
