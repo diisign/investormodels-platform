@@ -15,6 +15,7 @@ export interface CreatorCardProps {
   className?: string;
   monthlyRevenue?: number;
   rank?: number;
+  size?: 'small' | 'normal'; // Nouvelle prop pour contrôler la taille
 }
 const CreatorCard = ({
   id,
@@ -24,7 +25,8 @@ const CreatorCard = ({
   totalInvested,
   monthlyRevenue,
   className = '',
-  rank
+  rank,
+  size = 'small' // Valeur par défaut 'small' pour la page principale
 }: CreatorCardProps) => {
   const navigate = useNavigate();
   const creatorProfile = getCreatorProfile(id);
@@ -49,12 +51,16 @@ const CreatorCard = ({
 
   // Use the profile image URL instead of the props imageUrl
   const finalImageUrl = creatorProfile.imageUrl || imageUrl;
+  
+  // Déterminer la largeur basée sur la size prop
+  const widthClass = size === 'normal' ? 'w-48' : 'w-28';
+  
   return <motion.div whileHover={{
     y: -5
   }} transition={{
     type: 'spring',
     stiffness: 300
-  }} className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative w-28 max-w-sm`}>
+  }} className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative ${widthClass} max-w-sm`}>
       {rank !== undefined && <div className="absolute top-2 left-2 z-10 h-7 w-7 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center text-white font-bold text-sm shadow-md bg-zinc-950">
           {rank}
         </div>}
