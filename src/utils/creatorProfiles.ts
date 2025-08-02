@@ -295,7 +295,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
   },
   "brooks-mills-🍒": {
     id: "brooks-mills-🍒",
-    name: "Brooke Mills🍒",
+    name: "Brooke Mills",
     monthlyRevenue: 94950,
     returnRate: 130,
     followers: 6330,
