@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Users, CircleDollarSign } from 'lucide-react';
-import { getCreatorProfile } from '@/utils/creatorProfiles';
+import { getCreatorProfile, getLastVariation } from '@/utils/creatorProfiles';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import CreatorBadge from '@/components/ui/CreatorBadge';
 export interface CreatorCardProps {
@@ -82,7 +82,7 @@ const CreatorCard = ({
           <div className="flex justify-center">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-primary">
-                +{creatorProfile.returnRate}%
+                +{getLastVariation(id)}%
               </div>
               <div className="text-xs sm:text-sm text-gray-500">
                 Dernière variation
