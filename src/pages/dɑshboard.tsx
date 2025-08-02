@@ -108,17 +108,17 @@ const Dɑshboard = () => {
                     performanceData={performanceData}
                     onWithdraw={handleWithdraw}
                   />
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                    <InvestmentsList investments={transformedInvestments} />
+                    <DashboardTransactions transactions={transformedTransactions} />
+                  </div>
+
+                  <div className="mt-8">
+                    <AffiliationStats staticData={referralData.recentReferrals} pageType="dɑshboard" />
+                  </div>
                 </div>
               </FadeIn>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              <InvestmentsList investments={transformedInvestments} />
-              <DashboardTransactions transactions={transformedTransactions} />
-            </div>
-
-            <div className="mt-8">
-              <AffiliationStats staticData={referralData.recentReferrals} pageType="dɑshboard" />
             </div>
           </div>
         </section>
