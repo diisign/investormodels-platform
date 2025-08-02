@@ -1,5 +1,5 @@
 
-import { CircleDollarSign, TrendingUp, Users, Plus } from 'lucide-react';
+import { CircleDollarSign, TrendingUp, Users, Plus, Wallet } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import FadeIn from '@/components/animations/FadeIn';
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ const DashboardStats = ({
         <Card className="hover:bg-gray-50/80 dark:hover:bg-gray-800/60 transition-colors">
           <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
             <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Votre solde</CardTitle>
-            <CircleDollarSign className="h-4 w-4 text-yellow-300" />
+            <Wallet className="h-4 w-4 text-yellow-300" />
           </CardHeader>
           <CardContent>
             <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">{balance.toFixed(2)} €</div>
