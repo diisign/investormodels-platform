@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -15,36 +14,36 @@ import { Separator } from '@/components/ui/separator';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
 import { getUserInvestments } from '@/utils/investments';
 import { useQuery } from '@tanstack/react-query';
-
 const Affiliation = () => {
-  const { isAuthenticated, user } = useAuth();
+  const {
+    isAuthenticated,
+    user
+  } = useAuth();
   const [copied, setCopied] = useState(false);
-  const { isMobile } = useScreenSize();
-  
+  const {
+    isMobile
+  } = useScreenSize();
+
   // Fetch user investments to check if they have invested at least 100€
-  const { data: investments = [] } = useQuery({
+  const {
+    data: investments = []
+  } = useQuery({
     queryKey: ['userInvestments'],
     queryFn: getUserInvestments,
     enabled: isAuthenticated,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000 // 5 minutes
   });
 
   // Check if user has invested at least 100€
   const hasInvestedMinimum = investments.some(investment => investment.amount >= 100);
-  
-  const affiliationCode = isAuthenticated && user 
-    ? `${user.id.substring(0, 8)}` 
-    : 'DEMO2024';
-  
+  const affiliationCode = isAuthenticated && user ? `${user.id.substring(0, 8)}` : 'DEMO2024';
   const affiliationLink = `${window.location.origin}/register?ref=${affiliationCode}`;
-  
   const handleCopyLink = () => {
     navigator.clipboard.writeText(affiliationLink);
     setCopied(true);
     toast.success("Lien d'affiliation copié !");
     setTimeout(() => setCopied(false), 2000);
   };
-
   useEffect(() => {
     // Check if we should scroll to top based on sessionStorage flag
     const shouldScrollToTop = sessionStorage.getItem('scrollToTop') === 'true';
@@ -54,9 +53,7 @@ const Affiliation = () => {
       sessionStorage.removeItem('scrollToTop');
     }
   }, []);
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow">
@@ -77,7 +74,7 @@ const Affiliation = () => {
             <div className="max-w-4xl mx-auto">
               <div className="mb-4">
                 <Card className="bg-white shadow-xl border-0 relative">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500"></div>
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500 bg-slate-100"></div>
                   <div className="p-3 md:p-4 flex flex-col items-center">
                     <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-2 md:mb-3">
                       <BadgeDollarSign className="h-5 w-5 md:h-6 md:w-6 text-yellow-300" />
@@ -95,60 +92,37 @@ const Affiliation = () => {
                     
                     <div className="flex justify-center">
                       <div className="flex items-center gap-1 text-teal-600">
-                        <span className="font-semibold text-xs md:text-sm">Sans limite</span>
+                        <span className="text-xs text-yellow-300 font-semibold md:text-sm">Sans limite</span>
                         <Rocket size={isMobile ? 12 : 14} className="text-yellow-300" />
                       </div>
                     </div>
                     
-                    {!isAuthenticated && (
-                      <div className="pt-2 md:pt-3 w-full">
+                    {!isAuthenticated && <div className="pt-2 md:pt-3 w-full">
                         <Link to="/login">
-                          <GradientButton 
-                            gradientDirection="to-r" 
-                            fullWidth 
-                            size="sm"
-                            className="from-teal-400 to-blue-500 text-white text-xs py-1 h-8"
-                          >
+                          <GradientButton gradientDirection="to-r" fullWidth size="sm" className="from-teal-400 to-blue-500 text-white text-xs py-1 h-8">
                             Me connecter
                           </GradientButton>
                         </Link>
-                      </div>
-                    )}
+                      </div>}
                     
-                    {isAuthenticated && hasInvestedMinimum && (
-                      <div className="pt-2 md:pt-3 w-full">
-                        <GradientButton 
-                          onClick={handleCopyLink}
-                          size="sm"
-                          gradientDirection="to-r"
-                          fullWidth
-                          icon={<Copy className="h-3 w-3" />}
-                          iconPosition="left"
-                          className="from-teal-400 to-blue-500 text-white text-xs h-8 px-2"
-                        >
+                    {isAuthenticated && hasInvestedMinimum && <div className="pt-2 md:pt-3 w-full">
+                        <GradientButton onClick={handleCopyLink} size="sm" gradientDirection="to-r" fullWidth icon={<Copy className="h-3 w-3" />} iconPosition="left" className="from-teal-400 to-blue-500 text-white text-xs h-8 px-2">
                           Inviter des amis
                         </GradientButton>
-                      </div>
-                    )}
+                      </div>}
                     
-                    {isAuthenticated && !hasInvestedMinimum && (
-                      <div className="pt-2 md:pt-3 w-full">
+                    {isAuthenticated && !hasInvestedMinimum && <div className="pt-2 md:pt-3 w-full">
                         <div className="text-center p-2 bg-gray-100 rounded-lg">
                           <p className="text-xs text-gray-600 mb-2">
                             Investissez au moins 100€ pour débloquer votre lien de parrainage
                           </p>
                           <Link to="/creators">
-                            <Button 
-                              size="sm"
-                              variant="outline"
-                              className="text-xs h-8"
-                            >
+                            <Button size="sm" variant="outline" className="text-xs h-8">
                               Voir les créatrices
                             </Button>
                           </Link>
                         </div>
-                      </div>
-                    )}
+                      </div>}
                   </div>
                 </Card>
               </div>
@@ -161,7 +135,7 @@ const Affiliation = () => {
                     </div>
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vos Filleuls</h3>
                     <div className="mt-1 mb-1">
-                      <span className="text-sm md:text-xl font-bold text-teal-600">50€</span>
+                      <span className="text-sm font-bold text-yellow-300 md:text-xl">50€</span>
                       <span className="text-gray-600 text-xs ml-1">bonus</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
@@ -177,7 +151,7 @@ const Affiliation = () => {
                     </div>
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vous</h3>
                     <div className="mt-1 mb-1">
-                      <span className="text-sm md:text-xl font-bold text-teal-600">50%</span>
+                      <span className="text-sm font-bold text-yellow-300 md:text-xl">50%</span>
                       <span className="text-gray-600 text-xs ml-1">des gains</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
@@ -195,7 +169,7 @@ const Affiliation = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-6" direction="up">
               <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
-                Nos <span className="text-investment-600">Meilleurs Parrains</span>
+                Nos <span className="text-yellow-300">Meilleurs Parrains</span>
               </h2>
               <p className="text-base text-gray-600 dark:text-gray-300 text-center">
                 Découvrez les parrains qui ont gagné le plus en recommandant notre plateforme.
@@ -319,8 +293,6 @@ const Affiliation = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Affiliation;
