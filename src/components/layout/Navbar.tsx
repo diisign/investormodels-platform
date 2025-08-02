@@ -65,7 +65,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Créatrices
             </Link>
-            <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+            <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Affiliation
             </Link>
             <Link to="/dashboard" className={cn('font-medium transition-colors duration-300', isActive('/dashboard') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
@@ -131,7 +131,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <Link to="/creators" className={cn('block py-2 font-medium', isActive('/creators') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Créatrices
             </Link>
-            <Link to="/affiliation" className={cn('block py-2 font-medium', isActive('/affiliation') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
+            <Link to="/affiliation" className={cn('block py-2 font-medium', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Affiliation
             </Link>
             <Link to="/dashboard" className={cn('block py-2 font-medium', isActive('/dashboard') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
