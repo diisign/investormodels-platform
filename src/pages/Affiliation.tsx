@@ -62,7 +62,7 @@ const Affiliation = () => {
           <div className="absolute bottom-10 left-10 w-48 h-48 rounded-full bg-gray-100 blur-2xl"></div>
           
           <div className="container mx-auto px-4 relative z-10">
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 py-0">
               <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
                 Programme d'Affiliation
               </h1>
