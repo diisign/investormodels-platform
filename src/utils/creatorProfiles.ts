@@ -419,27 +419,18 @@ export const calculateTotalInvested = (monthlyRevenue: number): number => {
 
 // Fonction pour calculer la dernière variation en pourcentage
 export const getLastVariation = (creatorId: string): number => {
-  const profile = getCreatorProfile(creatorId);
+  // Générer les données de performance pour obtenir juin et juillet
+  const performanceData = generateMonthlyPerformanceData(creatorId);
   
-  // Pour Brooke Mills, exemple donné par l'utilisateur: 91214 à 94950 = +4%
-  if (creatorId === "brooks-mills-🍒") {
-    return 4;
-  }
-  
-  // Calculer la variation basée sur les revenus min/max pour chaque créateur
-  const { minRevenue, monthlyRevenue, maxRevenue } = profile;
-  
-  // Utiliser l'ID comme seed pour générer une variation déterministe
-  const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  
-  // Calculer la valeur précédente (entre 85% et 95% de la valeur actuelle)
-  const previousPercentage = 0.85 + ((seed % 100) / 1000); // Entre 0.85 et 0.95
-  const previousValue = Math.round(monthlyRevenue * previousPercentage);
+  // Trouver juin (index 11) et juillet (index 12)
+  const juneRevenue = performanceData[11].revenue; // Juin
+  const julyRevenue = performanceData[12].revenue; // Juillet
   
   // Calculer la variation en pourcentage
-  const variation = Math.round(((monthlyRevenue - previousValue) / previousValue) * 100);
+  const variation = ((julyRevenue - juneRevenue) / juneRevenue) * 100;
   
-  return Math.max(1, Math.min(variation, 15)); // Entre 1% et 15%
+  // Retourner la variation avec une décimale, arrondie
+  return Math.round(variation * 10) / 10;
 };
 
 // Fonction pour obtenir le classement d'une créatrice
