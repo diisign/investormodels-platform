@@ -200,11 +200,11 @@ const Dashboard = () => {
               </FadeIn>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
               <DashboardTransactions transactions={transactions} />
             </div>
 
-            <div className="mt-8">
+            <div className="mt-4">
               <AffiliationStats />
             </div>
           </div>
