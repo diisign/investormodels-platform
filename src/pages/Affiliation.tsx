@@ -76,7 +76,7 @@ const Affiliation = () => {
                 <Card className="bg-white shadow-xl border-0 relative">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500 bg-slate-100"></div>
                   <div className="p-3 md:p-4 flex flex-col items-center">
-                    <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-2 md:mb-3">
+                    <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-black flex items-center justify-center mb-2 md:mb-3">
                       <BadgeDollarSign className="h-5 w-5 md:h-6 md:w-6 text-yellow-300" />
                     </div>
                     
@@ -130,7 +130,7 @@ const Affiliation = () => {
               <div className="grid grid-cols-2 gap-4">
                 <Card className="bg-gray-50 border-gray-200 shadow-md overflow-hidden">
                   <div className="p-3 md:p-4 flex flex-col items-center text-center h-full">
-                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-purple-100 flex items-center justify-center mb-2">
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-black flex items-center justify-center mb-2">
                       <UserPlus className="h-4 w-4 md:h-5 md:w-5 text-yellow-300" />
                     </div>
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vos Filleuls</h3>
@@ -146,7 +146,7 @@ const Affiliation = () => {
                 
                 <Card className="bg-gray-50 border-gray-200 shadow-md overflow-hidden">
                   <div className="p-3 md:p-4 flex flex-col items-center text-center h-full">
-                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-purple-100 flex items-center justify-center mb-2">
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-black flex items-center justify-center mb-2">
                       <PiggyBank className="h-4 w-4 md:h-5 md:w-5 text-yellow-300" />
                     </div>
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vous</h3>
