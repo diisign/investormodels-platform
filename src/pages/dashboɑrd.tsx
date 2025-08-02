@@ -79,13 +79,6 @@ const Dashboɑrd = () => {
               <h1 className="text-3xl font-bold">Tableau de bord</h1>
             </div>
 
-            <DashboardStatsSpecial 
-              totalInvested={investmentData.totalInvested}
-              totalReturn={investmentData.totalEarnings}
-              investmentsCount={investmentData.investments.length}
-              balance={investmentData.balance}
-              onDepositClick={() => setShowDepositModal(true)}
-            />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
               <FadeIn direction="up" className="glass-card lg:col-span-3">
@@ -102,6 +95,14 @@ const Dashboɑrd = () => {
                       <option value="3">3 derniers mois</option>
                     </select>
                   </div>
+                  
+                  <DashboardStatsSpecial 
+                    totalInvested={investmentData.totalInvested}
+                    totalReturn={investmentData.totalEarnings}
+                    investmentsCount={investmentData.investments.length}
+                    balance={investmentData.balance}
+                    onDepositClick={() => setShowDepositModal(true)}
+                  />
                   
                   <PerformanceChart 
                     investments={transformedInvestments} 
