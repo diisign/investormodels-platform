@@ -128,7 +128,7 @@ const Login = () => {
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                           Mot de passe
                         </label>
-                        <Link to="/forgot-password" className="text-sm text-investment-600 hover:text-investment-500">
+                        <Link to="/forgot-password" className="text-sm text-yellow-300 hover:text-yellow-200">
                           Mot de passe oublié?
                         </Link>
                       </div>
@@ -161,7 +161,7 @@ const Login = () => {
                   <div className="mt-6 text-center">
                     <p className="text-sm text-gray-600 dark:text-gray-300">
                       Vous n'avez pas de compte?{' '}
-                      <Link to="/register" className="text-investment-600 hover:text-investment-500 font-medium">
+                      <Link to="/register" className="text-yellow-300 hover:text-yellow-200 font-medium">
                         Créer un compte
                       </Link>
                     </p>
