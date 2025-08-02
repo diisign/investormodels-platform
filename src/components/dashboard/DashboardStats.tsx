@@ -27,7 +27,9 @@ const DashboardStats = ({
         <Card className="hover:bg-gray-50/80 dark:hover:bg-gray-800/60 transition-colors">
           <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
             <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Votre solde</CardTitle>
-            <Wallet className="h-4 w-4 text-yellow-300" />
+            <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-black text-yellow-300">
+              <Wallet className="h-4 w-4" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">{balance.toFixed(2)} €</div>
