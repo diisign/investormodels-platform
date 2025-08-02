@@ -16,7 +16,7 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
   const navigate = useNavigate();
 
   return (
-    <FadeIn direction="up" className="glass-card">
+    <FadeIn direction="up">
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold">Mes investissements</h3>

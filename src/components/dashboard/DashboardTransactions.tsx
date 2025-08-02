@@ -24,7 +24,7 @@ interface DashboardTransactionsProps {
 
 const DashboardTransactions = ({ transactions }: DashboardTransactionsProps) => {
   return (
-    <FadeIn direction="up" delay={100} className="glass-card">
+    <FadeIn direction="up" delay={100}>
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold">Transactions récentes</h3>
