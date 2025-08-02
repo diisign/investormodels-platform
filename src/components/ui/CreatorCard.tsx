@@ -65,9 +65,9 @@ const CreatorCard = ({
           {rank}
         </div>}
       <div onClick={handleClick} className="block h-full cursor-pointer">
-        <div className="relative p-2 sm:p-4 bg-slate-100">
-          <div className="flex flex-col items-center mb-2 sm:mb-4 bg-transparent">
-            <Avatar className="h-16 w-16 sm:h-24 sm:w-24 border-4 border-white dark:border-gray-700 shadow-lg mb-2 sm:mb-3">
+        <div className="relative p-2 bg-slate-100">
+          <div className="flex flex-col items-center mb-2 bg-transparent">
+            <Avatar className="h-16 w-16 border-4 border-white dark:border-gray-700 shadow-lg mb-2">
               <AvatarImage src={finalImageUrl} alt={creatorProfile.name} className="object-cover" onError={e => {
               console.log(`Image failed to load for ${creatorProfile.name}:`, finalImageUrl);
             }} onLoad={() => {
@@ -78,7 +78,7 @@ const CreatorCard = ({
               <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
             </Avatar>
             
-            <h3 className="font-bold text-sm sm:text-lg text-center">{creatorProfile.name}</h3>
+            <h3 className="font-bold text-sm text-center">{creatorProfile.name}</h3>
           </div>
           
           {/* Creator Badge */}
@@ -87,18 +87,18 @@ const CreatorCard = ({
           {/* Variation Percentage */}
           <div className="flex justify-center">
             <div className="text-center">
-              <div className="text-lg sm:text-xl font-bold text-primary">
+              <div className="text-lg font-bold text-primary">
                 {getLastVariation(id) >= 0 ? '+' : ''}{getLastVariation(id)}%
               </div>
             </div>
           </div>
         </div>
         
-        <div className="px-2 sm:px-4 pb-2 sm:pb-4">
-          <div className="pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-700">
+        <div className="px-2 pb-2">
+          <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs sm:text-base font-medium">Market Cap</span>
-              <span className="text-xs sm:text-base font-semibold text-primary">{totalInvested.toLocaleString()}€</span>
+              <span className="text-xs font-medium">Market Cap</span>
+              <span className="text-xs font-semibold text-primary">{totalInvested.toLocaleString()}€</span>
             </div>
           </div>
         </div>
