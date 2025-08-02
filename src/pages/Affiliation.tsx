@@ -195,7 +195,7 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-black text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <BadgeDollarSign className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
@@ -211,7 +211,7 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-black text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <Gift className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
@@ -227,7 +227,7 @@ const Affiliation = () => {
               <FadeIn direction="left">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-black text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <Users className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
@@ -243,7 +243,7 @@ const Affiliation = () => {
               <FadeIn direction="right">
                 <div className="rounded-2xl bg-white shadow-md border border-gray-100 p-4 sm:p-6 h-full">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-                    <div className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
+                    <div className="bg-black text-yellow-300 p-3 rounded-lg mb-3 sm:mb-0 mx-auto sm:mx-0">
                       <HeartHandshake className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
