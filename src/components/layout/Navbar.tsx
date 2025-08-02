@@ -62,13 +62,13 @@ const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+            <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Créatrices
             </Link>
             <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Affiliation
             </Link>
-            <Link to="/dashboard" className={cn('font-medium transition-colors duration-300', isActive('/dashboard') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+            <Link to="/dashboard" className={cn('font-medium transition-colors duration-300', isActive('/dashboard') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Tableau de bord
             </Link>
           </div>
@@ -128,13 +128,13 @@ const Navbar: React.FC<NavbarProps> = ({
 
         <div className={cn('md:hidden absolute left-0 right-0 bg-white dark:bg-gray-900 shadow-lg border-t border-gray-100 dark:border-gray-800 transition-all duration-300 ease-out-expo', isOpen ? 'top-full opacity-100 visible' : 'top-[-400px] opacity-0 invisible')}>
           <div className="container mx-auto px-4 py-4 space-y-4">
-            <Link to="/creators" className={cn('block py-2 font-medium', isActive('/creators') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
+            <Link to="/creators" className={cn('block py-2 font-medium', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Créatrices
             </Link>
             <Link to="/affiliation" className={cn('block py-2 font-medium', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Affiliation
             </Link>
-            <Link to="/dashboard" className={cn('block py-2 font-medium', isActive('/dashboard') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
+            <Link to="/dashboard" className={cn('block py-2 font-medium', isActive('/dashboard') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Tableau de bord
             </Link>
             
