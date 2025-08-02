@@ -347,7 +347,7 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
   const { minRevenue, maxRevenue, monthlyRevenue } = profile;
   const range = maxRevenue - minRevenue;
   
-  const monthNames = ['Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'];
+  const monthNames = ['Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'];
   
   // Use creatorId to generate deterministic variations
   // This ensures the same creator always gets the same performance chart
@@ -370,9 +370,20 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     const normalized = (uniqueFactor + 1) / 2;
     
     // Convert to a revenue value within the min-max range
-    // For the last month (Juin), use the exact monthlyRevenue value
-    if (index === monthNames.length - 1) {
+    // For June (index 11), use the exact monthlyRevenue value
+    if (index === 11) {
       return monthlyRevenue;
+    }
+    
+    // For July (index 12, the new month), create a variation from June's value
+    if (index === 12) {
+      // Generate a variation between -15% and +20% from June's value
+      const julyVariationSeed = (seed * 73 + 97) % 100;
+      const variationPercent = -15 + (julyVariationSeed / 100) * 35; // -15% to +20%
+      const julyRevenue = Math.round(monthlyRevenue * (1 + variationPercent / 100));
+      
+      // Ensure it stays within reasonable bounds
+      return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
     }
     
     const revenue = Math.round(minRevenue + (range * normalized));
