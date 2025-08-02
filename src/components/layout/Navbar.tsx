@@ -62,10 +62,10 @@ const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400')}>
+            <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Créatrices
             </Link>
-            <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400')}>
+            <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Affiliation
             </Link>
             <Link to="/dashboard" className={cn('font-medium transition-colors duration-300', isActive('/dashboard') ? 'text-investment-600 dark:text-investment-400' : 'text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400')}>
