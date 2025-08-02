@@ -82,7 +82,7 @@ const CreatorCard = ({
           <div className="flex justify-center">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-primary">
-                +{getLastVariation(id)}%
+                {getLastVariation(id) >= 0 ? '+' : ''}{getLastVariation(id)}%
               </div>
               <div className="text-xs sm:text-sm text-gray-500">
                 Dernière variation
