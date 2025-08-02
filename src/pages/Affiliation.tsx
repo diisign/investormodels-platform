@@ -63,8 +63,8 @@ const Affiliation = () => {
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center mb-8 py-[43px]">
-              <h1 className="text-3xl md:text-5xl font-bold text-yellow-300 mb-3">
-                Programme d'Affiliation
+              <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
+                Programme d'<span className="text-yellow-300">Affiliation</span>
               </h1>
               <p className="mt-3 text-gray-600 max-w-2xl mx-auto text-base md:text-lg">
                 Parrainez vos amis et gagnez ensemble avec notre programme de récompenses exclusif.
