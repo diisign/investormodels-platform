@@ -74,7 +74,7 @@ const Affiliation = () => {
             <div className="max-w-4xl mx-auto">
               <div className="mb-4">
                 <Card className="bg-white shadow-xl border-0 relative">
-                  
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-blue-500 bg-slate-100"></div>
                   <div className="p-3 md:p-4 flex flex-col items-center">
                     <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-2 md:mb-3">
                       <BadgeDollarSign className="h-5 w-5 md:h-6 md:w-6 text-yellow-300" />
