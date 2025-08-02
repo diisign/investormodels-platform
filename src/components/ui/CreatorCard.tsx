@@ -54,7 +54,7 @@ const CreatorCard = ({
   }} transition={{
     type: 'spring',
     stiffness: 300
-  }} className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative w-36 max-w-sm`}>
+  }} className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative w-28 max-w-sm`}>
       {rank !== undefined && <div className="absolute top-2 left-2 z-10 h-7 w-7 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center text-white font-bold text-sm shadow-md bg-zinc-950">
           {rank}
         </div>}
