@@ -373,17 +373,12 @@ const CreatorDetails = () => {
             
             {/* Investir - Section 3 */}
             <FadeIn direction="up" delay={300}>
-              <div className="text-center py-8">
-                <Button 
-                  onClick={openInvestModal}
-                  size="lg"
-                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                >
+              <div className="text-center py-0">
+                <Button onClick={openInvestModal} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                   Investir maintenant
                 </Button>
                 
-                {!isAuthenticated && (
-                  <div className="mt-4 text-center text-sm text-muted-foreground">
+                {!isAuthenticated && <div className="mt-4 text-center text-sm text-muted-foreground">
                     <span>Vous devez être connecté pour investir.</span>
                     <div className="mt-2 flex justify-center space-x-3">
                       <Link to="/login" className="text-primary hover:text-primary/80 font-medium">
@@ -394,8 +389,7 @@ const CreatorDetails = () => {
                         S'inscrire
                       </Link>
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
             </FadeIn>
             
