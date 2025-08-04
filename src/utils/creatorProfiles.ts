@@ -386,6 +386,14 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
         const julyRevenue = Math.round(monthlyRevenue * 1.147); // +14.7%
         return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
       }
+      if (creatorId === 'creator27') { // Hannah
+        const julyRevenue = Math.round(monthlyRevenue * 1.052); // +5.2%
+        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      }
+      if (creatorId === 'creator23') { // Isabel
+        const julyRevenue = Math.round(monthlyRevenue * 1.08); // +8%
+        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      }
       
       // Generate a variation between -15% and +20% from June's value for other creators
       const julyVariationSeed = (seed * 73 + 97) % 100;
