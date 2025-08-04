@@ -198,7 +198,7 @@ const Index = () => {
           <FadeIn direction="up" delay={100}>
             <div className="w-full pb-6 md:pb-10">
               <Carousel opts={{
-              align: "center",
+              align: "start",
               loop: true
             }} className="w-full">
                 <CarouselContent className="ml-0">
