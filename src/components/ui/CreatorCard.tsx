@@ -84,23 +84,28 @@ const CreatorCard = ({
           {/* Creator Badge */}
           
           
-          {/* Variation Percentage */}
-          <div className="flex justify-center">
-            <div className="text-center">
-              <div className="text-lg font-bold text-primary">
-                {getLastVariation(id) >= 0 ? '+' : ''}{getLastVariation(id)}%
+          {/* Stats container with fixed layout */}
+          <div className="space-y-3">
+            {/* Variation Percentage */}
+            <div className="flex justify-center">
+              <div className="text-center">
+                <div className="text-lg font-bold text-primary">
+                  {getLastVariation(id) >= 0 ? '+' : ''}{getLastVariation(id)}%
+                </div>
+              </div>
+            </div>
+            
+            {/* Market Cap */}
+            <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-medium">Market Cap</span>
+                <span className="text-xs font-semibold text-black dark:text-white">{totalInvested.toLocaleString()}€</span>
               </div>
             </div>
           </div>
         </div>
         
         <div className="px-2 pb-2">
-          <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium">Market Cap</span>
-              <span className="text-xs font-semibold text-black dark:text-white">{totalInvested.toLocaleString()}€</span>
-            </div>
-          </div>
         </div>
       </div>
     </motion.div>;
