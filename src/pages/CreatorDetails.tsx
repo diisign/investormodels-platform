@@ -83,12 +83,23 @@ const CreatorDetails = () => {
   }, [creatorId]);
   // Options d'investissement avec leurs rendements
   const investmentOptions = {
-    '1': { label: '1 mois', returnRate: 15 },
-    '3': { label: '3 mois', returnRate: 60 },
-    '6': { label: '6 mois', returnRate: 150 },
-    '12': { label: '12 mois', returnRate: 400 }
+    '1': {
+      label: '1 mois',
+      returnRate: 15
+    },
+    '3': {
+      label: '3 mois',
+      returnRate: 60
+    },
+    '6': {
+      label: '6 mois',
+      returnRate: 150
+    },
+    '12': {
+      label: '12 mois',
+      returnRate: 400
+    }
   };
-
   useEffect(() => {
     if (investmentAmount && selectedDuration) {
       const investmentValue = parseFloat(investmentAmount);
@@ -352,7 +363,7 @@ const CreatorDetails = () => {
           </div>
         </section>
         
-        <section className="py-[19px]">
+        <section className="py-0">
           <div className="container mx-auto px-4 space-y-16">
             
             {/* Statistiques clés - Section 2 */}
@@ -362,10 +373,10 @@ const CreatorDetails = () => {
             
             {/* Investir - Section 3 */}
             <FadeIn direction="up" delay={300} className="mx-0 my-0">
-              <div className="w-full">
-                <h2 className="text-2xl font-semibold mb-6">Investir</h2>
+              <div className="w-full py-0 px-0">
+                
                 <div className="max-w-md mx-auto">
-                  <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="p-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-slate-50 py-0 px-[60px]">
                     <div className="mb-4">
                       <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
                     </div>
@@ -448,15 +459,8 @@ const CreatorDetails = () => {
                   <label htmlFor="duration" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Durée d'investissement
                   </label>
-                  <select 
-                    id="duration" 
-                    value={selectedDuration} 
-                    onChange={e => setSelectedDuration(e.target.value as '1' | '3' | '6' | '12')}
-                    className="input-field"
-                  >
-                    {Object.entries(investmentOptions).map(([key, option]) => (
-                      <option key={key} value={key}>{option.label}</option>
-                    ))}
+                  <select id="duration" value={selectedDuration} onChange={e => setSelectedDuration(e.target.value as '1' | '3' | '6' | '12')} className="input-field">
+                    {Object.entries(investmentOptions).map(([key, option]) => <option key={key} value={key}>{option.label}</option>)}
                   </select>
                 </div>
 
