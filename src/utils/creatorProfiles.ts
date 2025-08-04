@@ -377,7 +377,17 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     
     // For July (index 12, the new month), create a variation from June's value
     if (index === 12) {
-      // Generate a variation between -15% and +20% from June's value
+      // Check for specific creators with predefined variations
+      if (creatorId === 'creator22') { // Jasmine
+        const julyRevenue = Math.round(monthlyRevenue * 1.174); // +17.4%
+        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      }
+      if (creatorId === 'creator26') { // Kim
+        const julyRevenue = Math.round(monthlyRevenue * 1.147); // +14.7%
+        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      }
+      
+      // Generate a variation between -15% and +20% from June's value for other creators
       const julyVariationSeed = (seed * 73 + 97) % 100;
       const variationPercent = -15 + (julyVariationSeed / 100) * 35; // -15% to +20%
       const julyRevenue = Math.round(monthlyRevenue * (1 + variationPercent / 100));
