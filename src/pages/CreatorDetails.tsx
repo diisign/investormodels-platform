@@ -448,7 +448,7 @@ const CreatorDetails = () => {
                   </p>
                 </div>
                 
-                <div className="p-4 rounded-lg border border-purple-100 dark:border-purple-800 bg-slate-50">
+                <div className="p-4 rounded-lg border border-black dark:border-black bg-slate-50">
                   <h3 className="text-sm font-medium mb-2 text-yellow-300">Estimation du rendement (3 mois)</h3>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés (3 mois):</span>
