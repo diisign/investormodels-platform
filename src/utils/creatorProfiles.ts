@@ -257,7 +257,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     id: "creator26",
     name: "Kim 🦋",
     monthlyRevenue: 62100,
-    returnRate: 110,
+    returnRate: 114.7,
     followers: 4140,
     minRevenue: 41000,
     maxRevenue: 80000,
