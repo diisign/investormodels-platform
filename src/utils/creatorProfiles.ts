@@ -349,6 +349,9 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
   
   const monthNames = ['Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'];
   
+  // Créatrices spécifiques qui doivent avoir +8.1% de variation
+  const topCreatorsWithSpecialVariation = ['creator17', 'creator18', 'creator19', 'creator20', 'creator21'];
+  
   // Use creatorId to generate deterministic variations
   // This ensures the same creator always gets the same performance chart
   const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -377,7 +380,13 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     
     // For July (index 12, the new month), create a variation from June's value
     if (index === 12) {
-      // Generate a variation between -15% and +20% from June's value
+      // Si c'est une des créatrices du top, forcer +8.1% de variation
+      if (topCreatorsWithSpecialVariation.includes(creatorId)) {
+        const julyRevenue = Math.round(monthlyRevenue * 1.081); // +8.1% exactement
+        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      }
+      
+      // Pour les autres, générer une variation normale
       const julyVariationSeed = (seed * 73 + 97) % 100;
       const variationPercent = -15 + (julyVariationSeed / 100) * 35; // -15% to +20%
       const julyRevenue = Math.round(monthlyRevenue * (1 + variationPercent / 100));
