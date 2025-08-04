@@ -32,6 +32,7 @@ const CreatorDetails = () => {
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
+  const [selectedDuration, setSelectedDuration] = useState<'1' | '3' | '6' | '12'>('3');
   const queryClient = useQueryClient();
   const mockCreator = creators.find(c => c.id === creatorId);
   const profileExists = creatorId && creatorProfiles[creatorId];
@@ -80,18 +81,26 @@ const CreatorDetails = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [creatorId]);
-  useEffect(() => {
-    if (creatorProfile && investmentAmount) {
-      const investmentValue = parseFloat(investmentAmount);
-      const returnRate = creatorProfile.returnRate; // Taux en pourcentage
+  // Options d'investissement avec leurs rendements
+  const investmentOptions = {
+    '1': { label: '1 mois', returnRate: 15 },
+    '3': { label: '3 mois', returnRate: 60 },
+    '6': { label: '6 mois', returnRate: 150 },
+    '12': { label: '12 mois', returnRate: 400 }
+  };
 
-      // Calcul direct: returnRate% de investmentValue
+  useEffect(() => {
+    if (investmentAmount && selectedDuration) {
+      const investmentValue = parseFloat(investmentAmount);
+      const returnRate = investmentOptions[selectedDuration].returnRate;
+
+      // Calcul du gain basé sur le taux de rendement total pour la période
       const gain = investmentValue * returnRate / 100;
       setEstimatedReturn(gain);
     } else {
       setEstimatedReturn(0);
     }
-  }, [investmentAmount, creatorProfile]);
+  }, [investmentAmount, selectedDuration]);
   if (!creatorExists || !creatorProfile) {
     return <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
@@ -434,6 +443,22 @@ const CreatorDetails = () => {
                 </div>
                 
                 <div>
+                  <label htmlFor="duration" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Durée d'investissement
+                  </label>
+                  <select 
+                    id="duration" 
+                    value={selectedDuration} 
+                    onChange={e => setSelectedDuration(e.target.value as '1' | '3' | '6' | '12')}
+                    className="input-field"
+                  >
+                    {Object.entries(investmentOptions).map(([key, option]) => (
+                      <option key={key} value={key}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
                   <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Montant (€)
                   </label>
@@ -449,9 +474,13 @@ const CreatorDetails = () => {
                 </div>
                 
                 <div className="p-4 rounded-lg border border-black dark:border-black bg-slate-50">
-                  <h3 className="text-sm font-medium mb-2 text-yellow-300">Estimation du rendement (3 mois)</h3>
+                  <h3 className="text-sm font-medium mb-2 text-yellow-300">Estimation du rendement ({investmentOptions[selectedDuration].label})</h3>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Somme investie:</span>
+                    <span className="font-medium">{investmentAmount || '0'}€</span>
+                  </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés (3 mois):</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés:</span>
                     <span className="font-medium text-yellow-300">{estimatedReturn.toFixed(2)}€</span>
                   </div>
                 </div>
