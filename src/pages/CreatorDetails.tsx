@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { Button } from '@/components/ui/button';
-import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested, getCreatorRanking } from '@/utils/creatorProfiles';
+import { getCreatorProfile, generateMonthlyPerformanceData, creatorProfiles, calculateTotalInvested, getCreatorRanking, getLastVariation } from '@/utils/creatorProfiles';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
@@ -397,8 +397,10 @@ const CreatorDetails = () => {
                 <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
                 <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
                   <div className="p-4 space-y-4">
-                    {creators.map(similarCreator => {
+                     {creators.map(similarCreator => {
                     const similarProfile = getCreatorProfile(similarCreator.id);
+                    const marketCap = calculateTotalInvested(similarProfile.monthlyRevenue);
+                    const lastVariation = getLastVariation(similarCreator.id);
                     return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
                           <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
                             <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
@@ -406,10 +408,10 @@ const CreatorDetails = () => {
                           <div className="flex-grow min-w-0">
                             <h4 className="font-medium truncate">{similarProfile.name}</h4>
                             <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                              {similarCreator.investorsCount} investisseurs
+                              Market Cap: {marketCap.toLocaleString()}€
                             </div>
                             <div className="text-sm text-primary mt-1">
-                              {similarProfile.returnRate}% rendement
+                              {lastVariation >= 0 ? '+' : ''}{lastVariation}%
                             </div>
                           </div>
                         </Link>;
