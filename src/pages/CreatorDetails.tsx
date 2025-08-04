@@ -361,7 +361,7 @@ const CreatorDetails = () => {
                   </div>
                   
                   <div className="text-center">
-                    <Button onClick={openInvestModal} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <Button onClick={openInvestModal} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 px-[10px] py-0">
                       Investir maintenant
                     </Button>
                     
