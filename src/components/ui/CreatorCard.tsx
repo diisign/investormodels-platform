@@ -60,13 +60,13 @@ const CreatorCard = ({
   }} transition={{
     type: 'spring',
     stiffness: 300
-  }} className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative ${widthClass} max-w-sm h-[220px]`}>
+  }} className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 ${className} relative ${widthClass} max-w-sm h-[220px] flex flex-col`}>
       {rank !== undefined && <div className="absolute top-2 left-2 z-10 h-7 w-7 rounded-full bg-zinc-950 flex items-center justify-center text-white font-bold text-sm shadow-md">
           {rank}
         </div>}
-      <div onClick={handleClick} className="block h-full cursor-pointer">
-        <div className="relative p-2 bg-slate-100">
-          <div className="flex flex-col items-center mb-2 bg-transparent">
+      <div onClick={handleClick} className="block h-full cursor-pointer flex flex-col">
+        <div className="relative p-2 bg-slate-100 flex-1 flex flex-col justify-between">
+          <div className="flex flex-col items-center bg-transparent">
             <Avatar className="h-16 w-16 border-4 border-white dark:border-gray-700 shadow-lg mb-2">
               <AvatarImage src={finalImageUrl} alt={creatorProfile.name} className="object-cover" onError={e => {
               console.log(`Image failed to load for ${creatorProfile.name}:`, finalImageUrl);
@@ -78,13 +78,10 @@ const CreatorCard = ({
               <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
             </Avatar>
             
-            <h3 className="font-bold text-sm text-center">{creatorProfile.name}</h3>
+            <h3 className="font-bold text-sm text-center mb-2">{creatorProfile.name}</h3>
           </div>
           
-          {/* Creator Badge */}
-          
-          
-          {/* Variation Percentage */}
+          {/* Variation Percentage - fixé en bas de la section grise */}
           <div className="flex justify-center">
             <div className="text-center">
               <div className="text-lg font-bold text-primary">
