@@ -330,33 +330,54 @@ const CreatorDetails = () => {
             <FadeIn direction="up">
               <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-6 text-center">Performance des revenus</h2>
-                <div className="h-72 bg-white dark:bg-gray-800 p-6">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={monthlyRevenueData} margin={{
-                    top: 5,
-                    right: 5,
-                    left: 5,
-                    bottom: 5
-                  }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                      <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                      <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
-                      <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
-                      <defs>
-                        <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
-                          <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
-                        </linearGradient>
-                      </defs>
-                      <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
-                      r: 0
-                    }} activeDot={{
-                      r: 6,
-                      strokeWidth: 0,
-                      fill: "#8B5CF6"
-                    }} />
-                    </LineChart>
-                  </ResponsiveContainer>
+                <div className="bg-white dark:bg-gray-800 p-6">
+                  <div className="h-72 mb-6">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={monthlyRevenueData} margin={{
+                      top: 5,
+                      right: 5,
+                      left: 5,
+                      bottom: 5
+                    }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                        <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
+                        <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
+                        <defs>
+                          <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
+                          </linearGradient>
+                        </defs>
+                        <Line type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={3} dot={{
+                        r: 0
+                      }} activeDot={{
+                        r: 6,
+                        strokeWidth: 0,
+                        fill: "#8B5CF6"
+                      }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                  
+                  <div className="text-center">
+                    <Button onClick={openInvestModal} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                      Investir maintenant
+                    </Button>
+                    
+                    {!isAuthenticated && <div className="mt-4 text-center text-sm text-muted-foreground">
+                        <span>Vous devez être connecté pour investir.</span>
+                        <div className="mt-2 flex justify-center space-x-3">
+                          <Link to="/login" className="text-primary hover:text-primary/80 font-medium">
+                            Se connecter
+                          </Link>
+                          <span>ou</span>
+                          <Link to="/register" className="text-primary hover:text-primary/80 font-medium">
+                            S'inscrire
+                          </Link>
+                        </div>
+                      </div>}
+                  </div>
                 </div>
               </div>
             </FadeIn>
@@ -371,26 +392,9 @@ const CreatorDetails = () => {
               <div></div>
             </FadeIn>
             
-            {/* Investir - Section 3 */}
+            {/* Section vide car le bouton est maintenant dans le graphique */}
             <FadeIn direction="up" delay={300}>
-              <div className="text-center py-0">
-                <Button onClick={openInvestModal} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                  Investir maintenant
-                </Button>
-                
-                {!isAuthenticated && <div className="mt-4 text-center text-sm text-muted-foreground">
-                    <span>Vous devez être connecté pour investir.</span>
-                    <div className="mt-2 flex justify-center space-x-3">
-                      <Link to="/login" className="text-primary hover:text-primary/80 font-medium">
-                        Se connecter
-                      </Link>
-                      <span>ou</span>
-                      <Link to="/register" className="text-primary hover:text-primary/80 font-medium">
-                        S'inscrire
-                      </Link>
-                    </div>
-                  </div>}
-              </div>
+              <div></div>
             </FadeIn>
             
             {/* Créatrices similaires - Section 4 avec ScrollArea */}
