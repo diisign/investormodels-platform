@@ -507,7 +507,7 @@ export const creators: Creator[] = [
   },
   {
     id: 'creator8',
-    name: 'Bianca 🍎 *Domincan 🇩🇴*',
+    name: 'Bianca 🍎',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/w/ww/www/wwwm2nbmdojruuvvmskbb0rfiqur4w8w1738821490/424984894/avatar.jpg',
     coverImageUrl: 'https://images.unsplash.com/photo-1505236273555-17add303d4fb?q=80&w=2069&auto=format&fit=crop',
     category: 'Mode',
