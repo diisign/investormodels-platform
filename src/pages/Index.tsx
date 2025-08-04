@@ -119,7 +119,8 @@ const Index = () => {
       totalInvested: creator.totalInvested,
       lastVariation: lastVariation
     };
-  }).sort((a, b) => b.returnRate - a.returnRate) // Trier par returnRate décroissant
+  }).filter(creator => creator.lastVariation > 0) // Filtrer seulement les variations positives
+    .sort((a, b) => b.lastVariation - a.lastVariation) // Trier par variation décroissante
     .slice(0, 10);
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
