@@ -12,7 +12,7 @@ import { useAuth } from '@/utils/auth';
 import { useIsMobile, useScreenSize } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles, calculateTotalInvested, getLastVariation } from '@/utils/creatorProfiles';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
 const trustpilotReviews = [{
   id: 1,
@@ -112,12 +112,16 @@ const Index = () => {
   });
   const topCreators = [...allCreators].map(creator => {
     const profile = getCreatorProfile(creator.id);
+    const lastVariation = getLastVariation(creator.id);
     return {
       ...creator,
       returnRate: profile.returnRate,
-      totalInvested: creator.totalInvested
+      totalInvested: creator.totalInvested,
+      lastVariation: lastVariation
     };
-  }).sort((a, b) => b.totalInvested - a.totalInvested).slice(0, 10);
+  }).filter(creator => creator.lastVariation > 0) // Filtrer seulement les variations positives
+    .sort((a, b) => b.lastVariation - a.lastVariation) // Trier par variation décroissante
+    .slice(0, 10);
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
