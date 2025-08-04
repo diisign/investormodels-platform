@@ -121,7 +121,7 @@ const Index = () => {
     };
   }).filter(creator => creator.lastVariation > 0) // Filtrer seulement les variations positives
     .sort((a, b) => b.lastVariation - a.lastVariation) // Trier par variation décroissante
-    .slice(0, 10);
+    .slice(0, 15);
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
