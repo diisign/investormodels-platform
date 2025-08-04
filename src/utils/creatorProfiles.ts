@@ -302,56 +302,6 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     minRevenue: 69850,
     maxRevenue: 120350,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg"
-  },
-  "creator30": {
-    id: "creator30",
-    name: "Alexia ✨",
-    monthlyRevenue: 73200,
-    returnRate: 118,
-    followers: 4880,
-    minRevenue: 49000,
-    maxRevenue: 89000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/m/mn/mnr/mnrt67xkshvbqwlw4qzj9yzpkt8mdxlf1726156394/417832954/avatar.jpg"
-  },
-  "creator31": {
-    id: "creator31",
-    name: "Luna 🌙💜",
-    monthlyRevenue: 82600,
-    returnRate: 123,
-    followers: 5507,
-    minRevenue: 55000,
-    maxRevenue: 98000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/f/fx/fxq/fxqzylp6k82t5u9mfvn1b7dsm3hwjkrp1719584738/298765432/avatar.jpg"
-  },
-  "creator32": {
-    id: "creator32",
-    name: "Scarlett 🔥💎",
-    monthlyRevenue: 96400,
-    returnRate: 132,
-    followers: 6427,
-    minRevenue: 64000,
-    maxRevenue: 115000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/b/bv/bvn/bvnm3xk9lwq7r8p2yhg5tz1jfmc6aeor1720736149/189654321/avatar.jpg"
-  },
-  "creator33": {
-    id: "creator33",
-    name: "Chloe 🌸✨",
-    monthlyRevenue: 64300,
-    returnRate: 113,
-    followers: 4287,
-    minRevenue: 43000,
-    maxRevenue: 81000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/kr/kru/kruq8n7xztm4c9w1jph6ybs2ldvfgarx1728394756/523147689/avatar.jpg"
-  },
-  "creator34": {
-    id: "creator34",
-    name: "Madison 💕🦋",
-    monthlyRevenue: 89700,
-    returnRate: 127,
-    followers: 5980,
-    minRevenue: 60000,
-    maxRevenue: 107000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pz/pzv/pzvy2m6ktl9s3xq8rhf1ucjb7ewnaodi1715829634/876543210/avatar.jpg"
   }
 };
 
