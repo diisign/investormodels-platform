@@ -293,36 +293,6 @@ const CreatorDetails = () => {
           </div>
         </section>
         
-        {/* Statistiques - Section entre dégradé et performance */}
-        <section className="py-8 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-          <div className="container mx-auto px-4">
-            <FadeIn direction="up" delay={200}>
-              <div className="flex flex-wrap justify-center gap-8">
-                <div className="flex items-center">
-                  <Users className="h-5 w-5 mr-2 text-primary" />
-                  <span className="text-gray-700 dark:text-gray-300">{creator.investorsCount} investisseurs</span>
-                </div>
-                <div className="flex items-center">
-                  <img src="/lovable-uploads/524b83a2-faac-4024-b292-0aacd341b37c.png" alt="Followers" className="h-5 w-5 mr-2" style={{
-                  filter: 'brightness(0) saturate(100%) invert(66%) sepia(76%) saturate(1392%) hue-rotate(5deg) brightness(103%) contrast(103%)'
-                }} />
-                  <span className="text-gray-700 dark:text-gray-300">{creatorProfile.followers.toLocaleString() || 0} followers</span>
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="h-5 w-5 mr-2 text-primary" />
-                  <span className="text-gray-700 dark:text-gray-300">Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long'
-                  })}</span>
-                </div>
-                <div className="flex items-center">
-                  <CircleDollarSign className="h-5 w-5 mr-2 text-primary" />
-                  <span className="text-gray-700 dark:text-gray-300">{creator.totalInvested.toLocaleString()}€ investis</span>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
         
         {/* Performance des revenus - Section pleine largeur */}
         <section className="py-[19px] w-full border-t border-b border-gray-200 dark:border-gray-700">
@@ -378,6 +348,37 @@ const CreatorDetails = () => {
                         </div>
                       </div>}
                   </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+        
+        {/* Statistiques - Section en dessous du graphique */}
+        <section className="py-8 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+          <div className="container mx-auto px-4">
+            <FadeIn direction="up" delay={200}>
+              <div className="flex flex-wrap justify-center gap-8">
+                <div className="flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-gray-700 dark:text-gray-300">{creator.investorsCount} investisseurs</span>
+                </div>
+                <div className="flex items-center">
+                  <img src="/lovable-uploads/524b83a2-faac-4024-b292-0aacd341b37c.png" alt="Followers" className="h-5 w-5 mr-2" style={{
+                  filter: 'brightness(0) saturate(100%) invert(66%) sepia(76%) saturate(1392%) hue-rotate(5deg) brightness(103%) contrast(103%)'
+                }} />
+                  <span className="text-gray-700 dark:text-gray-300">{creatorProfile.followers.toLocaleString() || 0} followers</span>
+                </div>
+                <div className="flex items-center">
+                  <Calendar className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-gray-700 dark:text-gray-300">Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long'
+                  })}</span>
+                </div>
+                <div className="flex items-center">
+                  <CircleDollarSign className="h-5 w-5 mr-2 text-primary" />
+                  <span className="text-gray-700 dark:text-gray-300">{creator.totalInvested.toLocaleString()}€ investis</span>
                 </div>
               </div>
             </FadeIn>
