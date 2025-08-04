@@ -113,25 +113,15 @@ const Index = () => {
   const topCreators = [...allCreators].map(creator => {
     const profile = getCreatorProfile(creator.id);
     const lastVariation = getLastVariation(creator.id);
-    const result = {
+    return {
       ...creator,
       returnRate: profile.returnRate,
       totalInvested: creator.totalInvested,
       lastVariation: lastVariation
     };
-    
-    // Debug: Log les créatrices avec variation positive
-    if (['creator17', 'creator18', 'creator19', 'creator20', 'creator21'].includes(creator.id)) {
-      console.log(`Debug ${creator.id} (${creator.name}): variation = ${lastVariation}%`);
-    }
-    
-    return result;
   }).filter(creator => creator.lastVariation > 0) // Filtrer seulement les variations positives
     .sort((a, b) => b.lastVariation - a.lastVariation) // Trier par variation décroissante
     .slice(0, 10);
-    
-  // Debug: Log le top final
-  console.log('Top creators:', topCreators.map(c => `${c.name}: ${c.lastVariation}%`));
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
