@@ -372,33 +372,30 @@ const CreatorDetails = () => {
             </FadeIn>
             
             {/* Investir - Section 3 */}
-            <FadeIn direction="up" delay={300} className="mx-0 my-0">
-              <div className="w-full py-0 px-0">
+            <FadeIn direction="up" delay={300}>
+              <div className="text-center py-8">
+                <Button 
+                  onClick={openInvestModal}
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  Investir maintenant
+                </Button>
                 
-                <div className="max-w-md mx-auto">
-                  <div className="p-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-slate-50 py-0 px-[60px]">
-                    <div className="mb-4">
-                      <h3 className="font-semibold text-lg">Soutenir {creatorProfile?.name || creator.name}</h3>
+                {!isAuthenticated && (
+                  <div className="mt-4 text-center text-sm text-muted-foreground">
+                    <span>Vous devez être connecté pour investir.</span>
+                    <div className="mt-2 flex justify-center space-x-3">
+                      <Link to="/login" className="text-primary hover:text-primary/80 font-medium">
+                        Se connecter
+                      </Link>
+                      <span>ou</span>
+                      <Link to="/register" className="text-primary hover:text-primary/80 font-medium">
+                        S'inscrire
+                      </Link>
                     </div>
-                    
-                    <GradientButton fullWidth size="lg" onClick={openInvestModal} variant="primary" gradientDirection="to-r" className="bg-primary text-primary-foreground shadow-xl hover:shadow-2xl transition-all duration-300">
-                      Investir maintenant
-                    </GradientButton>
                   </div>
-                  
-                  {!isAuthenticated && <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                      <span>Vous devez être connecté pour investir.</span>
-                      <div className="mt-2 flex justify-center space-x-3">
-                        <Link to="/login" className="text-yellow-300 hover:text-yellow-400 font-medium">
-                          Se connecter
-                        </Link>
-                        <span>ou</span>
-                        <Link to="/register" className="text-yellow-300 hover:text-yellow-400 font-medium">
-                          S'inscrire
-                        </Link>
-                      </div>
-                    </div>}
-                </div>
+                )}
               </div>
             </FadeIn>
             
