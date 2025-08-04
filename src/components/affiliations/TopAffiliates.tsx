@@ -37,7 +37,7 @@ const TopAffiliates = () => {
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-yellow-300 text-black">
+              <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300">
                 <Award className="h-4 w-4" />
               </div>
               <CardTitle className="text-lg font-medium">Top 5 des parrains (juin)</CardTitle>
