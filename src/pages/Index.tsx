@@ -140,6 +140,37 @@ const Index = () => {
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
+            {/* Hero Images Carousel */}
+            <FadeIn className="mb-8 md:mb-12" direction="up">
+              <Carousel opts={{
+                align: "center",
+                loop: true
+              }} className="w-full max-w-4xl mx-auto">
+                <CarouselContent>
+                  <CarouselItem>
+                    <div className="px-1">
+                      <img 
+                        src="/lovable-uploads/613bd343-80ce-4baa-8729-2876aa887be6.png" 
+                        alt="Sophie Rain - La Reine du Charme" 
+                        className="w-full h-64 md:h-80 object-cover rounded-xl shadow-lg"
+                      />
+                    </div>
+                  </CarouselItem>
+                  <CarouselItem>
+                    <div className="px-1">
+                      <img 
+                        src="/lovable-uploads/43e96f1f-56b9-493a-83b0-f179e218520d.png" 
+                        alt="7 Millions € de dividendes versés" 
+                        className="w-full h-64 md:h-80 object-cover rounded-xl shadow-lg"
+                      />
+                    </div>
+                  </CarouselItem>
+                </CarouselContent>
+                <CarouselPrevious className="left-2 h-9 w-9 rounded-full" />
+                <CarouselNext className="right-2 h-9 w-9 rounded-full" />
+              </Carousel>
+            </FadeIn>
+
             <div className="max-w-3xl mx-auto text-center">
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 
