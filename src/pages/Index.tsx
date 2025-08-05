@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
 import { useIsMobile, useScreenSize } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { getCreatorProfile, creatorProfiles, calculateTotalInvested, getLastVariation } from '@/utils/creatorProfiles';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
@@ -142,10 +143,18 @@ const Index = () => {
           <div className="container mx-auto px-4 relative z-10">
             {/* Hero Images Carousel */}
             <FadeIn className="mb-8 md:mb-12" direction="up">
-              <Carousel opts={{
-                align: "center",
-                loop: true
-              }} className="w-full max-w-4xl mx-auto">
+              <Carousel 
+                plugins={[
+                  Autoplay({
+                    delay: 5000,
+                  }),
+                ]}
+                opts={{
+                  align: "center",
+                  loop: true
+                }} 
+                className="w-full max-w-4xl mx-auto"
+              >
                 <CarouselContent>
                   <CarouselItem>
                     <div className="px-1">
