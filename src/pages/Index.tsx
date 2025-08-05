@@ -137,7 +137,7 @@ const Index = () => {
       <Navbar isLoggedIn={false} />
       
       <main className="flex-grow pt-16 md:pt-20">
-        <section className="relative overflow-hidden pb-12 md:pb-20 pt-16 md:pt-24 lg:pt-32">
+        <section className="relative overflow-hidden pb-12 md:pb-20 pt-2 md:pt-4">
           <div className="absolute inset-0 overflow-hidden rounded bg-[purple-gradient-to] bg-transparent">
             
             
@@ -145,7 +145,7 @@ const Index = () => {
           
           <div className="container mx-auto px-4 relative z-10">
             {/* Hero Images Carousel */}
-            <FadeIn className="mb-8 md:mb-12" direction="up">
+            <FadeIn className="mb-6 md:mb-8" direction="up">
               <Carousel 
                 plugins={[autoplayRef.current]}
                 opts={{
