@@ -81,6 +81,9 @@ const Index = () => {
     isAuthenticated
   } = useAuth();
   const creatorsRef = useRef<HTMLDivElement>(null);
+  const autoplayRef = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true })
+  );
   const isMobile = useIsMobile();
   const {
     width
@@ -144,11 +147,7 @@ const Index = () => {
             {/* Hero Images Carousel */}
             <FadeIn className="mb-8 md:mb-12" direction="up">
               <Carousel 
-                plugins={[
-                  Autoplay({
-                    delay: 5000,
-                  }),
-                ]}
+                plugins={[autoplayRef.current]}
                 opts={{
                   align: "center",
                   loop: true
