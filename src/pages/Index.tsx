@@ -152,7 +152,7 @@ const Index = () => {
                       <img 
                         src="/lovable-uploads/613bd343-80ce-4baa-8729-2876aa887be6.png" 
                         alt="Sophie Rain - La Reine du Charme" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-contain rounded-xl shadow-lg"
+                        className="w-full h-64 md:h-80 object-cover rounded-xl shadow-lg"
                       />
                     </div>
                   </CarouselItem>
@@ -161,7 +161,7 @@ const Index = () => {
                       <img 
                         src="/lovable-uploads/43e96f1f-56b9-493a-83b0-f179e218520d.png" 
                         alt="7 Millions € de dividendes versés" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-contain rounded-xl shadow-lg"
+                        className="w-full h-64 md:h-80 object-cover rounded-xl shadow-lg"
                       />
                     </div>
                   </CarouselItem>
