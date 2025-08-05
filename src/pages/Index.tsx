@@ -154,9 +154,9 @@ const Index = () => {
                 }} 
                 className="w-full max-w-4xl mx-auto overflow-hidden"
               >
-                <CarouselContent>
-                  <CarouselItem>
-                    <div className="px-1">
+                <CarouselContent className="-ml-0">
+                  <CarouselItem className="pl-0 basis-full">
+                    <div className="w-full">
                       <img 
                         src="/lovable-uploads/3f7355f9-a0d0-4fd0-b304-e0de0890c519.png" 
                         alt="Sophie Rain - La Reine du Charme" 
@@ -164,8 +164,8 @@ const Index = () => {
                       />
                     </div>
                   </CarouselItem>
-                  <CarouselItem>
-                    <div className="px-1">
+                  <CarouselItem className="pl-0 basis-full">
+                    <div className="w-full">
                       <img 
                         src="/lovable-uploads/d7f54d1b-eb0d-48a5-9942-b26e0f0eaa79.png" 
                         alt="Money Talk - Investissement 40 000€" 
@@ -173,8 +173,8 @@ const Index = () => {
                       />
                     </div>
                   </CarouselItem>
-                  <CarouselItem>
-                    <div className="px-1">
+                  <CarouselItem className="pl-0 basis-full">
+                    <div className="w-full">
                       <img 
                         src="/lovable-uploads/2e364c51-e60b-42e2-9c6e-a2b9e4f63d31.png" 
                         alt="7 Millions € de dividendes versés" 
