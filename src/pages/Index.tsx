@@ -175,8 +175,6 @@ const Index = () => {
                     </div>
                   </CarouselItem>
                 </CarouselContent>
-                <CarouselPrevious className="left-2 h-9 w-9 rounded-full" />
-                <CarouselNext className="right-2 h-9 w-9 rounded-full" />
               </Carousel>
             </FadeIn>
 
