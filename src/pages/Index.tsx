@@ -160,7 +160,7 @@ const Index = () => {
                       <img 
                         src="/lovable-uploads/2514697c-dfb3-4052-84c4-b137945dcc4c.png" 
                         alt="Sophie Rain - La Reine du Charme" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-contain rounded-2xl shadow-lg"
+                        className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg"
                       />
                     </div>
                   </CarouselItem>
@@ -169,7 +169,7 @@ const Index = () => {
                       <img 
                         src="/lovable-uploads/deb40c28-305a-4ea7-9f10-3e994738d6cb.png" 
                         alt="7 Millions € de dividendes versés" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-contain rounded-2xl shadow-lg"
+                        className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg"
                       />
                     </div>
                   </CarouselItem>
@@ -178,7 +178,7 @@ const Index = () => {
                       <img 
                         src="/lovable-uploads/721fd2fa-658f-4c62-a141-c1833a5a172d.png" 
                         alt="Money Talk - J'ai investi 40 000€ sur Splitz" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-contain rounded-2xl shadow-lg"
+                        className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg"
                       />
                     </div>
                   </CarouselItem>
