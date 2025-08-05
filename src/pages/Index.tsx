@@ -154,7 +154,7 @@ const Index = () => {
                 }} 
                 className="w-full max-w-4xl mx-auto"
               >
-                <CarouselContent className="-ml-0">
+                <CarouselContent className="ml-0">
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
                       <img 
