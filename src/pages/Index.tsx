@@ -176,7 +176,7 @@ const Index = () => {
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
                       <img 
-                        src="/lovable-uploads/721fd2fa-658f-4c62-a141-c1833a5a172d.png" 
+                        src="/lovable-uploads/d3dac32c-6d5b-475d-b1c9-bcd46bcae1e3.png" 
                         alt="Money Talk - J'ai investi 40 000€ sur Splitz" 
                         className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg"
                       />
