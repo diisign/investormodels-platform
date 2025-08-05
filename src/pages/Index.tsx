@@ -152,7 +152,7 @@ const Index = () => {
                   align: "center",
                   loop: true
                 }} 
-                className="w-full max-w-4xl mx-auto overflow-hidden"
+                className="w-full max-w-4xl mx-auto"
               >
                 <CarouselContent className="-ml-0">
                   <CarouselItem className="pl-0 basis-full">
