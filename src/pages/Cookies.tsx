@@ -43,7 +43,7 @@ const Cookies = () => {
           <section>
             <h2 className="text-2xl font-semibold mb-4">4. Plus d'informations</h2>
             <p>
-              Pour plus d'informations sur les cookies, y compris comment voir quels cookies ont été définis et comment les gérer et les supprimer, visitez <a href="http://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-[#8B5CF6]">www.allaboutcookies.org</a>.
+              Pour plus d'informations sur les cookies, y compris comment voir quels cookies ont été définis et comment les gérer et les supprimer, visitez <a href="http://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-yellow-300">www.allaboutcookies.org</a>.
             </p>
           </section>
         </div>

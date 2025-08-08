@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold text-foreground dark:text-foreground mb-4">Navigation</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/creators" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/creators" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   Créatrices
                 </Link>
               </li>
@@ -33,17 +33,17 @@ const Footer: React.FC = () => {
                 
               </li>
               <li>
-                <Link to="/affiliation" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/affiliation" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   Programme d'affiliation
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/faq" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   Contact
                 </Link>
               </li>
@@ -55,22 +55,22 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold text-foreground dark:text-foreground mb-4">Informations légales</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/terms" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/terms" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   Conditions générales
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/privacy" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   Politique de confidentialité
                 </Link>
               </li>
               <li>
-                <Link to="/cookies" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/cookies" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   Gestion des cookies
                 </Link>
               </li>
               <li>
-                <Link to="/legal" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                <Link to="/legal" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                   Mentions légales
                 </Link>
               </li>
