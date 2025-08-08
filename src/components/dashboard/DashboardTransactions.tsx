@@ -91,7 +91,7 @@ const DashboardTransactions = ({
                             <span className="text-xs text-gray-500">
                               Initial: {Math.abs(transaction.amount)}€
                             </span>
-                            <span className={`text-xs font-medium ${withdrawalInfo.canWithdraw ? 'text-green-600' : 'text-orange-500'}`}>
+                            <span className="text-xs font-medium text-black dark:text-white">
                               {withdrawalInfo.canWithdraw ? 'Retrait disponible' : `Retrait le ${withdrawalInfo.formattedDate}`}
                             </span>
                           </div>
