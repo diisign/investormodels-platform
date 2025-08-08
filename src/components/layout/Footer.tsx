@@ -18,36 +18,16 @@ const Footer: React.FC = () => {
               Investissez dans l'avenir du divertissement numérique avec transparence et sécurité.
             </p>
             <div className="flex space-x-4">
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300"
-              >
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300"
-              >
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300"
-              >
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a 
-                href="https://linkedin.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300"
-              >
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
                 <Linkedin className="h-5 w-5" />
               </a>
             </div>
@@ -63,9 +43,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/how-it-works" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
-                  Comment ça marche
-                </Link>
+                
               </li>
               <li>
                 <Link to="/affiliation" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
@@ -123,10 +101,7 @@ const Footer: React.FC = () => {
               Notre équipe est à votre disposition pour répondre à toutes vos questions
             </p>
             <div className="flex justify-center space-x-6">
-              <a 
-                href="mailto:contact@creatorinvest.com" 
-                className="flex items-center text-yellow-300 hover:text-yellow-400 transition-colors duration-300"
-              >
+              <a href="mailto:contact@creatorinvest.com" className="flex items-center text-yellow-300 hover:text-yellow-400 transition-colors duration-300">
                 <Mail className="h-4 w-4 mr-2" />
                 contact@creatorinvest.com
               </a>
