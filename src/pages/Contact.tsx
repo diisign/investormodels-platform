@@ -1,5 +1,7 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 
 const Contact = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +23,17 @@ const Contact = () => {
 
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
-      <h1 className="text-4xl font-bold mb-8 text-center creator-gradient">Contactez-nous</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold creator-gradient">Contactez-nous</h1>
+        <Button 
+          variant="outline" 
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Retour
+        </Button>
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         <div>
