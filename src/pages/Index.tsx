@@ -81,9 +81,10 @@ const Index = () => {
     isAuthenticated
   } = useAuth();
   const creatorsRef = useRef<HTMLDivElement>(null);
-  const autoplayRef = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true })
-  );
+  const autoplayRef = useRef(Autoplay({
+    delay: 5000,
+    stopOnInteraction: true
+  }));
   const isMobile = useIsMobile();
   const {
     width
@@ -124,8 +125,8 @@ const Index = () => {
       lastVariation: lastVariation
     };
   }).filter(creator => creator.lastVariation > 0) // Filtrer seulement les variations positives
-    .sort((a, b) => b.lastVariation - a.lastVariation) // Trier par variation décroissante
-    .slice(0, 15);
+  .sort((a, b) => b.lastVariation - a.lastVariation) // Trier par variation décroissante
+  .slice(0, 15);
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
@@ -146,40 +147,24 @@ const Index = () => {
           <div className="container mx-auto px-4 relative z-10">
             {/* Hero Images Carousel */}
             <FadeIn className="mb-6 md:mb-8" direction="up">
-              <Carousel 
-                plugins={[autoplayRef.current]}
-                opts={{
-                  align: "center",
-                  loop: true
-                }} 
-                className="w-full max-w-4xl mx-auto"
-              >
+              <Carousel plugins={[autoplayRef.current]} opts={{
+              align: "center",
+              loop: true
+            }} className="w-full max-w-4xl mx-auto">
                 <CarouselContent className="ml-0">
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
-                      <img 
-                        src="/lovable-uploads/8dfa0d55-e29f-41f6-93ec-3b586b3fbe75.png" 
-                        alt="Aishah Sofey - New Introduction - La Reine du Charme" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-cover object-[center_20%] rounded-3xl shadow-lg"
-                      />
+                      <img src="/lovable-uploads/2514697c-dfb3-4052-84c4-b137945dcc4c.png" alt="Sophie Rain - La Reine du Charme" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg" />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
-                      <img 
-                        src="/lovable-uploads/deb40c28-305a-4ea7-9f10-3e994738d6cb.png" 
-                        alt="7 Millions € de dividendes versés" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg"
-                      />
+                      <img src="/lovable-uploads/deb40c28-305a-4ea7-9f10-3e994738d6cb.png" alt="7 Millions € de dividendes versés" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg" />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
-                      <img 
-                        src="/lovable-uploads/d3dac32c-6d5b-475d-b1c9-bcd46bcae1e3.png" 
-                        alt="Money Talk - J'ai investi 40 000€ sur Splitz" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-contain rounded-3xl shadow-lg bg-gray-900"
-                      />
+                      <img src="/lovable-uploads/d3dac32c-6d5b-475d-b1c9-bcd46bcae1e3.png" alt="Money Talk - J'ai investi 40 000€ sur Splitz" className="w-full h-64 md:h-96 lg:h-[500px] object-contain rounded-3xl shadow-lg bg-gray-900" />
                     </div>
                   </CarouselItem>
                 </CarouselContent>
@@ -225,7 +210,7 @@ const Index = () => {
           </div>
         </section>
         
-        <section ref={creatorsRef} className="bg-transparent md:py-[40px] py-[40px]">
+        <section ref={creatorsRef} className="bg-transparent md:py-[40px] py-[25px]">
           <div className="container mx-auto px-4">
             <FadeIn className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12" direction="up">
               <div>
