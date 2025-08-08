@@ -9,8 +9,12 @@ const Footer: React.FC = () => {
           {/* Brand & About */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <Link to="/" className="text-2xl font-bold text-foreground dark:text-foreground">
-                <span className="text-yellow-300">Créator</span>Invest
+              <Link to="/" className="flex items-center">
+                <img 
+                  src="/lovable-uploads/49b8cfb1-144c-4d61-b217-75a1ff327dc9.png" 
+                  alt="Splitz" 
+                  className="h-8"
+                />
               </Link>
             </div>
             <p className="text-muted-foreground dark:text-muted-foreground mb-6 max-w-md">
@@ -99,7 +103,7 @@ const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 mt-8 border-t border-border dark:border-border text-center sm:text-left sm:flex sm:justify-between sm:items-center">
           <p className="text-muted-foreground dark:text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} CréatorInvest. Tous droits réservés.
+            &copy; {new Date().getFullYear()} Splitz. Tous droits réservés.
           </p>
           <div className="mt-4 sm:mt-0">
             <p className="text-muted-foreground dark:text-muted-foreground text-xs">
