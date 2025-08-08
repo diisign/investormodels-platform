@@ -443,8 +443,8 @@ const CreatorDetails = () => {
                             <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                               Market Cap: {marketCap.toLocaleString()}€
                             </div>
-                            <div className="text-sm text-primary mt-1">
-                              {lastVariation >= 0 ? '+' : ''}{lastVariation}%
+                            <div className={`text-sm mt-1 font-medium ${lastVariation >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                              {lastVariation >= 0 ? '+' : ''}{lastVariation.toFixed(2)}%
                             </div>
                           </div>
                         </Link>;
