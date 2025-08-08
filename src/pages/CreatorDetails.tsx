@@ -283,7 +283,15 @@ const CreatorDetails = () => {
               </FadeIn>
               
               <FadeIn direction="up" delay={100} className="flex-grow">
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
+                <div className="flex items-center gap-3">
+                  <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
+                  <div className="flex items-center gap-1 bg-green-500/20 px-2 py-1 rounded-full">
+                    <TrendingUp className="h-4 w-4 text-green-400" />
+                    <span className="text-sm font-medium text-green-400">
+                      {getLastVariation(creatorId || '').toFixed(2)}% (7J)
+                    </span>
+                  </div>
+                </div>
               </FadeIn>
             </div>
             
