@@ -460,6 +460,22 @@ export const calculateTotalInvested = (monthlyRevenue: number, creatorId?: strin
   return totalInvested;
 };
 
+// Nouvelle fonction pour obtenir le Market Cap de manière cohérente
+export const getMarketCap = (creatorId: string): number => {
+  // Importer les creators depuis mockData ici pour éviter les dépendances circulaires
+  const { creators } = require('@/utils/mockData');
+  
+  // Chercher d'abord dans mockData
+  const mockCreator = creators.find((c: any) => c.id === creatorId);
+  if (mockCreator) {
+    return mockCreator.totalInvested;
+  }
+  
+  // Sinon, utiliser la fonction calculateTotalInvested
+  const profile = getCreatorProfile(creatorId);
+  return calculateTotalInvested(profile.monthlyRevenue, creatorId);
+};
+
 // Fonction pour calculer la dernière variation en pourcentage
 export const getLastVariation = (creatorId: string): number => {
   // Générer les données de performance pour obtenir juin et juillet

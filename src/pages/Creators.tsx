@@ -7,7 +7,7 @@ import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
-import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles, getMarketCap } from '@/utils/creatorProfiles';
 
 type SortOption = 'popularity' | 'return' | 'alphabetical';
 
@@ -42,7 +42,7 @@ const Creators = () => {
         imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
         category: creator.category,
         investorsCount: creator.investorsCount,
-        totalInvested: calculateTotalInvested(profile.monthlyRevenue, creator.id),
+        totalInvested: getMarketCap(creator.id),
         monthlyRevenue: profile.monthlyRevenue,
         // Utiliser le revenu du profil pour assurer la cohérence
         returnRate: profile.returnRate
@@ -53,7 +53,7 @@ const Creators = () => {
     Object.values(creatorProfiles).forEach(profile => {
       if (!combinedCreators.some(c => c.id === profile.id)) {
         // Calculer le "total investi" de façon cohérente
-        const totalInvested = calculateTotalInvested(profile.monthlyRevenue, profile.id);
+        const totalInvested = getMarketCap(profile.id);
 
         // For creators that only exist in creatorProfiles, create placeholder data
         combinedCreators.push({

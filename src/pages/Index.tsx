@@ -13,7 +13,7 @@ import { useIsMobile, useScreenSize } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
-import { getCreatorProfile, creatorProfiles, calculateTotalInvested, getLastVariation } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles, getMarketCap, getLastVariation } from '@/utils/creatorProfiles';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
 const trustpilotReviews = [{
   id: 1,
@@ -97,7 +97,7 @@ const Index = () => {
   const allCreators = [...creators];
   Object.values(creatorProfiles).forEach(profile => {
     if (!profile.hidden && !allCreators.some(c => c.id === profile.id)) {
-      const totalInvested = calculateTotalInvested(profile.monthlyRevenue, profile.id);
+      const totalInvested = getMarketCap(profile.id);
       allCreators.push({
         id: profile.id,
         name: profile.name,
