@@ -88,9 +88,9 @@ const Footer: React.FC = () => {
               Notre équipe est à votre disposition pour répondre à toutes vos questions
             </p>
             <div className="flex justify-center space-x-6">
-              <a href="mailto:contact@creatorinvest.com" className="flex items-center text-yellow-300 hover:text-yellow-400 transition-colors duration-300">
+              <a href="mailto:contact@splitz.fr" className="flex items-center text-yellow-300 hover:text-yellow-400 transition-colors duration-300">
                 <Mail className="h-4 w-4 mr-2" />
-                contact@creatorinvest.com
+                contact@splitz.fr
               </a>
             </div>
           </div>

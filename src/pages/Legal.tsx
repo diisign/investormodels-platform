@@ -65,7 +65,7 @@ const Legal = () => {
               75008 Paris, France
             </p>
             <p>
-              Ou par email à : creatorinvest@outlook.fr
+              Ou par email à : contact@splitz.fr
             </p>
           </section>
         </div>
