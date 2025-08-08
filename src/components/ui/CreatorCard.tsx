@@ -84,9 +84,14 @@ const CreatorCard = ({
           {/* Variation Percentage - fixé en bas de la section grise */}
           <div className="flex justify-center">
             <div className="text-center">
-              <div className="text-lg font-bold text-primary">
-                {getLastVariation(id) >= 0 ? '+' : ''}{getLastVariation(id)}%
-              </div>
+              {(() => {
+                const variation = getLastVariation(id);
+                return (
+                  <div className={`text-lg font-bold ${variation >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {variation >= 0 ? '+' : ''}{variation.toFixed(2)}%
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
