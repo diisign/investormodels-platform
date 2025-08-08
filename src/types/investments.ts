@@ -8,4 +8,5 @@ export interface Investment {
   created_at: string;
   status: string;
   user_id: string;
+  duration_months: number;
 }

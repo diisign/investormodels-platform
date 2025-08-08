@@ -9,6 +9,7 @@ export interface StaticInvestment {
   initial: number;
   returnRate: number;
   status: string;
+  duration_months: number;
 }
 
 export interface StaticTransaction {

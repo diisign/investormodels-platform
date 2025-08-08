@@ -10,6 +10,7 @@ export interface StaticInvestment {
   initial: number;
   returnRate: number;
   status: string;
+  duration_months: number;
 }
 
 export interface StaticTransaction {
@@ -47,7 +48,8 @@ const STATIC_INVESTMENTS: StaticInvestment[] = [
     amount: 6083, // Updated to match June 2025 value
     initial: 500,
     returnRate: 1116.6, // Updated return rate based on new total
-    status: 'active'
+    status: 'active',
+    duration_months: 3
   }
 ];
 

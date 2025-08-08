@@ -38,7 +38,7 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
               const investmentDate = new Date(investment.created_at);
               const withdrawalDate = new Date(
                 investmentDate.getFullYear(),
-                investmentDate.getMonth() + 3,
+                investmentDate.getMonth() + investment.duration_months,
                 investmentDate.getDate()
               );
               const canWithdraw = new Date() >= withdrawalDate;

@@ -66,7 +66,7 @@ const UserInvestments = () => {
                         Bloqué jusqu'au {format(
                           new Date(
                             investmentDate.getFullYear(),
-                            investmentDate.getMonth() + 3,
+                            investmentDate.getMonth() + investment.duration_months,
                             investmentDate.getDate()
                           ),
                           'dd MMMM yyyy',

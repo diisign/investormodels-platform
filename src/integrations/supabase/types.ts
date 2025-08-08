@@ -55,6 +55,7 @@ export type Database = {
           amount: number
           created_at: string
           creator_id: string
+          duration_months: number
           id: string
           return_rate: number
           status: string
@@ -65,6 +66,7 @@ export type Database = {
           amount: number
           created_at?: string
           creator_id: string
+          duration_months?: number
           id?: string
           return_rate: number
           status?: string
@@ -75,6 +77,7 @@ export type Database = {
           amount?: number
           created_at?: string
           creator_id?: string
+          duration_months?: number
           id?: string
           return_rate?: number
           status?: string

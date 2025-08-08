@@ -6,7 +6,8 @@ import { creatorProfiles, getCreatorProfile } from './creatorProfiles';
 export const createInvestment = async (
   creatorId: string,
   amount: number,
-  returnRate: number
+  returnRate: number,
+  durationMonths: number = 3
 ) => {
   const { data: { user } } = await supabase.auth.getUser();
   
@@ -21,7 +22,8 @@ export const createInvestment = async (
       creator_id: creatorId,
       amount: amount,
       return_rate: returnRate,
-      user_id: user.id
+      user_id: user.id,
+      duration_months: durationMonths
     })
     .select()
     .single();

@@ -42,7 +42,8 @@ const Dɑshboɑrd = () => {
     return_rate: inv.returnRate,
     created_at: '2024-09-15T00:00:00.000Z',
     status: 'active',
-    user_id: 'test-user'
+    user_id: 'test-user',
+    duration_months: inv.duration_months || 3
   }));
 
   const transformedTransactions = investmentData.transactions.map(trans => ({

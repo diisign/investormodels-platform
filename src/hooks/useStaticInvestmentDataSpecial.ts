@@ -9,6 +9,7 @@ export interface StaticInvestmentSpecial {
   initial: number;
   returnRate: number;
   status: string;
+  duration_months: number;
 }
 
 export interface StaticTransactionSpecial {
@@ -46,7 +47,8 @@ const STATIC_INVESTMENTS_SPECIAL: StaticInvestmentSpecial[] = [
     amount: 5290, // Valeur actuelle avec bénéfices ajustée
     initial: 1000, // Investissement initial de 1000€ en décembre
     returnRate: 429, // Nouveau taux de retour ajusté
-    status: 'active'
+    status: 'active',
+    duration_months: 3
   }
 ];
 
