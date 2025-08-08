@@ -53,7 +53,7 @@ const CreatorCard = ({
   const finalImageUrl = creatorProfile.imageUrl || imageUrl;
   
   // Déterminer la largeur basée sur la size prop
-  const widthClass = size === 'normal' ? 'w-48' : 'w-28';
+  const widthClass = size === 'normal' ? 'w-full max-w-48' : 'w-full max-w-28';
   
   return <motion.div whileHover={{
     y: -5
