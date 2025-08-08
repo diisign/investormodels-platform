@@ -5,6 +5,7 @@ import { fr } from 'date-fns/locale';
 import FadeIn from '@/components/animations/FadeIn';
 import { cn } from '@/lib/utils';
 import { CreatorProfile } from '@/utils/creatorProfiles';
+
 interface Transaction {
   id: string;
   amount: number;
@@ -12,12 +13,18 @@ interface Transaction {
   status: string;
   payment_method?: string;
   payment_id?: string;
-  creatorProfile?: CreatorProfile; // Updated to accept CreatorProfile type
+  creatorProfile?: CreatorProfile;
   description?: string;
+  investmentData?: {
+    duration_months: number;
+    created_at: string;
+  };
 }
+
 interface DashboardTransactionsProps {
   transactions: Transaction[];
 }
+
 const DashboardTransactions = ({
   transactions
 }: DashboardTransactionsProps) => {
@@ -34,6 +41,24 @@ const DashboardTransactions = ({
         {transactions.length > 0 ? <div className="h-80 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800">
             {transactions.map(transaction => {
               const type = transaction.payment_method === 'investment' ? 'investment' : transaction.amount > 0 ? 'deposit' : 'withdrawal';
+              
+              // Calculer la date de retrait pour les investissements
+              let withdrawalInfo = null;
+              if (type === 'investment' && transaction.investmentData) {
+                const investmentDate = new Date(transaction.investmentData.created_at);
+                const withdrawalDate = new Date(
+                  investmentDate.getFullYear(),
+                  investmentDate.getMonth() + transaction.investmentData.duration_months,
+                  investmentDate.getDate()
+                );
+                const canWithdraw = new Date() >= withdrawalDate;
+                withdrawalInfo = {
+                  canWithdraw,
+                  withdrawalDate,
+                  formattedDate: format(withdrawalDate, 'dd/MM/yyyy', { locale: fr })
+                };
+              }
+              
               return <div key={transaction.id} className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
                       {transaction.creatorProfile ? <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                           <img src={transaction.creatorProfile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${transaction.payment_id}`} alt={transaction.creatorProfile.name} className="h-full w-full object-cover" />
@@ -60,6 +85,17 @@ const DashboardTransactions = ({
                             {transaction.status === 'completed' ? 'Terminé' : transaction.status === 'pending' ? 'En attente' : 'Échoué'}
                           </span>
                         </div>
+                        {/* Affichage de la date de retrait pour les investissements */}
+                        {withdrawalInfo && (
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-xs text-gray-500">
+                              Initial: {Math.abs(transaction.amount)}€
+                            </span>
+                            <span className={`text-xs font-medium ${withdrawalInfo.canWithdraw ? 'text-green-600' : 'text-orange-500'}`}>
+                              {withdrawalInfo.canWithdraw ? 'Retrait disponible' : `Retrait le ${withdrawalInfo.formattedDate}`}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>;
             })}
@@ -75,4 +111,5 @@ const DashboardTransactions = ({
       </div>
     </FadeIn>;
 };
+
 export default DashboardTransactions;

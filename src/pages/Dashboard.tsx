@@ -53,15 +53,30 @@ const Dashboard = () => {
         ascending: false
       });
       if (error) throw error;
-      return data.map(transaction => {
+      
+      // Pour les transactions d'investissement, on récupère aussi les données d'investissement
+      const enrichedTransactions = await Promise.all(data.map(async (transaction) => {
         if (transaction.payment_method === 'investment' && transaction.payment_id) {
+          // Récupérer l'investissement correspondant pour avoir la durée
+          const { data: investmentData } = await supabase
+            .from('investments')
+            .select('duration_months, created_at')
+            .eq('user_id', user.id)
+            .eq('creator_id', transaction.payment_id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+          
           return {
             ...transaction,
-            creatorProfile: getCreatorProfile(transaction.payment_id)
+            creatorProfile: getCreatorProfile(transaction.payment_id),
+            investmentData: investmentData
           };
         }
         return transaction;
-      });
+      }));
+      
+      return enrichedTransactions;
     },
     enabled: !!user,
     staleTime: 0,
