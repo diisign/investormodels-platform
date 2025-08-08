@@ -154,7 +154,7 @@ const Index = () => {
                 <CarouselContent className="ml-0">
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
-                      <img src="/lovable-uploads/ca92bb5a-e7e5-4aeb-8323-1250b43c95ae.png" alt="Aishah Sofey - La Reine du Charme" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg" />
+                      <img src="/lovable-uploads/ca92bb5a-e7e5-4aeb-8323-1250b43c95ae.png" alt="Aishah Sofey - La Reine du Charme" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg mt-2" />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="pl-0 basis-full">
