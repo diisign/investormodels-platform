@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { BarChart3, CircleDollarSign, TrendingUp, Users, Calendar, ArrowRight, ArrowLeft, Trophy } from 'lucide-react';
+import { BarChart3, CircleDollarSign, TrendingUp, TrendingDown, Users, Calendar, ArrowRight, ArrowLeft, Trophy } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import GradientButton from '@/components/ui/GradientButton';
@@ -294,11 +294,11 @@ const CreatorDetails = () => {
                           ? 'bg-red-500/20' 
                           : 'bg-green-500/20'
                       }`}>
-                        <TrendingUp className={`h-4 w-4 ${
-                          isNegative 
-                            ? 'text-red-400' 
-                            : 'text-green-400'
-                        }`} />
+                        {isNegative ? (
+                          <TrendingDown className="h-4 w-4 text-red-400" />
+                        ) : (
+                          <TrendingUp className="h-4 w-4 text-green-400" />
+                        )}
                         <span className={`text-sm font-medium ${
                           isNegative 
                             ? 'text-red-400' 
