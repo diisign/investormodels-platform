@@ -87,8 +87,8 @@ export const mockUserData = {
     {
       id: 'inv2',
       creatorId: 'brookmills',
-      creatorName: 'BrookMills🍒',
-      creatorImage: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
+      creatorName: 'Luna ✨',
+      creatorImage: '/lovable-uploads/1101bb0a-25cf-4e39-a32d-e89b6e203e68.png',
       planId: 'plan-brookmills-2',
       planName: 'Premium',
       amount: 500,
@@ -114,7 +114,7 @@ export const mockUserData = {
       amount: 500,
       date: '2024-10-06',
       status: 'completed',
-      description: 'Investissement - BrookMills🍒'
+      description: 'Investissement - Luna ✨'
     }
   ]
 };
@@ -837,8 +837,8 @@ popularity: 'low'
   },
   {
     id: 'brookmills',
-    name: 'BrookMills🍒',
-    imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg',
+    name: 'Luna ✨',
+    imageUrl: '/lovable-uploads/1101bb0a-25cf-4e39-a32d-e89b6e203e68.png',
     coverImageUrl: 'https://images.unsplash.com/photo-1489844097929-c8d5b91c456e?q=80&w=2070&auto=format&fit=crop',
     category: 'Style',
     returnRate: 130,
