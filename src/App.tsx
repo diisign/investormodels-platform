@@ -27,6 +27,7 @@ import Dɑshboard from "./pages/dɑshboard";
 import Dɑshboɑrd from "./pages/dɑshboɑrd";
 import Dashboɑrd from "./pages/dashboɑrd";
 import DashboardAffiliation from "./pages/DashboardAffiliation";
+import CookieBanner from "./components/layout/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -97,6 +98,7 @@ const App = () => (
             {/* Route par défaut */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <CookieBanner />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
