@@ -63,6 +63,16 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     maxRevenue: 70000,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/6/6f/6ff/6ffsabyn44okaxnazykunwo0x5zw1kmd1739911134/355023516/avatar.jpg"
   },
+  "aishah": {
+    id: "aishah",
+    name: "Aishah Sofey",
+    monthlyRevenue: 92500,
+    returnRate: 135,
+    followers: 6750,
+    minRevenue: 70000,
+    maxRevenue: 115000,
+    imageUrl: "/lovable-uploads/f0db0bcd-7c1f-4bcb-a45b-699ff33bedda.png"
+  },
   "creator6": {
     id: "creator6",
     name: "Bryce's Flix 🎥",

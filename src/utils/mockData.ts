@@ -889,5 +889,63 @@ popularity: 'low'
         popularity: 'low'
       }
     ]
+  },
+  {
+    id: 'aishah',
+    name: 'Aishah Sofey',
+    imageUrl: '/lovable-uploads/f0db0bcd-7c1f-4bcb-a45b-699ff33bedda.png',
+    coverImageUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2070&auto=format&fit=crop',
+    category: 'Lifestyle',
+    returnRate: 13.5,
+    investorsCount: 450,
+    totalInvested: 108000,
+    monthlyRevenue: 31000,
+    followers: 675000,
+    creationDate: '2020-08-15',
+    description: "Influenceuse lifestyle et mode internationale. Mes revenus proviennent de collaborations avec des marques de luxe, de ma ligne de vêtements exclusive et de mon programme de mentorat pour jeunes entrepreneures.",
+    plans: [
+      {
+        id: 'plan-aishah-1',
+        name: 'Inspiration',
+        returnRate: 10.5,
+        minInvestment: 300,
+        duration: 3,
+        benefits: [
+          'Rapport mensuel sur les performances',
+          'Accès aux nouveautés en avant-première',
+          'Newsletter exclusive'
+        ],
+        popularity: 'medium'
+      },
+      {
+        id: 'plan-aishah-2',
+        name: 'Élite',
+        returnRate: 13.5,
+        minInvestment: 1000,
+        duration: 6,
+        benefits: [
+          'Rapports détaillés mensuels',
+          'Remises exclusives sur ma collection',
+          'Accès au programme de mentorat',
+          'Session de coaching personnalisé'
+        ],
+        popularity: 'high'
+      },
+      {
+        id: 'plan-aishah-3',
+        name: 'Luxe',
+        returnRate: 17.2,
+        minInvestment: 2500,
+        duration: 12,
+        benefits: [
+          'Rapports hebdomadaires complets',
+          'Pièces exclusives offertes',
+          'Consultation business personnalisée',
+          'Invitation aux événements VIP',
+          'Mention dans les réseaux sociaux'
+        ],
+        popularity: 'low'
+      }
+    ]
   }
 ];
