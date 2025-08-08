@@ -43,6 +43,18 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
               );
               const canWithdraw = new Date() >= withdrawalDate;
               
+              // Debug pour Hannah spécifiquement
+              if (creator?.name?.includes('Hannah')) {
+                console.log('Hannah Investment Debug:', {
+                  creatorName: creator.name,
+                  investmentDate: investmentDate.toLocaleDateString('fr-FR'),
+                  durationMonths: investment.duration_months,
+                  withdrawalDate: withdrawalDate.toLocaleDateString('fr-FR'),
+                  canWithdraw,
+                  today: new Date().toLocaleDateString('fr-FR')
+                });
+              }
+              
               return (
                 <div 
                   key={investment.id}
@@ -78,7 +90,7 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
                         Initial: {investment.initial}€
                       </span>
                       <span className={`text-xs font-medium ${canWithdraw ? 'text-green-600' : 'text-orange-500'}`}>
-                        {canWithdraw ? 'Retrait disponible' : `Retrait disponible le ${format(withdrawalDate, 'dd/MM/yyyy', { locale: fr })}`}
+                        {canWithdraw ? 'Retrait disponible' : `Retrait le ${format(withdrawalDate, 'dd/MM/yyyy', { locale: fr })}`}
                       </span>
                     </div>
                   </div>
