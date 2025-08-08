@@ -17,7 +17,7 @@ const Legal = () => {
             <h2 className="text-2xl font-semibold mb-4">1. Éditeur du site</h2>
             <p>Le site CréatorInvest est édité par la société CréatorInvest SAS, société par actions simplifiée au capital de 10 000 euros, immatriculée au Registre du Commerce et des Sociétés de Paris sous le numéro 940 610 926, dont le siège social est situé au 60 rue François 1er, 75008 Paris, France.</p>
             <p>
-              Numéro de TVA intracommunautaire : FR 83 456 789 123<br />
+              Numéro de TVA intracommunautaire : FR67940610926<br />
               Directeur de la publication : Sophie Martin
             </p>
           </section>
