@@ -285,12 +285,30 @@ const CreatorDetails = () => {
               <FadeIn direction="up" delay={100} className="flex-grow">
                 <div className="flex items-center gap-3">
                   <h1 className="text-3xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
-                  <div className="flex items-center gap-1 bg-green-500/20 px-2 py-1 rounded-full">
-                    <TrendingUp className="h-4 w-4 text-green-400" />
-                    <span className="text-sm font-medium text-green-400">
-                      {getLastVariation(creatorId || '').toFixed(2)}% (7J)
-                    </span>
-                  </div>
+                  {(() => {
+                    const variation = getLastVariation(creatorId || '');
+                    const isNegative = variation < 0;
+                    return (
+                      <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${
+                        isNegative 
+                          ? 'bg-red-500/20' 
+                          : 'bg-green-500/20'
+                      }`}>
+                        <TrendingUp className={`h-4 w-4 ${
+                          isNegative 
+                            ? 'text-red-400' 
+                            : 'text-green-400'
+                        }`} />
+                        <span className={`text-sm font-medium ${
+                          isNegative 
+                            ? 'text-red-400' 
+                            : 'text-green-400'
+                        }`}>
+                          {variation.toFixed(2)}% (30J)
+                        </span>
+                      </div>
+                    );
+                  })()}
                 </div>
               </FadeIn>
             </div>
