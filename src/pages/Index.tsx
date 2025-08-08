@@ -146,7 +146,7 @@ const Index = () => {
           
           <div className="container mx-auto px-4 relative z-10">
             {/* Hero Images Carousel */}
-            <FadeIn className="mb-6 md:mb-8" direction="up">
+            <FadeIn className="mb-6 md:mb-8 mt-4" direction="up">
               <Carousel plugins={[autoplayRef.current]} opts={{
               align: "center",
               loop: true
