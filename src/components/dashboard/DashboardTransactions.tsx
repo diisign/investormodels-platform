@@ -39,11 +39,30 @@ const DashboardTransactions = ({
         </div>
         
         {transactions.length > 0 ? <div className="h-80 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800">
-            {transactions.map(transaction => {
+            {transactions
+              .filter(transaction => {
+                // Pour les investissements, filtrer ceux qui ont dépassé leur date de retrait
+                if (transaction.payment_method === 'investment' && transaction.investmentData) {
+                  const investmentDate = new Date(transaction.investmentData.created_at);
+                  const withdrawalDate = new Date(
+                    investmentDate.getFullYear(),
+                    investmentDate.getMonth() + transaction.investmentData.duration_months,
+                    investmentDate.getDate()
+                  );
+                  const canWithdraw = new Date() >= withdrawalDate;
+                  // Supprimer les investissements dont la date de retrait est passée
+                  return !canWithdraw;
+                }
+                // Garder toutes les autres transactions
+                return true;
+              })
+              .map(transaction => {
               const type = transaction.payment_method === 'investment' ? 'investment' : transaction.amount > 0 ? 'deposit' : 'withdrawal';
               
               // Calculer la date de retrait pour les investissements
               let withdrawalInfo = null;
+              let investmentStatus = transaction.status;
+              
               if (type === 'investment' && transaction.investmentData) {
                 const investmentDate = new Date(transaction.investmentData.created_at);
                 const withdrawalDate = new Date(
@@ -52,6 +71,10 @@ const DashboardTransactions = ({
                   investmentDate.getDate()
                 );
                 const canWithdraw = new Date() >= withdrawalDate;
+                
+                // Changer le statut de l'investissement
+                investmentStatus = canWithdraw ? 'completed' : 'pending';
+                
                 withdrawalInfo = {
                   canWithdraw,
                   withdrawalDate,
@@ -81,8 +104,8 @@ const DashboardTransactions = ({
                           <span className="text-xs text-gray-500 dark:text-gray-400">
                             {format(new Date(transaction.created_at), 'dd/MM/yyyy')}
                           </span>
-                          <span className={cn("text-xs px-2 py-0.5 rounded-full", transaction.status === 'completed' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" : transaction.status === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400")}>
-                            {transaction.status === 'completed' ? 'Terminé' : transaction.status === 'pending' ? 'En attente' : 'Échoué'}
+                          <span className={cn("text-xs px-2 py-0.5 rounded-full", investmentStatus === 'completed' ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary" : investmentStatus === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400")}>
+                            {investmentStatus === 'completed' ? 'Terminé' : investmentStatus === 'pending' && type === 'investment' ? 'En cours' : investmentStatus === 'pending' ? 'En attente' : 'Échoué'}
                           </span>
                         </div>
                         {/* Affichage de la date de retrait pour les investissements */}
