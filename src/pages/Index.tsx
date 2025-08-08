@@ -160,7 +160,7 @@ const Index = () => {
                       <img 
                         src="/lovable-uploads/8dfa0d55-e29f-41f6-93ec-3b586b3fbe75.png" 
                         alt="Aishah Sofey - New Introduction - La Reine du Charme" 
-                        className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg"
+                        className="w-full h-64 md:h-96 lg:h-[500px] object-cover object-top rounded-3xl shadow-lg"
                       />
                     </div>
                   </CarouselItem>
