@@ -397,10 +397,7 @@ const CreatorDetails = () => {
                 </div>
                 <div className="flex items-center">
                   <Calendar className="h-5 w-5 mr-2 text-primary" />
-                  <span className="text-gray-700 dark:text-gray-300">Depuis {new Date(creator.creationDate).toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long'
-                  })}</span>
+                  <span className="text-gray-700 dark:text-gray-300">Depuis 2025</span>
                 </div>
                 <div className="flex items-center">
                   <CircleDollarSign className="h-5 w-5 mr-2 text-primary" />
