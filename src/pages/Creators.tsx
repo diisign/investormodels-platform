@@ -42,7 +42,7 @@ const Creators = () => {
         imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
         category: creator.category,
         investorsCount: creator.investorsCount,
-        totalInvested: creator.totalInvested,
+        totalInvested: calculateTotalInvested(profile.monthlyRevenue, creator.id),
         monthlyRevenue: profile.monthlyRevenue,
         // Utiliser le revenu du profil pour assurer la cohérence
         returnRate: profile.returnRate
