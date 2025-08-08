@@ -319,7 +319,7 @@ const CreatorDetails = () => {
                             <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
                           </linearGradient>
                         </defs>
-                        <Line type="monotone" dataKey="revenue" stroke="#000000" strokeWidth={2} dot={{
+                        <Line type="linear" dataKey="revenue" stroke="#000000" strokeWidth={2} dot={{
                         r: 0
                       }} activeDot={{
                         r: 6,
