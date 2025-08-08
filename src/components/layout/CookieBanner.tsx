@@ -33,13 +33,11 @@ const CookieBanner: React.FC = () => {
           {/* Icône et texte */}
           <div className="flex items-start gap-3 flex-1">
             <div className="bg-yellow-300 rounded-full p-2 flex-shrink-0 mt-1">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-black">
-                <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <span className="text-lg">🍪</span>
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-foreground dark:text-foreground mb-2">
-                ROYALTIZ UTILISE DES COOKIES SUR CE SITE WEB
+                SPLITZ UTILISE DES COOKIES SUR CE SITE WEB
               </h3>
               <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                 Avec votre consentement, nous les utilisons pour mesurer et analyser l'utilisation du 
@@ -63,7 +61,7 @@ const CookieBanner: React.FC = () => {
             </Button>
             <Button
               onClick={handleAcceptAll}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
+              className="bg-yellow-300 hover:bg-yellow-400 text-black"
             >
               Accepter tous les cookies
             </Button>
