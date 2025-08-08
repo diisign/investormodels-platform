@@ -2,12 +2,11 @@ import React from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/utils/auth';
-
 const Legal = () => {
-  const { isAuthenticated } = useAuth();
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  const {
+    isAuthenticated
+  } = useAuth();
+  return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow container mx-auto px-4 py-12">
@@ -16,9 +15,7 @@ const Legal = () => {
         <div className="max-w-3xl mx-auto prose dark:prose-invert">
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. Éditeur du site</h2>
-            <p>
-              Le site CréatorInvest est édité par la société CréatorInvest SAS, société par actions simplifiée au capital de 10 000 euros, immatriculée au Registre du Commerce et des Sociétés de Paris sous le numéro 123 456 789, dont le siège social est situé au 60 rue François 1er, 75008 Paris, France.
-            </p>
+            <p>Le site CréatorInvest est édité par la société CréatorInvest SAS, société par actions simplifiée au capital de 10 000 euros, immatriculée au Registre du Commerce et des Sociétés de Paris sous le numéro 182 166 089, dont le siège social est situé au 60 rue François 1er, 75008 Paris, France.</p>
             <p>
               Numéro de TVA intracommunautaire : FR 83 456 789 123<br />
               Directeur de la publication : Sophie Martin
@@ -75,8 +72,6 @@ const Legal = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Legal;
