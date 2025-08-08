@@ -26,7 +26,7 @@ const Contact = () => {
       <div className="mb-8">
         <Button 
           variant="ghost" 
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/')}
           className="flex items-center gap-2 mb-4 p-0 h-auto"
         >
           <ArrowLeft className="h-4 w-4" />
