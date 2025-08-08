@@ -32,8 +32,8 @@ const CookieBanner: React.FC = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           {/* Icône et texte */}
           <div className="flex items-start gap-3 flex-1">
-            <div className="bg-yellow-300 rounded-full p-2 flex-shrink-0 mt-1">
-              <span className="text-lg">🍪</span>
+            <div className="flex-shrink-0 mt-1">
+              <span className="text-2xl">🍪</span>
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-foreground dark:text-foreground mb-2">
@@ -42,10 +42,7 @@ const CookieBanner: React.FC = () => {
               <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                 Avec votre consentement, nous les utilisons pour mesurer et analyser l'utilisation du 
                 site Web afin d'améliorer l'expérience et enregistrer les paramètres de préférence. En 
-                savoir plus sur notre{' '}
-                <Link to="/privacy" className="text-yellow-300 hover:text-yellow-400 underline">
-                  politique de confidentialité
-                </Link>
+                savoir plus sur notre politique de confidentialité
               </p>
             </div>
           </div>
