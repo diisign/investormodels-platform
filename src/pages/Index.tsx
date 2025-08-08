@@ -221,7 +221,7 @@ const Index = () => {
               </div>
               <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
                 <span className="text-zinc-950">Voir toutes les créatrices</span>
-                <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent" />
+                <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent text-yellow-300" />
               </Link>
             </FadeIn>
           </div>
@@ -253,7 +253,7 @@ const Index = () => {
               <Link to="/creators">
                 <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
                   Voir toutes les créatrices
-                  <ArrowRight className="h-4 w-4 ml-1" />
+                  <ArrowRight className="h-4 w-4 ml-1 text-yellow-300" />
                 </GradientButton>
               </Link>
             </div>
