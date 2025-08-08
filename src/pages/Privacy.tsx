@@ -1,18 +1,16 @@
-
 import React from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/utils/auth';
-
 const Privacy = () => {
-  const { isAuthenticated } = useAuth();
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  const {
+    isAuthenticated
+  } = useAuth();
+  return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow container mx-auto px-4 py-12">
-        <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center text-[#8B5CF6]">Politique de Confidentialité</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center my-[35px] py-[20px] text-yellow-300">Politique de Confidentialité</h1>
         
         <div className="max-w-3xl mx-auto prose dark:prose-invert">
           <section className="mb-8">
@@ -84,8 +82,6 @@ const Privacy = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Privacy;
