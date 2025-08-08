@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { getCreatorProfile, creatorProfiles, calculateTotalInvested } from '@/utils/creatorProfiles';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from '@/components/ui/pagination';
+
 type SortOption = 'popularity' | 'return' | 'alphabetical';
 
 // Create an interface for consolidated creator data
@@ -27,9 +27,7 @@ const Creators = () => {
     isAuthenticated
   } = useAuth();
   const [sortBy, setSortBy] = useState<SortOption>('return'); // Default to 'return'
-  const [currentPage, setCurrentPage] = useState(1);
   const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
-  const itemsPerPage = 12;
   useEffect(() => {
     // Combine creators from mockData and creatorProfiles
     const combinedCreators: ConsolidatedCreator[] = [];
@@ -82,7 +80,6 @@ const Creators = () => {
   };
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
-    setCurrentPage(1); // Reset to first page on new sort
   };
   const filteredCreators = allCreators.sort((a, b) => {
     switch (sortBy) {
@@ -96,17 +93,6 @@ const Creators = () => {
         return b.returnRate - a.returnRate;
     }
   });
-  const totalPages = Math.ceil(filteredCreators.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCreators = filteredCreators.slice(indexOfFirstItem, indexOfLastItem);
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
   return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
@@ -127,12 +113,12 @@ const Creators = () => {
             </FadeIn>
             
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
-              {currentCreators.map((creator, index) => <FadeIn key={creator.id} direction="up" delay={100 + index % 8 * 50}>
+              {filteredCreators.map((creator, index) => <FadeIn key={creator.id} direction="up" delay={100 + index % 8 * 50}>
                   <CreatorCard id={creator.id} name={creator.name} imageUrl={creator.imageUrl} category={creator.category} investorsCount={creator.investorsCount} totalInvested={creator.totalInvested} monthlyRevenue={creator.monthlyRevenue} size="normal" />
                 </FadeIn>)}
             </div>
             
-            {currentCreators.length === 0 && <FadeIn direction="up" className="text-center py-16">
+            {filteredCreators.length === 0 && <FadeIn direction="up" className="text-center py-16">
                 <div className="text-gray-400 mb-3">
                   <Search className="h-12 w-12 mx-auto opacity-30" />
                 </div>
@@ -140,35 +126,6 @@ const Creators = () => {
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
                   Aucune créatrice n'est disponible pour le moment.
                 </p>
-              </FadeIn>}
-            
-            {filteredCreators.length > 0 && <FadeIn direction="up" delay={200} className="mt-8">
-                <Pagination>
-                  <PaginationContent>
-                    {currentPage > 1 && <PaginationItem>
-                        <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} className="cursor-pointer" />
-                      </PaginationItem>}
-                    
-                    {[...Array(totalPages)].map((_, i) => {
-                  const pageNumber = i + 1;
-                  if (pageNumber === 1 || pageNumber === totalPages || pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1) {
-                    return <PaginationItem key={pageNumber}>
-                            <PaginationLink isActive={pageNumber === currentPage} onClick={() => handlePageChange(pageNumber)} className="cursor-pointer">
-                              {pageNumber}
-                            </PaginationLink>
-                          </PaginationItem>;
-                  }
-                  if (pageNumber === currentPage - 2 && pageNumber > 2 || pageNumber === currentPage + 2 && pageNumber < totalPages - 1) {
-                    return <PaginationItem key={`ellipsis-${pageNumber}`}><PaginationEllipsis /></PaginationItem>;
-                  }
-                  return null;
-                })}
-                    
-                    {currentPage < totalPages && <PaginationItem>
-                        <PaginationNext onClick={() => handlePageChange(currentPage + 1)} className="cursor-pointer" />
-                      </PaginationItem>}
-                  </PaginationContent>
-                </Pagination>
               </FadeIn>}
           </div>
         </section>
