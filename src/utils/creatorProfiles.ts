@@ -436,7 +436,12 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
 };
 
 // Fonction pour calculer le "total investi" de manière cohérente
-export const calculateTotalInvested = (monthlyRevenue: number): number => {
+export const calculateTotalInvested = (monthlyRevenue: number, creatorId?: string): number => {
+  // Fixer le Market Cap spécifiquement pour Aishah Sofey
+  if (creatorId === 'aishah') {
+    return 108000;
+  }
+  
   // Generate a random number between 32,000 and 99,900
   const minValue = 32000;
   const maxValue = 99900;

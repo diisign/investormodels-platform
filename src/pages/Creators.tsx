@@ -53,7 +53,7 @@ const Creators = () => {
     Object.values(creatorProfiles).forEach(profile => {
       if (!combinedCreators.some(c => c.id === profile.id)) {
         // Calculer le "total investi" de façon cohérente
-        const totalInvested = calculateTotalInvested(profile.monthlyRevenue);
+        const totalInvested = calculateTotalInvested(profile.monthlyRevenue, profile.id);
 
         // For creators that only exist in creatorProfiles, create placeholder data
         combinedCreators.push({

@@ -97,7 +97,7 @@ const Index = () => {
   const allCreators = [...creators];
   Object.values(creatorProfiles).forEach(profile => {
     if (!profile.hidden && !allCreators.some(c => c.id === profile.id)) {
-      const totalInvested = calculateTotalInvested(profile.monthlyRevenue);
+      const totalInvested = calculateTotalInvested(profile.monthlyRevenue, profile.id);
       allCreators.push({
         id: profile.id,
         name: profile.name,

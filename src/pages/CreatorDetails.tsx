@@ -136,7 +136,7 @@ const CreatorDetails = () => {
     category: "Lifestyle",
     returnRate: creatorProfile.returnRate / 10,
     investorsCount: Math.floor(creatorProfile.followers / 15),
-    totalInvested: calculateTotalInvested(creatorProfile.monthlyRevenue),
+    totalInvested: calculateTotalInvested(creatorProfile.monthlyRevenue, creatorProfile.id),
     monthlyRevenue: creatorProfile.monthlyRevenue,
     followers: creatorProfile.followers,
     creationDate: new Date(Date.now() - Math.random() * 126144000000).toISOString(),
@@ -429,7 +429,7 @@ const CreatorDetails = () => {
                   <div className="p-4 space-y-4">
                      {creators.map(similarCreator => {
                     const similarProfile = getCreatorProfile(similarCreator.id);
-                    const marketCap = calculateTotalInvested(similarProfile.monthlyRevenue);
+                    const marketCap = calculateTotalInvested(similarProfile.monthlyRevenue, similarCreator.id);
                     const lastVariation = getLastVariation(similarCreator.id);
                     return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
                           <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
