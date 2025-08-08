@@ -137,7 +137,7 @@ const Index = () => {
   return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={false} />
       
-      <main className="flex-grow pt-16 md:pt-20">
+      <main className="flex-grow pt-20 md:pt-24">
         <section className="relative overflow-hidden pb-12 md:pb-20 pt-2 md:pt-4">
           <div className="absolute inset-0 overflow-hidden rounded bg-[purple-gradient-to] bg-transparent">
             
