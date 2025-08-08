@@ -173,8 +173,8 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
             }
             return null;
           }} />
-              <Area type="linear" dataKey="invested" stroke="#0ea5e9" fillOpacity={1} fill="url(#investedGradient)" name="Investissement" stackId="1" />
-              <Area type="linear" dataKey="return" stroke="#22c55e" fillOpacity={1} fill="url(#returnGradient)" name="Rendement" />
+              <Area type="step" dataKey="invested" stroke="#0ea5e9" fillOpacity={1} fill="url(#investedGradient)" name="Investissement" stackId="1" />
+              <Area type="step" dataKey="return" stroke="#22c55e" fillOpacity={1} fill="url(#returnGradient)" name="Rendement" />
               {withdrawalPoint >= 0 && <ReferenceLine x={(chartData[withdrawalPoint] as any).month} stroke="#22c55e" strokeDasharray="3 3" strokeWidth={2} label={{
             value: "Retrait",
             position: 'top',
@@ -222,7 +222,7 @@ const OnlyfansRevenueChart: React.FC<OnlyfansRevenueChartProps> = ({
             }
             return null;
           }} />
-              <Area type="linear" dataKey="revenue" stroke="#eab308" fillOpacity={1} fill="url(#revenueGradient)" name="Chiffre d'affaires" />
+              <Area type="step" dataKey="revenue" stroke="#eab308" fillOpacity={1} fill="url(#revenueGradient)" name="Chiffre d'affaires" />
               <Legend />
             </AreaChart>}
         </ChartContainer>
