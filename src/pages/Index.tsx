@@ -171,7 +171,7 @@ const Index = () => {
               </Carousel>
             </FadeIn>
 
-            <div className="max-w-3xl mx-auto text-center mt-8 md:mt-12">
+            <div className="max-w-3xl mx-auto text-center mt-12 md:mt-16">
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-zinc-950 xl:text-2xl">
