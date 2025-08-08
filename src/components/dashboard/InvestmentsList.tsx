@@ -7,6 +7,8 @@ import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { Investment } from '@/types/investments';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 interface InvestmentsListProps {
   investments: Investment[];
@@ -33,6 +35,14 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
           <div className="space-y-4">
             {investments.map((investment) => {
               const creator = getCreatorProfile(investment.creator_id);
+              const investmentDate = new Date(investment.created_at);
+              const withdrawalDate = new Date(
+                investmentDate.getFullYear(),
+                investmentDate.getMonth() + 3,
+                investmentDate.getDate()
+              );
+              const canWithdraw = new Date() >= withdrawalDate;
+              
               return (
                 <div 
                   key={investment.id}
@@ -52,15 +62,23 @@ const InvestmentsList = ({ investments }: InvestmentsListProps) => {
                   </div>
                   <div className="flex-grow">
                     <div className="flex justify-between items-center">
-                      <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'}</h4>
+                      <h4 className="font-medium text-sm">{creator?.name || 'Créatrice'} 💎</h4>
                       <span className="text-sm font-semibold">{Number(investment.amount).toFixed(2)}€</span>
+                    </div>
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-xs text-gray-500">
+                        {format(investmentDate, 'dd/MM/yyyy', { locale: fr })}
+                      </span>
+                      <span className="text-xs font-medium text-primary">
+                        +{investment.return_rate}%
+                      </span>
                     </div>
                     <div className="flex justify-between items-center mt-1">
                       <span className="text-xs text-gray-500">
                         Initial: {investment.initial}€
                       </span>
-                      <span className="text-xs font-medium text-primary">
-                        +{investment.return_rate}%
+                      <span className={`text-xs font-medium ${canWithdraw ? 'text-green-600' : 'text-orange-500'}`}>
+                        {canWithdraw ? 'Retrait disponible' : `Retrait disponible le ${format(withdrawalDate, 'dd/MM/yyyy', { locale: fr })}`}
                       </span>
                     </div>
                   </div>
