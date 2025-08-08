@@ -23,16 +23,16 @@ const Contact = () => {
 
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold creator-gradient">Contactez-nous</h1>
+      <div className="mb-8">
         <Button 
-          variant="outline" 
+          variant="ghost" 
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 mb-4 p-0 h-auto"
         >
           <ArrowLeft className="h-4 w-4" />
           Retour
         </Button>
+        <h1 className="text-4xl font-bold text-center creator-gradient">Contactez-nous</h1>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
