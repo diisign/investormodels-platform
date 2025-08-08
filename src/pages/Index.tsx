@@ -202,7 +202,7 @@ const Index = () => {
                   </div>
                   <div className="flex flex-col items-center">
                     <span className="text-2xl md:text-3xl font-bold text-zinc-950">7M €</span>
-                    <span className="text-sm text-gray-500">Investis</span>
+                    <span className="text-sm text-gray-500">Dividendes</span>
                   </div>
                 </div>
               </FadeIn>
