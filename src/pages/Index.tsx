@@ -158,8 +158,8 @@ const Index = () => {
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
                       <img 
-                        src="/lovable-uploads/2514697c-dfb3-4052-84c4-b137945dcc4c.png" 
-                        alt="Sophie Rain - La Reine du Charme" 
+                        src="/lovable-uploads/8dfa0d55-e29f-41f6-93ec-3b586b3fbe75.png" 
+                        alt="Aishah Sofey - New Introduction - La Reine du Charme" 
                         className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg"
                       />
                     </div>
