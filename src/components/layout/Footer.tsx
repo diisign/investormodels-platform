@@ -17,20 +17,7 @@ const Footer: React.FC = () => {
               La première plateforme d'investissement dans les créatrices OnlyFans. 
               Investissez dans l'avenir du divertissement numérique avec transparence et sécurité.
             </p>
-            <div className="flex space-x-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </div>
+            
           </div>
 
           {/* Navigation */}
