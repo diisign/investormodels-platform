@@ -9,8 +9,8 @@ const Legal = () => {
   return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
-      <main className="flex-grow container mx-auto px-4 text-yellow-300 py-[49px] my-[45px]">
-        <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center text-[#8B5CF6]">Mentions Légales</h1>
+      <main className="flex-grow container mx-auto px-4 text-black py-[49px] my-[45px]">
+        <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center text-yellow-300">Mentions Légales</h1>
         
         <div className="max-w-3xl mx-auto prose dark:prose-invert">
           <section className="mb-8">
