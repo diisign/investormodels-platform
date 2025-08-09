@@ -3,18 +3,14 @@ import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 const Footer: React.FC = () => {
-  return <footer className="border-t border-border dark:border-border pt-16 pb-8 bg-inherit">
+  return <footer className="border-t border-border dark:border-border pt-16 pb-8 bg-inherit py-[193px]">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand & About */}
           <div className="lg:col-span-2">
             <div className="mb-6">
               <Link to="/" className="flex items-center">
-                <img 
-                  src="/lovable-uploads/49b8cfb1-144c-4d61-b217-75a1ff327dc9.png" 
-                  alt="Splitz" 
-                  className="h-8"
-                />
+                <img src="/lovable-uploads/49b8cfb1-144c-4d61-b217-75a1ff327dc9.png" alt="Splitz" className="h-8" />
               </Link>
             </div>
             <p className="text-muted-foreground dark:text-muted-foreground mb-6 max-w-md">
