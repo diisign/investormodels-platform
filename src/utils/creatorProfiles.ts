@@ -24,14 +24,14 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/ke/kei/keiep1nsav9m2m3e7l0ynbcttg9cfoez1657600220/186389633/avatar.jpg"
   },
   "creator2": {
-    id: "creator2",
-    name: "Maria 🤸🏻‍*",
-    monthlyRevenue: 75150,
-    returnRate: 120,
-    followers: 5010,
-    minRevenue: 50000,
-    maxRevenue: 98000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg"
+    id: "creator13",
+    name: "Charlotte 🤍",
+    monthlyRevenue: 38250,
+    returnRate: 85,
+    followers: 2550,
+    minRevenue: 23000,
+    maxRevenue: 57550,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/c/cq/cqy/cqydatlsrhxwwop9ybh9xkh4kmtmoaj41705156342/277839437/avatar.jpg"
   },
   "creator3": {
     id: "creator3",
