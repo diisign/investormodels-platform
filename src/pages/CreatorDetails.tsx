@@ -295,11 +295,11 @@ const CreatorDetails = () => {
                           : 'bg-green-500/20'
                       }`}>
                         {isNegative ? (
-                          <TrendingDown className="h-5 w-5 md:h-6 md:w-6 text-red-400" />
+                          <TrendingDown className="h-4 w-4 md:h-5 md:w-5 text-red-400" />
                         ) : (
-                          <TrendingUp className="h-5 w-5 md:h-6 md:w-6 text-green-400" />
+                          <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-400" />
                         )}
-                        <span className={`text-lg md:text-xl font-bold ${
+                        <span className={`text-base md:text-lg font-bold ${
                           isNegative 
                             ? 'text-red-400' 
                             : 'text-green-400'
