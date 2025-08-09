@@ -414,6 +414,14 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
         const julyRevenue = Math.round(monthlyRevenue * 1.08); // +8%
         return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
       }
+      if (creatorId === 'creator13') { // Charlotte (now at position 2)
+        const julyRevenue = Math.round(monthlyRevenue * 1.176); // +17.6%
+        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      }
+      if (creatorId === 'creator16') { // Sophia Rose (now at position 13)
+        const julyRevenue = Math.round(monthlyRevenue * 0.892); // -10.8%
+        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      }
       
       // Generate a variation between -15% and +20% from June's value for other creators
       const julyVariationSeed = (seed * 73 + 97) % 100;
