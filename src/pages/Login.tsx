@@ -94,7 +94,7 @@ const Login = () => {
       
       <main className="flex-grow pt-20">
         <section className="py-12 md:py-20">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 py-0 my-0">
             <div className="max-w-md mx-auto">
               <FadeIn direction="up" className="text-center mb-8">
                 <h1 className="text-3xl font-bold mb-2 text-yellow-300">Se connecter</h1>
