@@ -29,6 +29,7 @@ const Creators = () => {
   const [sortBy, setSortBy] = useState<SortOption>('random'); // Default to 'random'
   const [showDropdown, setShowDropdown] = useState(false);
   const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
+  const [sortedCreators, setSortedCreators] = useState<ConsolidatedCreator[]>([]);
   const [shuffledOrder, setShuffledOrder] = useState<string[]>([]);
   useEffect(() => {
     // Combine creators from mockData and creatorProfiles
@@ -77,6 +78,14 @@ const Creators = () => {
     if (shuffledOrder.length === 0) {
       const shuffled = [...combinedCreators].sort(() => Math.random() - 0.5).map(c => c.id);
       setShuffledOrder(shuffled);
+      
+      // Définir l'ordre initial (aléatoire)
+      const initialSorted = [...combinedCreators].sort((a, b) => {
+        const indexA = shuffled.indexOf(a.id);
+        const indexB = shuffled.indexOf(b.id);
+        return indexA - indexB;
+      });
+      setSortedCreators(initialSorted);
     }
   }, [shuffledOrder.length]);
 
@@ -89,6 +98,33 @@ const Creators = () => {
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
     setShowDropdown(false);
+    
+    // Appliquer le tri immédiatement et le stocker
+    const sorted = [...allCreators].sort((a, b) => {
+      switch (option) {
+        case 'random':
+          const indexA = shuffledOrder.indexOf(a.id);
+          const indexB = shuffledOrder.indexOf(b.id);
+          return indexA - indexB;
+        case 'popularity':
+          return b.investorsCount - a.investorsCount;
+        case 'return':
+          return b.returnRate - a.returnRate;
+        case 'alphabetical':
+          return a.name.localeCompare(b.name);
+        case 'performance':
+          const variationA = getLastVariation(a.id);
+          const variationB = getLastVariation(b.id);
+          return variationB - variationA;
+        case 'marketcap':
+          return b.totalInvested - a.totalInvested;
+        default:
+          const defaultIndexA = shuffledOrder.indexOf(a.id);
+          const defaultIndexB = shuffledOrder.indexOf(b.id);
+          return defaultIndexA - defaultIndexB;
+      }
+    });
+    setSortedCreators(sorted);
   };
 
   const getSortLabel = (option: SortOption) => {
@@ -103,32 +139,9 @@ const Creators = () => {
     }
   };
 
-  const filteredCreators = allCreators.sort((a, b) => {
-    switch (sortBy) {
-      case 'random':
-        // Utiliser l'ordre aléatoire fixe
-        const indexA = shuffledOrder.indexOf(a.id);
-        const indexB = shuffledOrder.indexOf(b.id);
-        return indexA - indexB;
-      case 'popularity':
-        return b.investorsCount - a.investorsCount;
-      case 'return':
-        return b.returnRate - a.returnRate;
-      case 'alphabetical':
-        return a.name.localeCompare(b.name);
-      case 'performance':
-        const variationA = getLastVariation(a.id);
-        const variationB = getLastVariation(b.id);
-        return variationB - variationA; // Du plus positif au plus négatif
-      case 'marketcap':
-        return b.totalInvested - a.totalInvested; // Du plus gros au plus petit
-      default:
-        // Utiliser l'ordre aléatoire fixe par défaut
-        const defaultIndexA = shuffledOrder.indexOf(a.id);
-        const defaultIndexB = shuffledOrder.indexOf(b.id);
-        return defaultIndexA - defaultIndexB;
-    }
-  });
+  // Utiliser sortedCreators au lieu de calculer le tri à chaque render
+  const filteredCreators = sortedCreators.length > 0 ? sortedCreators : allCreators;
+  
   return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
@@ -156,7 +169,7 @@ const Creators = () => {
                   </button>
                   
                   {showDropdown && (
-                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
+                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999]">
                       <div className="py-1">
                         <button
                           onClick={() => handleSortChange('random')}
