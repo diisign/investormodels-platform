@@ -12,7 +12,7 @@ export interface CreatorProfile {
 
 // Fixed creator profiles with consistent data
 export const creatorProfiles: Record<string, CreatorProfile> = {
-  // Map each creator by their ID - nouvel ordre
+  // Map each creator by their ID - nouvel ordre avec Jasmine dans les 6 premiers
   "brooks-mills-🍒": {
     id: "brooks-mills-🍒",
     name: "Brooke Mills",
@@ -23,16 +23,6 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     maxRevenue: 120350,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg"
   },
-  "creator22": {
-    id: "creator22",
-    name: "Jasmine 🔥",
-    monthlyRevenue: 91800,
-    returnRate: 117.4,
-    followers: 6120,
-    minRevenue: 61000,
-    maxRevenue: 110000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/i/ik/ikh/ikhxjrnd5wxourm8hqcjibrk7smzblyn1718163760/145464089/avatar.jpg"
-  },
   "aishah": {
     id: "aishah",
     name: "Aishah Sofey",
@@ -42,6 +32,16 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     minRevenue: 70000,
     maxRevenue: 115000,
     imageUrl: "/lovable-uploads/f0db0bcd-7c1f-4bcb-a45b-699ff33bedda.png"
+  },
+  "creator22": {
+    id: "creator22",
+    name: "Jasmine 🔥",
+    monthlyRevenue: 91800,
+    returnRate: 117.4,
+    followers: 6120,
+    minRevenue: 61000,
+    maxRevenue: 110000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/i/ik/ikh/ikhxjrnd5wxourm8hqcjibrk7smzblyn1718163760/145464089/avatar.jpg"
   },
   "creator3": {
     id: "creator3",
