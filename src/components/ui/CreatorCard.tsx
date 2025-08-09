@@ -87,7 +87,11 @@ const CreatorCard = ({
               const variation = getLastVariation(id);
               const isPositive = variation >= 0;
               return (
-                <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-200/50 text-green-500 text-xs font-bold`}>
+                <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold ${
+                  isPositive 
+                    ? 'bg-green-200/50 text-green-500' 
+                    : 'bg-red-200/50 text-red-500'
+                }`}>
                   {isPositive ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
                   {isPositive ? '+' : ''}{variation.toFixed(2)}%
                 </div>
