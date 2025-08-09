@@ -260,7 +260,7 @@ const CreatorDetails = () => {
       <main className="flex-grow pt-20">
         <div className="container mx-auto my-0 py-[8px] px-px">
           <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => {
-          // Toujours naviguer vers la page d'accueil pour éviter les problèmes d'historique
+          // Toujours naviguer vers la page d'accueil pour assurer une navigation cohérente
           navigate('/');
           setTimeout(() => {
             window.scrollTo({
