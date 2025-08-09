@@ -78,14 +78,18 @@ const CreatorCard = ({
               <AvatarFallback>{creatorProfile.name.charAt(0)}</AvatarFallback>
             </Avatar>
             
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-bold text-sm text-center">{creatorProfile.name}</h3>
+            <h3 className="font-bold text-sm text-center mb-2">{creatorProfile.name}</h3>
+          </div>
+          
+          {/* Variation Percentage - fixé en bas de la section grise */}
+          <div className="flex justify-center">
+            <div className="text-center">
               {(() => {
                 const variation = getLastVariation(id);
                 const isPositive = variation >= 0;
                 return (
-                  <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold border-2 ${isPositive ? 'text-green-600 bg-green-50 border-green-200' : 'text-red-600 bg-red-50 border-red-200'}`}>
-                    {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                  <div className={`flex items-center gap-1 text-lg font-bold ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+                    {isPositive ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
                     {isPositive ? '+' : ''}{variation.toFixed(2)}%
                   </div>
                 );
