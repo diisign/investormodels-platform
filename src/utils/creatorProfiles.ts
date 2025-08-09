@@ -83,16 +83,6 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     maxRevenue: 83000,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/j/jm/jmc/jmceq667otzovowlp3b0rqbmvpyybjjh1733705286/104901396/avatar.jpg"
   },
-  "charlotte": {
-    id: "creator13",
-    name: "Charlotte 🤍",
-    monthlyRevenue: 38250,
-    returnRate: 85,
-    followers: 2550,
-    minRevenue: 23000,
-    maxRevenue: 57550,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/c/cq/cqy/cqydatlsrhxwwop9ybh9xkh4kmtmoaj41705156342/277839437/avatar.jpg"
-  },
   "creator7": {
     id: "creator7",
     name: "Daisy 💞",
@@ -133,16 +123,6 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     maxRevenue: 95650,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/le/lec/lecj3pxbtb4ymxfen8yurh1aqum6xooq1736534589/124057483/avatar.jpg"
   },
-  "sophia": {
-    id: "creator16",
-    name: "Sophia Rose 💫",
-    monthlyRevenue: 57800,
-    returnRate: 105,
-    followers: 3853,
-    minRevenue: 42500,
-    maxRevenue: 79000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lv/lvi/lviitmbx2pppksgphr5kk2vh5tmwzo1w1704302300/6793248/avatar.jpg"
-  },
   "creator11": {
     id: "creator11",
     name: "Isabella Santos",
@@ -163,6 +143,16 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     maxRevenue: 72150,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/p/po/poq/poqsgzzsem9nmffr5e3dmnis3gdfkdjt1739306610/161871329/avatar.jpg"
   },
+  "creator13": {
+    id: "creator13",
+    name: "Charlotte 🤍",
+    monthlyRevenue: 38250,
+    returnRate: 85,
+    followers: 2550,
+    minRevenue: 23000,
+    maxRevenue: 57550,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/c/cq/cqy/cqydatlsrhxwwop9ybh9xkh4kmtmoaj41705156342/277839437/avatar.jpg"
+  },
   "creator14": {
     id: "creator14",
     name: "Audrey Shanice 🔞🔥",
@@ -172,6 +162,16 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     minRevenue: 36000,
     maxRevenue: 71150,
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tr/tre/treu426uagi2nu0ppnuhscgqhz1vajrb1614919839/avatar.jpg"
+  },
+  "creator16": {
+    id: "creator16",
+    name: "Sophia Rose 💫",
+    monthlyRevenue: 57800,
+    returnRate: 105,
+    followers: 3853,
+    minRevenue: 42500,
+    maxRevenue: 79000,
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lv/lvi/lviitmbx2pppksgphr5kk2vh5tmwzo1w1704302300/6793248/avatar.jpg"
   },
   "creator17": {
     id: "creator17",
@@ -412,14 +412,6 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
       }
       if (creatorId === 'creator23') { // Isabel
         const julyRevenue = Math.round(monthlyRevenue * 1.08); // +8%
-        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
-      }
-      if (creatorId === 'creator13') { // Charlotte (now at position 2)
-        const julyRevenue = Math.round(monthlyRevenue * 1.176); // +17.6%
-        return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
-      }
-      if (creatorId === 'creator16') { // Sophia Rose (now at position 13)
-        const julyRevenue = Math.round(monthlyRevenue * 0.892); // -10.8%
         return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
       }
       
