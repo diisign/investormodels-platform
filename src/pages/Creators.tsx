@@ -74,12 +74,25 @@ const Creators = () => {
     });
     setAllCreators(combinedCreators);
     
-    // Créer un ordre aléatoire fixe pour le tri 'random' qui ne change pas à l'actualisation
-    if (shuffledOrder.length === 0) {
-      const shuffled = [...combinedCreators].sort(() => Math.random() - 0.5).map(c => c.id);
+    // Créer un ordre aléatoire fixe qui persiste même en naviguant entre les pages
+    let shuffled: string[];
+    const savedOrder = localStorage.getItem('creators-shuffle-order');
+    
+    if (savedOrder && shuffledOrder.length === 0) {
+      // Utiliser l'ordre sauvegardé
+      shuffled = JSON.parse(savedOrder);
       setShuffledOrder(shuffled);
-      
-      // Définir l'ordre initial (aléatoire)
+    } else if (shuffledOrder.length === 0) {
+      // Créer un nouvel ordre aléatoire et le sauvegarder
+      shuffled = [...combinedCreators].sort(() => Math.random() - 0.5).map(c => c.id);
+      setShuffledOrder(shuffled);
+      localStorage.setItem('creators-shuffle-order', JSON.stringify(shuffled));
+    } else {
+      shuffled = shuffledOrder;
+    }
+    
+    // Définir l'ordre initial (aléatoire persistant)
+    if (sortedCreators.length === 0) {
       const initialSorted = [...combinedCreators].sort((a, b) => {
         const indexA = shuffled.indexOf(a.id);
         const indexB = shuffled.indexOf(b.id);
@@ -87,7 +100,7 @@ const Creators = () => {
       });
       setSortedCreators(initialSorted);
     }
-  }, [shuffledOrder.length]);
+  }, [shuffledOrder.length, sortedCreators.length]);
 
   // Helper function to deterministically assign a category based on creator ID
   const determineCategory = (id: string): string => {
