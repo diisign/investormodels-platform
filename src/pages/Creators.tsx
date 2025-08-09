@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { getCreatorProfile, creatorProfiles, getMarketCap, getLastVariation } from '@/utils/creatorProfiles';
-
 type SortOption = 'random' | 'popularity' | 'return' | 'alphabetical' | 'performance' | 'marketcap';
 
 // Create an interface for consolidated creator data
@@ -73,11 +72,10 @@ const Creators = () => {
       }
     });
     setAllCreators(combinedCreators);
-    
+
     // Créer un ordre aléatoire fixe qui persiste même en naviguant entre les pages
     let shuffled: string[];
     const savedOrder = localStorage.getItem('creators-shuffle-order');
-    
     if (savedOrder && shuffledOrder.length === 0) {
       // Utiliser l'ordre sauvegardé
       shuffled = JSON.parse(savedOrder);
@@ -90,7 +88,7 @@ const Creators = () => {
     } else {
       shuffled = shuffledOrder;
     }
-    
+
     // Définir l'ordre initial (aléatoire persistant)
     if (sortedCreators.length === 0) {
       const initialSorted = [...combinedCreators].sort((a, b) => {
@@ -111,7 +109,7 @@ const Creators = () => {
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
     setShowDropdown(false);
-    
+
     // Appliquer le tri immédiatement et le stocker
     const sorted = [...allCreators].sort((a, b) => {
       switch (option) {
@@ -139,22 +137,27 @@ const Creators = () => {
     });
     setSortedCreators(sorted);
   };
-
   const getSortLabel = (option: SortOption) => {
     switch (option) {
-      case 'random': return 'Aléatoire';
-      case 'performance': return 'Top Performance';
-      case 'marketcap': return 'Top Market Cap';
-      case 'popularity': return 'Popularité';
-      case 'return': return 'Rendement';
-      case 'alphabetical': return 'Alphabétique';
-      default: return 'Aléatoire';
+      case 'random':
+        return 'Aléatoire';
+      case 'performance':
+        return 'Top Performance';
+      case 'marketcap':
+        return 'Top Market Cap';
+      case 'popularity':
+        return 'Popularité';
+      case 'return':
+        return 'Rendement';
+      case 'alphabetical':
+        return 'Alphabétique';
+      default:
+        return 'Aléatoire';
     }
   };
 
   // Utiliser sortedCreators au lieu de calculer le tri à chaque render
   const filteredCreators = sortedCreators.length > 0 ? sortedCreators : allCreators;
-  
   return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
@@ -173,39 +176,7 @@ const Creators = () => {
                 </p>
                 
                 {/* Dropdown pour le filtre */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowDropdown(!showDropdown)}
-                    className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                  >
-                    <MoreHorizontal className="h-5 w-5" />
-                  </button>
-                  
-                  {showDropdown && (
-                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999]">
-                      <div className="py-1">
-                        <button
-                          onClick={() => handleSortChange('random')}
-                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'random' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
-                        >
-                          Aléatoire
-                        </button>
-                        <button
-                          onClick={() => handleSortChange('performance')}
-                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'performance' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
-                        >
-                          Top Performance
-                        </button>
-                        <button
-                          onClick={() => handleSortChange('marketcap')}
-                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'marketcap' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
-                        >
-                          Top Market Cap
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                
               </div>
             </FadeIn>
             
