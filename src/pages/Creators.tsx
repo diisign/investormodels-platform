@@ -53,7 +53,6 @@ const Creators = () => {
     });
 
     // Add additional creators from creatorProfiles that aren't already in combinedCreators
-    console.log('Current combined creators after mockData:', combinedCreators.map(c => `${c.name} (ID: ${c.id})`));
     Object.values(creatorProfiles).forEach(profile => {
       if (!combinedCreators.some(c => c.id === profile.id)) {
         // Calculer le "total investi" de façon cohérente
