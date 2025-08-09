@@ -258,7 +258,7 @@ const CreatorDetails = () => {
       <main className="flex-grow pt-20">
         <div className="container mx-auto my-0 py-[8px] px-px">
           <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => {
-            navigate('/');
+            navigate(-1);
             window.scrollTo({
               top: 0,
               behavior: 'smooth'

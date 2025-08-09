@@ -1,5 +1,5 @@
 
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import FadeIn from "@/components/animations/FadeIn";
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.error(
@@ -24,12 +25,14 @@ const NotFound = () => {
           <p className="text-gray-600 mb-6">
             Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
           </p>
-          <Link to="/">
-            <Button variant="default" className="flex items-center gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Retour à l'accueil
-            </Button>
-          </Link>
+          <Button 
+            variant="default" 
+            className="flex items-center gap-2"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Retour
+          </Button>
         </div>
       </FadeIn>
     </div>
