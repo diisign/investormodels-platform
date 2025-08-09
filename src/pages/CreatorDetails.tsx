@@ -145,7 +145,7 @@ const CreatorDetails = () => {
   const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
   const openInvestModal = () => {
     if (!isAuthenticated) {
-      toast.error("Veuillez vous connecter pour investir");
+      navigate('/login');
       return;
     }
     setShowInvestModal(true);
