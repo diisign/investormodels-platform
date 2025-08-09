@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MoreHorizontal, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, MoreHorizontal } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
@@ -23,7 +22,6 @@ interface ConsolidatedCreator {
   returnRate: number;
 }
 const Creators = () => {
-  const navigate = useNavigate();
   const {
     isAuthenticated
   } = useAuth();
@@ -158,13 +156,6 @@ const Creators = () => {
     }
   };
 
-  const handleBackClick = () => {
-    navigate('/');
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-  };
-
   // Utiliser sortedCreators au lieu de calculer le tri à chaque render
   const filteredCreators = sortedCreators.length > 0 ? sortedCreators : allCreators;
   return <div className="min-h-screen flex flex-col">
@@ -173,14 +164,7 @@ const Creators = () => {
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="w-full px-6">
-            <FadeIn direction="up" className="mb-6">
-              <button
-                onClick={handleBackClick}
-                className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary transition-colors mb-4"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Retour
-              </button>
+            <FadeIn direction="up" className="mb-8">
               <h1 className="text-3xl font-bold mb-2 text-yellow-300">Découvrez nos créatrices</h1>
               
             </FadeIn>

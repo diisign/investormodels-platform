@@ -27,16 +27,12 @@ const Login = () => {
   const [searchParams] = useSearchParams();
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("User already authenticated, redirecting");
+      console.log("User already authenticated, redirecting to dashboard");
       const returnTo = searchParams.get('returnTo');
       if (returnTo) {
-        console.log("Redirecting to returnTo:", returnTo);
         navigate(returnTo);
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-        }, 100);
+        window.scrollTo(0, 0);
       } else {
-        console.log("Redirecting to dashboard");
         navigate('/dashboard');
       }
     }
@@ -85,7 +81,15 @@ const Login = () => {
           });
         } else {
           toast.success("Connexion réussie! Redirection...");
-          // La redirection sera gérée par l'effet useEffect quand isAuthenticated devient true
+          setTimeout(() => {
+            const returnTo = searchParams.get('returnTo');
+            if (returnTo) {
+              navigate(returnTo);
+              window.scrollTo(0, 0);
+            } else {
+              navigate('/dashboard');
+            }
+          }, 500);
         }
       } catch (error) {
         console.error('Login submission error:', error);
