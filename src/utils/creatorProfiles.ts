@@ -165,7 +165,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
   },
   "creator16": {
     id: "creator16",
-    name: "Sophia Rose 💫",
+    name: "Charlotte 🤍",
     monthlyRevenue: 57800,
     returnRate: 105,
     followers: 3853,
