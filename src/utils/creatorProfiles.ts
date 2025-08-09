@@ -144,7 +144,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/p/po/poq/poqsgzzsem9nmffr5e3dmnis3gdfkdjt1739306610/161871329/avatar.jpg"
   },
   "creator13": {
-    id: "creator13",
+    id: "creator16",
     name: "Sophia Rose 💫",
     monthlyRevenue: 57800,
     returnRate: 105,
@@ -164,7 +164,7 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/t/tr/tre/treu426uagi2nu0ppnuhscgqhz1vajrb1614919839/avatar.jpg"
   },
   "creator16": {
-    id: "creator16",
+    id: "creator13",
     name: "Charlotte 🤍",
     monthlyRevenue: 38250,
     returnRate: 85,
