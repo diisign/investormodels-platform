@@ -35,6 +35,8 @@ const Navbar: React.FC<NavbarProps> = ({
     navigate('/', {
       replace: true
     });
+    // Scroll vers le haut de la page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   useEffect(() => {
     const handleScroll = () => {
