@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
@@ -24,12 +24,19 @@ const Login = () => {
     isAuthenticated
   } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   useEffect(() => {
     if (isAuthenticated) {
       console.log("User already authenticated, redirecting to dashboard");
-      navigate('/dashboard');
+      const returnTo = searchParams.get('returnTo');
+      if (returnTo) {
+        navigate(returnTo);
+        window.scrollTo(0, 0);
+      } else {
+        navigate('/dashboard');
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, searchParams]);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -75,7 +82,13 @@ const Login = () => {
         } else {
           toast.success("Connexion réussie! Redirection...");
           setTimeout(() => {
-            navigate('/dashboard');
+            const returnTo = searchParams.get('returnTo');
+            if (returnTo) {
+              navigate(returnTo);
+              window.scrollTo(0, 0);
+            } else {
+              navigate('/dashboard');
+            }
           }, 500);
         }
       } catch (error) {

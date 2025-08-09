@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { BarChart3, CircleDollarSign, TrendingUp, TrendingDown, Users, Calendar, ArrowRight, ArrowLeft, Trophy } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -28,6 +28,7 @@ const CreatorDetails = () => {
     user
   } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState<string>('');
   const [showInvestModal, setShowInvestModal] = useState(false);
@@ -145,7 +146,7 @@ const CreatorDetails = () => {
   const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
   const openInvestModal = () => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate(`/login?returnTo=${encodeURIComponent(location.pathname)}`);
       window.scrollTo(0, 0);
       return;
     }
