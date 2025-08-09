@@ -146,6 +146,7 @@ const CreatorDetails = () => {
   const openInvestModal = () => {
     if (!isAuthenticated) {
       navigate('/login');
+      window.scrollTo(0, 0);
       return;
     }
     setShowInvestModal(true);
