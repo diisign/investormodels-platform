@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown } from 'lucide-react';
+import { Search, MoreHorizontal } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
@@ -9,7 +9,7 @@ import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { getCreatorProfile, creatorProfiles, getMarketCap, getLastVariation } from '@/utils/creatorProfiles';
 
-type SortOption = 'popularity' | 'return' | 'alphabetical' | 'performance' | 'marketcap';
+type SortOption = 'random' | 'popularity' | 'return' | 'alphabetical' | 'performance' | 'marketcap';
 
 // Create an interface for consolidated creator data
 interface ConsolidatedCreator {
@@ -26,7 +26,7 @@ const Creators = () => {
   const {
     isAuthenticated
   } = useAuth();
-  const [sortBy, setSortBy] = useState<SortOption>('performance'); // Default to 'performance'
+  const [sortBy, setSortBy] = useState<SortOption>('random'); // Default to 'random'
   const [showDropdown, setShowDropdown] = useState(false);
   const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
   useEffect(() => {
@@ -86,17 +86,20 @@ const Creators = () => {
 
   const getSortLabel = (option: SortOption) => {
     switch (option) {
+      case 'random': return 'Aléatoire';
       case 'performance': return 'Top Performance';
       case 'marketcap': return 'Top Market Cap';
       case 'popularity': return 'Popularité';
       case 'return': return 'Rendement';
       case 'alphabetical': return 'Alphabétique';
-      default: return 'Top Performance';
+      default: return 'Aléatoire';
     }
   };
 
   const filteredCreators = allCreators.sort((a, b) => {
     switch (sortBy) {
+      case 'random':
+        return Math.random() - 0.5; // Tri aléatoire
       case 'popularity':
         return b.investorsCount - a.investorsCount;
       case 'return':
@@ -110,9 +113,7 @@ const Creators = () => {
       case 'marketcap':
         return b.totalInvested - a.totalInvested; // Du plus gros au plus petit
       default:
-        const defaultVariationA = getLastVariation(a.id);
-        const defaultVariationB = getLastVariation(b.id);
-        return defaultVariationB - defaultVariationA;
+        return Math.random() - 0.5; // Tri aléatoire par défaut
     }
   });
   return <div className="min-h-screen flex flex-col">
@@ -136,15 +137,20 @@ const Creators = () => {
                 <div className="relative">
                   <button
                     onClick={() => setShowDropdown(!showDropdown)}
-                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   >
-                    <span className="text-sm font-medium">{getSortLabel(sortBy)}</span>
-                    <ChevronDown className={`h-4 w-4 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
+                    <MoreHorizontal className="h-5 w-5" />
                   </button>
                   
                   {showDropdown && (
                     <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                       <div className="py-1">
+                        <button
+                          onClick={() => handleSortChange('random')}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'random' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
+                        >
+                          Aléatoire
+                        </button>
                         <button
                           onClick={() => handleSortChange('performance')}
                           className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'performance' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
@@ -156,12 +162,6 @@ const Creators = () => {
                           className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'marketcap' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
                         >
                           Top Market Cap
-                        </button>
-                        <button
-                          onClick={() => handleSortChange('popularity')}
-                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'popularity' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
-                        >
-                          Popularité
                         </button>
                       </div>
                     </div>
