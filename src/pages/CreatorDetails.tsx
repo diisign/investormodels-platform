@@ -436,12 +436,14 @@ const CreatorDetails = () => {
                             <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
                           </div>
                           <div className="flex-grow min-w-0">
-                            <div className="flex items-center gap-3 mb-1">
-                              <h4 className="font-medium truncate">{similarProfile.name}</h4>
-                              <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-200/50 text-green-500 text-xs font-bold`}>
-                                {lastVariation >= 0 ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
-                                {lastVariation >= 0 ? '+' : ''}{lastVariation.toFixed(2)}%
-                              </div>
+                            <h4 className="font-medium truncate mb-2">{similarProfile.name}</h4>
+                            <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold mb-2 w-fit ${
+                              lastVariation >= 0 
+                                ? 'bg-green-200/50 text-green-500' 
+                                : 'bg-red-200/50 text-red-500'
+                            }`}>
+                              {lastVariation >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                              {lastVariation >= 0 ? '+' : ''}{lastVariation.toFixed(2)}%
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">
                               Market Cap: {marketCap.toLocaleString()}€
