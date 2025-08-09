@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { Search, ChevronDown } from 'lucide-react';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
@@ -7,9 +7,9 @@ import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
-import { getCreatorProfile, creatorProfiles, getMarketCap } from '@/utils/creatorProfiles';
+import { getCreatorProfile, creatorProfiles, getMarketCap, getLastVariation } from '@/utils/creatorProfiles';
 
-type SortOption = 'popularity' | 'return' | 'alphabetical';
+type SortOption = 'popularity' | 'return' | 'alphabetical' | 'performance' | 'marketcap';
 
 // Create an interface for consolidated creator data
 interface ConsolidatedCreator {
@@ -26,7 +26,8 @@ const Creators = () => {
   const {
     isAuthenticated
   } = useAuth();
-  const [sortBy, setSortBy] = useState<SortOption>('return'); // Default to 'return'
+  const [sortBy, setSortBy] = useState<SortOption>('performance'); // Default to 'performance'
+  const [showDropdown, setShowDropdown] = useState(false);
   const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
   useEffect(() => {
     // Combine creators from mockData and creatorProfiles
@@ -80,7 +81,20 @@ const Creators = () => {
   };
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
+    setShowDropdown(false);
   };
+
+  const getSortLabel = (option: SortOption) => {
+    switch (option) {
+      case 'performance': return 'Top Performance';
+      case 'marketcap': return 'Top Market Cap';
+      case 'popularity': return 'Popularité';
+      case 'return': return 'Rendement';
+      case 'alphabetical': return 'Alphabétique';
+      default: return 'Top Performance';
+    }
+  };
+
   const filteredCreators = allCreators.sort((a, b) => {
     switch (sortBy) {
       case 'popularity':
@@ -89,8 +103,16 @@ const Creators = () => {
         return b.returnRate - a.returnRate;
       case 'alphabetical':
         return a.name.localeCompare(b.name);
+      case 'performance':
+        const variationA = getLastVariation(a.id);
+        const variationB = getLastVariation(b.id);
+        return variationB - variationA; // Du plus positif au plus négatif
+      case 'marketcap':
+        return b.totalInvested - a.totalInvested; // Du plus gros au plus petit
       default:
-        return b.returnRate - a.returnRate;
+        const defaultVariationA = getLastVariation(a.id);
+        const defaultVariationB = getLastVariation(b.id);
+        return defaultVariationB - defaultVariationA;
     }
   });
   return <div className="min-h-screen flex flex-col">
@@ -109,6 +131,42 @@ const Creators = () => {
                 <p className="text-gray-600 dark:text-gray-300">
                   {filteredCreators.length} {filteredCreators.length > 1 ? 'créatrices' : 'créatrice'}
                 </p>
+                
+                {/* Dropdown pour le filtre */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    <span className="text-sm font-medium">{getSortLabel(sortBy)}</span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {showDropdown && (
+                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                      <div className="py-1">
+                        <button
+                          onClick={() => handleSortChange('performance')}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'performance' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
+                        >
+                          Top Performance
+                        </button>
+                        <button
+                          onClick={() => handleSortChange('marketcap')}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'marketcap' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
+                        >
+                          Top Market Cap
+                        </button>
+                        <button
+                          onClick={() => handleSortChange('popularity')}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${sortBy === 'popularity' ? 'bg-gray-50 dark:bg-gray-700 font-medium' : ''}`}
+                        >
+                          Popularité
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </FadeIn>
             
