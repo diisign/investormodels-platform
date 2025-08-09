@@ -75,7 +75,7 @@ const Creators = () => {
 
     // Créer un ordre aléatoire fixe qui persiste même en naviguant entre les pages
     let shuffled: string[];
-    const savedOrder = localStorage.getItem('creators-shuffle-order');
+    const savedOrder = localStorage.getItem('creators-shuffle-order-v2');
     if (savedOrder && shuffledOrder.length === 0) {
       // Utiliser l'ordre sauvegardé
       shuffled = JSON.parse(savedOrder);
@@ -84,7 +84,7 @@ const Creators = () => {
       // Créer un nouvel ordre aléatoire et le sauvegarder
       shuffled = [...combinedCreators].sort(() => Math.random() - 0.5).map(c => c.id);
       setShuffledOrder(shuffled);
-      localStorage.setItem('creators-shuffle-order', JSON.stringify(shuffled));
+      localStorage.setItem('creators-shuffle-order-v2', JSON.stringify(shuffled));
     } else {
       shuffled = shuffledOrder;
     }
