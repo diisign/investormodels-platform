@@ -29,6 +29,7 @@ const Creators = () => {
   const [sortBy, setSortBy] = useState<SortOption>('random'); // Default to 'random'
   const [showDropdown, setShowDropdown] = useState(false);
   const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
+  const [shuffledOrder, setShuffledOrder] = useState<string[]>([]);
   useEffect(() => {
     // Combine creators from mockData and creatorProfiles
     const combinedCreators: ConsolidatedCreator[] = [];
@@ -71,7 +72,13 @@ const Creators = () => {
       }
     });
     setAllCreators(combinedCreators);
-  }, []);
+    
+    // Créer un ordre aléatoire fixe pour le tri 'random' qui ne change pas à l'actualisation
+    if (shuffledOrder.length === 0) {
+      const shuffled = [...combinedCreators].sort(() => Math.random() - 0.5).map(c => c.id);
+      setShuffledOrder(shuffled);
+    }
+  }, [shuffledOrder.length]);
 
   // Helper function to deterministically assign a category based on creator ID
   const determineCategory = (id: string): string => {
@@ -99,7 +106,10 @@ const Creators = () => {
   const filteredCreators = allCreators.sort((a, b) => {
     switch (sortBy) {
       case 'random':
-        return Math.random() - 0.5; // Tri aléatoire
+        // Utiliser l'ordre aléatoire fixe
+        const indexA = shuffledOrder.indexOf(a.id);
+        const indexB = shuffledOrder.indexOf(b.id);
+        return indexA - indexB;
       case 'popularity':
         return b.investorsCount - a.investorsCount;
       case 'return':
@@ -113,7 +123,10 @@ const Creators = () => {
       case 'marketcap':
         return b.totalInvested - a.totalInvested; // Du plus gros au plus petit
       default:
-        return Math.random() - 0.5; // Tri aléatoire par défaut
+        // Utiliser l'ordre aléatoire fixe par défaut
+        const defaultIndexA = shuffledOrder.indexOf(a.id);
+        const defaultIndexB = shuffledOrder.indexOf(b.id);
+        return defaultIndexA - defaultIndexB;
     }
   });
   return <div className="min-h-screen flex flex-col">
@@ -143,7 +156,7 @@ const Creators = () => {
                   </button>
                   
                   {showDropdown && (
-                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
                       <div className="py-1">
                         <button
                           onClick={() => handleSortChange('random')}
