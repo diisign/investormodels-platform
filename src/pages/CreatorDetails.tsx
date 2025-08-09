@@ -260,14 +260,14 @@ const CreatorDetails = () => {
       <main className="flex-grow pt-20">
         <div className="container mx-auto my-0 py-[8px] px-px">
           <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => {
-            navigate(-1);
-            setTimeout(() => {
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              });
-            }, 100);
-          }}>
+          navigate(-1);
+          setTimeout(() => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          }, 100);
+        }}>
             <ArrowLeft className="h-4 w-4" />
             <span>Retour</span>
           </Button>
@@ -296,29 +296,15 @@ const CreatorDetails = () => {
                 <div className="flex items-center gap-4">
                   <h1 className="text-2xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
                   {(() => {
-                    const variation = getLastVariation(creatorId || '');
-                    const isNegative = variation < 0;
-                    return (
-                      <div className={`flex items-center gap-2 px-3 py-2 rounded-full ${
-                        isNegative 
-                          ? 'bg-red-500/20' 
-                          : 'bg-green-500/20'
-                      }`}>
-                        {isNegative ? (
-                          <TrendingDown className="h-4 w-4 md:h-5 md:w-5 text-red-400" />
-                        ) : (
-                          <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-400" />
-                        )}
-                        <span className={`text-base md:text-lg font-bold ${
-                          isNegative 
-                            ? 'text-red-400' 
-                            : 'text-green-400'
-                        }`}>
+                  const variation = getLastVariation(creatorId || '');
+                  const isNegative = variation < 0;
+                  return <div className={`flex items-center gap-2 px-3 py-2 rounded-full ${isNegative ? 'bg-red-500/20' : 'bg-green-500/20'}`}>
+                        {isNegative ? <TrendingDown className="h-4 w-4 md:h-5 md:w-5 text-red-400" /> : <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-400" />}
+                        <span className={`text-base md:text-lg font-bold ${isNegative ? 'text-red-400' : 'text-green-400'}`}>
                           {variation.toFixed(2)}%
                         </span>
-                      </div>
-                    );
-                  })()}
+                      </div>;
+                })()}
                 </div>
               </FadeIn>
             </div>
@@ -433,7 +419,7 @@ const CreatorDetails = () => {
             
             {/* Créatrices similaires - Section 4 avec ScrollArea */}
             <FadeIn direction="up" delay={400}>
-              <div className="w-full">
+              <div className="w-full py-[33px]">
                 <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
                 <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
                   <div className="p-4 space-y-4">
@@ -447,11 +433,7 @@ const CreatorDetails = () => {
                           </div>
                           <div className="flex-grow min-w-0">
                             <h4 className="font-medium truncate mb-2">{similarProfile.name}</h4>
-                            <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold mb-2 w-fit ${
-                              lastVariation >= 0 
-                                ? 'bg-green-200/50 text-green-500' 
-                                : 'bg-red-200/50 text-red-500'
-                            }`}>
+                            <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold mb-2 w-fit ${lastVariation >= 0 ? 'bg-green-200/50 text-green-500' : 'bg-red-200/50 text-red-500'}`}>
                               {lastVariation >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                               {lastVariation >= 0 ? '+' : ''}{lastVariation.toFixed(2)}%
                             </div>
