@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, CircleDollarSign } from 'lucide-react';
+import { Users, CircleDollarSign, TrendingUp, TrendingDown } from 'lucide-react';
 import { getCreatorProfile, getLastVariation } from '@/utils/creatorProfiles';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import CreatorBadge from '@/components/ui/CreatorBadge';
@@ -86,9 +86,11 @@ const CreatorCard = ({
             <div className="text-center">
               {(() => {
                 const variation = getLastVariation(id);
+                const isPositive = variation >= 0;
                 return (
-                  <div className={`text-lg font-bold ${variation >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {variation >= 0 ? '+' : ''}{variation.toFixed(2)}%
+                  <div className={`flex items-center gap-1 text-lg font-bold ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+                    {isPositive ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+                    {isPositive ? '+' : ''}{variation.toFixed(2)}%
                   </div>
                 );
               })()}
