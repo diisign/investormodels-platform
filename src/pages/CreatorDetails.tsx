@@ -259,10 +259,12 @@ const CreatorDetails = () => {
         <div className="container mx-auto my-0 py-[8px] px-px">
           <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => {
             navigate(-1);
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
+            setTimeout(() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+            }, 100);
           }}>
             <ArrowLeft className="h-4 w-4" />
             <span>Retour</span>
