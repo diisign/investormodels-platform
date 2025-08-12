@@ -25,7 +25,7 @@ const Creators = () => {
   const {
     isAuthenticated
   } = useAuth();
-  const [sortBy, setSortBy] = useState<SortOption>('random'); // Default to 'random'
+  const [sortBy, setSortBy] = useState<SortOption>('performance'); // Default to 'performance'
   const [showDropdown, setShowDropdown] = useState(false);
   const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
   const [sortedCreators, setSortedCreators] = useState<ConsolidatedCreator[]>([]);
@@ -89,12 +89,12 @@ const Creators = () => {
       shuffled = shuffledOrder;
     }
 
-    // Définir l'ordre initial (aléatoire persistant)
+    // Définir l'ordre initial (par performance - variations positives en premier)
     if (sortedCreators.length === 0) {
       const initialSorted = [...combinedCreators].sort((a, b) => {
-        const indexA = shuffled.indexOf(a.id);
-        const indexB = shuffled.indexOf(b.id);
-        return indexA - indexB;
+        const variationA = getLastVariation(a.id);
+        const variationB = getLastVariation(b.id);
+        return variationB - variationA;
       });
       setSortedCreators(initialSorted);
     }
