@@ -18,7 +18,7 @@ import Deposit from "./pages/Deposit";
 import Profile from "./pages/Profile";
 import WebhookDebug from "./pages/WebhookDebug";
 import FAQ from "./pages/FAQ";
-import HowItWorks from "./pages/HowItWorks";
+
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
@@ -45,7 +45,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/affiliation" element={<Affiliation />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/comment-ca-marche" element={<HowItWorks />} />
+            
             <Route path="/contact" element={<Contact />} />
             <Route path="/examples" element={<Examples />} />
             <Route path="/dɑshboard" element={<Dɑshboard />} />
