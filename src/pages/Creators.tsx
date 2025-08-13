@@ -89,13 +89,34 @@ const Creators = () => {
       shuffled = shuffledOrder;
     }
 
-    // Définir l'ordre initial (par performance - variations positives en premier)
+    // Définir l'ordre initial (mix aléatoire avec plus de variations positives en haut)
     if (sortedCreators.length === 0) {
-      const initialSorted = [...combinedCreators].sort((a, b) => {
-        const variationA = getLastVariation(a.id);
-        const variationB = getLastVariation(b.id);
-        return variationB - variationA;
-      });
+      const positiveVariations = combinedCreators.filter(c => getLastVariation(c.id) > 0);
+      const negativeVariations = combinedCreators.filter(c => getLastVariation(c.id) <= 0);
+      
+      // Mélanger les créatrices avec variations positives
+      const shuffledPositive = [...positiveVariations].sort(() => Math.random() - 0.5);
+      // Mélanger les créatrices avec variations négatives
+      const shuffledNegative = [...negativeVariations].sort(() => Math.random() - 0.5);
+      
+      // Créer un mix: 70% de positives en haut, mais avec quelques négatives mélangées
+      const initialSorted = [];
+      let positiveIndex = 0;
+      let negativeIndex = 0;
+      
+      for (let i = 0; i < combinedCreators.length; i++) {
+        // 70% de chances de prendre une positive si disponible, sinon prendre négative
+        const shouldTakePositive = (Math.random() < 0.7 && positiveIndex < shuffledPositive.length) || negativeIndex >= shuffledNegative.length;
+        
+        if (shouldTakePositive && positiveIndex < shuffledPositive.length) {
+          initialSorted.push(shuffledPositive[positiveIndex]);
+          positiveIndex++;
+        } else if (negativeIndex < shuffledNegative.length) {
+          initialSorted.push(shuffledNegative[negativeIndex]);
+          negativeIndex++;
+        }
+      }
+      
       setSortedCreators(initialSorted);
     }
   }, [shuffledOrder.length, sortedCreators.length]);
