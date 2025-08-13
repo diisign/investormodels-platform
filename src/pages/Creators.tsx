@@ -91,6 +91,26 @@ const Creators = () => {
 
     // Définir l'ordre initial (mix aléatoire avec plus de variations positives en haut)
     if (sortedCreators.length === 0) {
+      // Vérifier s'il y a un ordre sauvegardé
+      const savedSortedOrder = localStorage.getItem('creators-sorted-order-v3');
+      if (savedSortedOrder) {
+        try {
+          const savedIds = JSON.parse(savedSortedOrder);
+          const restoredOrder = savedIds.map((id: string) => 
+            combinedCreators.find(c => c.id === id)
+          ).filter(Boolean);
+          
+          // Ajouter les nouveaux créateurs qui ne sont pas dans l'ordre sauvegardé
+          const newCreators = combinedCreators.filter(c => !savedIds.includes(c.id));
+          setSortedCreators([...restoredOrder, ...newCreators]);
+          return;
+        } catch (e) {
+          // Si erreur de parsing, recalculer l'ordre
+          console.warn('Erreur lors du chargement de l\'ordre sauvegardé');
+        }
+      }
+      
+      // Calculer un nouvel ordre
       const positiveVariations = combinedCreators.filter(c => getLastVariation(c.id) > 0);
       const smallNegativeVariations = combinedCreators.filter(c => {
         const variation = getLastVariation(c.id);
@@ -142,6 +162,10 @@ const Creators = () => {
       
       // Ajouter les grosses variations négatives à la fin
       initialSorted.push(...shuffledLargeNegative);
+      
+      // Sauvegarder l'ordre calculé
+      const sortedIds = initialSorted.map(c => c.id);
+      localStorage.setItem('creators-sorted-order-v3', JSON.stringify(sortedIds));
       
       setSortedCreators(initialSorted);
     }
