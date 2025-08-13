@@ -92,30 +92,56 @@ const Creators = () => {
     // Définir l'ordre initial (mix aléatoire avec plus de variations positives en haut)
     if (sortedCreators.length === 0) {
       const positiveVariations = combinedCreators.filter(c => getLastVariation(c.id) > 0);
-      const negativeVariations = combinedCreators.filter(c => getLastVariation(c.id) <= 0);
+      const smallNegativeVariations = combinedCreators.filter(c => {
+        const variation = getLastVariation(c.id);
+        return variation <= 0 && variation >= -5; // Seulement les petites variations négatives
+      });
+      const largeNegativeVariations = combinedCreators.filter(c => {
+        const variation = getLastVariation(c.id);
+        return variation < -5; // Grosses variations négatives à placer plus bas
+      });
       
       // Mélanger les créatrices avec variations positives
       const shuffledPositive = [...positiveVariations].sort(() => Math.random() - 0.5);
-      // Mélanger les créatrices avec variations négatives
-      const shuffledNegative = [...negativeVariations].sort(() => Math.random() - 0.5);
+      // Mélanger les créatrices avec petites variations négatives
+      const shuffledSmallNegative = [...smallNegativeVariations].sort(() => Math.random() - 0.5);
+      // Mélanger les créatrices avec grosses variations négatives
+      const shuffledLargeNegative = [...largeNegativeVariations].sort(() => Math.random() - 0.5);
       
-      // Créer un mix: 70% de positives en haut, mais avec quelques négatives mélangées
+      // Créer un mix: 85% de positives en haut, 15% de petites négatives, grosses négatives à la fin
       const initialSorted = [];
       let positiveIndex = 0;
-      let negativeIndex = 0;
+      let smallNegativeIndex = 0;
       
-      for (let i = 0; i < combinedCreators.length; i++) {
-        // 70% de chances de prendre une positive si disponible, sinon prendre négative
-        const shouldTakePositive = (Math.random() < 0.7 && positiveIndex < shuffledPositive.length) || negativeIndex >= shuffledNegative.length;
+      // Première partie: mix positives et petites négatives
+      const topCount = Math.min(20, combinedCreators.length); // Les 20 premiers ou moins
+      for (let i = 0; i < topCount; i++) {
+        // 85% de chances de prendre une positive si disponible
+        const shouldTakePositive = (Math.random() < 0.85 && positiveIndex < shuffledPositive.length) || smallNegativeIndex >= shuffledSmallNegative.length;
         
         if (shouldTakePositive && positiveIndex < shuffledPositive.length) {
           initialSorted.push(shuffledPositive[positiveIndex]);
           positiveIndex++;
-        } else if (negativeIndex < shuffledNegative.length) {
-          initialSorted.push(shuffledNegative[negativeIndex]);
-          negativeIndex++;
+        } else if (smallNegativeIndex < shuffledSmallNegative.length) {
+          initialSorted.push(shuffledSmallNegative[smallNegativeIndex]);
+          smallNegativeIndex++;
         }
       }
+      
+      // Ajouter le reste des positives
+      while (positiveIndex < shuffledPositive.length) {
+        initialSorted.push(shuffledPositive[positiveIndex]);
+        positiveIndex++;
+      }
+      
+      // Ajouter le reste des petites négatives
+      while (smallNegativeIndex < shuffledSmallNegative.length) {
+        initialSorted.push(shuffledSmallNegative[smallNegativeIndex]);
+        smallNegativeIndex++;
+      }
+      
+      // Ajouter les grosses variations négatives à la fin
+      initialSorted.push(...shuffledLargeNegative);
       
       setSortedCreators(initialSorted);
     }
