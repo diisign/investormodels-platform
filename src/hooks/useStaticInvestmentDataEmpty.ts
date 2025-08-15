@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface StaticInvestment {
   id: string;
@@ -42,22 +43,23 @@ const EMPTY_INVESTMENTS: StaticInvestment[] = [];
 
 const EMPTY_TRANSACTIONS: StaticTransaction[] = [];
 
-const EMPTY_PERFORMANCE_DATA: StaticPerformanceData[] = [
-  { month: 'Août', value: 0 },
-  { month: 'Sept', value: 0 },
-  { month: 'Oct', value: 0 },
-  { month: 'Nov', value: 0 },
-  { month: 'Déc', value: 0 },
-  { month: 'Jan', value: 0 },
-  { month: 'Fév', value: 0 },
-  { month: 'Mars', value: 0 },
-  { month: 'Avr', value: 0 },
-  { month: 'Mai', value: 0 },
-  { month: 'Juin', value: 0 }
-];
-
 export const useStaticInvestmentDataEmpty = (): StaticInvestmentData => {
+  const { t } = useTranslation();
+  
   return useMemo(() => {
+    const EMPTY_PERFORMANCE_DATA: StaticPerformanceData[] = [
+      { month: t('dashboard.months.aug'), value: 0 },
+      { month: t('dashboard.months.sep'), value: 0 },
+      { month: t('dashboard.months.oct'), value: 0 },
+      { month: t('dashboard.months.nov'), value: 0 },
+      { month: t('dashboard.months.dec'), value: 0 },
+      { month: t('dashboard.months.jan'), value: 0 },
+      { month: t('dashboard.months.feb'), value: 0 },
+      { month: t('dashboard.months.mar'), value: 0 },
+      { month: t('dashboard.months.apr'), value: 0 },
+      { month: t('dashboard.months.may'), value: 0 },
+      { month: t('dashboard.months.jun'), value: 0 }
+    ];
     const totalInvested = 0;
     const totalEarnings = 0;
     const balance = 0;
@@ -71,5 +73,5 @@ export const useStaticInvestmentDataEmpty = (): StaticInvestmentData => {
       transactions: EMPTY_TRANSACTIONS,
       performanceData: EMPTY_PERFORMANCE_DATA
     };
-  }, []);
+  }, [t]);
 };
