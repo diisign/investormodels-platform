@@ -1,6 +1,5 @@
 
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export interface StaticInvestment {
   id: string;
@@ -98,24 +97,22 @@ const STATIC_TRANSACTIONS: StaticTransaction[] = [
   }
 ];
 
-export const useStaticInvestmentData = (): StaticInvestmentData => {
-  const { t } = useTranslation();
-  
-  return useMemo(() => {
-    const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
-      { month: t('dashboard.months.aug'), value: 0 },
-      { month: t('dashboard.months.sep'), value: 500, withdrawal: 0 },
-      { month: t('dashboard.months.oct'), value: 660, withdrawal: 350 },
-      { month: t('dashboard.months.nov'), value: 871, withdrawal: 900 },
-      { month: t('dashboard.months.dec'), value: 1150, withdrawal: 750 },
-      { month: t('dashboard.months.jan'), value: 1518, withdrawal: 1200 },
-      { month: t('dashboard.months.feb'), value: 2003, withdrawal: 3500 },
-      { month: t('dashboard.months.mar'), value: 2645, withdrawal: 4850 },
-      { month: t('dashboard.months.apr'), value: 3491, withdrawal: 4100 },
-      { month: t('dashboard.months.may'), value: 4608, withdrawal: 5150 },
-      { month: t('dashboard.months.jun'), value: 6083, withdrawal: 5800 }
-    ];
+const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
+  { month: 'Août', value: 0 },
+  { month: 'Sept', value: 500, withdrawal: 0 },
+  { month: 'Oct', value: 660, withdrawal: 350 },
+  { month: 'Nov', value: 871, withdrawal: 900 },
+  { month: 'Déc', value: 1150, withdrawal: 750 },
+  { month: 'Jan', value: 1518, withdrawal: 1200 },
+  { month: 'Fév', value: 2003, withdrawal: 3500 },
+  { month: 'Mars', value: 2645, withdrawal: 4850 },
+  { month: 'Avr', value: 3491, withdrawal: 4100 },
+  { month: 'Mai', value: 4608, withdrawal: 5150 },
+  { month: 'Juin', value: 6083, withdrawal: 5800 }
+];
 
+export const useStaticInvestmentData = (): StaticInvestmentData => {
+  return useMemo(() => {
     const totalInvested = 500;
     const totalEarnings = 32183; // Updated total earnings based on new investment values
     const balance = 13183; // Updated balance to 13183€
@@ -129,5 +126,5 @@ export const useStaticInvestmentData = (): StaticInvestmentData => {
       transactions: STATIC_TRANSACTIONS,
       performanceData: STATIC_PERFORMANCE_DATA
     };
-  }, [t]);
+  }, []);
 };

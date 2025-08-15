@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, ShieldCheck, Users, Zap, ChevronRight, ChevronLeft, Star } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
@@ -78,7 +77,6 @@ const trustpilotReviews = [{
   style: "italic"
 }];
 const Index = () => {
-  const { t } = useTranslation();
   const {
     isAuthenticated
   } = useAuth();
@@ -177,18 +175,18 @@ const Index = () => {
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-zinc-950 xl:text-2xl">
-                  {t('home.title')}
+                  Investissez dans les <span className="text-3xl text-yellow-300">créatrices OnlyFans.</span>
                 </h1>
                 
                 
                 <div className="pt-2 bg-transparent">
                   {isAuthenticated ? <button onClick={scrollToCreators}>
                       <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
-                        {t('home.cta')}
+                        Commencer maintenant
                       </GradientButton>
                     </button> : <Link to="/login">
                       <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
-                        {t('home.cta')}
+                        Commencer maintenant
                       </GradientButton>
                     </Link>}
                 </div>
@@ -196,15 +194,15 @@ const Index = () => {
                 <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 pt-4 md:pt-6">
                   <div className="flex flex-col items-center">
                     <span className="text-2xl md:text-3xl font-bold text-gray-950">50+</span>
-                    <span className="text-sm text-gray-500">{t('home.stats.creators')}</span>
+                    <span className="text-sm text-gray-500">Créatrices</span>
                   </div>
                   <div className="flex flex-col items-center">
                     <span className="text-2xl md:text-3xl font-bold text-zinc-950">20K+</span>
-                    <span className="text-sm text-gray-500">{t('home.stats.investors')}</span>
+                    <span className="text-sm text-gray-500">Investisseurs</span>
                   </div>
                   <div className="flex flex-col items-center">
                     <span className="text-2xl md:text-3xl font-bold text-zinc-950">7M €</span>
-                    <span className="text-sm text-gray-500">{t('home.stats.dividends')}</span>
+                    <span className="text-sm text-gray-500">Dividendes</span>
                   </div>
                 </div>
               </FadeIn>
@@ -217,12 +215,12 @@ const Index = () => {
             <FadeIn className="text-center mb-8 md:mb-12" direction="up">
               <div>
                 <h2 className="md:text-3xl font-bold mb-3 md:mb-4 lg:text-3xl text-yellow-300 text-3xl">
-                  {t('home.topCreators')}
+                  Top créatrices
                 </h2>
                 
               </div>
               <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
-                <span className="text-zinc-950">{t('home.seeAllCreators')}</span>
+                <span className="text-zinc-950">Voir toutes les créatrices</span>
                 <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent text-yellow-300" />
               </Link>
             </FadeIn>
@@ -254,7 +252,7 @@ const Index = () => {
             <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
                 <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
-                  {t('home.seeAllCreators')}
+                  Voir toutes les créatrices
                   <ArrowRight className="h-4 w-4 ml-1 text-yellow-300" />
                 </GradientButton>
               </Link>
@@ -267,10 +265,10 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
               <h2 className="md:text-3xl font-bold mb-3 text-center text-2xl">
-                {t('home.topAffiliates')}
+                Nos <span className="text-yellow-300">Meilleurs Parrains</span>
               </h2>
               <p className="text-base md:text-lg text-center text-gray-950">
-                {t('home.affiliatesDescription')}
+                Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?
               </p>
             </FadeIn>
             
@@ -281,7 +279,7 @@ const Index = () => {
             <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
                 <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
-                  {t('home.joinAffiliation')}
+                  Rejoindre le programme d'affiliation
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
@@ -293,10 +291,10 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="max-w-3xl mx-auto mb-10 text-2xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
-                {t('home.marketExplosion')}
+                Un Marché en <span className="text-yellow-300">Pleine Explosion</span>
               </h2>
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-center text-gray-950">{t('home.onlyfansGrowth')}</p>
+                <p className="text-base md:text-lg text-center text-gray-950">OnlyFans connaît une croissance explosive depuis sa création en 2017 son Chiffre d'affaire a été multiplié par 300.</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
                   
                   
@@ -324,10 +322,10 @@ const Index = () => {
                 <span className="text-base font-bold text-inherit">4.7/5</span>
               </div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-                {t('home.userReviews')}
+                Ce que disent <span className="text-yellow-300">nos utilisateurs</span>
               </h2>
               <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
-                {t('home.userReviewsDescription')}
+                Rejoignez plus de 20 000 investisseurs satisfaits qui ont déjà fait confiance à notre plateforme.
               </p>
             </FadeIn>
             

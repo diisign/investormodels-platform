@@ -2,7 +2,6 @@ import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -27,7 +26,6 @@ type AffiliationWithProfiles = {
 };
 
 const DashboardAffiliation = () => {
-  const { t } = useTranslation();
   const { data: affiliations, isLoading } = useQuery({
     queryKey: ['all-affiliations'],
     queryFn: async () => {
@@ -47,7 +45,7 @@ const DashboardAffiliation = () => {
   });
 
   if (isLoading) {
-    return <div className="text-center py-4">{t('dashboardAffiliation.loading')}</div>;
+    return <div className="text-center py-4">Chargement des données...</div>;
   }
 
   return (
@@ -59,25 +57,25 @@ const DashboardAffiliation = () => {
           <TopAffiliates />
         </div>
         <Card className="p-4">
-          <h2 className="text-xl font-semibold mb-4">{t('dashboardAffiliation.allReferrals')}</h2>
+          <h2 className="text-xl font-semibold mb-4">Tous les Parrainages</h2>
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>{t('dashboardAffiliation.referrer')}</TableHead>
-                  <TableHead>{t('dashboardAffiliation.referred')}</TableHead>
-                  <TableHead>{t('dashboardAffiliation.date')}</TableHead>
-                  <TableHead>{t('dashboardAffiliation.status')}</TableHead>
-                  <TableHead>{t('dashboardAffiliation.firstInvestment')}</TableHead>
-                  <TableHead>{t('dashboardAffiliation.totalEarnings')}</TableHead>
+                  <TableHead>Parrain</TableHead>
+                  <TableHead>Filleul</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead>Premier Investissement</TableHead>
+                  <TableHead>Gains Totaux</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {affiliations && affiliations.length > 0 ? (
                   affiliations.map((affiliation) => (
                     <TableRow key={affiliation.id}>
-                      <TableCell>{affiliation.referrer?.name || t('dashboardAffiliation.anonymous')}</TableCell>
-                      <TableCell>{affiliation.referred?.name || t('dashboardAffiliation.anonymous')}</TableCell>
+                      <TableCell>{affiliation.referrer?.name || 'Anonyme'}</TableCell>
+                      <TableCell>{affiliation.referred?.name || 'Anonyme'}</TableCell>
                       <TableCell>
                         {formatDistance(new Date(affiliation.created_at), new Date(), {
                           addSuffix: true,
@@ -90,7 +88,7 @@ const DashboardAffiliation = () => {
                             ? 'bg-yellow-100 text-yellow-800' 
                             : 'bg-green-100 text-green-800'
                         }`}>
-                          {affiliation.status === 'pending' ? t('dashboardAffiliation.pending') : t('dashboardAffiliation.active')}
+                          {affiliation.status === 'pending' ? 'En attente' : 'Actif'}
                         </span>
                       </TableCell>
                       <TableCell>
@@ -108,7 +106,7 @@ const DashboardAffiliation = () => {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center py-4">
-                      {t('dashboardAffiliation.noReferrals')}
+                      Aucun parrainage pour le moment
                     </TableCell>
                   </TableRow>
                 )}

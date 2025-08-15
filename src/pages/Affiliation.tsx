@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FadeIn from '@/components/animations/FadeIn';
@@ -16,7 +15,6 @@ import TopAffiliates from '@/components/affiliations/TopAffiliates';
 import { getUserInvestments } from '@/utils/investments';
 import { useQuery } from '@tanstack/react-query';
 const Affiliation = () => {
-  const { t } = useTranslation();
   const {
     isAuthenticated,
     user
@@ -43,7 +41,7 @@ const Affiliation = () => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(affiliationLink);
     setCopied(true);
-    toast.success(t('affiliation.linkCopied'));
+    toast.success("Lien d'affiliation copié !");
     setTimeout(() => setCopied(false), 2000);
   };
   useEffect(() => {
@@ -66,10 +64,10 @@ const Affiliation = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center mb-8 py-[43px]">
               <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
-                {t('affiliation.title')}
+                Programme d'Affiliation
               </h1>
               <p className="mt-3 text-gray-600 max-w-2xl mx-auto text-base md:text-lg">
-                {t('affiliation.description')}
+                Parrainez vos amis et gagnez ensemble avec notre programme de récompenses exclusif.
               </p>
             </div>
             
@@ -83,18 +81,18 @@ const Affiliation = () => {
                     </div>
                     
                     <h2 className="text-sm md:text-base font-bold text-center mb-2 md:mb-3 text-gray-800">
-                      {t('affiliation.partnerProgram')}
+                      Programme Partenaire
                     </h2>
                     
                     <div className="text-center mb-2">
                       <p className="text-sm text-gray-700 font-medium">
-                        {t('affiliation.inviteDescription')}
+                        Invitez vos amis à rejoindre CréatorInvest.
                       </p>
                     </div>
                     
                     <div className="flex justify-center">
                       <div className="flex items-center gap-1 text-teal-600">
-                        <span className="text-xs text-yellow-300 font-semibold md:text-sm">{t('affiliation.noLimit')}</span>
+                        <span className="text-xs text-yellow-300 font-semibold md:text-sm">Sans limite</span>
                         <Rocket size={isMobile ? 12 : 14} className="text-yellow-300" />
                       </div>
                     </div>
@@ -102,25 +100,25 @@ const Affiliation = () => {
                     {!isAuthenticated && <div className="pt-2 md:pt-3 w-full">
                         <Link to="/login">
                           <GradientButton gradientDirection="to-r" fullWidth size="sm" className="from-teal-400 to-blue-500 text-white text-xs py-1 h-8">
-                            {t('affiliation.login')}
+                            Me connecter
                           </GradientButton>
                         </Link>
                       </div>}
                     
                     {isAuthenticated && hasInvestedMinimum && <div className="pt-2 md:pt-3 w-full">
                         <GradientButton onClick={handleCopyLink} size="sm" gradientDirection="to-r" fullWidth icon={<Copy className="h-3 w-3" />} iconPosition="left" className="from-teal-400 to-blue-500 text-white text-xs h-8 px-2">
-                          {t('affiliation.inviteFriends')}
+                          Inviter des amis
                         </GradientButton>
                       </div>}
                     
                     {isAuthenticated && !hasInvestedMinimum && <div className="pt-2 md:pt-3 w-full">
                         <div className="text-center p-2 bg-gray-100 rounded-lg">
                           <p className="text-xs text-gray-600 mb-2">
-                            {t('affiliation.investMinimum')}
+                            Investissez au moins 100€ pour débloquer votre lien de parrainage
                           </p>
                           <Link to="/creators">
                             <Button size="sm" variant="outline" className="text-xs h-8">
-                              {t('affiliation.seeCreators')}
+                              Voir les créatrices
                             </Button>
                           </Link>
                         </div>
@@ -135,13 +133,13 @@ const Affiliation = () => {
                     <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-black flex items-center justify-center mb-2">
                       <UserPlus className="h-4 w-4 md:h-5 md:w-5 text-yellow-300" />
                     </div>
-                    <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">{t('affiliation.forReferrals')}</h3>
+                    <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vos Filleuls</h3>
                     <div className="mt-1 mb-1">
                       <span className="text-sm font-bold text-yellow-300 md:text-xl">50€</span>
-                      <span className="text-gray-600 text-xs ml-1">{t('affiliation.bonus')}</span>
+                      <span className="text-gray-600 text-xs ml-1">bonus</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      {t('affiliation.bonusDescription')}
+                      Recevez 50€ pour chaque ami qui investit 100€ ou plus.
                     </p>
                   </div>
                 </Card>
@@ -151,13 +149,13 @@ const Affiliation = () => {
                     <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-black flex items-center justify-center mb-2">
                       <PiggyBank className="h-4 w-4 md:h-5 md:w-5 text-yellow-300" />
                     </div>
-                    <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">{t('affiliation.forYou')}</h3>
+                    <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vous</h3>
                     <div className="mt-1 mb-1">
                       <span className="text-sm font-bold text-yellow-300 md:text-xl">50%</span>
-                      <span className="text-gray-600 text-xs ml-1">{t('affiliation.ofGains')}</span>
+                      <span className="text-gray-600 text-xs ml-1">des gains</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      {t('affiliation.gainsDescription')}
+                      Recevez 50% des gains de vos filleuls
                     </p>
                   </div>
                 </Card>
@@ -171,10 +169,10 @@ const Affiliation = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-6" direction="up">
               <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
-                {t('affiliation.topAffiliates')}
+                Nos <span className="text-yellow-300">Meilleurs Parrains</span>
               </h2>
               <p className="text-base text-gray-600 dark:text-gray-300 text-center">
-                {t('affiliation.topAffiliatesDescription')}
+                Découvrez les parrains qui ont gagné le plus en recommandant notre plateforme.
               </p>
             </FadeIn>
             
@@ -187,9 +185,9 @@ const Affiliation = () => {
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900">{t('affiliation.benefits')}</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900">Les avantages de notre programme d'affiliation</h2>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                {t('affiliation.benefitsDescription')}
+                Tout le monde y gagne avec notre programme de parrainage exclusif.
               </p>
             </FadeIn>
 
@@ -201,9 +199,9 @@ const Affiliation = () => {
                       <BadgeDollarSign className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
-                      <h3 className="text-lg font-semibold mb-2 text-gray-900">{t('affiliation.generousBonus')}</h3>
+                      <h3 className="text-lg font-semibold mb-2 text-gray-900">Bonus généreux</h3>
                       <p className="text-gray-600 text-sm">
-                        {t('affiliation.generousBonusDescription')}
+                        Recevez 50% des gains de votre filleuls
                       </p>
                     </div>
                   </div>
@@ -217,9 +215,9 @@ const Affiliation = () => {
                       <Gift className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
-                      <h3 className="text-lg font-semibold mb-2 text-gray-900">{t('affiliation.referralBenefits')}</h3>
+                      <h3 className="text-lg font-semibold mb-2 text-gray-900">Avantages filleuls</h3>
                       <p className="text-gray-600 text-sm">
-                        {t('affiliation.referralBenefitsDescription')}
+                        Vos amis bénéficient d'un bonus de 50€.
                       </p>
                     </div>
                   </div>
@@ -233,9 +231,9 @@ const Affiliation = () => {
                       <Users className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
-                      <h3 className="text-lg font-semibold mb-2 text-gray-900">{t('affiliation.realTimeTracking')}</h3>
+                      <h3 className="text-lg font-semibold mb-2 text-gray-900">Suivi en temps réel</h3>
                       <p className="text-gray-600 text-sm">
-                        {t('affiliation.realTimeTrackingDescription')}
+                        Suivez facilement vos parrainages.
                       </p>
                     </div>
                   </div>
@@ -249,9 +247,9 @@ const Affiliation = () => {
                       <HeartHandshake className="h-6 w-6" />
                     </div>
                     <div className="text-center sm:text-left">
-                      <h3 className="text-lg font-semibold mb-2 text-gray-900">{t('affiliation.mutualSupport')}</h3>
+                      <h3 className="text-lg font-semibold mb-2 text-gray-900">Soutien mutuel</h3>
                       <p className="text-gray-600 text-sm">
-                        {t('affiliation.mutualSupportDescription')}
+                        Contribuez à l'écosystème créatif.
                       </p>
                     </div>
                   </div>
@@ -266,24 +264,24 @@ const Affiliation = () => {
             <div className="max-w-3xl mx-auto">
               <FadeIn direction="up">
                 <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900">{t('affiliation.faq')}</h3>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-900">Questions fréquentes</h3>
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-medium text-gray-900">{t('affiliation.bonusWhen')}</h4>
+                      <h4 className="font-medium text-gray-900">Quand vais-je recevoir mon bonus ?</h4>
                       <p className="text-gray-600 text-sm mt-1">
-                        {t('affiliation.bonusWhenAnswer')}
+                        Le bonus de 50€ est crédité sur votre compte dès votre premier investissement (minimum 100€).
                       </p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900">{t('affiliation.referralLimit')}</h4>
+                      <h4 className="font-medium text-gray-900">Y a-t-il une limite au nombre de parrainages ?</h4>
                       <p className="text-gray-600 text-sm mt-1">
-                        {t('affiliation.referralLimitAnswer')}
+                        Non, vous pouvez parrainer autant d'amis que vous le souhaitez et recevoir un bonus pour chacun d'eux.
                       </p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900">{t('affiliation.bonusUse')}</h4>
+                      <h4 className="font-medium text-gray-900">Comment utiliser mes bonus d'affiliation ?</h4>
                       <p className="text-gray-600 text-sm mt-1">
-                        {t('affiliation.bonusUseAnswer')}
+                        Les bonus sont automatiquement ajoutés à votre solde et peuvent être utilisés pour tous vos investissements sur la plateforme.
                       </p>
                     </div>
                   </div>

@@ -2,7 +2,6 @@ import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Award, TrendingUp, Users } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import FadeIn from '@/components/animations/FadeIn';
 
 // Les données simulées pour les meilleurs parrains avec pseudonymes et nouveau calcul
@@ -33,8 +32,6 @@ const topAffiliates = [{
   earnings: 73050 // 487 × 150
 }];
 const TopAffiliates = () => {
-  const { t } = useTranslation();
-  
   return <FadeIn direction="up" delay={100}>
       <Card className="shadow-sm border border-gray-100 dark:border-gray-800">
         <CardHeader className="pb-2">
@@ -43,11 +40,11 @@ const TopAffiliates = () => {
               <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300">
                 <Award className="h-4 w-4" />
               </div>
-              <CardTitle className="text-lg font-medium">{t('topAffiliates.title')}</CardTitle>
+              <CardTitle className="text-lg font-medium">Top 5 des parrains (juin)</CardTitle>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
-              <span>{t('topAffiliates.averageGain')}</span>
+              <span>Gain moyen: 150€/filleul</span>
             </div>
           </div>
         </CardHeader>
@@ -55,14 +52,14 @@ const TopAffiliates = () => {
           <Table className="text-xs">
             <TableHeader>
               <TableRow>
-                <TableHead className="py-1 px-2 text-xs">{t('topAffiliates.sponsor')}</TableHead>
+                <TableHead className="py-1 px-2 text-xs">Parrain</TableHead>
                 <TableHead className="py-1 px-2 text-center text-xs">
                   <div className="flex items-center justify-center gap-1">
                     <Users className="h-3 w-3" />
-                    <span>{t('topAffiliates.referrals')}</span>
+                    <span>Filleuls</span>
                   </div>
                 </TableHead>
-                <TableHead className="py-1 px-2 text-right text-xs">{t('topAffiliates.earnings')}</TableHead>
+                <TableHead className="py-1 px-2 text-right text-xs">Gains</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

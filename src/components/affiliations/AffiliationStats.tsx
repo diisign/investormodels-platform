@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/utils/auth';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -27,7 +26,6 @@ interface AffiliationStatsProps {
 }
 
 const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = React.useState('total');
 
@@ -66,27 +64,27 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
   const displayData = staticData ? filterReferralsByPeriod(staticData, selectedPeriod) : baseData;
 
   if (isLoading && !staticData) {
-    return <div>{t('common.loading')}</div>;
+    return <div>Chargement...</div>;
   }
 
   return (
     <div className="space-y-6">
       {/* En-tête */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{t('dashboard.affiliation.title')}</h2>
+        <h2 className="text-xl font-semibold">Programme de parrainage</h2>
         <button className="text-sm text-blue-600 hover:text-blue-500 font-medium">
-          {t('dashboard.affiliation.seeAll')}
+          Voir tout →
         </button>
       </div>
 
       {/* Statistiques */}
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-4">{t('dashboard.affiliation.statistics')}</h3>
+        <h3 className="text-lg font-medium mb-4">Statistiques</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Total parrainages */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.affiliation.totalReferrals')}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">Total parrainages</span>
               <div className="w-8 h-8 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg flex items-center justify-center">
                 <Users className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
               </div>
@@ -103,7 +101,7 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
           {/* En attente */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.affiliation.pending')}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">En attente</span>
               <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
                 <Clock className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
               </div>
@@ -118,7 +116,7 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
           {/* Complétés */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.affiliation.completed')}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">Complétés</span>
               <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
                 <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
               </div>
@@ -133,7 +131,7 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
           {/* Gains totaux */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.affiliation.totalEarnings')}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">Gains totaux</span>
               <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
                 <DollarSign className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               </div>
@@ -152,16 +150,16 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
       {/* Parrainages récents */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium">{t('dashboard.affiliation.recentReferrals')}</h3>
+          <h3 className="text-lg font-medium">Parrainages récents</h3>
           <select 
             className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1"
             value={selectedPeriod}
             onChange={(e) => setSelectedPeriod(e.target.value)}
           >
-            <option value="7days">{t('dashboard.affiliation.periods.7days')}</option>
-            <option value="30days">{t('dashboard.affiliation.periods.30days')}</option>
-            <option value="6months">{t('dashboard.affiliation.periods.6months')}</option>
-            <option value="total">{t('dashboard.affiliation.periods.total')}</option>
+            <option value="7days">7 derniers jours</option>
+            <option value="30days">30 derniers jours</option>
+            <option value="6months">6 derniers mois</option>
+            <option value="total">Total</option>
           </select>
         </div>
 
@@ -175,7 +173,7 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
                 >
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white">
-                      {staticData ? item.name : ((item as Affiliation).referred?.name || t('dashboard.affiliation.user'))}
+                      {staticData ? item.name : ((item as Affiliation).referred?.name || 'Utilisateur')}
                     </h4>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       {staticData ? item.date : formatDistance(new Date((item as Affiliation).created_at), new Date(), {
@@ -193,7 +191,7 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
                         ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' 
                         : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
                     }`}>
-                      {item.status === 'completed' ? t('dashboard.affiliation.completed') : t('dashboard.affiliation.pending')}
+                      {item.status === 'completed' ? 'Complété' : 'En attente'}
                     </span>
                   </div>
                 </div>
@@ -203,7 +201,7 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
             {displayData.length > 8 && (
               <div className="p-2 bg-gray-50 dark:bg-gray-700/50 text-center border-t border-gray-100 dark:border-gray-700">
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {displayData.length} {t('dashboard.affiliation.referralsForPeriod')}
+                  {displayData.length} parrainages pour la période sélectionnée
                 </span>
               </div>
             )}
@@ -211,7 +209,7 @@ const AffiliationStats = ({ staticData, pageType }: AffiliationStatsProps = {}) 
         ) : (
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-800 p-8 text-center">
             <p className="text-gray-500 dark:text-gray-400">
-              {t('dashboard.affiliation.noReferrals')}
+              Aucun parrainage pour le moment
             </p>
           </div>
         )}

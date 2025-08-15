@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export interface StaticInvestmentSpecial {
   id: string;
@@ -121,24 +120,22 @@ const STATIC_TRANSACTIONS_SPECIAL: StaticTransactionSpecial[] = [
   }
 ];
 
-export const useStaticInvestmentDataSpecialB = (): StaticInvestmentDataSpecial => {
-  const { t } = useTranslation();
-  
-  return useMemo(() => {
-    const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
-      { month: t('dashboard.months.aug'), value: 0, withdrawal: 0 },
-      { month: t('dashboard.months.sep'), value: 0, withdrawal: 0 },
-      { month: t('dashboard.months.oct'), value: 0, withdrawal: 0 },
-      { month: t('dashboard.months.nov'), value: 0, withdrawal: 0 },
-      { month: t('dashboard.months.dec'), value: 1000, withdrawal: 1700 },
-      { month: t('dashboard.months.jan'), value: 1320, withdrawal: 2900 },
-      { month: t('dashboard.months.feb'), value: 1742, withdrawal: 2700 },
-      { month: t('dashboard.months.mar'), value: 2300, withdrawal: 3250 },
-      { month: t('dashboard.months.apr'), value: 3036, withdrawal: 6000 },
-      { month: t('dashboard.months.may'), value: 4007, withdrawal: 6850 },
-      { month: t('dashboard.months.jun'), value: 5290, withdrawal: 9100 }
-    ];
+const STATIC_PERFORMANCE_DATA_SPECIAL: StaticPerformanceDataSpecial[] = [
+  { month: 'Août', value: 0, withdrawal: 0 },
+  { month: 'Sept', value: 0, withdrawal: 0 },
+  { month: 'Oct', value: 0, withdrawal: 0 },
+  { month: 'Nov', value: 0, withdrawal: 0 },
+  { month: 'Déc', value: 1000, withdrawal: 1700 },
+  { month: 'Jan', value: 1320, withdrawal: 2900 },
+  { month: 'Fév', value: 1742, withdrawal: 2700 },
+  { month: 'Mars', value: 2300, withdrawal: 3250 },
+  { month: 'Avr', value: 3036, withdrawal: 6000 },
+  { month: 'Mai', value: 4007, withdrawal: 6850 },
+  { month: 'Juin', value: 5290, withdrawal: 9100 }
+];
 
+export const useStaticInvestmentDataSpecialB = (): StaticInvestmentDataSpecial => {
+  return useMemo(() => {
     const totalInvested = 1000;
     const totalEarnings = 40590; // Bénéfice à 40 590€ pour /dɑshboɑrd
     const balance = 750; // Solde à 750€
@@ -152,5 +149,5 @@ export const useStaticInvestmentDataSpecialB = (): StaticInvestmentDataSpecial =
       transactions: STATIC_TRANSACTIONS_SPECIAL,
       performanceData: STATIC_PERFORMANCE_DATA_SPECIAL
     };
-  }, [t]);
+  }, []);
 };
