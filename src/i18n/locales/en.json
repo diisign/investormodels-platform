@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "creators": "Creators",
+    "affiliation": "Affiliation",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "register": "Sign Up",
+    "profile": "Profile",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "logout": "Logout"
+  },
+  "home": {
+    "title": "Invest in the future of OnlyFans creators",
+    "subtitle": "Join the digital investment revolution and support the most promising creators",
+    "cta": "Start Investing",
+    "features": {
+      "returns": "Attractive returns",
+      "security": "Guaranteed security", 
+      "transparency": "Total transparency"
+    }
+  },
+  "creators": {
+    "title": "Discover our creators",
+    "subtitle": "Invest in the most promising profiles",
+    "stats": {
+      "revenue": "Revenue",
+      "growth": "Growth",
+      "investors": "Investors"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "balance": "Balance",
+    "investments": "Investments",
+    "returns": "Returns",
+    "transactions": "Transactions"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save"
+  }
+}

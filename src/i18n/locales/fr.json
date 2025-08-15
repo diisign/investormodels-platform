@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "creators": "Créatrices",
+    "affiliation": "Affiliation",
+    "dashboard": "Tableau de bord",
+    "login": "Connexion",
+    "register": "Inscription",
+    "profile": "Profil",
+    "deposit": "Dépôt",
+    "withdraw": "Retrait",
+    "logout": "Déconnexion"
+  },
+  "home": {
+    "title": "Investissez dans l'avenir des créatrices OnlyFans",
+    "subtitle": "Rejoignez la révolution de l'investissement numérique et soutenez les créatrices les plus prometteuses",
+    "cta": "Commencer à investir",
+    "features": {
+      "returns": "Rendements attractifs",
+      "security": "Sécurité garantie",
+      "transparency": "Transparence totale"
+    }
+  },
+  "creators": {
+    "title": "Découvrez nos créatrices",
+    "subtitle": "Investissez dans les profils les plus prometteurs",
+    "stats": {
+      "revenue": "Revenus",
+      "growth": "Croissance",
+      "investors": "Investisseurs"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "balance": "Solde",
+    "investments": "Investissements",
+    "returns": "Rendements",
+    "transactions": "Transactions"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Sauvegarder"
+  }
+}
