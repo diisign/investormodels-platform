@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/utils/auth';
 import { getUserInvestments } from '@/utils/investments';
 import { Investment } from '@/types/investments';
@@ -21,6 +22,7 @@ import GradientButton from '@/components/ui/GradientButton';
 import PerformanceChart from '@/components/dashboard/PerformanceChart';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 const Dashboard = () => {
+  const { t } = useTranslation();
   const {
     user
   } = useAuth();
@@ -185,7 +187,7 @@ const Dashboard = () => {
     });
   };
   if (isInvestmentsLoading) {
-    return <div>Chargement...</div>;
+    return <div>{t('common.loading')}</div>;
   }
   return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={true} />
@@ -193,18 +195,18 @@ const Dashboard = () => {
       <main className="flex-grow pt-20">
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold mb-8">Tableau de bord</h1>
+            <h1 className="text-3xl font-bold mb-8">{t('dashboard.title')}</h1>
 
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
               <FadeIn direction="up" className="glass-card lg:col-span-3">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold">Performance</h3>
+                    <h3 className="text-lg font-semibold">{t('dashboard.performance')}</h3>
                     <select className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2" value={timeRange} onChange={e => setTimeRange(e.target.value)}>
-                      <option value="12">12 derniers mois</option>
-                      <option value="6">6 derniers mois</option>
-                      <option value="3">3 derniers mois</option>
+                      <option value="12">{t('dashboard.timeRanges.12months')}</option>
+                      <option value="6">{t('dashboard.timeRanges.6months')}</option>
+                      <option value="3">{t('dashboard.timeRanges.3months')}</option>
                     </select>
                   </div>
                   
@@ -228,12 +230,12 @@ const Dashboard = () => {
 
       {showDepositModal && <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl font-bold mb-4">Déposer des fonds</h2>
+            <h2 className="text-xl font-bold mb-4">{t('dashboard.deposit.title')}</h2>
             <form onSubmit={handleDeposit}>
               <div className="space-y-4">
                 <div>
                   <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Montant (€)
+                    {t('dashboard.deposit.amount')}
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -245,21 +247,21 @@ const Dashboard = () => {
                 
                 <div>
                   <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Méthode de paiement
+                    {t('dashboard.deposit.paymentMethod')}
                   </label>
                   <select id="payment-method" className="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-investment-500 dark:focus:ring-investment-400 focus:border-transparent dark:bg-gray-700" required>
-                    <option value="">Sélectionner une méthode</option>
-                    <option value="credit-card">Carte bancaire</option>
-                    <option value="bank-transfer">Virement bancaire</option>
+                    <option value="">{t('dashboard.deposit.selectMethod')}</option>
+                    <option value="credit-card">{t('dashboard.deposit.creditCard')}</option>
+                    <option value="bank-transfer">{t('dashboard.deposit.bankTransfer')}</option>
                   </select>
                 </div>
                 
                 <div className="pt-4 flex justify-end space-x-3">
                   <button type="button" onClick={() => setShowDepositModal(false)} className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800">
-                    Annuler
+                    {t('dashboard.deposit.cancel')}
                   </button>
                   <GradientButton type="submit">
-                    Déposer
+                    {t('dashboard.deposit.deposit')}
                   </GradientButton>
                 </div>
               </div>

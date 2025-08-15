@@ -11,30 +11,62 @@
     "logout": "Logout"
   },
   "home": {
-    "title": "Invest in the future of OnlyFans creators",
+    "title": "Invest in OnlyFans creators.",
     "subtitle": "Join the digital investment revolution and support the most promising creators",
-    "cta": "Start Investing",
+    "cta": "Start now",
+    "stats": {
+      "creators": "Creators",
+      "investors": "Investors",
+      "dividends": "Dividends"
+    },
     "features": {
       "returns": "Attractive returns",
       "security": "Guaranteed security", 
       "transparency": "Total transparency"
-    }
+    },
+    "topCreators": "Top creators",
+    "seeAllCreators": "See all creators",
+    "topAffiliates": "Our Top Affiliates",
+    "affiliatesDescription": "They recommended our platform and generated exceptional revenue. Why not you?",
+    "joinAffiliation": "Join the affiliate program",
+    "marketExplosion": "A Market in Full Explosion",
+    "onlyfansGrowth": "OnlyFans has experienced explosive growth since its creation in 2017, its revenue has been multiplied by 300.",
+    "userReviews": "What our users say",
+    "userReviewsDescription": "Join over 20,000 satisfied investors who have already trusted our platform."
   },
   "creators": {
     "title": "Discover our creators",
     "subtitle": "Invest in the most promising profiles",
-    "stats": {
-      "revenue": "Revenue",
-      "growth": "Growth",
-      "investors": "Investors"
+    "noCreatorsFound": "No creators found",
+    "noCreatorsDescription": "No creators are available at the moment.",
+    "sortOptions": {
+      "random": "Random",
+      "performance": "Top Performance",
+      "marketcap": "Top Market Cap", 
+      "popularity": "Popularity",
+      "return": "Return",
+      "alphabetical": "Alphabetical"
     }
   },
   "dashboard": {
     "title": "Dashboard",
-    "balance": "Balance",
-    "investments": "Investments",
-    "returns": "Returns",
-    "transactions": "Transactions"
+    "loading": "Loading...",
+    "performance": "Performance",
+    "timeRanges": {
+      "12months": "Last 12 months",
+      "6months": "Last 6 months",
+      "3months": "Last 3 months"
+    },
+    "deposit": {
+      "title": "Deposit funds",
+      "amount": "Amount (€)",
+      "paymentMethod": "Payment method",
+      "selectMethod": "Select a method",
+      "creditCard": "Credit card",
+      "bankTransfer": "Bank transfer",
+      "cancel": "Cancel",
+      "deposit": "Deposit"
+    }
   },
   "common": {
     "loading": "Loading...",

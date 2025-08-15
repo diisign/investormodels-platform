@@ -11,30 +11,62 @@
     "logout": "Déconnexion"
   },
   "home": {
-    "title": "Investissez dans l'avenir des créatrices OnlyFans",
+    "title": "Investissez dans les créatrices OnlyFans.",
     "subtitle": "Rejoignez la révolution de l'investissement numérique et soutenez les créatrices les plus prometteuses",
-    "cta": "Commencer à investir",
+    "cta": "Commencer maintenant",
+    "stats": {
+      "creators": "Créatrices",
+      "investors": "Investisseurs", 
+      "dividends": "Dividendes"
+    },
     "features": {
       "returns": "Rendements attractifs",
       "security": "Sécurité garantie",
       "transparency": "Transparence totale"
-    }
+    },
+    "topCreators": "Top créatrices",
+    "seeAllCreators": "Voir toutes les créatrices",
+    "topAffiliates": "Nos Meilleurs Parrains",
+    "affiliatesDescription": "Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?",
+    "joinAffiliation": "Rejoindre le programme d'affiliation",
+    "marketExplosion": "Un Marché en Pleine Explosion",
+    "onlyfansGrowth": "OnlyFans connaît une croissance explosive depuis sa création en 2017 son Chiffre d'affaire a été multiplié par 300.",
+    "userReviews": "Ce que disent nos utilisateurs",
+    "userReviewsDescription": "Rejoignez plus de 20 000 investisseurs satisfaits qui ont déjà fait confiance à notre plateforme."
   },
   "creators": {
     "title": "Découvrez nos créatrices",
     "subtitle": "Investissez dans les profils les plus prometteurs",
-    "stats": {
-      "revenue": "Revenus",
-      "growth": "Croissance",
-      "investors": "Investisseurs"
+    "noCreatorsFound": "Aucune créatrice trouvée",
+    "noCreatorsDescription": "Aucune créatrice n'est disponible pour le moment.",
+    "sortOptions": {
+      "random": "Aléatoire",
+      "performance": "Top Performance", 
+      "marketcap": "Top Market Cap",
+      "popularity": "Popularité",
+      "return": "Rendement",
+      "alphabetical": "Alphabétique"
     }
   },
   "dashboard": {
     "title": "Tableau de bord",
-    "balance": "Solde",
-    "investments": "Investissements",
-    "returns": "Rendements",
-    "transactions": "Transactions"
+    "loading": "Chargement...",
+    "performance": "Performance",
+    "timeRanges": {
+      "12months": "12 derniers mois",
+      "6months": "6 derniers mois", 
+      "3months": "3 derniers mois"
+    },
+    "deposit": {
+      "title": "Déposer des fonds",
+      "amount": "Montant (€)",
+      "paymentMethod": "Méthode de paiement",
+      "selectMethod": "Sélectionner une méthode",
+      "creditCard": "Carte bancaire",
+      "bankTransfer": "Virement bancaire",
+      "cancel": "Annuler",
+      "deposit": "Déposer"
+    }
   },
   "common": {
     "loading": "Chargement...",
