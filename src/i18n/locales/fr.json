@@ -46,6 +46,10 @@
       "popularity": "Popularité",
       "return": "Rendement",
       "alphabetical": "Alphabétique"
+    },
+    "stats": {
+      "creators": "créatrices",
+      "creator": "créatrice"
     }
   },
   "dashboard": {
@@ -67,6 +71,57 @@
       "cancel": "Annuler",
       "deposit": "Déposer"
     }
+  },
+  "affiliation": {
+    "title": "Programme d'Affiliation",
+    "description": "Parrainez vos amis et gagnez ensemble avec notre programme de récompenses exclusif.",
+    "partnerProgram": "Programme Partenaire",
+    "inviteDescription": "Invitez vos amis à rejoindre CréatorInvest.",
+    "noLimit": "Sans limite",
+    "login": "Me connecter",
+    "inviteFriends": "Inviter des amis",
+    "investMinimum": "Investissez au moins 100€ pour débloquer votre lien de parrainage",
+    "seeCreators": "Voir les créatrices",
+    "forReferrals": "Pour Vos Filleuls",
+    "bonus": "bonus",
+    "bonusDescription": "Recevez 50€ pour chaque ami qui investit 100€ ou plus.",
+    "forYou": "Pour Vous",
+    "ofGains": "des gains",
+    "gainsDescription": "Recevez 50% des gains de vos filleuls",
+    "topAffiliates": "Nos Meilleurs Parrains",
+    "topAffiliatesDescription": "Découvrez les parrains qui ont gagné le plus en recommandant notre plateforme.",
+    "benefits": "Les avantages de notre programme d'affiliation",
+    "benefitsDescription": "Tout le monde y gagne avec notre programme de parrainage exclusif.",
+    "generousBonus": "Bonus généreux",
+    "generousBonusDescription": "Recevez 50% des gains de votre filleuls",
+    "referralBenefits": "Avantages filleuls",
+    "referralBenefitsDescription": "Vos amis bénéficient d'un bonus de 50€.",
+    "realTimeTracking": "Suivi en temps réel",
+    "realTimeTrackingDescription": "Suivez facilement vos parrainages.",
+    "mutualSupport": "Soutien mutuel",
+    "mutualSupportDescription": "Contribuez à l'écosystème créatif.",
+    "faq": "Questions fréquentes",
+    "bonusWhen": "Quand vais-je recevoir mon bonus ?",
+    "bonusWhenAnswer": "Le bonus de 50€ est crédité sur votre compte dès votre premier investissement (minimum 100€).",
+    "referralLimit": "Y a-t-il une limite au nombre de parrainages ?",
+    "referralLimitAnswer": "Non, vous pouvez parrainer autant d'amis que vous le souhaitez et recevoir un bonus pour chacun d'eux.",
+    "bonusUse": "Comment utiliser mes bonus d'affiliation ?",
+    "bonusUseAnswer": "Les bonus sont automatiquement ajoutés à votre solde et peuvent être utilisés pour tous vos investissements sur la plateforme.",
+    "linkCopied": "Lien d'affiliation copié !"
+  },
+  "dashboardAffiliation": {
+    "loading": "Chargement des données...",
+    "allReferrals": "Tous les Parrainages",
+    "referrer": "Parrain",
+    "referred": "Filleul",
+    "date": "Date",
+    "status": "Statut",
+    "firstInvestment": "Premier Investissement",
+    "totalEarnings": "Gains Totaux",
+    "anonymous": "Anonyme",
+    "pending": "En attente",
+    "active": "Actif",
+    "noReferrals": "Aucun parrainage pour le moment"
   },
   "common": {
     "loading": "Chargement...",
