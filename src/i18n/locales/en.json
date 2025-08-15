@@ -109,6 +109,13 @@
     "bonusUseAnswer": "Bonuses are automatically added to your balance and can be used for all your investments on the platform.",
     "linkCopied": "Affiliate link copied!"
   },
+  "topAffiliates": {
+    "title": "Top 5 sponsors (June)",
+    "averageGain": "Average gain: €150/referral",
+    "sponsor": "Sponsor",
+    "referrals": "Referrals",
+    "earnings": "Earnings"
+  },
   "dashboardAffiliation": {
     "loading": "Loading data...",
     "allReferrals": "All Referrals",

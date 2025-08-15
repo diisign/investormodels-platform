@@ -109,6 +109,13 @@
     "bonusUseAnswer": "Les bonus sont automatiquement ajoutés à votre solde et peuvent être utilisés pour tous vos investissements sur la plateforme.",
     "linkCopied": "Lien d'affiliation copié !"
   },
+  "topAffiliates": {
+    "title": "Top 5 des parrains (juin)",
+    "averageGain": "Gain moyen: 150€/filleul",
+    "sponsor": "Parrain",
+    "referrals": "Filleuls",
+    "earnings": "Gains"
+  },
   "dashboardAffiliation": {
     "loading": "Chargement des données...",
     "allReferrals": "Tous les Parrainages",
