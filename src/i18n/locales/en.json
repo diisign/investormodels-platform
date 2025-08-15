@@ -61,6 +61,53 @@
       "6months": "Last 6 months",
       "3months": "Last 3 months"
     },
+    "stats": {
+      "balance": "Your balance",
+      "totalInvested": "Total invested",
+      "profit": "Profit",
+      "creatorsFollowed": "Creators followed",
+      "depositFunds": "Deposit funds",
+      "discoverMore": "Discover more creators"
+    },
+    "chart": {
+      "investmentsGains": "Investments & Gains",
+      "referralGains": "Referral Gains"
+    },
+    "transactions": {
+      "title": "Recent transactions",
+      "filter": "Filter",
+      "noTransactions": "No transactions",
+      "noTransactionsDesc": "You haven't made any transactions yet.",
+      "investment": "Investment",
+      "deposit": "Deposit",
+      "withdrawal": "Withdrawal",
+      "completed": "Completed",
+      "pending": "Pending",
+      "inProgress": "In progress",
+      "failed": "Failed",
+      "initial": "Initial",
+      "withdrawalAvailable": "Withdrawal available",
+      "withdrawalOn": "Withdrawal on"
+    },
+    "affiliation": {
+      "title": "Referral program",
+      "seeAll": "See all →",
+      "statistics": "Statistics",
+      "totalReferrals": "Total referrals",
+      "pending": "Pending",
+      "completed": "Completed",
+      "totalEarnings": "Total earnings",
+      "recentReferrals": "Recent referrals",
+      "noReferrals": "No referrals yet",
+      "user": "User",
+      "referralsForPeriod": "referrals for the selected period",
+      "periods": {
+        "7days": "Last 7 days",
+        "30days": "Last 30 days",
+        "6months": "Last 6 months",
+        "total": "Total"
+      }
+    },
     "deposit": {
       "title": "Deposit funds",
       "amount": "Amount (€)",

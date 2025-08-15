@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   Legend
 } from 'recharts';
+import { useTranslation } from 'react-i18next';
 import { getCreatorProfile } from '@/utils/creatorProfiles';
 import { Investment } from '@/types/investments';
 import { toast } from 'sonner';
@@ -23,6 +24,7 @@ interface PerformanceChartProps {
 }
 
 const PerformanceChart = ({ investments, performanceData, onWithdraw }: PerformanceChartProps) => {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   
   const calculateGains = (investment: Investment) => {
@@ -82,11 +84,11 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
       <div className="flex items-center justify-center gap-6 mb-4">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: 'hsl(var(--purple-accent))' }}></div>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Investissements & Gains</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('dashboard.chart.investmentsGains')}</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: 'hsl(0 0% 0%)' }}></div>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Gains Parrainage</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('dashboard.chart.referralGains')}</span>
         </div>
       </div>
       <div className={`${isMobile ? 'h-64' : 'h-72'} w-full bg-white rounded-lg ${isMobile ? 'p-2' : 'p-4'} border border-gray-200`}>
@@ -119,8 +121,8 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
             />
             <Tooltip 
               formatter={(value: number, name: string) => {
-                if (name === 'investmentValue') return [`${value}€`, 'Investissements & Gains'];
-                if (name === 'referralGains') return [`${value}€`, 'Gains Parrainage'];
+                if (name === 'investmentValue') return [`${value}€`, t('dashboard.chart.investmentsGains')];
+                if (name === 'referralGains') return [`${value}€`, t('dashboard.chart.referralGains')];
                 return [`${value}€`, name];
               }}
               labelFormatter={(label) => `${label}`}
@@ -135,13 +137,13 @@ const PerformanceChart = ({ investments, performanceData, onWithdraw }: Performa
             <Bar
               dataKey="investmentValue"
               fill="hsl(var(--purple-accent))"
-              name="Investissements & Gains"
+              name={t('dashboard.chart.investmentsGains')}
               radius={[2, 2, 0, 0]}
             />
             <Bar
               dataKey="referralGains"
               fill="hsl(0 0% 0%)"
-              name="Gains Parrainage"
+              name={t('dashboard.chart.referralGains')}
               radius={[2, 2, 0, 0]}
             />
           </BarChart>

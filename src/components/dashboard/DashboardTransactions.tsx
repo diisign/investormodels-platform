@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Filter, Wallet, Plus, Minus, ArrowUpRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 import FadeIn from '@/components/animations/FadeIn';
 import { cn } from '@/lib/utils';
 import { CreatorProfile } from '@/utils/creatorProfiles';
@@ -28,13 +29,14 @@ interface DashboardTransactionsProps {
 const DashboardTransactions = ({
   transactions
 }: DashboardTransactionsProps) => {
+  const { t } = useTranslation();
   return <FadeIn direction="up" delay={100}>
       <div className="p-6 my-0 py-[2px] px-0 mx-0">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold">Transactions récentes</h3>
+          <h3 className="text-lg font-semibold">{t('dashboard.transactions.title')}</h3>
           <button className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 flex items-center">
             <Filter className="h-4 w-4 mr-1" />
-            <span>Filtrer</span>
+            <span>{t('dashboard.transactions.filter')}</span>
           </button>
         </div>
         
@@ -93,7 +95,7 @@ const DashboardTransactions = ({
                       <div className="flex-grow">
                         <div className="flex justify-between items-center">
                           <h4 className="font-medium text-sm">
-                            {transaction.payment_method === 'investment' && transaction.creatorProfile ? `Investissement ${transaction.creatorProfile.name}` : type === 'deposit' ? 'Dépôt' : 'Retrait'}
+                            {transaction.payment_method === 'investment' && transaction.creatorProfile ? `${t('dashboard.transactions.investment')} ${transaction.creatorProfile.name}` : type === 'deposit' ? t('dashboard.transactions.deposit') : t('dashboard.transactions.withdrawal')}
                           </h4>
                           <span className="text-sm font-semibold text-black dark:text-white">
                             {type === 'deposit' ? '+' : ''}
@@ -105,17 +107,17 @@ const DashboardTransactions = ({
                             {format(new Date(transaction.created_at), 'dd/MM/yyyy')}
                           </span>
                           <span className={cn("text-xs px-2 py-0.5 rounded-full", investmentStatus === 'completed' ? "bg-gray-100 text-black dark:bg-gray-800 dark:text-white" : investmentStatus === 'pending' ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400")}>
-                            {investmentStatus === 'completed' ? 'Terminé' : investmentStatus === 'pending' && type === 'investment' ? 'En cours' : investmentStatus === 'pending' ? 'En attente' : 'Échoué'}
+                            {investmentStatus === 'completed' ? t('dashboard.transactions.completed') : investmentStatus === 'pending' && type === 'investment' ? t('dashboard.transactions.inProgress') : investmentStatus === 'pending' ? t('dashboard.transactions.pending') : t('dashboard.transactions.failed')}
                           </span>
                         </div>
                         {/* Affichage de la date de retrait pour les investissements */}
                         {withdrawalInfo && (
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500">
-                              Initial: {Math.abs(transaction.amount)}€
+                              {t('dashboard.transactions.initial')}: {Math.abs(transaction.amount)}€
                             </span>
                             <span className="text-xs font-medium text-black dark:text-white">
-                              {withdrawalInfo.canWithdraw ? 'Retrait disponible' : `Retrait le ${withdrawalInfo.formattedDate}`}
+                              {withdrawalInfo.canWithdraw ? t('dashboard.transactions.withdrawalAvailable') : `${t('dashboard.transactions.withdrawalOn')} ${withdrawalInfo.formattedDate}`}
                             </span>
                           </div>
                         )}
@@ -126,9 +128,9 @@ const DashboardTransactions = ({
             <div className="text-gray-400 mb-3">
               <Wallet className="h-12 w-12 mx-auto opacity-30" />
             </div>
-            <h4 className="text-lg font-medium mb-2">Aucune transaction</h4>
+            <h4 className="text-lg font-medium mb-2">{t('dashboard.transactions.noTransactions')}</h4>
             <p className="text-gray-500 dark:text-gray-400 text-sm">
-              Vous n'avez pas encore effectué de transactions.
+              {t('dashboard.transactions.noTransactionsDesc')}
             </p>
           </div>}
       </div>

@@ -61,6 +61,53 @@
       "6months": "6 derniers mois", 
       "3months": "3 derniers mois"
     },
+    "stats": {
+      "balance": "Votre solde",
+      "totalInvested": "Total investi",
+      "profit": "Bénéfice",
+      "creatorsFollowed": "Créatrices suivies",
+      "depositFunds": "Déposer des fonds",
+      "discoverMore": "Découvrir plus de créatrices"
+    },
+    "chart": {
+      "investmentsGains": "Investissements & Gains",
+      "referralGains": "Gains Parrainage"
+    },
+    "transactions": {
+      "title": "Transactions récentes",
+      "filter": "Filtrer",
+      "noTransactions": "Aucune transaction",
+      "noTransactionsDesc": "Vous n'avez pas encore effectué de transactions.",
+      "investment": "Investissement",
+      "deposit": "Dépôt",
+      "withdrawal": "Retrait",
+      "completed": "Terminé",
+      "pending": "En attente",
+      "inProgress": "En cours",
+      "failed": "Échoué",
+      "initial": "Initial",
+      "withdrawalAvailable": "Retrait disponible",
+      "withdrawalOn": "Retrait le"
+    },
+    "affiliation": {
+      "title": "Programme de parrainage",
+      "seeAll": "Voir tout →",
+      "statistics": "Statistiques",
+      "totalReferrals": "Total parrainages",
+      "pending": "En attente",
+      "completed": "Complétés",
+      "totalEarnings": "Gains totaux",
+      "recentReferrals": "Parrainages récents",
+      "noReferrals": "Aucun parrainage pour le moment",
+      "user": "Utilisateur",
+      "referralsForPeriod": "parrainages pour la période sélectionnée",
+      "periods": {
+        "7days": "7 derniers jours",
+        "30days": "30 derniers jours",
+        "6months": "6 derniers mois",
+        "total": "Total"
+      }
+    },
     "deposit": {
       "title": "Déposer des fonds",
       "amount": "Montant (€)",
