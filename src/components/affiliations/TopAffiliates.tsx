@@ -40,7 +40,7 @@ const TopAffiliates = () => {
               <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-300">
                 <Award className="h-4 w-4" />
               </div>
-              <CardTitle className="text-lg font-medium">Top 5 des parrains (juin)</CardTitle>
+              <CardTitle className="text-lg font-medium">Top 5 des parrains (juillet)</CardTitle>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
