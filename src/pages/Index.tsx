@@ -215,7 +215,7 @@ const Index = () => {
             <FadeIn className="text-center mb-8 md:mb-12" direction="up">
               <div>
                 <h2 className="md:text-3xl font-bold mb-3 md:mb-4 lg:text-3xl text-3xl">
-                  <span className="text-yellow-300">Top</span> <span className="text-black">créatrices</span>
+                  <span className="text-black">Top</span> <span className="text-yellow-300">créatrices</span>
                 </h2>
                 
               </div>
