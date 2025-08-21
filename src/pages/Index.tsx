@@ -214,7 +214,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="text-center mb-8 md:mb-12" direction="up">
               <div>
-                <h2 className="md:text-3xl font-bold mb-3 md:mb-4 lg:text-3xl text-3xl text-red-600">Tendances</h2>
+                <h2 className="md:text-3xl font-bold mb-3 md:mb-4 lg:text-3xl text-3xl text-yellow-300">Tendances</h2>
                 
               </div>
               <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
