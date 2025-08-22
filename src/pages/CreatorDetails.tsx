@@ -343,7 +343,7 @@ const CreatorDetails = () => {
                     <CircleDollarSign className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
-                    {(creator.totalInvested / 1000).toFixed(2)} k €
+                    {Math.round(creator.totalInvested / 1000)}k €
                   </div>
                   <div className="text-sm text-gray-500">Market Cap</div>
                 </div>
@@ -356,7 +356,7 @@ const CreatorDetails = () => {
                     <TrendingUp className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
-                    {(creator.totalInvested * 0.2 / 1000).toFixed(2)} k €
+                    {Math.round(creator.totalInvested * 0.2 / 1000)}k €
                   </div>
                   <div className="text-sm text-gray-500">Instant Liquidity</div>
                 </div>
@@ -370,8 +370,8 @@ const CreatorDetails = () => {
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] 
-                      ? `${(monthlyRevenueData[monthlyRevenueData.length - 1].revenue / 1000).toFixed(2)} k €`
-                      : '0 k €'
+                      ? `${Math.round(monthlyRevenueData[monthlyRevenueData.length - 1].revenue / 1000)}k €`
+                      : '0k €'
                     }
                   </div>
                   <div className="text-sm text-gray-500">Juillet</div>
