@@ -481,12 +481,20 @@ const CreatorDetails = () => {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-white border border-gray-200 rounded-lg p-6">
                     <div className="flex items-center justify-center mb-4">
                       <ChevronUp className="h-8 w-8 text-green-500" />
                     </div>
                     <h3 className="text-lg font-semibold text-center text-green-600 mb-2">Social followers</h3>
+                    <p className="text-sm text-gray-500 text-center">Mis à jour 31/07/2025</p>
+                  </div>
+                  
+                  <div className="bg-white border border-gray-200 rounded-lg p-6">
+                    <div className="flex items-center justify-center mb-4">
+                      <ChevronUp className="h-8 w-8 text-green-500" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-center text-green-600 mb-2">Taux d'engagement</h3>
                     <p className="text-sm text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                 </div>
