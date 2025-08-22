@@ -238,13 +238,13 @@ const CreatorDetails = () => {
           </Button>
         </div>
 
-        {/* Header Section with Yellow Background */}
-        <section className="bg-yellow-300 pb-8">
+        {/* Header Section with White Background */}
+        <section className="bg-white dark:bg-gray-800 pb-8">
           <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              {/* Profile Image */}
+            <div className="flex items-start gap-6">
+              {/* Profile Image - Fixed on left */}
               <FadeIn direction="up">
-                <div className="h-40 w-40 rounded-full overflow-hidden shadow-xl border-4 border-white">
+                <div className="h-40 w-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-200">
                   <img 
                     src={creator.imageUrl} 
                     alt={creatorProfile.name} 
@@ -259,8 +259,8 @@ const CreatorDetails = () => {
               
               {/* Profile Info */}
               <FadeIn direction="up" delay={100} className="flex-grow">
-                <h1 className="text-4xl md:text-5xl font-bold text-black mb-2">{creatorProfile.name}</h1>
-                <div className="text-3xl font-bold text-black mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white mb-2">{creatorProfile.name}</h1>
+                <div className="text-3xl font-bold text-black dark:text-white mb-4">
                   {(creatorProfile.monthlyRevenue / 1000).toFixed(2)} k€
                 </div>
                 
