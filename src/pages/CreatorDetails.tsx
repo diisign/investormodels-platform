@@ -333,8 +333,8 @@ const CreatorDetails = () => {
               {/* Market Cap */}
               <FadeIn direction="up" className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <CircleDollarSign className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <CircleDollarSign className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested / 1000).toFixed(2)} k €
@@ -346,8 +346,8 @@ const CreatorDetails = () => {
               {/* Instant Liquidity */}
               <FadeIn direction="up" delay={100} className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <TrendingUp className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <TrendingUp className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested * 0.2 / 1000).toFixed(2)} k €
@@ -359,8 +359,8 @@ const CreatorDetails = () => {
               {/* Yield */}
               <FadeIn direction="up" delay={200} className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <BarChart3 className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <BarChart3 className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creatorProfile.returnRate / 10).toFixed(2)} %
