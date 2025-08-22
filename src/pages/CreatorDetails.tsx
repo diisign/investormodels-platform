@@ -537,11 +537,17 @@ const CreatorDetails = () => {
                         <BarChart 
                           data={[
                             {month: 'sept.', value: 45},
+                            {month: '', value: 65},
                             {month: 'nov.', value: 55},
+                            {month: '', value: 85},
                             {month: 'janv.', value: 35},
+                            {month: '', value: 45},
                             {month: 'mars', value: 55},
+                            {month: '', value: 40},
                             {month: 'mai', value: 60},
-                            {month: 'juil.', value: 70}
+                            {month: '', value: 50},
+                            {month: 'juil.', value: 70},
+                            {month: '', value: 80}
                           ]}
                         >
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
