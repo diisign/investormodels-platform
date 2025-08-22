@@ -531,32 +531,17 @@ const CreatorDetails = () => {
                       </div>
                     </div>
                     
-                    {/* Dropdown and buttons */}
-                    <div className="flex items-center justify-between">
-                      <div className="relative">
-                        <select className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg border-none appearance-none pr-8 font-medium">
-                          <option>Historique</option>
-                        </select>
-                        <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-yellow-800" />
-                      </div>
-                    </div>
-
                     {/* Chart */}
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart 
                           data={[
                             {month: 'sept.', value: 45},
-                            {month: 'oct.', value: 65},
                             {month: 'nov.', value: 55},
-                            {month: 'déc.', value: 85},
                             {month: 'janv.', value: 35},
-                            {month: 'févr.', value: 45},
                             {month: 'mars', value: 55},
-                            {month: 'avr.', value: 40},
-                            {month: 'juin', value: 50},
-                            {month: 'juil.', value: 70},
-                            {month: 'août', value: 80}
+                            {month: 'mai', value: 60},
+                            {month: 'juil.', value: 70}
                           ]}
                         >
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
