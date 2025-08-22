@@ -263,7 +263,7 @@ const CreatorDetails = () => {
                   {(() => {
                   const variation = getLastVariation(creatorId || '');
                   const isNegative = variation < 0;
-                  return <div className="flex justify-center md:justify-start items-center gap-2 mb-6">
+                  return <div className="flex justify-center md:justify-start items-center gap-2 mb-2">
                         <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${isNegative ? 'text-red-600' : 'text-green-600'}`}>
                           {isNegative ? <TrendingDown className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
                           <span className="font-semibold">{variation.toFixed(2)}%</span>
