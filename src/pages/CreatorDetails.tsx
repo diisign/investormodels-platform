@@ -113,22 +113,18 @@ const CreatorDetails = () => {
     const diffTime = endOfMonth.getTime() - now.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
-
   const getRandomYieldForCreator = (creatorId: string) => {
     // Use creator ID as seed for consistent random values
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const random1 = (seed * 9301 + 49297) % 233280 / 233280;
     const random2 = ((seed + 1) * 9301 + 49297) % 233280 / 233280;
-    
     const min = 2.32 + random1 * (44.32 - 2.32);
     const max = min + random2 * (44.32 - min);
-    
     return {
       min: Math.max(2.32, Math.min(44.32, min)),
       max: Math.max(2.32, Math.min(44.32, max))
     };
   };
-
   if (!creatorExists || !creatorProfile) {
     return <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
@@ -304,12 +300,12 @@ const CreatorDetails = () => {
                     <div className="w-full flex justify-center md:justify-start">
                       <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
                         ACHETER {(() => {
-                          const name = creatorProfile.name;
-                          // Remove all emojis and keep only text
-                          const textPart = name.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
-                          const upperText = textPart.toUpperCase();
-                          return upperText.length > 8 ? upperText.substring(0, 8) + '...' : upperText;
-                        })()}
+                      const name = creatorProfile.name;
+                      // Remove all emojis and keep only text
+                      const textPart = name.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
+                      const upperText = textPart.toUpperCase();
+                      return upperText.length > 8 ? upperText.substring(0, 8) + '...' : upperText;
+                    })()}
                       </Button>
                     </div>
                 </div>
@@ -393,10 +389,7 @@ const CreatorDetails = () => {
                     <BarChart3 className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
-                    {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] 
-                      ? `${Math.round(monthlyRevenueData[monthlyRevenueData.length - 1].revenue / 1000)}k €`
-                      : '0k €'
-                    }
+                    {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] ? `${Math.round(monthlyRevenueData[monthlyRevenueData.length - 1].revenue / 1000)}k €` : '0k €'}
                   </div>
                   <div className="text-sm text-gray-500">Juillet</div>
                 </div>
@@ -409,24 +402,10 @@ const CreatorDetails = () => {
         <section className="py-4 bg-white border-b border-gray-200">
           <div className="container mx-auto px-4">
             <div className="flex space-x-8">
-              <button 
-                onClick={() => setActiveTab('about')}
-                className={`py-2 px-4 border-b-2 font-medium ${
-                  activeTab === 'about' 
-                    ? 'border-black text-black dark:text-white' 
-                    : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'
-                }`}
-              >
+              <button onClick={() => setActiveTab('about')} className={`py-2 px-4 border-b-2 font-medium ${activeTab === 'about' ? 'border-black text-black dark:text-white' : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'}`}>
                 À propos
               </button>
-              <button 
-                onClick={() => setActiveTab('splits')}
-                className={`py-2 px-4 border-b-2 font-medium ${
-                  activeTab === 'splits' 
-                    ? 'border-black text-black dark:text-white' 
-                    : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'
-                }`}
-              >
+              <button onClick={() => setActiveTab('splits')} className={`py-2 px-4 border-b-2 font-medium ${activeTab === 'splits' ? 'border-black text-black dark:text-white' : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'}`}>
                 SPLITS
               </button>
             </div>
@@ -436,8 +415,7 @@ const CreatorDetails = () => {
         {/* Content Section */}
         <section className="py-8 bg-white">
           <div className="container mx-auto px-4">
-            {activeTab === 'about' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {activeTab === 'about' && <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Description */}
                 <div>
                   <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
@@ -479,10 +457,7 @@ const CreatorDetails = () => {
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Revenu mensuel</span>
                         <span className="font-medium">
-                          {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] 
-                            ? monthlyRevenueData[monthlyRevenueData.length - 1].revenue.toLocaleString() 
-                            : creatorProfile.monthlyRevenue.toLocaleString()
-                          } €
+                          {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] ? monthlyRevenueData[monthlyRevenueData.length - 1].revenue.toLocaleString() : creatorProfile.monthlyRevenue.toLocaleString()} €
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
@@ -492,11 +467,9 @@ const CreatorDetails = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
 
-            {activeTab === 'splits' && (
-              <div className="space-y-6">
+            {activeTab === 'splits' && <div className="space-y-6">
                 {/* Yield Header */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -534,38 +507,54 @@ const CreatorDetails = () => {
                     {/* Chart */}
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart 
-                          data={[
-                            {month: 'sept.', value: 45},
-                            {month: '', value: 65},
-                            {month: 'nov.', value: 55},
-                            {month: '', value: 85},
-                            {month: 'janv.', value: 35},
-                            {month: '', value: 45},
-                            {month: 'mars', value: 55},
-                            {month: '', value: 40},
-                            {month: 'mai', value: 60},
-                            {month: '', value: 50},
-                            {month: 'juil.', value: 70},
-                            {month: '', value: 80}
-                          ]}
-                        >
+                        <BarChart data={[{
+                      month: 'sept.',
+                      value: 45
+                    }, {
+                      month: '',
+                      value: 65
+                    }, {
+                      month: 'nov.',
+                      value: 55
+                    }, {
+                      month: '',
+                      value: 85
+                    }, {
+                      month: 'janv.',
+                      value: 35
+                    }, {
+                      month: '',
+                      value: 45
+                    }, {
+                      month: 'mars',
+                      value: 55
+                    }, {
+                      month: '',
+                      value: 40
+                    }, {
+                      month: 'mai',
+                      value: 60
+                    }, {
+                      month: '',
+                      value: 50
+                    }, {
+                      month: 'juil.',
+                      value: 70
+                    }, {
+                      month: '',
+                      value: 80
+                    }]}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                          <XAxis 
-                            dataKey="month" 
-                            axisLine={false} 
-                            tickLine={false} 
-                            tick={{fontSize: 12, fill: '#666'}} 
-                          />
+                          <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
+                        fontSize: 12,
+                        fill: '#666'
+                      }} />
                           <YAxis hide />
                           <Bar dataKey="value" fill="#FEF3C7" radius={[4, 4, 0, 0]} />
-                          <Line 
-                            type="monotone" 
-                            dataKey="value" 
-                            stroke="#F59E0B" 
-                            strokeWidth={3}
-                            dot={{fill: '#F59E0B', r: 4}}
-                          />
+                          <Line type="monotone" dataKey="value" stroke="#F59E0B" strokeWidth={3} dot={{
+                        fill: '#F59E0B',
+                        r: 4
+                      }} />
                         </BarChart>
                       </ResponsiveContainer>
                     </div>
@@ -591,7 +580,7 @@ const CreatorDetails = () => {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Estimation de Yield:</span>
-                        <span className="font-semibold">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
+                        <span className="font-semibold px-0 my-0 mx-[45px]">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
                       </div>
                     </div>
                   </div>
@@ -601,15 +590,12 @@ const CreatorDetails = () => {
                       <span className="text-lg font-semibold text-gray-900">Yield prédictif</span>
                       <div className="flex items-center gap-2">
                         <span className="text-orange-600 font-semibold">Confirmé</span>
-                        <div className="w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
-                          <span className="text-xs text-white">i</span>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
           </div>
         </section>
 
