@@ -8,6 +8,7 @@ export interface CreatorProfile {
   maxRevenue: number;
   imageUrl?: string; // Adding imageUrl field to the interface
   hidden?: boolean; // Adding hidden field to the interface
+  description?: string; // Adding description field to the interface
 }
 
 // Fixed creator profiles with consistent data
@@ -18,70 +19,77 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     name: "Brooke Mills",
     monthlyRevenue: 94950,
     returnRate: 130,
-    followers: 6330,
+    followers: 2850000, // 2.85M followers - Influenceuse lifestyle et fitness
     minRevenue: 69850,
     maxRevenue: 120350,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg"
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/d/dw/dwu/dwuzuukydwqt4xfgbbtnioc4u9namz1s1727441272/390390561/avatar.jpg",
+    description: "Créatrice de contenu lifestyle et fitness basée à Miami. Passionnée de bien-être et de mode, elle partage son quotidien glamour avec authenticité."
   },
   "aishah": {
     id: "aishah",
     name: "Aishah Sofey",
     monthlyRevenue: 92500,
     returnRate: 135,
-    followers: 6750,
+    followers: 3200000, // 3.2M followers - Modèle et influenceuse internationale
     minRevenue: 70000,
     maxRevenue: 115000,
-    imageUrl: "/lovable-uploads/f0db0bcd-7c1f-4bcb-a45b-699ff33bedda.png"
+    imageUrl: "/lovable-uploads/f0db0bcd-7c1f-4bcb-a45b-699ff33bedda.png",
+    description: "Modèle internationale d'origine albanaise. Spécialisée dans la mode haute couture et la beauté, elle collabore avec les plus grandes marques."
   },
   "creator22": {
     id: "creator22",
     name: "Jasmine 🔥",
     monthlyRevenue: 91800,
     returnRate: 117.4,
-    followers: 6120,
+    followers: 1850000, // 1.85M followers - Influenceuse beauté et lifestyle
     minRevenue: 61000,
     maxRevenue: 110000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/i/ik/ikh/ikhxjrnd5wxourm8hqcjibrk7smzblyn1718163760/145464089/avatar.jpg"
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/i/ik/ikh/ikhxjrnd5wxourm8hqcjibrk7smzblyn1718163760/145464089/avatar.jpg",
+    description: "Experte beauté et maquilleuse professionnelle de Los Angeles. Connue pour ses tutoriels makeup et ses looks avant-gardistes sur les réseaux."
   },
   "creator3": {
     id: "creator3",
     name: "Kayla",
     monthlyRevenue: 88800,
     returnRate: 125,
-    followers: 5920,
+    followers: 4700000, // 4.7M followers - Danseuse et chorégraphe
     minRevenue: 60000,
     maxRevenue: 99650,
-    imageUrl: "/lovable-uploads/4cd2c220-569e-43a6-9e6a-b1f3d5f726dd.png"
+    imageUrl: "/lovable-uploads/4cd2c220-569e-43a6-9e6a-b1f3d5f726dd.png",
+    description: "Danseuse professionnelle et chorégraphe de New York. Ancienne membre de troupes de danse renommées, elle enseigne maintenant et crée du contenu artistique."
   },
   "creator25": {
     id: "creator25",
     name: "Natalie 💕",
     monthlyRevenue: 87300,
     returnRate: 125,
-    followers: 5820,
+    followers: 2100000, // 2.1M followers - Mannequin et actrice
     minRevenue: 58000,
     maxRevenue: 105000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/kg/kgy/kgya8xp7dt359cjnl608o82odpc7rgbc1705207113/6554260/avatar.jpg"
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/kg/kgy/kgya8xp7dt359cjnl608o82odpc7rgbc1705207113/6554260/avatar.jpg",
+    description: "Mannequin et actrice française installée à Los Angeles. Elle a défilé pour plusieurs marques de luxe et apparaît régulièrement dans des magazines."
   },
   "creator20": {
     id: "creator20",
     name: "Melanie 🍒",
     monthlyRevenue: 81200,
     returnRate: 122,
-    followers: 5413,
+    followers: 1670000, // 1.67M followers - Influenceuse culinaire et lifestyle
     minRevenue: 54000,
     maxRevenue: 97000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/s/sn/snk/snknlldkypeays71iobp4qqamgmyx83m1730686874/345711625/avatar.jpg"
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/s/sn/snk/snknlldkypeays71iobp4qqamgmyx83m1730686874/345711625/avatar.jpg",
+    description: "Chef pâtissière et créatrice de contenu culinaire. Elle partage ses recettes gourmandes et ses conseils de cuisine dans une ambiance chaleureuse."
   },
   "creator10": {
     id: "creator10",
     name: "🐈‍ Elizabeth",
     monthlyRevenue: 78400,
     returnRate: 120,
-    followers: 5227,
+    followers: 1950000, // 1.95M followers - Vétérinaire et influenceuse animaux
     minRevenue: 52000,
     maxRevenue: 95650,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/le/lec/lecj3pxbtb4ymxfen8yurh1aqum6xooq1736534589/124057483/avatar.jpg"
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/l/le/lec/lecj3pxbtb4ymxfen8yurh1aqum6xooq1736534589/124057483/avatar.jpg",
+    description: "Vétérinaire passionnée par le bien-être animal. Elle éduque sa communauté sur les soins aux animaux domestiques avec expertise et bienveillance."
   },
   "creator23": {
     id: "creator23",
@@ -288,10 +296,11 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     name: "Emma *Asian #1*",
     monthlyRevenue: 43000,
     returnRate: 90,
-    followers: 2867,
+    followers: 3450000, // 3.45M followers - Influenceuse mode asiatique
     minRevenue: 25000,
     maxRevenue: 60000,
-    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/ke/kei/keiep1nsav9m2m3e7l0ynbcttg9cfoez1657600220/186389633/avatar.jpg"
+    imageUrl: "https://thumbs.onlyfans.com/public/files/thumbs/c144/k/ke/kei/keiep1nsav9m2m3e7l0ynbcttg9cfoez1657600220/186389633/avatar.jpg",
+    description: "Influenceuse mode d'origine asiatique basée à Tokyo. Spécialisée dans les tendances streetwear et la culture pop japonaise."
   },
   "creator13": {
     id: "creator13",
@@ -318,10 +327,11 @@ export const creatorProfiles: Record<string, CreatorProfile> = {
     name: "Luna ✨",
     monthlyRevenue: 19000,
     returnRate: 130,
-    followers: 405000,
+    followers: 15600000, // 15.6M followers - Célébrité et top model
     minRevenue: 12000,
     maxRevenue: 25000,
-    imageUrl: "/lovable-uploads/1101bb0a-25cf-4e39-a32d-e89b6e203e68.png"
+    imageUrl: "/lovable-uploads/1101bb0a-25cf-4e39-a32d-e89b6e203e68.png",
+    description: "Top model internationale et célébrité reconnue mondialement. Ambassadrice de grandes marques de luxe et icône de la mode contemporaine."
   }
 };
 

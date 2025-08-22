@@ -396,10 +396,10 @@ const CreatorDetails = () => {
               {/* Description */}
               <div>
                 <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  {creatorProfile.name} est une créatrice de contenu lifestyle 
+                  {creatorProfile.description || `${creatorProfile.name} est une créatrice de contenu lifestyle 
                   passionnée qui a su construire une communauté fidèle grâce à son authenticité et sa créativité. 
-                  Avec {creatorProfile.followers.toLocaleString()} abonnés, elle continue d'évoluer et d'innover 
-                  dans son domaine, offrant des opportunités d'investissement attractives pour ses partenaires.
+                  Avec ${creatorProfile.followers.toLocaleString()} abonnés, elle continue d'évoluer et d'innover 
+                  dans son domaine, offrant des opportunités d'investissement attractives pour ses partenaires.`}
                 </p>
                 
                 {/* Creator Info */}
@@ -411,10 +411,6 @@ const CreatorDetails = () => {
                   <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Date d'introduction</span>
                     <span className="font-medium">22/11/2022, 18:00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Prix d'introduction</span>
-                    <span className="font-medium">2,00 €</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Instagram</span>
