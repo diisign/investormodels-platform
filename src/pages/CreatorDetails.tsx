@@ -587,7 +587,7 @@ const CreatorDetails = () => {
                     <div className="flex justify-between items-center">
                       <span className="text-lg font-semibold text-gray-900">Yield prédictif</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-orange-600 font-semibold">Confirmé</span>
+                        <span className="text-green-600 font-semibold">Confirmé</span>
                         
                       </div>
                     </div>
