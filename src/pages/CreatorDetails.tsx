@@ -554,14 +554,14 @@ const CreatorDetails = () => {
                       value: 13.7,
                       yield: '13,70 % APY'
                     }]}>
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="transparent" />
                           <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
                         fontSize: 12,
                         fill: '#666'
                       }} />
                           <YAxis hide />
                           <Tooltip 
-                            formatter={(value, name) => [`${value}%`, 'Yield distribué']}
+                            formatter={(value, name) => [`${value}%`, <span style={{color: '#facc15'}}>Yield distribué</span>]}
                             labelFormatter={(label) => `${label} 2024`}
                             contentStyle={{
                               backgroundColor: 'white',
