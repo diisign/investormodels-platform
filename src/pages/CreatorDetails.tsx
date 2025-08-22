@@ -241,10 +241,10 @@ const CreatorDetails = () => {
         {/* Header Section with White Background */}
         <section className="bg-white dark:bg-gray-800 pb-8">
           <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              {/* Profile Image - Fixed on left for desktop, centered for mobile */}
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              {/* Profile Image - Centered on mobile, left on desktop */}
               <FadeIn direction="up">
-                <div className="h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-200 mx-auto md:mx-0">
+                <div className="h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-200">
                   <img 
                     src={creator.imageUrl} 
                     alt={creatorProfile.name} 
@@ -259,7 +259,7 @@ const CreatorDetails = () => {
               
               {/* Profile Info */}
               <FadeIn direction="up" delay={100} className="flex-grow w-full md:w-auto">
-                <div className="text-center md:text-left">
+                <div className="text-center md:text-left w-full">
                   <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white mb-2 break-words">
                     {creatorProfile.name}
                   </h1>
@@ -287,10 +287,10 @@ const CreatorDetails = () => {
                   })()}
                   
                   {/* Invest Button */}
-                  <div className="w-full">
+                  <div className="w-full flex justify-center md:justify-start">
                     <Button 
                       onClick={openInvestModal}
-                      className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base"
+                      className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none"
                     >
                       ACHETER {creatorProfile.name.length > 8 ? 
                         creatorProfile.name.substring(0, 8).toUpperCase() + '...' : 
