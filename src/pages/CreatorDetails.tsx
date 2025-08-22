@@ -329,14 +329,14 @@ const CreatorDetails = () => {
         {/* Key Statistics */}
         <section className="py-8 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 gap-2 md:gap-8">
               {/* Market Cap */}
               <FadeIn direction="up" className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <CircleDollarSign className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <CircleDollarSign className="h-6 w-6 text-yellow-500" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested / 1000).toFixed(2)} k €
                   </div>
                   <div className="text-sm text-gray-500">Market Cap</div>
@@ -346,10 +346,10 @@ const CreatorDetails = () => {
               {/* Instant Liquidity */}
               <FadeIn direction="up" delay={100} className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <TrendingUp className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <TrendingUp className="h-6 w-6 text-yellow-500" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested * 0.2 / 1000).toFixed(2)} k €
                   </div>
                   <div className="text-sm text-gray-500">Instant Liquidity</div>
@@ -359,10 +359,10 @@ const CreatorDetails = () => {
               {/* Yield */}
               <FadeIn direction="up" delay={200} className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <BarChart3 className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <BarChart3 className="h-6 w-6 text-yellow-500" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creatorProfile.returnRate / 10).toFixed(2)} %
                   </div>
                   <div className="text-sm text-gray-500">Yield</div>
@@ -429,7 +429,7 @@ const CreatorDetails = () => {
               {/* Additional Stats */}
               <div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-                  <h3 className="font-semibold mb-4 px-[100px] text-yellow-400">Statistiques</h3>
+                  <h3 className="font-semibold mb-4 px-[100px] text-yellow-300">Statistiques</h3>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Investisseurs actifs</span>
