@@ -6,7 +6,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
@@ -120,7 +119,6 @@ const CreatorDetails = () => {
             </Link>
           </div>
         </main>
-        <Footer />
       </div>;
   }
   const creator = mockCreator || {
@@ -480,7 +478,6 @@ const CreatorDetails = () => {
           </div>
         </section>
       </main>
-      <Footer />
 
       {/* Investment Modal */}
       {showInvestModal && <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
