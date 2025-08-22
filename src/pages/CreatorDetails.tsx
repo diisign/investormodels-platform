@@ -475,7 +475,7 @@ const CreatorDetails = () => {
                   <div className="flex items-center gap-4">
                     <div className="text-2xl font-bold text-gray-900">Yield</div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400">
-                      12,24 % APY
+                      13,70 % APY
                     </div>
                   </div>
                 </div>
