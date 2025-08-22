@@ -125,45 +125,6 @@ const CreatorDetails = () => {
       max: Math.max(2.32, Math.min(44.32, max))
     };
   };
-
-  // Generate yield data that matches the min/max estimates
-  const generateYieldData = (creatorId: string) => {
-    const yieldEstimate = getRandomYieldForCreator(creatorId);
-    const { min, max } = yieldEstimate;
-    const range = max - min;
-    
-    const months = [
-      { short: 'août', full: 'août' },
-      { short: 'sept.', full: 'sept.' },
-      { short: 'oct.', full: 'oct.' },
-      { short: 'nov.', full: 'nov.' },
-      { short: 'déc.', full: 'déc.' },
-      { short: 'janv.', full: 'janv.' },
-      { short: 'févr.', full: 'févr.' },
-      { short: 'mars', full: 'mars' },
-      { short: 'avr.', full: 'avr.' },
-      { short: '', full: 'mai' },
-      { short: 'juin', full: 'juin' },
-      { short: '', full: 'juil.' }
-    ];
-    
-    // Use creator ID as seed for consistent yield values
-    const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
-    return months.map((month, index) => {
-      // Generate deterministic value for each month within min-max range
-      const monthSeed = (seed * (index + 1) * 31 + index * 17) % 1000;
-      const normalizedValue = monthSeed / 1000;
-      const yieldValue = min + (range * normalizedValue);
-      
-      return {
-        month: month.short,
-        fullMonth: month.full,
-        value: parseFloat(yieldValue.toFixed(1)),
-        yield: `${yieldValue.toFixed(2)} % APY`
-      };
-    });
-  };
   if (!creatorExists || !creatorProfile) {
     return <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
@@ -552,7 +513,67 @@ const CreatorDetails = () => {
                     {/* Chart */}
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={generateYieldData(creatorId || '')}>
+                        <BarChart data={[{
+                      month: 'août',
+                      fullMonth: 'août',
+                      value: 9.8,
+                      yield: '9,80 % APY'
+                    }, {
+                      month: 'sept.',
+                      fullMonth: 'sept.',
+                      value: 11.5,
+                      yield: '11,50 % APY'
+                    }, {
+                      month: 'oct.',
+                      fullMonth: 'oct.',
+                      value: 10.2,
+                      yield: '10,20 % APY'
+                    }, {
+                      month: 'nov.',
+                      fullMonth: 'nov.',
+                      value: 12.9,
+                      yield: '12,90 % APY'
+                    }, {
+                      month: 'déc.',
+                      fullMonth: 'déc.',
+                      value: 8.7,
+                      yield: '8,70 % APY'
+                    }, {
+                      month: 'janv.',
+                      fullMonth: 'janv.',
+                      value: 11.2,
+                      yield: '11,20 % APY'
+                    }, {
+                      month: 'févr.',
+                      fullMonth: 'févr.',
+                      value: 12.8,
+                      yield: '12,80 % APY'
+                    }, {
+                      month: 'mars',
+                      fullMonth: 'mars',
+                      value: 10.5,
+                      yield: '10,50 % APY'
+                    }, {
+                      month: 'avr.',
+                      fullMonth: 'avr.',
+                      value: 14.1,
+                      yield: '14,10 % APY'
+                    }, {
+                      month: '',
+                      fullMonth: 'mai',
+                      value: 12.3,
+                      yield: '12,30 % APY'
+                    }, {
+                      month: 'juin',
+                      fullMonth: 'juin',
+                      value: 15.2,
+                      yield: '15,20 % APY'
+                    }, {
+                      month: '',
+                      fullMonth: 'juil.',
+                      value: 13.7,
+                      yield: '13,70 % APY'
+                    }]}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                           <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
                         fontSize: 12,
