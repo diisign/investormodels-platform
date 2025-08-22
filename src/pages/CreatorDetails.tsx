@@ -482,19 +482,19 @@ const CreatorDetails = () => {
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-2 gap-4 max-w-2xl">
-                  <div className="bg-white border border-gray-200 rounded-lg p-3">
-                    <div className="flex items-center justify-center mb-2">
-                      <ChevronUp className="h-5 w-5 text-green-500" />
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center justify-center mb-3">
+                      <ChevronUp className="h-6 w-6 text-green-500" />
                     </div>
-                    <h3 className="text-sm font-semibold text-center text-green-600 mb-1">Social followers</h3>
+                    <h3 className="text-base font-semibold text-center text-green-600 mb-2">Social followers</h3>
                     <p className="text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                   
-                  <div className="bg-white border border-gray-200 rounded-lg p-3">
-                    <div className="flex items-center justify-center mb-2">
-                      <ChevronUp className="h-5 w-5 text-green-500" />
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center justify-center mb-3">
+                      <ChevronUp className="h-6 w-6 text-green-500" />
                     </div>
-                    <h3 className="text-sm font-semibold text-center text-green-600 mb-1">Taux d'engagement</h3>
+                    <h3 className="text-base font-semibold text-center text-green-600 mb-2">Taux d'engagement</h3>
                     <p className="text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                 </div>
