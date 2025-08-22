@@ -475,26 +475,26 @@ const CreatorDetails = () => {
                   <div className="flex items-center gap-4">
                     <div className="text-2xl font-bold text-gray-900">Yield</div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400">
-                      13,70 % APY
+                      12,24 % APY
                     </div>
                   </div>
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 gap-4 max-w-2xl">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-center mb-3">
+                    <div className="flex items-center justify-center mb-2">
                       <ChevronUp className="h-6 w-6 text-green-500" />
                     </div>
-                    <h3 className="text-base font-semibold text-center text-green-600 mb-2">Social followers</h3>
+                    <h3 className="text-base font-semibold text-center text-green-600 mb-1">Social followers</h3>
                     <p className="text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                   
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-center mb-3">
+                    <div className="flex items-center justify-center mb-2">
                       <ChevronUp className="h-6 w-6 text-green-500" />
                     </div>
-                    <h3 className="text-base font-semibold text-center text-green-600 mb-2">Taux d'engagement</h3>
+                    <h3 className="text-base font-semibold text-center text-green-600 mb-1">Taux d'engagement</h3>
                     <p className="text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                 </div>
@@ -580,33 +580,21 @@ const CreatorDetails = () => {
                         fill: '#666'
                       }} />
                           <YAxis hide />
-                          <Tooltip 
-                            formatter={(value, name) => [
-                              <span key="value" className="text-yellow-400">{value}%</span>, 
-                              <span key="label" className="text-yellow-400">Yield distribué</span>
-                            ]}
-                            labelFormatter={(label, payload) => {
-                              if (payload && payload.length > 0 && payload[0].payload) {
-                                const fullMonth = payload[0].payload.fullMonth;
-                                const monthsAfterJan = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
-                                const year = monthsAfterJan.includes(fullMonth) ? '2025' : '2024';
-                                return `${fullMonth} ${year}`;
-                              }
-                              return label;
-                            }}
-                            contentStyle={{
-                              backgroundColor: 'white',
-                              border: '1px solid #e5e7eb',
-                              borderRadius: '8px',
-                              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                            }}
-                          />
-                          <Bar 
-                            dataKey="value" 
-                            fill="#FEF3C7" 
-                            radius={[4, 4, 0, 0]}
-                            className="hover:fill-yellow-400 transition-colors duration-200 cursor-pointer"
-                          />
+                          <Tooltip formatter={(value, name) => [<span key="value" className="text-yellow-400">{value}%</span>, <span key="label" className="text-yellow-400">Yield distribué</span>]} labelFormatter={(label, payload) => {
+                        if (payload && payload.length > 0 && payload[0].payload) {
+                          const fullMonth = payload[0].payload.fullMonth;
+                          const monthsAfterJan = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
+                          const year = monthsAfterJan.includes(fullMonth) ? '2025' : '2024';
+                          return `${fullMonth} ${year}`;
+                        }
+                        return label;
+                      }} contentStyle={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }} />
+                          <Bar dataKey="value" fill="#FEF3C7" radius={[4, 4, 0, 0]} className="hover:fill-yellow-400 transition-colors duration-200 cursor-pointer" />
                         </BarChart>
                       </ResponsiveContainer>
                     </div>
@@ -624,11 +612,11 @@ const CreatorDetails = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Dernier Yield distribué:</span>
-                        <span className="font-semibold text-sm">13,70 % APY</span>
+                        <span className="font-semibold text-xs">13,70 % APY</span>
                       </div>
                       <div className="flex justify-between items-center rounded-sm">
                         <span className="text-gray-600">Prochain paiement:</span>
-                        <span className="font-semibold">{getDaysUntilEndOfMonth()}j</span>
+                        <span className="font-semibold text-xs">{getDaysUntilEndOfMonth()}j</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Estimation de Yield:</span>
