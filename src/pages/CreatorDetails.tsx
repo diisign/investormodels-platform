@@ -507,50 +507,62 @@ const CreatorDetails = () => {
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={[{
                       month: 'août',
+                      fullMonth: 'août',
                       value: 9.8,
                       yield: '9,80 % APY'
                     }, {
                       month: 'sept.',
+                      fullMonth: 'sept.',
                       value: 11.5,
                       yield: '11,50 % APY'
                     }, {
                       month: 'oct.',
+                      fullMonth: 'oct.',
                       value: 10.2,
                       yield: '10,20 % APY'
                     }, {
                       month: 'nov.',
+                      fullMonth: 'nov.',
                       value: 12.9,
                       yield: '12,90 % APY'
                     }, {
                       month: 'déc.',
+                      fullMonth: 'déc.',
                       value: 8.7,
                       yield: '8,70 % APY'
                     }, {
                       month: 'janv.',
+                      fullMonth: 'janv.',
                       value: 11.2,
                       yield: '11,20 % APY'
                     }, {
                       month: 'févr.',
+                      fullMonth: 'févr.',
                       value: 12.8,
                       yield: '12,80 % APY'
                     }, {
                       month: 'mars',
+                      fullMonth: 'mars',
                       value: 10.5,
                       yield: '10,50 % APY'
                     }, {
                       month: 'avr.',
+                      fullMonth: 'avr.',
                       value: 14.1,
                       yield: '14,10 % APY'
                     }, {
                       month: '',
+                      fullMonth: 'mai',
                       value: 12.3,
                       yield: '12,30 % APY'
                     }, {
                       month: 'juin',
+                      fullMonth: 'juin',
                       value: 15.2,
                       yield: '15,20 % APY'
                     }, {
                       month: '',
+                      fullMonth: 'juil.',
                       value: 13.7,
                       yield: '13,70 % APY'
                     }]}>
@@ -565,10 +577,14 @@ const CreatorDetails = () => {
                               <span key="value" className="text-yellow-400">{value}%</span>, 
                               <span key="label" className="text-yellow-400">Yield distribué</span>
                             ]}
-                            labelFormatter={(label) => {
-                              const monthsAfterJan = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
-                              const year = monthsAfterJan.includes(label) ? '2025' : '2024';
-                              return `${label} ${year}`;
+                            labelFormatter={(label, payload) => {
+                              if (payload && payload.length > 0 && payload[0].payload) {
+                                const fullMonth = payload[0].payload.fullMonth;
+                                const monthsAfterJan = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
+                                const year = monthsAfterJan.includes(fullMonth) ? '2025' : '2024';
+                                return `${fullMonth} ${year}`;
+                              }
+                              return label;
                             }}
                             contentStyle={{
                               backgroundColor: 'white',
