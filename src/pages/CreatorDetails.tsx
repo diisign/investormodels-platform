@@ -532,7 +532,11 @@ const CreatorDetails = () => {
                   <div className="flex items-center gap-4">
                     <div className="text-2xl font-bold text-gray-900">Yield</div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400">
-                      12,24 % APY
+                      {(() => {
+                        const yieldData = generateYieldData(creatorId || '');
+                        const lastYield = yieldData[yieldData.length - 1];
+                        return `${lastYield.value.toFixed(2)} % APY`;
+                      })()}
                     </div>
                   </div>
                 </div>
@@ -609,7 +613,13 @@ const CreatorDetails = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Dernier Yield distribué:</span>
-                        <span className="font-semibold text-xs">13,70 % APY</span>
+                        <span className="font-semibold text-xs">
+                          {(() => {
+                            const yieldData = generateYieldData(creatorId || '');
+                            const lastYield = yieldData[yieldData.length - 1];
+                            return `${lastYield.value.toFixed(2)} % APY`;
+                          })()}
+                        </span>
                       </div>
                       <div className="flex justify-between items-center rounded-sm">
                         <span className="text-gray-600">Prochain paiement:</span>
