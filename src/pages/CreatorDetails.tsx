@@ -276,12 +276,17 @@ const CreatorDetails = () => {
                      <ActiveInvestors creatorId={creatorId || ''} />
                    </div>
                    
-                   {/* Invest Button */}
-                   <div className="w-full flex justify-center md:justify-start">
-                     <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
-                       ACHETER {creatorProfile.name.length > 8 ? creatorProfile.name.substring(0, 8).toUpperCase() + '...' : creatorProfile.name.toUpperCase()}
-                     </Button>
-                   </div>
+                    {/* Invest Button */}
+                    <div className="w-full flex justify-center md:justify-start">
+                      <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
+                        ACHETER {(() => {
+                          const name = creatorProfile.name;
+                          // Preserve emojis when converting to uppercase
+                          const upperName = name.replace(/[a-zA-Z]/g, (match) => match.toUpperCase());
+                          return name.length > 8 ? upperName.substring(0, 8) + '...' : upperName;
+                        })()}
+                      </Button>
+                    </div>
                 </div>
               </FadeIn>
             </div>
