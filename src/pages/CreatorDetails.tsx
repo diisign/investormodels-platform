@@ -116,71 +116,14 @@ const CreatorDetails = () => {
   const getRandomYieldForCreator = (creatorId: string) => {
     // Use creator ID as seed for consistent random values
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
-    // Generate unique range for each creator between 2.23% and 42.24%
     const random1 = (seed * 9301 + 49297) % 233280 / 233280;
-    const random2 = ((seed * 7919 + 12345) * 16807) % 233280 / 233280;
-    
-    // Calculate min yield (between 2.23% and ~25%)
-    const minYield = 2.23 + random1 * (25 - 2.23);
-    
-    // Calculate max yield (min + random spread, ensuring max doesn't exceed 42.24%)
-    const maxSpread = Math.min(42.24 - minYield, 15 + random2 * 10); // Variable spread
-    const maxYield = minYield + maxSpread;
-    
+    const random2 = ((seed + 1) * 9301 + 49297) % 233280 / 233280;
+    const min = 2.32 + random1 * (44.32 - 2.32);
+    const max = min + random2 * (44.32 - min);
     return {
-      min: Math.round(minYield * 100) / 100,
-      max: Math.round(Math.min(42.24, maxYield) * 100) / 100
+      min: Math.max(2.32, Math.min(44.32, min)),
+      max: Math.max(2.32, Math.min(44.32, max))
     };
-  };
-
-  const generateYieldData = (creatorId: string) => {
-    const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const yieldRange = getRandomYieldForCreator(creatorId);
-    
-    const months = [
-      { month: 'août', fullMonth: 'août' },
-      { month: 'sept.', fullMonth: 'sept.' },
-      { month: 'oct.', fullMonth: 'oct.' },
-      { month: 'nov.', fullMonth: 'nov.' },
-      { month: 'déc.', fullMonth: 'déc.' },
-      { month: 'janv.', fullMonth: 'janv.' },
-      { month: 'févr.', fullMonth: 'févr.' },
-      { month: 'mars', fullMonth: 'mars' },
-      { month: 'avr.', fullMonth: 'avr.' },
-      { month: '', fullMonth: 'mai' },
-      { month: 'juin', fullMonth: 'juin' },
-      { month: '', fullMonth: 'juil.' }
-    ];
-
-    return months.map((monthData, index) => {
-      // Generate more random variation using multiple seeds and prime numbers
-      const baseSeed = seed + index * 7919; // Large prime number
-      const seed1 = (baseSeed * 16807) % 2147483647;
-      const seed2 = (seed1 * 48271) % 2147483647;
-      const seed3 = (seed2 * 69621) % 2147483647;
-      
-      // Combine multiple random sources for better distribution
-      const random1 = (seed1 / 2147483647);
-      const random2 = (seed2 / 2147483647);
-      const random3 = (seed3 / 2147483647);
-      
-      // Use weighted combination for more natural distribution
-      const combinedRandom = (random1 * 0.4 + random2 * 0.35 + random3 * 0.25);
-      
-      // Add some variance to make it more unpredictable
-      const variance = Math.sin(baseSeed * 0.01) * 0.15;
-      const finalRandom = Math.abs((combinedRandom + variance) % 1);
-      
-      // Use creator-specific yield range instead of fixed range
-      const value = yieldRange.min + finalRandom * (yieldRange.max - yieldRange.min);
-      
-      return {
-        ...monthData,
-        value: Math.round(value * 100) / 100,
-        yield: `${(Math.round(value * 100) / 100).toFixed(2)} % APY`
-      };
-    });
   };
   if (!creatorExists || !creatorProfile) {
     return <div className="min-h-screen flex flex-col">
@@ -532,11 +475,7 @@ const CreatorDetails = () => {
                   <div className="flex items-center gap-4">
                     <div className="text-2xl font-bold text-gray-900">Yield</div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400">
-                      {(() => {
-                        const yieldData = generateYieldData(creatorId || '');
-                        const lastYield = yieldData[yieldData.length - 1];
-                        return `${lastYield.value.toFixed(2)} % APY`;
-                      })()}
+                      12,24 % APY
                     </div>
                   </div>
                 </div>
@@ -574,7 +513,67 @@ const CreatorDetails = () => {
                     {/* Chart */}
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={generateYieldData(creatorId || '')}>
+                        <BarChart data={[{
+                      month: 'août',
+                      fullMonth: 'août',
+                      value: 9.8,
+                      yield: '9,80 % APY'
+                    }, {
+                      month: 'sept.',
+                      fullMonth: 'sept.',
+                      value: 11.5,
+                      yield: '11,50 % APY'
+                    }, {
+                      month: 'oct.',
+                      fullMonth: 'oct.',
+                      value: 10.2,
+                      yield: '10,20 % APY'
+                    }, {
+                      month: 'nov.',
+                      fullMonth: 'nov.',
+                      value: 12.9,
+                      yield: '12,90 % APY'
+                    }, {
+                      month: 'déc.',
+                      fullMonth: 'déc.',
+                      value: 8.7,
+                      yield: '8,70 % APY'
+                    }, {
+                      month: 'janv.',
+                      fullMonth: 'janv.',
+                      value: 11.2,
+                      yield: '11,20 % APY'
+                    }, {
+                      month: 'févr.',
+                      fullMonth: 'févr.',
+                      value: 12.8,
+                      yield: '12,80 % APY'
+                    }, {
+                      month: 'mars',
+                      fullMonth: 'mars',
+                      value: 10.5,
+                      yield: '10,50 % APY'
+                    }, {
+                      month: 'avr.',
+                      fullMonth: 'avr.',
+                      value: 14.1,
+                      yield: '14,10 % APY'
+                    }, {
+                      month: '',
+                      fullMonth: 'mai',
+                      value: 12.3,
+                      yield: '12,30 % APY'
+                    }, {
+                      month: 'juin',
+                      fullMonth: 'juin',
+                      value: 15.2,
+                      yield: '15,20 % APY'
+                    }, {
+                      month: '',
+                      fullMonth: 'juil.',
+                      value: 13.7,
+                      yield: '13,70 % APY'
+                    }]}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                           <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
                         fontSize: 12,
@@ -613,16 +612,10 @@ const CreatorDetails = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Dernier Yield distribué:</span>
-                        <span className="font-semibold text-xs">
-                          {(() => {
-                            const yieldData = generateYieldData(creatorId || '');
-                            const lastYield = yieldData[yieldData.length - 1];
-                            return `${lastYield.value.toFixed(2)} % APY`;
-                          })()}
-                        </span>
+                        <span className="font-semibold text-xs">13,70 % APY</span>
                       </div>
                       <div className="flex justify-between items-center rounded-sm">
-                        <span className="text-gray-600">Prochain paiement:</span>
+                        <span className="text-sm text-gray-600">Prochain paiement:</span>
                         <span className="font-semibold text-xs">{getDaysUntilEndOfMonth()}j</span>
                       </div>
                       <div className="flex justify-between items-center">
