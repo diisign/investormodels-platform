@@ -499,9 +499,7 @@ const CreatorDetails = () => {
                   <div className="space-y-4">
                     <div className="flex items-center gap-2">
                       <h4 className="text-lg font-medium text-gray-700">Historique</h4>
-                      <div className="w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
-                        <span className="text-xs text-white">i</span>
-                      </div>
+                      
                     </div>
                     
                     {/* Chart */}
