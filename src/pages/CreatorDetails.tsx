@@ -118,12 +118,43 @@ const CreatorDetails = () => {
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const random1 = (seed * 9301 + 49297) % 233280 / 233280;
     const random2 = ((seed + 1) * 9301 + 49297) % 233280 / 233280;
-    const min = 2.32 + random1 * (44.32 - 2.32);
-    const max = min + random2 * (44.32 - min);
+    const min = 20.24 + random1 * (31.48 - 20.24);
+    const max = min + random2 * (31.48 - min);
     return {
-      min: Math.max(2.32, Math.min(44.32, min)),
-      max: Math.max(2.32, Math.min(44.32, max))
+      min: Math.max(20.24, Math.min(31.48, min)),
+      max: Math.max(20.24, Math.min(31.48, max))
     };
+  };
+
+  const generateYieldData = (creatorId: string) => {
+    const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const months = [
+      { month: 'août', fullMonth: 'août' },
+      { month: 'sept.', fullMonth: 'sept.' },
+      { month: 'oct.', fullMonth: 'oct.' },
+      { month: 'nov.', fullMonth: 'nov.' },
+      { month: 'déc.', fullMonth: 'déc.' },
+      { month: 'janv.', fullMonth: 'janv.' },
+      { month: 'févr.', fullMonth: 'févr.' },
+      { month: 'mars', fullMonth: 'mars' },
+      { month: 'avr.', fullMonth: 'avr.' },
+      { month: '', fullMonth: 'mai' },
+      { month: 'juin', fullMonth: 'juin' },
+      { month: '', fullMonth: 'juil.' }
+    ];
+
+    return months.map((monthData, index) => {
+      // Generate different random value for each month
+      const monthSeed = seed + index * 1234;
+      const random = (monthSeed * 9301 + 49297) % 233280 / 233280;
+      const value = 20.24 + random * (31.48 - 20.24);
+      
+      return {
+        ...monthData,
+        value: Math.round(value * 100) / 100,
+        yield: `${(Math.round(value * 100) / 100).toFixed(2)} % APY`
+      };
+    });
   };
   if (!creatorExists || !creatorProfile) {
     return <div className="min-h-screen flex flex-col">
@@ -513,67 +544,7 @@ const CreatorDetails = () => {
                     {/* Chart */}
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={[{
-                      month: 'août',
-                      fullMonth: 'août',
-                      value: 9.8,
-                      yield: '9,80 % APY'
-                    }, {
-                      month: 'sept.',
-                      fullMonth: 'sept.',
-                      value: 11.5,
-                      yield: '11,50 % APY'
-                    }, {
-                      month: 'oct.',
-                      fullMonth: 'oct.',
-                      value: 10.2,
-                      yield: '10,20 % APY'
-                    }, {
-                      month: 'nov.',
-                      fullMonth: 'nov.',
-                      value: 12.9,
-                      yield: '12,90 % APY'
-                    }, {
-                      month: 'déc.',
-                      fullMonth: 'déc.',
-                      value: 8.7,
-                      yield: '8,70 % APY'
-                    }, {
-                      month: 'janv.',
-                      fullMonth: 'janv.',
-                      value: 11.2,
-                      yield: '11,20 % APY'
-                    }, {
-                      month: 'févr.',
-                      fullMonth: 'févr.',
-                      value: 12.8,
-                      yield: '12,80 % APY'
-                    }, {
-                      month: 'mars',
-                      fullMonth: 'mars',
-                      value: 10.5,
-                      yield: '10,50 % APY'
-                    }, {
-                      month: 'avr.',
-                      fullMonth: 'avr.',
-                      value: 14.1,
-                      yield: '14,10 % APY'
-                    }, {
-                      month: '',
-                      fullMonth: 'mai',
-                      value: 12.3,
-                      yield: '12,30 % APY'
-                    }, {
-                      month: 'juin',
-                      fullMonth: 'juin',
-                      value: 15.2,
-                      yield: '15,20 % APY'
-                    }, {
-                      month: '',
-                      fullMonth: 'juil.',
-                      value: 13.7,
-                      yield: '13,70 % APY'
-                    }]}>
+                        <BarChart data={generateYieldData(creatorId || '')}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                           <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
                         fontSize: 12,
