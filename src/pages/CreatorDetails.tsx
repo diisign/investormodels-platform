@@ -571,7 +571,7 @@ const CreatorDetails = () => {
                     
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Dernier Yield distribué</span>
+                        <span className="text-gray-600">Dernier Yield distribué:</span>
                         <span className="font-semibold text-sm">13,70 % APY</span>
                       </div>
                       <div className="flex justify-between items-center rounded-sm">
