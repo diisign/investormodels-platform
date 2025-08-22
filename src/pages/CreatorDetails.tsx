@@ -566,7 +566,7 @@ const CreatorDetails = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-semibold text-gray-900">Distribution du yield</h3>
-                      <span className="text-gray-600">Mensuel</span>
+                      <span className="text-gray-600">(Mensuel)</span>
                     </div>
                     
                     <div className="space-y-3">
