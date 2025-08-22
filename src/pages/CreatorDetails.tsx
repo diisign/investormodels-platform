@@ -304,13 +304,13 @@ const CreatorDetails = () => {
           </div>
         </section>
 
-        {/* Performance Chart Section */}
-        <section className="py-8 bg-white dark:bg-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-              <div className="h-80 mb-6">
+        {/* Performance Chart Section - Full Width */}
+        <section className="py-8 bg-white dark:bg-gray-800 w-full">
+          <div className="w-full px-0">
+            <div className="bg-white dark:bg-gray-800 w-full">
+              <div className="h-80 w-full pl-4 pr-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyRevenueData}>
+                  <LineChart data={monthlyRevenueData} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                     <XAxis 
                       dataKey="month" 
@@ -323,6 +323,7 @@ const CreatorDetails = () => {
                       tickLine={false} 
                       tickFormatter={value => `${Math.floor(value / 1000)}k€`}
                       tick={{ fontSize: 12, fill: '#666' }}
+                      width={40}
                     />
                     <Tooltip 
                       formatter={value => [`${value}€`, 'Revenu']} 
