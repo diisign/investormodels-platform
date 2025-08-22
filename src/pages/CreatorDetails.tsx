@@ -542,9 +542,17 @@ const CreatorDetails = () => {
                       value: 14.1,
                       yield: '14,10 % APY'
                     }, {
+                      month: 'mai',
+                      value: 12.3,
+                      yield: '12,30 % APY'
+                    }, {
                       month: 'juin',
                       value: 15.2,
                       yield: '15,20 % APY'
+                    }, {
+                      month: 'juil.',
+                      value: 13.7,
+                      yield: '13,70 % APY'
                     }]}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                           <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
@@ -554,10 +562,14 @@ const CreatorDetails = () => {
                           <YAxis hide />
                           <Tooltip 
                             formatter={(value, name) => [
-                              <span key="value">{value}%</span>, 
+                              <span key="value" className="text-yellow-400">{value}%</span>, 
                               <span key="label" className="text-yellow-400">Yield distribué</span>
                             ]}
-                            labelFormatter={(label) => `${label} 2024`}
+                            labelFormatter={(label) => {
+                              const monthsAfterJan = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
+                              const year = monthsAfterJan.includes(label) ? '2025' : '2024';
+                              return `${label} ${year}`;
+                            }}
                             contentStyle={{
                               backgroundColor: 'white',
                               border: '1px solid #e5e7eb',
