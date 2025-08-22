@@ -452,9 +452,9 @@ export const calculateTotalInvested = (monthlyRevenue: number, creatorId?: strin
     return 108000;
   }
   
-  // Generate a random number between 32,000 and 99,900
-  const minValue = 32000;
-  const maxValue = 99900;
+  // Generate a random number between 53,000 and 621,000
+  const minValue = 53000;
+  const maxValue = 621000;
   
   // Use the monthly revenue as a seed to ensure consistency for the same creator
   const seed = monthlyRevenue % 10000;

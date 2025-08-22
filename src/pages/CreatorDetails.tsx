@@ -269,7 +269,7 @@ const CreatorDetails = () => {
                   return <div className="flex justify-center md:justify-start items-center gap-2 mb-6">
                         <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${isNegative ? 'text-red-600' : 'text-green-600'}`}>
                           {isNegative ? <TrendingDown className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
-                          <span className="font-semibold">{variation.toFixed(2)}% (Tout)</span>
+                          <span className="font-semibold">{variation.toFixed(2)}%</span>
                         </div>
                       </div>;
                 })()}
