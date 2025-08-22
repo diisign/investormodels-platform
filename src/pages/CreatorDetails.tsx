@@ -6,7 +6,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { toast } from "sonner";
 import { creators, investInCreator } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
@@ -120,7 +119,6 @@ const CreatorDetails = () => {
             </Link>
           </div>
         </main>
-        <Footer />
       </div>;
   }
   const creator = mockCreator || {
@@ -260,9 +258,6 @@ const CreatorDetails = () => {
                   <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white mb-2 break-words">
                     {creatorProfile.name}
                   </h1>
-                  <div className="text-xl md:text-3xl font-bold text-black dark:text-white mb-4">
-                    {(creatorProfile.monthlyRevenue / 1000).toFixed(2)} k€
-                  </div>
                   
                   {/* Variation Badge */}
                   {(() => {
@@ -271,17 +266,22 @@ const CreatorDetails = () => {
                   return <div className="flex justify-center md:justify-start items-center gap-2 mb-6">
                         <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${isNegative ? 'text-red-600' : 'text-green-600'}`}>
                           {isNegative ? <TrendingDown className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
-                          <span className="font-semibold">{variation.toFixed(2)}% (Tout)</span>
+                          <span className="font-semibold">{variation.toFixed(2)}%</span>
                         </div>
                       </div>;
                 })()}
                   
-                  {/* Invest Button */}
-                  <div className="w-full flex justify-center md:justify-start">
-                    <Button onClick={openInvestModal} className="w-full md:w-auto text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none bg-yellow-400 hover:bg-yellow-300">
-                      ACHETER {creatorProfile.name.length > 8 ? creatorProfile.name.substring(0, 8).toUpperCase() + '...' : creatorProfile.name.toUpperCase()}
-                    </Button>
-                  </div>
+                   {/* Active Investors Display */}
+                   <div className="w-full flex justify-center md:justify-start mb-4">
+                     <ActiveInvestors creatorId={creatorId || ''} />
+                   </div>
+                   
+                   {/* Invest Button */}
+                   <div className="w-full flex justify-center md:justify-start">
+                     <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
+                       ACHETER {creatorProfile.name.length > 8 ? creatorProfile.name.substring(0, 8).toUpperCase() + '...' : creatorProfile.name.toUpperCase()}
+                     </Button>
+                   </div>
                 </div>
               </FadeIn>
             </div>
@@ -329,14 +329,14 @@ const CreatorDetails = () => {
         {/* Key Statistics */}
         <section className="py-8 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 gap-2 md:gap-8">
               {/* Market Cap */}
               <FadeIn direction="up" className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <CircleDollarSign className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <CircleDollarSign className="h-6 w-6 text-yellow-500" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested / 1000).toFixed(2)} k €
                   </div>
                   <div className="text-sm text-gray-500">Market Cap</div>
@@ -346,10 +346,10 @@ const CreatorDetails = () => {
               {/* Instant Liquidity */}
               <FadeIn direction="up" delay={100} className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <TrendingUp className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <TrendingUp className="h-6 w-6 text-yellow-500" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested * 0.2 / 1000).toFixed(2)} k €
                   </div>
                   <div className="text-sm text-gray-500">Instant Liquidity</div>
@@ -359,10 +359,10 @@ const CreatorDetails = () => {
               {/* Yield */}
               <FadeIn direction="up" delay={200} className="text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <BarChart3 className="h-6 w-6 text-gray-600" />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
+                    <BarChart3 className="h-6 w-6 text-yellow-500" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creatorProfile.returnRate / 10).toFixed(2)} %
                   </div>
                   <div className="text-sm text-gray-500">Yield</div>
@@ -396,10 +396,10 @@ const CreatorDetails = () => {
               {/* Description */}
               <div>
                 <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  {creatorProfile.name} est une créatrice de contenu lifestyle 
+                  {creatorProfile.description || `${creatorProfile.name} est une créatrice de contenu lifestyle 
                   passionnée qui a su construire une communauté fidèle grâce à son authenticité et sa créativité. 
-                  Avec {creatorProfile.followers.toLocaleString()} abonnés, elle continue d'évoluer et d'innover 
-                  dans son domaine, offrant des opportunités d'investissement attractives pour ses partenaires.
+                  Avec ${creatorProfile.followers.toLocaleString()} abonnés, elle continue d'évoluer et d'innover 
+                  dans son domaine, offrant des opportunités d'investissement attractives pour ses partenaires.`}
                 </p>
                 
                 {/* Creator Info */}
@@ -411,10 +411,6 @@ const CreatorDetails = () => {
                   <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Date d'introduction</span>
                     <span className="font-medium">22/11/2022, 18:00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Prix d'introduction</span>
-                    <span className="font-medium">2,00 €</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">Instagram</span>
@@ -454,37 +450,7 @@ const CreatorDetails = () => {
           </div>
         </section>
 
-        <section className="py-8 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
-              Créatrices similaires
-            </h2>
-            <ScrollArea className="h-[300px] rounded-md border dark:bg-gray-900">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-                {creators.slice(0, 4).map(creator => <Link to={`/creator/${creator.id}`} key={creator.id}>
-                    <div className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                      <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                        <img src={creator.imageUrl} alt={creator.name} className="h-full w-full object-cover" />
-                      </div>
-                      <div className="flex-grow">
-                        <div className="flex justify-between items-center">
-                          <h4 className="font-medium text-sm">{creator.name}</h4>
-                          <span className="text-sm font-semibold">{creator.returnRate}%</span>
-                        </div>
-                        <div className="flex justify-between items-center mt-1">
-                          <span className="text-xs text-gray-500">
-                            {creator.investorsCount} Investisseurs
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>)}
-              </div>
-            </ScrollArea>
-          </div>
-        </section>
       </main>
-      <Footer />
 
       {/* Investment Modal */}
       {showInvestModal && <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
