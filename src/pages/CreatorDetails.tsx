@@ -17,10 +17,16 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
 import { createInvestment } from '@/utils/investments';
 import CreatorBadge from '@/components/ui/CreatorBadge';
-
 const CreatorDetails = () => {
-  const { creatorId } = useParams<{ creatorId: string }>();
-  const { isAuthenticated, user } = useAuth();
+  const {
+    creatorId
+  } = useParams<{
+    creatorId: string;
+  }>();
+  const {
+    isAuthenticated,
+    user
+  } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -29,11 +35,9 @@ const CreatorDetails = () => {
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
   const [selectedDuration, setSelectedDuration] = useState<'1' | '3' | '6' | '12'>('3');
   const queryClient = useQueryClient();
-
   const mockCreator = creators.find(c => c.id === creatorId);
   const profileExists = creatorId && creatorProfiles[creatorId];
   const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
-
   if (creatorId === 'creator3' && creatorProfile) {
     console.log('CreatorDetails - Kayla debug:', {
       creatorId,
@@ -42,25 +46,23 @@ const CreatorDetails = () => {
       creatorProfileName: creatorProfile.name
     });
   }
-
   const creatorExists = !!mockCreator || !!profileExists;
-  const { data: userBalance = 0 } = useQuery({
+  const {
+    data: userBalance = 0
+  } = useQuery({
     queryKey: ['userBalance', user?.id],
     queryFn: async () => {
       if (!user) return 0;
       try {
         console.log('Récupération du solde pour l\'utilisateur:', user.id);
-        const { data, error } = await supabase
-          .from('transactions')
-          .select('amount, status')
-          .eq('user_id', user.id)
-          .eq('status', 'completed');
-        
+        const {
+          data,
+          error
+        } = await supabase.from('transactions').select('amount, status').eq('user_id', user.id).eq('status', 'completed');
         if (error) {
           console.error('Erreur lors de la récupération des transactions:', error);
           throw error;
         }
-        
         console.log('Transactions récupérées:', data);
         const total = data && data.length > 0 ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) : 0;
         console.log('Solde calculé:', total);
@@ -73,18 +75,27 @@ const CreatorDetails = () => {
     enabled: !!user && isAuthenticated,
     refetchOnWindowFocus: true
   });
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [creatorId]);
-
   const investmentOptions = {
-    '1': { label: '1 mois', returnRate: 15 },
-    '3': { label: '3 mois', returnRate: 60 },
-    '6': { label: '6 mois', returnRate: 150 },
-    '12': { label: '12 mois', returnRate: 400 }
+    '1': {
+      label: '1 mois',
+      returnRate: 15
+    },
+    '3': {
+      label: '3 mois',
+      returnRate: 60
+    },
+    '6': {
+      label: '6 mois',
+      returnRate: 150
+    },
+    '12': {
+      label: '12 mois',
+      returnRate: 400
+    }
   };
-
   useEffect(() => {
     if (investmentAmount && selectedDuration) {
       const investmentValue = parseFloat(investmentAmount);
@@ -95,10 +106,8 @@ const CreatorDetails = () => {
       setEstimatedReturn(0);
     }
   }, [investmentAmount, selectedDuration]);
-
   if (!creatorExists || !creatorProfile) {
-    return (
-      <div className="min-h-screen flex flex-col">
+    return <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
         <main className="flex-grow pt-20">
           <div className="container mx-auto px-4 py-12 text-center">
@@ -112,10 +121,8 @@ const CreatorDetails = () => {
           </div>
         </main>
         <Footer />
-      </div>
-    );
+      </div>;
   }
-
   const creator = mockCreator || {
     id: creatorProfile.id,
     name: creatorProfile.name,
@@ -129,9 +136,7 @@ const CreatorDetails = () => {
     creationDate: new Date(Date.now() - Math.random() * 126144000000).toISOString(),
     coverImageUrl: 'https://images.unsplash.com/photo-1579762593131-b8945254345c?q=80&w=2071&auto=format&fit=crop'
   };
-
   const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
-
   const openInvestModal = () => {
     if (!isAuthenticated) {
       navigate(`/login?returnTo=${encodeURIComponent(location.pathname)}`);
@@ -140,42 +145,44 @@ const CreatorDetails = () => {
     }
     setShowInvestModal(true);
   };
-
   const handleInvest = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) {
       toast.error("Veuillez vous connecter pour investir");
       return;
     }
-
     const amount = Number(investmentAmount);
     if (isNaN(amount) || amount < 100) {
       toast.error("Le montant minimum d'investissement est de 100€");
       return;
     }
-
     setLoading(true);
     try {
       console.log("Début du processus d'investissement...");
       console.log("Solde utilisateur:", userBalance, "Montant à investir:", amount);
-
       if (userBalance >= amount) {
         console.log("Solde suffisant, investissement direct");
         await createInvestment(creatorId!, amount, creatorProfile?.returnRate || 0);
         toast.success(`Investissement de ${amount}€ effectué avec succès !`);
         setShowInvestModal(false);
         setInvestmentAmount('');
-        queryClient.invalidateQueries({ queryKey: ['userBalance', user?.id] });
-        queryClient.invalidateQueries({ queryKey: ['userInvestments'] });
+        queryClient.invalidateQueries({
+          queryKey: ['userBalance', user?.id]
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['userInvestments']
+        });
         return;
       }
-
       console.log("Solde insuffisant, redirection vers Stripe");
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: {
+          session
+        }
+      } = await supabase.auth.getSession();
       if (!session) {
         throw new Error("Session utilisateur expirée");
       }
-
       toast.info("Redirection vers le paiement...");
       const response = await fetch("https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment", {
         method: "POST",
@@ -192,23 +199,21 @@ const CreatorDetails = () => {
           returnRate: creatorProfile?.returnRate || 0
         })
       });
-
       const data = await response.json();
       console.log("Réponse de l'API de paiement:", data);
-      
       if (!response.ok && !data.url) {
         throw new Error(data.error || "Une erreur est survenue lors de la création du paiement");
       }
-
       const paymentUrl = data.url;
       console.log("Redirection vers:", paymentUrl);
       toast.success("Redirection vers la page de paiement...");
       setShowInvestModal(false);
       window.location.href = paymentUrl;
-
     } catch (error) {
       console.error("Erreur lors de la création du paiement:", error);
-      toast.error("Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.", { duration: 5000 });
+      toast.error("Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.", {
+        duration: 5000
+      });
       setTimeout(() => {
         window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
       }, 2000);
@@ -216,23 +221,20 @@ const CreatorDetails = () => {
       setLoading(false);
     }
   };
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
         <div className="container mx-auto my-0 py-[8px] px-px">
-          <Button 
-            variant="ghost" 
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" 
-            onClick={() => {
-              navigate(-1);
-              setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }, 100);
-            }}
-          >
+          <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => {
+          navigate(-1);
+          setTimeout(() => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          }, 100);
+        }}>
             <ArrowLeft className="h-4 w-4" />
             <span>Retour</span>
           </Button>
@@ -245,15 +247,10 @@ const CreatorDetails = () => {
               {/* Profile Image - Centered on mobile, left on desktop */}
               <FadeIn direction="up">
                 <div className="h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-200">
-                  <img 
-                    src={creator.imageUrl} 
-                    alt={creatorProfile.name} 
-                    className="w-full h-full object-cover"
-                    onError={e => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
-                    }} 
-                  />
+                  <img src={creator.imageUrl} alt={creatorProfile.name} className="w-full h-full object-cover" onError={e => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
+                }} />
                 </div>
               </FadeIn>
               
@@ -269,33 +266,20 @@ const CreatorDetails = () => {
                   
                   {/* Variation Badge */}
                   {(() => {
-                    const variation = getLastVariation(creatorId || '');
-                    const isNegative = variation < 0;
-                    return (
-                      <div className="flex justify-center md:justify-start items-center gap-2 mb-6">
-                        <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${
-                          isNegative ? 'text-red-600' : 'text-green-600'
-                        }`}>
-                          {isNegative ? 
-                            <TrendingDown className="h-4 w-4" /> : 
-                            <TrendingUp className="h-4 w-4" />
-                          }
+                  const variation = getLastVariation(creatorId || '');
+                  const isNegative = variation < 0;
+                  return <div className="flex justify-center md:justify-start items-center gap-2 mb-6">
+                        <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${isNegative ? 'text-red-600' : 'text-green-600'}`}>
+                          {isNegative ? <TrendingDown className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
                           <span className="font-semibold">{variation.toFixed(2)}% (Tout)</span>
                         </div>
-                      </div>
-                    );
-                  })()}
+                      </div>;
+                })()}
                   
                   {/* Invest Button */}
                   <div className="w-full flex justify-center md:justify-start">
-                    <Button 
-                      onClick={openInvestModal}
-                      className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none"
-                    >
-                      ACHETER {creatorProfile.name.length > 8 ? 
-                        creatorProfile.name.substring(0, 8).toUpperCase() + '...' : 
-                        creatorProfile.name.toUpperCase()
-                      }
+                    <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
+                      ACHETER {creatorProfile.name.length > 8 ? creatorProfile.name.substring(0, 8).toUpperCase() + '...' : creatorProfile.name.toUpperCase()}
                     </Button>
                   </div>
                 </div>
@@ -310,39 +294,31 @@ const CreatorDetails = () => {
             <div className="bg-white dark:bg-gray-800 w-full">
               <div className="h-80 w-full pl-4 pr-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyRevenueData} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
+                  <LineChart data={monthlyRevenueData} margin={{
+                  top: 20,
+                  right: 20,
+                  left: 0,
+                  bottom: 20
+                }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                    <XAxis 
-                      dataKey="month" 
-                      axisLine={false} 
-                      tickLine={false}
-                      tick={{ fontSize: 12, fill: '#666' }}
-                    />
-                    <YAxis 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tickFormatter={value => `${Math.floor(value / 1000)}k€`}
-                      tick={{ fontSize: 12, fill: '#666' }}
-                      width={40}
-                    />
-                    <Tooltip 
-                      formatter={value => [`${value}€`, 'Revenu']} 
-                      labelFormatter={label => `Mois: ${label}`}
-                      contentStyle={{ 
-                        backgroundColor: 'white', 
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                      }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="revenue" 
-                      stroke="#3b82f6" 
-                      strokeWidth={2}
-                      dot={false}
-                      activeDot={{ r: 4, fill: '#3b82f6' }}
-                    />
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
+                    fontSize: 12,
+                    fill: '#666'
+                  }} />
+                    <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} tick={{
+                    fontSize: 12,
+                    fill: '#666'
+                  }} width={40} />
+                    <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }} />
+                    <Line type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} dot={false} activeDot={{
+                    r: 4,
+                    fill: '#3b82f6'
+                  }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -453,7 +429,7 @@ const CreatorDetails = () => {
               {/* Additional Stats */}
               <div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-                  <h3 className="font-semibold mb-4">Statistiques de performance</h3>
+                  <h3 className="font-semibold mb-4 px-[100px] text-yellow-300">Statistiques</h3>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Investisseurs actifs</span>
@@ -485,15 +461,10 @@ const CreatorDetails = () => {
             </h2>
             <ScrollArea className="h-[300px] rounded-md border dark:bg-gray-900">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-                {creators.slice(0, 4).map((creator) => (
-                  <Link to={`/creator/${creator.id}`} key={creator.id}>
+                {creators.slice(0, 4).map(creator => <Link to={`/creator/${creator.id}`} key={creator.id}>
                     <div className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                       <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                        <img
-                          src={creator.imageUrl}
-                          alt={creator.name}
-                          className="h-full w-full object-cover"
-                        />
+                        <img src={creator.imageUrl} alt={creator.name} className="h-full w-full object-cover" />
                       </div>
                       <div className="flex-grow">
                         <div className="flex justify-between items-center">
@@ -507,8 +478,7 @@ const CreatorDetails = () => {
                         </div>
                       </div>
                     </div>
-                  </Link>
-                ))}
+                  </Link>)}
               </div>
             </ScrollArea>
           </div>
@@ -517,8 +487,7 @@ const CreatorDetails = () => {
       <Footer />
 
       {/* Investment Modal */}
-      {showInvestModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      {showInvestModal && <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-md">
             <h3 className="text-xl font-bold mb-4">Investir dans {creatorProfile.name}</h3>
             
@@ -526,72 +495,38 @@ const CreatorDetails = () => {
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">Durée d'investissement</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {Object.entries(investmentOptions).map(([key, option]) => (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => setSelectedDuration(key as any)}
-                      className={`p-3 rounded-lg border text-sm ${
-                        selectedDuration === key
-                          ? 'bg-primary text-white border-primary'
-                          : 'border-gray-200 hover:border-primary'
-                      }`}
-                    >
+                  {Object.entries(investmentOptions).map(([key, option]) => <button key={key} type="button" onClick={() => setSelectedDuration(key as any)} className={`p-3 rounded-lg border text-sm ${selectedDuration === key ? 'bg-primary text-white border-primary' : 'border-gray-200 hover:border-primary'}`}>
                       {option.label}
                       <div className="text-xs opacity-75">+{option.returnRate}%</div>
-                    </button>
-                  ))}
+                    </button>)}
                 </div>
               </div>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">Montant (€)</label>
-                <input
-                  type="number"
-                  min="100"
-                  step="50"
-                  value={investmentAmount}
-                  onChange={(e) => setInvestmentAmount(e.target.value)}
-                  placeholder="Montant minimum: 100€"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none"
-                  required
-                />
+                <input type="number" min="100" step="50" value={investmentAmount} onChange={e => setInvestmentAmount(e.target.value)} placeholder="Montant minimum: 100€" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none" required />
               </div>
 
-              {estimatedReturn > 0 && (
-                <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              {estimatedReturn > 0 && <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <div className="text-sm text-green-800 dark:text-green-300">
                     Gain estimé: <span className="font-bold">{estimatedReturn.toFixed(2)}€</span>
                   </div>
                   <div className="text-xs text-green-600 dark:text-green-400">
                     Total à recevoir: {(Number(investmentAmount) + estimatedReturn).toFixed(2)}€
                   </div>
-                </div>
-              )}
+                </div>}
 
               <div className="flex gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setShowInvestModal(false)}
-                  className="flex-1"
-                >
+                <Button type="button" variant="outline" onClick={() => setShowInvestModal(false)} className="flex-1">
                   Annuler
                 </Button>
-                <Button
-                  type="submit"
-                  disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !isAuthenticated}
-                  className="flex-1 bg-primary hover:bg-primary/90"
-                >
+                <Button type="submit" disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !isAuthenticated} className="flex-1 bg-primary hover:bg-primary/90">
                   {loading ? 'Traitement...' : 'Investir maintenant'}
                 </Button>
               </div>
             </form>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        </div>}
+    </div>;
 };
-
 export default CreatorDetails;
