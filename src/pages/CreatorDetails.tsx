@@ -144,10 +144,25 @@ const CreatorDetails = () => {
     ];
 
     return months.map((monthData, index) => {
-      // Generate different random value for each month
-      const monthSeed = seed + index * 1234;
-      const random = (monthSeed * 9301 + 49297) % 233280 / 233280;
-      const value = 20.24 + random * (31.48 - 20.24);
+      // Generate more random variation using multiple seeds and prime numbers
+      const baseSeed = seed + index * 7919; // Large prime number
+      const seed1 = (baseSeed * 16807) % 2147483647;
+      const seed2 = (seed1 * 48271) % 2147483647;
+      const seed3 = (seed2 * 69621) % 2147483647;
+      
+      // Combine multiple random sources for better distribution
+      const random1 = (seed1 / 2147483647);
+      const random2 = (seed2 / 2147483647);
+      const random3 = (seed3 / 2147483647);
+      
+      // Use weighted combination for more natural distribution
+      const combinedRandom = (random1 * 0.4 + random2 * 0.35 + random3 * 0.25);
+      
+      // Add some variance to make it more unpredictable
+      const variance = Math.sin(baseSeed * 0.01) * 0.15;
+      const finalRandom = Math.abs((combinedRandom + variance) % 1);
+      
+      const value = 20.24 + finalRandom * (31.48 - 20.24);
       
       return {
         ...monthData,
