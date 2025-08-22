@@ -439,10 +439,6 @@ const CreatorDetails = () => {
                       <span className="font-medium">{creatorProfile.monthlyRevenue.toLocaleString()} €</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Rendement annuel</span>
-                      <span className="font-medium text-green-600">{creatorProfile.returnRate}%</span>
-                    </div>
-                    <div className="flex items-center justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Catégorie</span>
                       <span className="font-medium">Lifestyle</span>
                     </div>
