@@ -336,7 +336,7 @@ const CreatorDetails = () => {
                   <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
                     <CircleDollarSign className="h-6 w-6 text-gray-600" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested / 1000).toFixed(2)} k €
                   </div>
                   <div className="text-sm text-gray-500">Market Cap</div>
@@ -349,7 +349,7 @@ const CreatorDetails = () => {
                   <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
                     <TrendingUp className="h-6 w-6 text-gray-600" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creator.totalInvested * 0.2 / 1000).toFixed(2)} k €
                   </div>
                   <div className="text-sm text-gray-500">Instant Liquidity</div>
@@ -362,7 +362,7 @@ const CreatorDetails = () => {
                   <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
                     <BarChart3 className="h-6 w-6 text-gray-600" />
                   </div>
-                  <div className="text-2xl font-bold text-black dark:text-white">
+                  <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {(creatorProfile.returnRate / 10).toFixed(2)} %
                   </div>
                   <div className="text-sm text-gray-500">Yield</div>
