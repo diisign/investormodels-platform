@@ -241,10 +241,10 @@ const CreatorDetails = () => {
         {/* Header Section with White Background */}
         <section className="bg-white dark:bg-gray-800 pb-8">
           <div className="container mx-auto px-4 py-8">
-            <div className="flex items-start gap-6">
-              {/* Profile Image - Fixed on left */}
+            <div className="flex flex-col md:flex-row items-start gap-6">
+              {/* Profile Image - Fixed on left for desktop, centered for mobile */}
               <FadeIn direction="up">
-                <div className="h-40 w-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-200">
+                <div className="h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-200 mx-auto md:mx-0">
                   <img 
                     src={creator.imageUrl} 
                     alt={creatorProfile.name} 
@@ -258,38 +258,47 @@ const CreatorDetails = () => {
               </FadeIn>
               
               {/* Profile Info */}
-              <FadeIn direction="up" delay={100} className="flex-grow">
-                <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white mb-2">{creatorProfile.name}</h1>
-                <div className="text-3xl font-bold text-black dark:text-white mb-4">
-                  {(creatorProfile.monthlyRevenue / 1000).toFixed(2)} k€
-                </div>
-                
-                {/* Variation Badge */}
-                {(() => {
-                  const variation = getLastVariation(creatorId || '');
-                  const isNegative = variation < 0;
-                  return (
-                    <div className="flex items-center gap-2 mb-6">
-                      <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${
-                        isNegative ? 'text-red-600' : 'text-green-600'
-                      }`}>
-                        {isNegative ? 
-                          <TrendingDown className="h-4 w-4" /> : 
-                          <TrendingUp className="h-4 w-4" />
-                        }
-                        <span className="font-semibold">{variation.toFixed(2)}% (Tout)</span>
+              <FadeIn direction="up" delay={100} className="flex-grow w-full md:w-auto">
+                <div className="text-center md:text-left">
+                  <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white mb-2 break-words">
+                    {creatorProfile.name}
+                  </h1>
+                  <div className="text-xl md:text-3xl font-bold text-black dark:text-white mb-4">
+                    {(creatorProfile.monthlyRevenue / 1000).toFixed(2)} k€
+                  </div>
+                  
+                  {/* Variation Badge */}
+                  {(() => {
+                    const variation = getLastVariation(creatorId || '');
+                    const isNegative = variation < 0;
+                    return (
+                      <div className="flex justify-center md:justify-start items-center gap-2 mb-6">
+                        <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${
+                          isNegative ? 'text-red-600' : 'text-green-600'
+                        }`}>
+                          {isNegative ? 
+                            <TrendingDown className="h-4 w-4" /> : 
+                            <TrendingUp className="h-4 w-4" />
+                          }
+                          <span className="font-semibold">{variation.toFixed(2)}% (Tout)</span>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })()}
-                
-                {/* Invest Button */}
-                <Button 
-                  onClick={openInvestModal}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg shadow-lg transition-all duration-300"
-                >
-                  ACHETER {creatorProfile.name.toUpperCase()}
-                </Button>
+                    );
+                  })()}
+                  
+                  {/* Invest Button */}
+                  <div className="w-full">
+                    <Button 
+                      onClick={openInvestModal}
+                      className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base"
+                    >
+                      ACHETER {creatorProfile.name.length > 8 ? 
+                        creatorProfile.name.substring(0, 8).toUpperCase() + '...' : 
+                        creatorProfile.name.toUpperCase()
+                      }
+                    </Button>
+                  </div>
+                </div>
               </FadeIn>
             </div>
           </div>
