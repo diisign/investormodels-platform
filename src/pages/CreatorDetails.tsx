@@ -506,6 +506,26 @@ const CreatorDetails = () => {
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={[{
+                      month: 'août',
+                      value: 9.8,
+                      yield: '9,80 % APY'
+                    }, {
+                      month: 'sept.',
+                      value: 11.5,
+                      yield: '11,50 % APY'
+                    }, {
+                      month: 'oct.',
+                      value: 10.2,
+                      yield: '10,20 % APY'
+                    }, {
+                      month: 'nov.',
+                      value: 12.9,
+                      yield: '12,90 % APY'
+                    }, {
+                      month: 'déc.',
+                      value: 8.7,
+                      yield: '8,70 % APY'
+                    }, {
                       month: 'janv.',
                       value: 11.2,
                       yield: '11,20 % APY'
@@ -550,7 +570,12 @@ const CreatorDetails = () => {
                               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                             }}
                           />
-                          <Bar dataKey="value" fill="#FEF3C7" radius={[4, 4, 0, 0]} />
+                          <Bar 
+                            dataKey="value" 
+                            fill="#FEF3C7" 
+                            radius={[4, 4, 0, 0]}
+                            className="hover:fill-yellow-400 transition-colors duration-200 cursor-pointer"
+                          />
                         </BarChart>
                       </ResponsiveContainer>
                     </div>
