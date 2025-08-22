@@ -506,41 +506,33 @@ const CreatorDetails = () => {
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={[{
-                      month: 'sept.',
-                      value: 45
-                    }, {
-                      month: '',
-                      value: 65
-                    }, {
-                      month: 'nov.',
-                      value: 55
-                    }, {
-                      month: '',
-                      value: 85
-                    }, {
                       month: 'janv.',
-                      value: 35
+                      value: 11.2,
+                      yield: '11,20 % APY'
                     }, {
-                      month: '',
-                      value: 45
+                      month: 'févr.',
+                      value: 12.8,
+                      yield: '12,80 % APY'
                     }, {
                       month: 'mars',
-                      value: 55
+                      value: 10.5,
+                      yield: '10,50 % APY'
                     }, {
-                      month: '',
-                      value: 40
+                      month: 'avr.',
+                      value: 14.1,
+                      yield: '14,10 % APY'
                     }, {
                       month: 'mai',
-                      value: 60
+                      value: 12.3,
+                      yield: '12,30 % APY'
                     }, {
-                      month: '',
-                      value: 50
+                      month: 'juin',
+                      value: 15.2,
+                      yield: '15,20 % APY'
                     }, {
                       month: 'juil.',
-                      value: 70
-                    }, {
-                      month: '',
-                      value: 80
+                      value: 13.7,
+                      yield: '13,70 % APY'
                     }]}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                           <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{
@@ -548,11 +540,17 @@ const CreatorDetails = () => {
                         fill: '#666'
                       }} />
                           <YAxis hide />
+                          <Tooltip 
+                            formatter={(value, name) => [`${value}%`, 'Yield distribué']}
+                            labelFormatter={(label) => `${label} 2024`}
+                            contentStyle={{
+                              backgroundColor: 'white',
+                              border: '1px solid #e5e7eb',
+                              borderRadius: '8px',
+                              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                            }}
+                          />
                           <Bar dataKey="value" fill="#FEF3C7" radius={[4, 4, 0, 0]} />
-                          <Line type="monotone" dataKey="value" stroke="#F59E0B" strokeWidth={3} dot={{
-                        fill: '#F59E0B',
-                        r: 4
-                      }} />
                         </BarChart>
                       </ResponsiveContainer>
                     </div>
