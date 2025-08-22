@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { BarChart3, CircleDollarSign, TrendingUp, TrendingDown, Users, Calendar, ArrowRight, ArrowLeft, Trophy } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart3, CircleDollarSign, TrendingUp, TrendingDown, Users, Calendar, ArrowRight, ArrowLeft, Trophy, ChevronUp, ChevronDown } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
@@ -33,6 +33,7 @@ const CreatorDetails = () => {
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
   const [selectedDuration, setSelectedDuration] = useState<'1' | '3' | '6' | '12'>('3');
+  const [activeTab, setActiveTab] = useState<'about' | 'splits'>('about');
   const queryClient = useQueryClient();
   const mockCreator = creators.find(c => c.id === creatorId);
   const profileExists = creatorId && creatorProfiles[creatorId];
@@ -385,14 +386,25 @@ const CreatorDetails = () => {
         <section className="py-4 bg-white border-b border-gray-200">
           <div className="container mx-auto px-4">
             <div className="flex space-x-8">
-              <button className="py-2 px-4 border-b-2 border-black font-medium text-black dark:text-white">
+              <button 
+                onClick={() => setActiveTab('about')}
+                className={`py-2 px-4 border-b-2 font-medium ${
+                  activeTab === 'about' 
+                    ? 'border-black text-black dark:text-white' 
+                    : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'
+                }`}
+              >
                 À propos
               </button>
-              <button className="py-2 px-4 text-gray-500 hover:text-black dark:hover:text-white">
-                ROY
-              </button>
-              <button className="py-2 px-4 text-gray-500 hover:text-black dark:hover:text-white">
-                Actu
+              <button 
+                onClick={() => setActiveTab('splits')}
+                className={`py-2 px-4 border-b-2 font-medium ${
+                  activeTab === 'splits' 
+                    ? 'border-black text-black dark:text-white' 
+                    : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                SPLITS
               </button>
             </div>
           </div>
@@ -401,62 +413,210 @@ const CreatorDetails = () => {
         {/* Content Section */}
         <section className="py-8 bg-white">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Description */}
-              <div>
-                <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  {creatorProfile.description || `${creatorProfile.name} est une créatrice de contenu lifestyle 
-                  passionnée qui a su construire une communauté fidèle grâce à son authenticité et sa créativité. 
-                  Avec ${creatorProfile.followers.toLocaleString()} abonnés, elle continue d'évoluer et d'innover 
-                  dans son domaine, offrant des opportunités d'investissement attractives pour ses partenaires.`}
-                </p>
-                
-                {/* Creator Info */}
-                <div className="space-y-4">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Nom complet</span>
-                    <span className="font-medium">{creatorProfile.name}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Date d'introduction</span>
-                    <span className="font-medium">22/11/2022, 18:00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Instagram</span>
-                    <span className="font-medium flex items-center gap-2">
-                      {(creatorProfile.followers / 1000000).toFixed(2)}M Followers
-                      <ArrowRight className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Additional Stats */}
-              <div>
-                <div className="bg-white rounded-lg p-6 border border-gray-200">
-                  <h3 className="font-semibold mb-4 px-[100px] text-yellow-300">Statistiques</h3>
+            {activeTab === 'about' && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Description */}
+                <div>
+                  <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                    {creatorProfile.description || `${creatorProfile.name} est une créatrice de contenu lifestyle 
+                    passionnée qui a su construire une communauté fidèle grâce à son authenticité et sa créativité. 
+                    Avec ${creatorProfile.followers.toLocaleString()} abonnés, elle continue d'évoluer et d'innover 
+                    dans son domaine, offrant des opportunités d'investissement attractives pour ses partenaires.`}
+                  </p>
+                  
+                  {/* Creator Info */}
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Investisseurs actifs</span>
-                      <span className="font-medium">{creator.investorsCount}</span>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Nom complet</span>
+                      <span className="font-medium">{creatorProfile.name}</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Revenu mensuel</span>
-                      <span className="font-medium">
-                        {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] 
-                          ? monthlyRevenueData[monthlyRevenueData.length - 1].revenue.toLocaleString() 
-                          : creatorProfile.monthlyRevenue.toLocaleString()
-                        } €
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Date d'introduction</span>
+                      <span className="font-medium">22/11/2022, 18:00</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Instagram</span>
+                      <span className="font-medium flex items-center gap-2">
+                        {(creatorProfile.followers / 1000000).toFixed(2)}M Followers
+                        <ArrowRight className="h-4 w-4" />
                       </span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Catégorie</span>
-                      <span className="font-medium">Lifestyle</span>
+                  </div>
+                </div>
+
+                {/* Additional Stats */}
+                <div>
+                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                    <h3 className="font-semibold mb-4 px-[100px] text-yellow-300">Statistiques</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Investisseurs actifs</span>
+                        <span className="font-medium">{creator.investorsCount}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Revenu mensuel</span>
+                        <span className="font-medium">
+                          {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] 
+                            ? monthlyRevenueData[monthlyRevenueData.length - 1].revenue.toLocaleString() 
+                            : creatorProfile.monthlyRevenue.toLocaleString()
+                          } €
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">Catégorie</span>
+                        <span className="font-medium">Lifestyle</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
+
+            {activeTab === 'splits' && (
+              <div className="space-y-6">
+                {/* Yield Header */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-2xl font-bold text-gray-900">Yield</div>
+                    <div className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                      12,24 % APY
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-gray-500">Méthode utilisée</div>
+                    <div className="font-medium text-gray-900">SparkMind</div>
+                  </div>
+                </div>
+
+                {/* Stats Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white border border-gray-200 rounded-lg p-6">
+                    <div className="flex items-center justify-center mb-4">
+                      <ChevronUp className="h-8 w-8 text-green-500" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-center text-green-600 mb-2">Social followers</h3>
+                    <p className="text-sm text-gray-500 text-center">Mis à jour 31/07/2025</p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg p-6">
+                    <div className="flex items-center justify-center mb-4">
+                      <ChevronUp className="h-8 w-8 text-green-500" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-center text-green-600 mb-2">Taux d'engagement</h3>
+                    <p className="text-sm text-gray-500 text-center">Mis à jour 31/07/2025</p>
+                  </div>
+                </div>
+
+                {/* Performance Section */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-gray-900">Performance</h3>
+                  
+                  {/* Historique Section */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-lg font-medium text-gray-700">Historique</h4>
+                      <div className="w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span className="text-xs text-white">i</span>
+                      </div>
+                    </div>
+                    
+                    {/* Dropdown and buttons */}
+                    <div className="flex items-center justify-between">
+                      <div className="relative">
+                        <select className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg border-none appearance-none pr-8 font-medium">
+                          <option>Taux d'engagement</option>
+                        </select>
+                        <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-yellow-800" />
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-medium">€</button>
+                        <button className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-medium">%</button>
+                      </div>
+                    </div>
+
+                    {/* Chart */}
+                    <div className="h-64 w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart 
+                          data={[
+                            {month: 'sept.', value: 45},
+                            {month: 'oct.', value: 65},
+                            {month: 'nov.', value: 55},
+                            {month: 'déc.', value: 85},
+                            {month: 'janv.', value: 35},
+                            {month: 'févr.', value: 45},
+                            {month: 'mars', value: 55},
+                            {month: 'avr.', value: 40},
+                            {month: 'mai', value: 60},
+                            {month: 'juin', value: 50},
+                            {month: 'juil.', value: 70},
+                            {month: 'août', value: 80}
+                          ]}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                          <XAxis 
+                            dataKey="month" 
+                            axisLine={false} 
+                            tickLine={false} 
+                            tick={{fontSize: 12, fill: '#666'}} 
+                          />
+                          <YAxis hide />
+                          <Bar dataKey="value" fill="#FEF3C7" radius={[4, 4, 0, 0]} />
+                          <Line 
+                            type="monotone" 
+                            dataKey="value" 
+                            stroke="#F59E0B" 
+                            strokeWidth={3}
+                            dot={{fill: '#F59E0B', r: 4}}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Distribution Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-gray-900">Distribution du yield</h3>
+                      <span className="text-gray-600">Mensuel</span>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Dernier Yield distribué</span>
+                        <span className="font-semibold">13,70 % APY</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Prochain paiement</span>
+                        <span className="font-semibold">30j 17h 28m</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-600">Estimation de Yield</span>
+                          <div className="w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
+                            <span className="text-xs text-white">i</span>
+                          </div>
+                        </div>
+                        <span className="font-semibold">Min : 2,31 % - Max : 46,29 %</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-semibold text-gray-900">Yield prédictif</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-orange-600 font-semibold">Confirmé</span>
+                        <div className="w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
+                          <span className="text-xs text-white">i</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
