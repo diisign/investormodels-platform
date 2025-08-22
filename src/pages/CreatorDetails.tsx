@@ -258,9 +258,6 @@ const CreatorDetails = () => {
                   <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white mb-2 break-words">
                     {creatorProfile.name}
                   </h1>
-                  <div className="text-xl md:text-3xl font-bold text-black dark:text-white mb-4">
-                    {(creatorProfile.monthlyRevenue / 1000).toFixed(2)} k€
-                  </div>
                   
                   {/* Variation Badge */}
                   {(() => {
@@ -274,12 +271,17 @@ const CreatorDetails = () => {
                       </div>;
                 })()}
                   
-                  {/* Invest Button */}
-                  <div className="w-full flex justify-center md:justify-start">
-                    <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
-                      ACHETER {creatorProfile.name.length > 8 ? creatorProfile.name.substring(0, 8).toUpperCase() + '...' : creatorProfile.name.toUpperCase()}
-                    </Button>
-                  </div>
+                   {/* Active Investors Display */}
+                   <div className="w-full flex justify-center md:justify-start mb-4">
+                     <ActiveInvestors creatorId={creatorId || ''} />
+                   </div>
+                   
+                   {/* Invest Button */}
+                   <div className="w-full flex justify-center md:justify-start">
+                     <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
+                       ACHETER {creatorProfile.name.length > 8 ? creatorProfile.name.substring(0, 8).toUpperCase() + '...' : creatorProfile.name.toUpperCase()}
+                     </Button>
+                   </div>
                 </div>
               </FadeIn>
             </div>
@@ -448,35 +450,6 @@ const CreatorDetails = () => {
           </div>
         </section>
 
-        <section className="py-8 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
-              Créatrices similaires
-            </h2>
-            <ScrollArea className="h-[300px] rounded-md border dark:bg-gray-900">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-                {creators.slice(0, 4).map(creator => <Link to={`/creator/${creator.id}`} key={creator.id}>
-                    <div className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                      <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                        <img src={creator.imageUrl} alt={creator.name} className="h-full w-full object-cover" />
-                      </div>
-                      <div className="flex-grow">
-                        <div className="flex justify-between items-center">
-                          <h4 className="font-medium text-sm">{creator.name}</h4>
-                          <span className="text-sm font-semibold">{creator.returnRate}%</span>
-                        </div>
-                        <div className="flex justify-between items-center mt-1">
-                          <span className="text-xs text-gray-500">
-                            {creator.investorsCount} Investisseurs
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>)}
-              </div>
-            </ScrollArea>
-          </div>
-        </section>
       </main>
 
       {/* Investment Modal */}
