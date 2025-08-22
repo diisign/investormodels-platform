@@ -336,15 +336,6 @@ const CreatorDetails = () => {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-              
-              {/* Time Period Tabs */}
-              <div className="flex justify-center gap-4 mb-6 text-sm">
-                <span className="text-gray-500">11 2022</span>
-                <span className="text-gray-500">07 2023</span>
-                <span className="text-gray-500">04 2024</span>
-                <span className="text-gray-500">12 2024</span>
-                <span className="text-gray-500">08 2025</span>
-              </div>
             </div>
           </div>
         </section>
