@@ -17,16 +17,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
 import { createInvestment } from '@/utils/investments';
 import CreatorBadge from '@/components/ui/CreatorBadge';
+
 const CreatorDetails = () => {
-  const {
-    creatorId
-  } = useParams<{
-    creatorId: string;
-  }>();
-  const {
-    isAuthenticated,
-    user
-  } = useAuth();
+  const { creatorId } = useParams<{ creatorId: string }>();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -35,11 +29,11 @@ const CreatorDetails = () => {
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
   const [selectedDuration, setSelectedDuration] = useState<'1' | '3' | '6' | '12'>('3');
   const queryClient = useQueryClient();
+
   const mockCreator = creators.find(c => c.id === creatorId);
   const profileExists = creatorId && creatorProfiles[creatorId];
   const creatorProfile = creatorId ? getCreatorProfile(creatorId) : null;
 
-  // Debug logging for Kayla specifically
   if (creatorId === 'creator3' && creatorProfile) {
     console.log('CreatorDetails - Kayla debug:', {
       creatorId,
@@ -48,23 +42,25 @@ const CreatorDetails = () => {
       creatorProfileName: creatorProfile.name
     });
   }
+
   const creatorExists = !!mockCreator || !!profileExists;
-  const {
-    data: userBalance = 0
-  } = useQuery({
+  const { data: userBalance = 0 } = useQuery({
     queryKey: ['userBalance', user?.id],
     queryFn: async () => {
       if (!user) return 0;
       try {
         console.log('Récupération du solde pour l\'utilisateur:', user.id);
-        const {
-          data,
-          error
-        } = await supabase.from('transactions').select('amount, status').eq('user_id', user.id).eq('status', 'completed');
+        const { data, error } = await supabase
+          .from('transactions')
+          .select('amount, status')
+          .eq('user_id', user.id)
+          .eq('status', 'completed');
+        
         if (error) {
           console.error('Erreur lors de la récupération des transactions:', error);
           throw error;
         }
+        
         console.log('Transactions récupérées:', data);
         const total = data && data.length > 0 ? data.reduce((sum, transaction) => sum + Number(transaction.amount), 0) : 0;
         console.log('Solde calculé:', total);
@@ -78,43 +74,31 @@ const CreatorDetails = () => {
     refetchOnWindowFocus: true
   });
 
-  // Scroll to top when creator changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [creatorId]);
-  // Options d'investissement avec leurs rendements
+
   const investmentOptions = {
-    '1': {
-      label: '1 mois',
-      returnRate: 15
-    },
-    '3': {
-      label: '3 mois',
-      returnRate: 60
-    },
-    '6': {
-      label: '6 mois',
-      returnRate: 150
-    },
-    '12': {
-      label: '12 mois',
-      returnRate: 400
-    }
+    '1': { label: '1 mois', returnRate: 15 },
+    '3': { label: '3 mois', returnRate: 60 },
+    '6': { label: '6 mois', returnRate: 150 },
+    '12': { label: '12 mois', returnRate: 400 }
   };
+
   useEffect(() => {
     if (investmentAmount && selectedDuration) {
       const investmentValue = parseFloat(investmentAmount);
       const returnRate = investmentOptions[selectedDuration].returnRate;
-
-      // Calcul du gain basé sur le taux de rendement total pour la période
       const gain = investmentValue * returnRate / 100;
       setEstimatedReturn(gain);
     } else {
       setEstimatedReturn(0);
     }
   }, [investmentAmount, selectedDuration]);
+
   if (!creatorExists || !creatorProfile) {
-    return <div className="min-h-screen flex flex-col">
+    return (
+      <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
         <main className="flex-grow pt-20">
           <div className="container mx-auto px-4 py-12 text-center">
@@ -128,8 +112,10 @@ const CreatorDetails = () => {
           </div>
         </main>
         <Footer />
-      </div>;
+      </div>
+    );
   }
+
   const creator = mockCreator || {
     id: creatorProfile.id,
     name: creatorProfile.name,
@@ -143,7 +129,9 @@ const CreatorDetails = () => {
     creationDate: new Date(Date.now() - Math.random() * 126144000000).toISOString(),
     coverImageUrl: 'https://images.unsplash.com/photo-1579762593131-b8945254345c?q=80&w=2071&auto=format&fit=crop'
   };
+
   const monthlyRevenueData = creatorId ? generateMonthlyPerformanceData(creatorId) : [];
+
   const openInvestModal = () => {
     if (!isAuthenticated) {
       navigate(`/login?returnTo=${encodeURIComponent(location.pathname)}`);
@@ -152,61 +140,43 @@ const CreatorDetails = () => {
     }
     setShowInvestModal(true);
   };
+
   const handleInvest = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) {
       toast.error("Veuillez vous connecter pour investir");
       return;
     }
+
     const amount = Number(investmentAmount);
     if (isNaN(amount) || amount < 100) {
       toast.error("Le montant minimum d'investissement est de 100€");
       return;
     }
+
     setLoading(true);
     try {
       console.log("Début du processus d'investissement...");
       console.log("Solde utilisateur:", userBalance, "Montant à investir:", amount);
 
-      // Vérifier si l'utilisateur a assez de solde pour investir directement
       if (userBalance >= amount) {
         console.log("Solde suffisant, investissement direct");
-
-        // Investir directement depuis le solde
         await createInvestment(creatorId!, amount, creatorProfile?.returnRate || 0);
         toast.success(`Investissement de ${amount}€ effectué avec succès !`);
-
-        // Fermer le modal
         setShowInvestModal(false);
         setInvestmentAmount('');
-
-        // Actualiser les données
-        queryClient.invalidateQueries({
-          queryKey: ['userBalance', user?.id]
-        });
-        queryClient.invalidateQueries({
-          queryKey: ['userInvestments']
-        });
+        queryClient.invalidateQueries({ queryKey: ['userBalance', user?.id] });
+        queryClient.invalidateQueries({ queryKey: ['userInvestments'] });
         return;
       }
 
-      // Si le solde n'est pas suffisant, rediriger vers Stripe
       console.log("Solde insuffisant, redirection vers Stripe");
-
-      // Obtenir la session et le token
-      const {
-        data: {
-          session
-        }
-      } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         throw new Error("Session utilisateur expirée");
       }
 
-      // Afficher un message informatif pour l'utilisateur
       toast.info("Redirection vers le paiement...");
-
-      // Appel à la fonction Edge Supabase pour créer le paiement
       const response = await fetch("https://pzqsgvyprttfcpyofgnt.supabase.co/functions/v1/create-payment", {
         method: "POST",
         headers: {
@@ -222,31 +192,23 @@ const CreatorDetails = () => {
           returnRate: creatorProfile?.returnRate || 0
         })
       });
+
       const data = await response.json();
       console.log("Réponse de l'API de paiement:", data);
+      
       if (!response.ok && !data.url) {
         throw new Error(data.error || "Une erreur est survenue lors de la création du paiement");
       }
 
-      // Rediriger vers la page de paiement Stripe
       const paymentUrl = data.url;
       console.log("Redirection vers:", paymentUrl);
       toast.success("Redirection vers la page de paiement...");
-
-      // Fermer le modal avant la redirection
       setShowInvestModal(false);
-
-      // Rediriger vers la page de paiement Stripe
       window.location.href = paymentUrl;
+
     } catch (error) {
       console.error("Erreur lors de la création du paiement:", error);
-
-      // En cas d'erreur, proposer l'URL fixe comme solution de secours
-      toast.error("Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.", {
-        duration: 5000
-      });
-
-      // Attendre que l'utilisateur voie le message d'erreur puis rediriger
+      toast.error("Erreur lors de la création du paiement. Vous allez être redirigé vers notre page de paiement alternative.", { duration: 5000 });
       setTimeout(() => {
         window.location.href = "https://buy.stripe.com/bIY28x2vDcyR97G5kl";
       }, 2000);
@@ -254,273 +216,381 @@ const CreatorDetails = () => {
       setLoading(false);
     }
   };
-  return <div className="min-h-screen flex flex-col">
+
+  return (
+    <div className="min-h-screen flex flex-col">
       <Navbar isLoggedIn={isAuthenticated} />
       
       <main className="flex-grow pt-20">
         <div className="container mx-auto my-0 py-[8px] px-px">
-          <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" onClick={() => {
-          navigate(-1);
-          setTimeout(() => {
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-          }, 100);
-        }}>
+          <Button 
+            variant="ghost" 
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100" 
+            onClick={() => {
+              navigate(-1);
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }, 100);
+            }}
+          >
             <ArrowLeft className="h-4 w-4" />
             <span>Retour</span>
           </Button>
         </div>
 
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-black to-white opacity-95"></div>
-          
-          <div className="container mx-auto px-4 py-16 relative z-10">
-            <div className="flex flex-col md:flex-row items-start md:items-end gap-8 text-white">
+        {/* Header Section with Yellow Background */}
+        <section className="bg-yellow-300 pb-8">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col md:flex-row items-start gap-6">
+              {/* Profile Image */}
               <FadeIn direction="up">
-                <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white overflow-hidden shadow-xl">
-                  <img src={creator.imageUrl} alt={creatorProfile.name} className="w-full h-full object-cover" onError={e => {
-                  const target = e.target as HTMLImageElement;
-                  console.log(`CreatorDetails - Image failed to load for ${creatorProfile.name}:`, creator.imageUrl);
-                  target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
-                }} onLoad={() => {
-                  if (creatorId === 'creator3') {
-                    console.log(`CreatorDetails - Image loaded successfully for Kayla:`, creator.imageUrl);
-                  }
-                }} />
+                <div className="h-40 w-40 rounded-full overflow-hidden shadow-xl border-4 border-white">
+                  <img 
+                    src={creator.imageUrl} 
+                    alt={creatorProfile.name} 
+                    className="w-full h-full object-cover"
+                    onError={e => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`;
+                    }} 
+                  />
                 </div>
               </FadeIn>
               
+              {/* Profile Info */}
               <FadeIn direction="up" delay={100} className="flex-grow">
-                <div className="flex items-center gap-4">
-                  <h1 className="text-2xl md:text-4xl font-bold mb-2">{creatorProfile.name}</h1>
-                  {(() => {
+                <h1 className="text-4xl md:text-5xl font-bold text-black mb-2">{creatorProfile.name}</h1>
+                <div className="text-3xl font-bold text-black mb-4">
+                  {(creatorProfile.monthlyRevenue / 1000).toFixed(2)} k€
+                </div>
+                
+                {/* Variation Badge */}
+                {(() => {
                   const variation = getLastVariation(creatorId || '');
                   const isNegative = variation < 0;
-                  return <div className={`flex items-center gap-2 px-3 py-2 rounded-full ${isNegative ? 'bg-red-500/20' : 'bg-green-500/20'}`}>
-                        {isNegative ? <TrendingDown className="h-4 w-4 md:h-5 md:w-5 text-red-400" /> : <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-400" />}
-                        <span className={`text-base md:text-lg font-bold ${isNegative ? 'text-red-400' : 'text-green-400'}`}>
-                          {variation.toFixed(2)}%
-                        </span>
-                      </div>;
+                  return (
+                    <div className="flex items-center gap-2 mb-6">
+                      <div className={`flex items-center gap-1 px-2 py-1 rounded text-sm ${
+                        isNegative ? 'text-red-600' : 'text-green-600'
+                      }`}>
+                        {isNegative ? 
+                          <TrendingDown className="h-4 w-4" /> : 
+                          <TrendingUp className="h-4 w-4" />
+                        }
+                        <span className="font-semibold">{variation.toFixed(2)}% (Tout)</span>
+                      </div>
+                    </div>
+                  );
                 })()}
+                
+                {/* Invest Button */}
+                <Button 
+                  onClick={openInvestModal}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg shadow-lg transition-all duration-300"
+                >
+                  ACHETER {creatorProfile.name.toUpperCase()}
+                </Button>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+
+        {/* Performance Chart Section */}
+        <section className="py-8 bg-white dark:bg-gray-800">
+          <div className="container mx-auto px-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <div className="h-80 mb-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={monthlyRevenueData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                    <XAxis 
+                      dataKey="month" 
+                      axisLine={false} 
+                      tickLine={false}
+                      tick={{ fontSize: 12, fill: '#666' }}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tickFormatter={value => `${Math.floor(value / 1000)}k€`}
+                      tick={{ fontSize: 12, fill: '#666' }}
+                    />
+                    <Tooltip 
+                      formatter={value => [`${value}€`, 'Revenu']} 
+                      labelFormatter={label => `Mois: ${label}`}
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="revenue" 
+                      stroke="#3b82f6" 
+                      strokeWidth={2}
+                      dot={false}
+                      activeDot={{ r: 4, fill: '#3b82f6' }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              
+              {/* Time Period Tabs */}
+              <div className="flex justify-center gap-4 mb-6 text-sm">
+                <span className="text-gray-500">11 2022</span>
+                <span className="text-gray-500">07 2023</span>
+                <span className="text-gray-500">04 2024</span>
+                <span className="text-gray-500">12 2024</span>
+                <span className="text-gray-500">08 2025</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Key Statistics */}
+        <section className="py-8 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Market Cap */}
+              <FadeIn direction="up" className="text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                    <CircleDollarSign className="h-6 w-6 text-gray-600" />
+                  </div>
+                  <div className="text-2xl font-bold text-black dark:text-white">
+                    {(creator.totalInvested / 1000).toFixed(2)} k €
+                  </div>
+                  <div className="text-sm text-gray-500">Market Cap</div>
+                </div>
+              </FadeIn>
+
+              {/* Instant Liquidity */}
+              <FadeIn direction="up" delay={100} className="text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                    <TrendingUp className="h-6 w-6 text-gray-600" />
+                  </div>
+                  <div className="text-2xl font-bold text-black dark:text-white">
+                    {(creator.totalInvested * 0.2 / 1000).toFixed(2)} k €
+                  </div>
+                  <div className="text-sm text-gray-500">Instant Liquidity</div>
+                </div>
+              </FadeIn>
+
+              {/* Yield */}
+              <FadeIn direction="up" delay={200} className="text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                    <BarChart3 className="h-6 w-6 text-gray-600" />
+                  </div>
+                  <div className="text-2xl font-bold text-black dark:text-white">
+                    {(creatorProfile.returnRate / 10).toFixed(2)} %
+                  </div>
+                  <div className="text-sm text-gray-500">Yield</div>
                 </div>
               </FadeIn>
             </div>
-            
-            <div className="mt-6">
-              <ActiveInvestors creatorId={creatorId || ''} />
+          </div>
+        </section>
+
+        {/* Navigation Tabs */}
+        <section className="py-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          <div className="container mx-auto px-4">
+            <div className="flex space-x-8">
+              <button className="py-2 px-4 border-b-2 border-black font-medium text-black dark:text-white">
+                À propos
+              </button>
+              <button className="py-2 px-4 text-gray-500 hover:text-black dark:hover:text-white">
+                ROY
+              </button>
+              <button className="py-2 px-4 text-gray-500 hover:text-black dark:hover:text-white">
+                Actu
+              </button>
             </div>
           </div>
         </section>
-        
-        
-        {/* Performance des revenus - Section pleine largeur */}
-        <section className="py-[19px] w-full border-t border-b border-gray-200 dark:border-gray-700">
-          <div className="w-full">
-            <FadeIn direction="up">
-              <div className="w-full">
-                <h2 className="text-2xl font-semibold mb-6 text-center">Performance des revenus</h2>
-                <div className="bg-white dark:bg-gray-800 p-6">
-                  <div className="h-72 mb-6">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={monthlyRevenueData} margin={{
-                      top: 5,
-                      right: 5,
-                      left: 5,
-                      bottom: 5
-                    }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                        <YAxis axisLine={false} tickLine={false} tickFormatter={value => `${Math.floor(value / 1000)}k€`} domain={[dataMin => Math.floor(dataMin / 10000) * 10000, dataMax => Math.ceil(dataMax / 10000) * 10000]} tickCount={5} />
-                        <Tooltip formatter={value => [`${value}€`, 'Revenu']} labelFormatter={label => `Mois: ${label}`} />
-                        <defs>
-                          <linearGradient id="revenueColorGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
-                            <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1} />
-                          </linearGradient>
-                        </defs>
-                        <Line type="linear" dataKey="revenue" stroke="#000000" strokeWidth={2} dot={{
-                        r: 0
-                      }} activeDot={{
-                        r: 6,
-                        strokeWidth: 0,
-                        fill: "#000000"
-                      }} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                  
-                  <div className="text-center">
-                    <Button onClick={openInvestModal} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 px-[10px] py-0">
-                      Investir maintenant
-                    </Button>
-                    
-                    {!isAuthenticated && <div className="mt-4 text-center text-sm text-muted-foreground">
-                        <span>Vous devez être connecté pour investir.</span>
-                        <div className="mt-2 flex justify-center space-x-3">
-                          <Link to="/login" className="text-primary hover:text-primary/80 font-medium">
-                            Se connecter
-                          </Link>
-                          <span>ou</span>
-                          <Link to="/register" className="text-primary hover:text-primary/80 font-medium">
-                            S'inscrire
-                          </Link>
-                        </div>
-                      </div>}
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-        
-        {/* Statistiques - Section en dessous du graphique */}
-        <section className="py-8 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+
+        {/* Content Section */}
+        <section className="py-8">
           <div className="container mx-auto px-4">
-            <FadeIn direction="up" delay={200}>
-              <div className="flex flex-wrap justify-center gap-8">
-                <div className="flex items-center">
-                  <Users className="h-5 w-5 mr-2 text-primary" />
-                  <span className="text-gray-700 dark:text-gray-300">{creator.investorsCount} investisseurs</span>
-                </div>
-                <div className="flex items-center">
-                  <img src="/lovable-uploads/524b83a2-faac-4024-b292-0aacd341b37c.png" alt="Followers" className="h-5 w-5 mr-2" style={{
-                  filter: 'brightness(0) saturate(100%) invert(66%) sepia(76%) saturate(1392%) hue-rotate(5deg) brightness(103%) contrast(103%)'
-                }} />
-                  <span className="text-gray-700 dark:text-gray-300">{creatorProfile.followers.toLocaleString() || 0} followers</span>
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="h-5 w-5 mr-2 text-primary" />
-                  <span className="text-gray-700 dark:text-gray-300">Depuis 2025</span>
-                </div>
-                <div className="flex items-center">
-                  <CircleDollarSign className="h-5 w-5 mr-2 text-primary" />
-                  <span className="text-gray-700 dark:text-gray-300">{creator.totalInvested.toLocaleString()}€ investis</span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Description */}
+              <div>
+                <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                  {creatorProfile.name} est une créatrice de contenu lifestyle 
+                  passionnée qui a su construire une communauté fidèle grâce à son authenticité et sa créativité. 
+                  Avec {creatorProfile.followers.toLocaleString()} abonnés, elle continue d'évoluer et d'innover 
+                  dans son domaine, offrant des opportunités d'investissement attractives pour ses partenaires.
+                </p>
+                
+                {/* Creator Info */}
+                <div className="space-y-4">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Nom complet</span>
+                    <span className="font-medium">{creatorProfile.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Date d'introduction</span>
+                    <span className="font-medium">22/11/2022, 18:00</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Prix d'introduction</span>
+                    <span className="font-medium">2,00 €</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Instagram</span>
+                    <span className="font-medium flex items-center gap-2">
+                      {(creatorProfile.followers / 1000000).toFixed(2)}M Followers
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </div>
                 </div>
               </div>
-            </FadeIn>
+
+              {/* Additional Stats */}
+              <div>
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                  <h3 className="font-semibold mb-4">Statistiques de performance</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Investisseurs actifs</span>
+                      <span className="font-medium">{creator.investorsCount}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Revenu mensuel</span>
+                      <span className="font-medium">{creatorProfile.monthlyRevenue.toLocaleString()} €</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Rendement annuel</span>
+                      <span className="font-medium text-green-600">{creatorProfile.returnRate}%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Catégorie</span>
+                      <span className="font-medium">Lifestyle</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
-        
-        <section className="py-0">
-          <div className="container mx-auto px-4 space-y-16">
-            
-            {/* Statistiques clés - Section 2 */}
-            <FadeIn direction="up" delay={200}>
-              <div></div>
-            </FadeIn>
-            
-            {/* Section vide car le bouton est maintenant dans le graphique */}
-            <FadeIn direction="up" delay={300}>
-              <div></div>
-            </FadeIn>
-            
-            {/* Créatrices similaires - Section 4 avec ScrollArea */}
-            <FadeIn direction="up" delay={400}>
-              <div className="w-full py-[33px]">
-                <h2 className="text-2xl font-semibold mb-6">Créatrices similaires</h2>
-                <ScrollArea className="h-96 w-full rounded-lg border border-gray-100 dark:border-gray-800">
-                  <div className="p-4 space-y-4">
-                     {creators.map(similarCreator => {
-                    const similarProfile = getCreatorProfile(similarCreator.id);
-                    const marketCap = getMarketCap(similarCreator.id, creators);
-                    const lastVariation = getLastVariation(similarCreator.id);
-                    return <Link key={similarCreator.id} to={`/creator/${similarCreator.id}`} className="flex items-center p-4 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-primary transition-colors block">
-                          <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
-                            <img src={similarCreator.imageUrl} alt={similarProfile.name} className="h-full w-full object-cover" />
-                          </div>
-                          <div className="flex-grow min-w-0">
-                            <h4 className="font-medium truncate mb-2">{similarProfile.name}</h4>
-                            <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold mb-2 w-fit ${lastVariation >= 0 ? 'bg-green-200/50 text-green-500' : 'bg-red-200/50 text-red-500'}`}>
-                              {lastVariation >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-                              {lastVariation >= 0 ? '+' : ''}{lastVariation.toFixed(2)}%
-                            </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                              Market Cap: {marketCap.toLocaleString()}€
-                            </div>
-                          </div>
-                        </Link>;
-                  })}
-                  </div>
-                </ScrollArea>
-                
-                <div className="mt-6 text-center">
-                  <Link to="/creators" className="text-primary hover:text-primary/80 text-sm font-medium flex items-center justify-center">
-                    <span>Voir toutes les créatrices</span>
-                    <ArrowRight className="h-4 w-4 ml-1" />
+
+        <section className="py-8 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+              Créatrices similaires
+            </h2>
+            <ScrollArea className="h-[300px] rounded-md border dark:bg-gray-900">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+                {creators.slice(0, 4).map((creator) => (
+                  <Link to={`/creator/${creator.id}`} key={creator.id}>
+                    <div className="flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                        <img
+                          src={creator.imageUrl}
+                          alt={creator.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-grow">
+                        <div className="flex justify-between items-center">
+                          <h4 className="font-medium text-sm">{creator.name}</h4>
+                          <span className="text-sm font-semibold">{creator.returnRate}%</span>
+                        </div>
+                        <div className="flex justify-between items-center mt-1">
+                          <span className="text-xs text-gray-500">
+                            {creator.investorsCount} Investisseurs
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </Link>
-                </div>
+                ))}
               </div>
-            </FadeIn>
+            </ScrollArea>
           </div>
         </section>
       </main>
-      
-      {showInvestModal && <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <FadeIn className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl font-bold mb-4">Confirmer votre investissement</h2>
+      <Footer />
+
+      {/* Investment Modal */}
+      {showInvestModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-md">
+            <h3 className="text-xl font-bold mb-4">Investir dans {creatorProfile.name}</h3>
             
             <form onSubmit={handleInvest}>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="creator" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Créatrice
-                  </label>
-                  <input type="text" id="creator" value={creator.name} className="input-field bg-gray-50 dark:bg-gray-700 pointer-events-none" readOnly />
-                </div>
-                
-                <div>
-                  <label htmlFor="duration" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Durée d'investissement
-                  </label>
-                  <select id="duration" value={selectedDuration} onChange={e => setSelectedDuration(e.target.value as '1' | '3' | '6' | '12')} className="input-field">
-                    {Object.entries(investmentOptions).map(([key, option]) => <option key={key} value={key}>{option.label}</option>)}
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Montant (€)
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <CircleDollarSign className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input type="number" id="amount" value={investmentAmount} onChange={e => setInvestmentAmount(e.target.value)} min={100} step="1" className="input-field pl-10" required />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Montant minimum : 100€
-                  </p>
-                </div>
-                
-                <div className="p-4 rounded-lg border border-black dark:border-black bg-slate-50">
-                  <h3 className="text-sm font-medium mb-2 text-yellow-300">Estimation du rendement ({investmentOptions[selectedDuration].label})</h3>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Somme investie:</span>
-                    <span className="font-medium">{investmentAmount || '0'}€</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Gains estimés:</span>
-                    <span className="font-medium text-yellow-300">{estimatedReturn.toFixed(2)}€</span>
-                  </div>
-                </div>
-                
-                <div className="pt-4 flex justify-end space-x-3">
-                  <button type="button" onClick={() => setShowInvestModal(false)} className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                    Annuler
-                  </button>
-                  <GradientButton type="submit" variant="primary" gradientDirection="to-r" className="bg-primary text-primary-foreground shadow-xl hover:shadow-lg transition-all duration-300" disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !user}>
-                    {loading ? 'Redirection...' : 'Investir maintenant'}
-                  </GradientButton>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">Durée d'investissement</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {Object.entries(investmentOptions).map(([key, option]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setSelectedDuration(key as any)}
+                      className={`p-3 rounded-lg border text-sm ${
+                        selectedDuration === key
+                          ? 'bg-primary text-white border-primary'
+                          : 'border-gray-200 hover:border-primary'
+                      }`}
+                    >
+                      {option.label}
+                      <div className="text-xs opacity-75">+{option.returnRate}%</div>
+                    </button>
+                  ))}
                 </div>
               </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">Montant (€)</label>
+                <input
+                  type="number"
+                  min="100"
+                  step="50"
+                  value={investmentAmount}
+                  onChange={(e) => setInvestmentAmount(e.target.value)}
+                  placeholder="Montant minimum: 100€"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none"
+                  required
+                />
+              </div>
+
+              {estimatedReturn > 0 && (
+                <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                  <div className="text-sm text-green-800 dark:text-green-300">
+                    Gain estimé: <span className="font-bold">{estimatedReturn.toFixed(2)}€</span>
+                  </div>
+                  <div className="text-xs text-green-600 dark:text-green-400">
+                    Total à recevoir: {(Number(investmentAmount) + estimatedReturn).toFixed(2)}€
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowInvestModal(false)}
+                  className="flex-1"
+                >
+                  Annuler
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={loading || !investmentAmount || Number(investmentAmount) < 100 || !isAuthenticated}
+                  className="flex-1 bg-primary hover:bg-primary/90"
+                >
+                  {loading ? 'Traitement...' : 'Investir maintenant'}
+                </Button>
+              </div>
             </form>
-          </FadeIn>
-        </div>}
-      
-      <Footer />
-    </div>;
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
+
 export default CreatorDetails;
