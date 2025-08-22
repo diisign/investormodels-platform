@@ -535,7 +535,7 @@ const CreatorDetails = () => {
                     <div className="flex items-center justify-between">
                       <div className="relative">
                         <select className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg border-none appearance-none pr-8 font-medium">
-                          <option>Taux d'engagement</option>
+                          <option>Historique</option>
                         </select>
                         <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-yellow-800" />
                       </div>
@@ -554,7 +554,6 @@ const CreatorDetails = () => {
                             {month: 'févr.', value: 45},
                             {month: 'mars', value: 55},
                             {month: 'avr.', value: 40},
-                            {month: 'mai', value: 60},
                             {month: 'juin', value: 50},
                             {month: 'juil.', value: 70},
                             {month: 'août', value: 80}
@@ -600,13 +599,8 @@ const CreatorDetails = () => {
                         <span className="font-semibold">{getDaysUntilEndOfMonth()}j</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-600">Estimation de Yield</span>
-                          <div className="w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
-                            <span className="text-xs text-white">i</span>
-                          </div>
-                        </div>
-                        <span className="font-semibold">Min : {getRandomYieldForCreator(creatorId || '').min.toFixed(2)} - Max {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}</span>
+                        <span className="text-gray-600">Estimation de Yield:</span>
+                        <span className="font-semibold">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
                       </div>
                     </div>
                   </div>
