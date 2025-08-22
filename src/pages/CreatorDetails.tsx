@@ -626,8 +626,12 @@ const CreatorDetails = () => {
                         <span className="font-semibold text-xs">{getDaysUntilEndOfMonth()}j</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Estimation de Yield:</span>
-                        <span className="px-0 my-0 mx-0 text-sm font-semibold">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
+                        <span className="text-gray-600">Min:</span>
+                        <span className="font-semibold text-xs">{getRandomYieldForCreator(creatorId || '').min.toFixed(2)}%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Max:</span>
+                        <span className="font-semibold text-xs">{getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
                       </div>
                     </div>
                   </div>
