@@ -572,7 +572,7 @@ const CreatorDetails = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Dernier Yield distribué:</span>
-                        <span className="font-semibold text-right">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
+                        <span className="font-semibold">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Prochain paiement:</span>
