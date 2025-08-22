@@ -326,7 +326,7 @@ const CreatorDetails = () => {
           </div>
         </section>
 
-        {/* Key Statistics */}
+          {/* Key Statistics */}
         <section className="py-8 bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-3 gap-2 md:gap-8">
@@ -356,16 +356,19 @@ const CreatorDetails = () => {
                 </div>
               </FadeIn>
 
-              {/* Yield */}
+              {/* July Revenue */}
               <FadeIn direction="up" delay={200} className="text-center">
                 <div className="flex flex-col items-center">
                   <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-4">
                     <BarChart3 className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
-                    {(creatorProfile.returnRate / 10).toFixed(2)} %
+                    {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] 
+                      ? `${(monthlyRevenueData[monthlyRevenueData.length - 1].revenue / 1000).toFixed(2)} k €`
+                      : '0 k €'
+                    }
                   </div>
-                  <div className="text-sm text-gray-500">Yield</div>
+                  <div className="text-sm text-gray-500">Juillet</div>
                 </div>
               </FadeIn>
             </div>
