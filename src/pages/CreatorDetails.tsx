@@ -106,6 +106,29 @@ const CreatorDetails = () => {
       setEstimatedReturn(0);
     }
   }, [investmentAmount, selectedDuration]);
+  // Helper functions
+  const getDaysUntilEndOfMonth = () => {
+    const now = new Date();
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const diffTime = endOfMonth.getTime() - now.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const getRandomYieldForCreator = (creatorId: string) => {
+    // Use creator ID as seed for consistent random values
+    const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const random1 = (seed * 9301 + 49297) % 233280 / 233280;
+    const random2 = ((seed + 1) * 9301 + 49297) % 233280 / 233280;
+    
+    const min = 2.32 + random1 * (44.32 - 2.32);
+    const max = min + random2 * (44.32 - min);
+    
+    return {
+      min: Math.max(2.32, Math.min(44.32, min)),
+      max: Math.max(2.32, Math.min(44.32, max))
+    };
+  };
+
   if (!creatorExists || !creatorProfile) {
     return <div className="min-h-screen flex flex-col">
         <Navbar isLoggedIn={isAuthenticated} />
@@ -482,26 +505,15 @@ const CreatorDetails = () => {
                       12,24 % APY
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm text-gray-500">Méthode utilisée</div>
-                    <div className="font-medium text-gray-900">SparkMind</div>
-                  </div>
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
                   <div className="bg-white border border-gray-200 rounded-lg p-6">
                     <div className="flex items-center justify-center mb-4">
                       <ChevronUp className="h-8 w-8 text-green-500" />
                     </div>
                     <h3 className="text-lg font-semibold text-center text-green-600 mb-2">Social followers</h3>
-                    <p className="text-sm text-gray-500 text-center">Mis à jour 31/07/2025</p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg p-6">
-                    <div className="flex items-center justify-center mb-4">
-                      <ChevronUp className="h-8 w-8 text-green-500" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-center text-green-600 mb-2">Taux d'engagement</h3>
                     <p className="text-sm text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                 </div>
@@ -526,10 +538,6 @@ const CreatorDetails = () => {
                           <option>Taux d'engagement</option>
                         </select>
                         <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-yellow-800" />
-                      </div>
-                      <div className="flex gap-2">
-                        <button className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-medium">€</button>
-                        <button className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-medium">%</button>
                       </div>
                     </div>
 
@@ -588,8 +596,8 @@ const CreatorDetails = () => {
                         <span className="font-semibold">13,70 % APY</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Prochain paiement</span>
-                        <span className="font-semibold">30j 17h 28m</span>
+                        <span className="text-gray-600">Prochain paiement:</span>
+                        <span className="font-semibold">{getDaysUntilEndOfMonth()}j</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
@@ -598,7 +606,7 @@ const CreatorDetails = () => {
                             <span className="text-xs text-white">i</span>
                           </div>
                         </div>
-                        <span className="font-semibold">Min : 2,31 % - Max : 46,29 %</span>
+                        <span className="font-semibold">Min : {getRandomYieldForCreator(creatorId || '').min.toFixed(2)} - Max {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
