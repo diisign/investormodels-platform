@@ -239,7 +239,7 @@ const CreatorDetails = () => {
         </div>
 
         {/* Header Section with White Background */}
-        <section className="bg-white dark:bg-gray-800 pb-8">
+        <section className="bg-white pb-8">
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               {/* Profile Image - Centered on mobile, left on desktop */}
@@ -295,9 +295,9 @@ const CreatorDetails = () => {
         </section>
 
         {/* Performance Chart Section - Full Width */}
-        <section className="py-8 bg-white dark:bg-gray-800 w-full">
+        <section className="py-8 bg-white w-full">
           <div className="w-full px-0">
-            <div className="bg-white dark:bg-gray-800 w-full">
+            <div className="bg-white w-full">
               <div className="h-80 w-full pl-4 pr-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={monthlyRevenueData} margin={{
@@ -333,7 +333,7 @@ const CreatorDetails = () => {
         </section>
 
           {/* Key Statistics */}
-        <section className="py-8 bg-gray-50 dark:bg-gray-900">
+        <section className="py-8 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-3 gap-2 md:gap-8">
               {/* Market Cap */}
@@ -382,7 +382,7 @@ const CreatorDetails = () => {
         </section>
 
         {/* Navigation Tabs */}
-        <section className="py-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <section className="py-4 bg-white border-b border-gray-200">
           <div className="container mx-auto px-4">
             <div className="flex space-x-8">
               <button className="py-2 px-4 border-b-2 border-black font-medium text-black dark:text-white">
@@ -399,7 +399,7 @@ const CreatorDetails = () => {
         </section>
 
         {/* Content Section */}
-        <section className="py-8">
+        <section className="py-8 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Description */}
