@@ -572,15 +572,15 @@ const CreatorDetails = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Dernier Yield distribué</span>
-                        <span className="font-semibold">13,70 % APY</span>
+                        <span className="font-semibold text-sm">13,70 % APY</span>
                       </div>
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center rounded-sm">
                         <span className="text-gray-600">Prochain paiement:</span>
                         <span className="font-semibold">{getDaysUntilEndOfMonth()}j</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">Estimation de Yield:</span>
-                        <span className="font-semibold px-0 my-0 mx-0">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
+                        <span className="px-0 my-0 mx-0 text-sm font-semibold">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
                       </div>
                     </div>
                   </div>
