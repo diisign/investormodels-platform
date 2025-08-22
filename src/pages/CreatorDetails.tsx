@@ -433,7 +433,7 @@ const CreatorDetails = () => {
 
               {/* Additional Stats */}
               <div>
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                <div className="bg-white rounded-lg p-6 border border-gray-200">
                   <h3 className="font-semibold mb-4 px-[100px] text-yellow-300">Statistiques</h3>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
