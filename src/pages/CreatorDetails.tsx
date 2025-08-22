@@ -116,18 +116,28 @@ const CreatorDetails = () => {
   const getRandomYieldForCreator = (creatorId: string) => {
     // Use creator ID as seed for consistent random values
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    
+    // Generate unique range for each creator between 2.23% and 42.24%
     const random1 = (seed * 9301 + 49297) % 233280 / 233280;
-    const random2 = ((seed + 1) * 9301 + 49297) % 233280 / 233280;
-    const min = 20.24 + random1 * (31.48 - 20.24);
-    const max = min + random2 * (31.48 - min);
+    const random2 = ((seed * 7919 + 12345) * 16807) % 233280 / 233280;
+    
+    // Calculate min yield (between 2.23% and ~25%)
+    const minYield = 2.23 + random1 * (25 - 2.23);
+    
+    // Calculate max yield (min + random spread, ensuring max doesn't exceed 42.24%)
+    const maxSpread = Math.min(42.24 - minYield, 15 + random2 * 10); // Variable spread
+    const maxYield = minYield + maxSpread;
+    
     return {
-      min: Math.max(20.24, Math.min(31.48, min)),
-      max: Math.max(20.24, Math.min(31.48, max))
+      min: Math.round(minYield * 100) / 100,
+      max: Math.round(Math.min(42.24, maxYield) * 100) / 100
     };
   };
 
   const generateYieldData = (creatorId: string) => {
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const yieldRange = getRandomYieldForCreator(creatorId);
+    
     const months = [
       { month: 'août', fullMonth: 'août' },
       { month: 'sept.', fullMonth: 'sept.' },
@@ -162,7 +172,8 @@ const CreatorDetails = () => {
       const variance = Math.sin(baseSeed * 0.01) * 0.15;
       const finalRandom = Math.abs((combinedRandom + variance) % 1);
       
-      const value = 20.24 + finalRandom * (31.48 - 20.24);
+      // Use creator-specific yield range instead of fixed range
+      const value = yieldRange.min + finalRandom * (yieldRange.max - yieldRange.min);
       
       return {
         ...monthData,
