@@ -436,7 +436,12 @@ const CreatorDetails = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Revenu mensuel</span>
-                      <span className="font-medium">{creatorProfile.monthlyRevenue.toLocaleString()} €</span>
+                      <span className="font-medium">
+                        {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] 
+                          ? monthlyRevenueData[monthlyRevenueData.length - 1].revenue.toLocaleString() 
+                          : creatorProfile.monthlyRevenue.toLocaleString()
+                        } €
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Catégorie</span>
