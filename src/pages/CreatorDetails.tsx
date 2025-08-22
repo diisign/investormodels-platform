@@ -281,9 +281,14 @@ const CreatorDetails = () => {
                       <Button onClick={openInvestModal} className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 md:px-8 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm md:text-base max-w-xs md:max-w-none">
                         ACHETER {(() => {
                           const name = creatorProfile.name;
-                          // Preserve emojis when converting to uppercase
-                          const upperName = name.replace(/[a-zA-Z]/g, (match) => match.toUpperCase());
-                          return name.length > 8 ? upperName.substring(0, 8) + '...' : upperName;
+                          // Split the name to separate text and emojis
+                          const textPart = name.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
+                          const emojiMatch = name.match(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu);
+                          const emoji = emojiMatch ? emojiMatch.join('') : '';
+                          
+                          const upperText = textPart.toUpperCase();
+                          const result = upperText + (emoji ? ' ' + emoji : '');
+                          return result.length > 8 ? result.substring(0, 8) + '...' : result;
                         })()}
                       </Button>
                     </div>
