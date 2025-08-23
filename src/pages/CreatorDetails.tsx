@@ -116,65 +116,83 @@ const CreatorDetails = () => {
   const getRandomYieldForCreator = (creatorId: string) => {
     // Use creator ID as seed for consistent random values
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
+
     // Generate unique range for each creator between 2.23% and 42.24%
     const random1 = (seed * 9301 + 49297) % 233280 / 233280;
-    const random2 = ((seed * 7919 + 12345) * 16807) % 233280 / 233280;
-    
+    const random2 = (seed * 7919 + 12345) * 16807 % 233280 / 233280;
+
     // Calculate min yield (between 2.23% and ~25%)
     const minYield = 2.23 + random1 * (25 - 2.23);
-    
+
     // Calculate max yield (min + random spread, ensuring max doesn't exceed 42.24%)
     const maxSpread = Math.min(42.24 - minYield, 15 + random2 * 10); // Variable spread
     const maxYield = minYield + maxSpread;
-    
     return {
       min: Math.round(minYield * 100) / 100,
       max: Math.round(Math.min(42.24, maxYield) * 100) / 100
     };
   };
-
   const generateYieldData = (creatorId: string) => {
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const yieldRange = getRandomYieldForCreator(creatorId);
-    
-    const months = [
-      { month: 'août', fullMonth: 'août' },
-      { month: 'sept.', fullMonth: 'sept.' },
-      { month: 'oct.', fullMonth: 'oct.' },
-      { month: 'nov.', fullMonth: 'nov.' },
-      { month: 'déc.', fullMonth: 'déc.' },
-      { month: 'janv.', fullMonth: 'janv.' },
-      { month: 'févr.', fullMonth: 'févr.' },
-      { month: 'mars', fullMonth: 'mars' },
-      { month: 'avr.', fullMonth: 'avr.' },
-      { month: '', fullMonth: 'mai' },
-      { month: 'juin', fullMonth: 'juin' },
-      { month: '', fullMonth: 'juil.' }
-    ];
-
+    const months = [{
+      month: 'août',
+      fullMonth: 'août'
+    }, {
+      month: 'sept.',
+      fullMonth: 'sept.'
+    }, {
+      month: 'oct.',
+      fullMonth: 'oct.'
+    }, {
+      month: 'nov.',
+      fullMonth: 'nov.'
+    }, {
+      month: 'déc.',
+      fullMonth: 'déc.'
+    }, {
+      month: 'janv.',
+      fullMonth: 'janv.'
+    }, {
+      month: 'févr.',
+      fullMonth: 'févr.'
+    }, {
+      month: 'mars',
+      fullMonth: 'mars'
+    }, {
+      month: 'avr.',
+      fullMonth: 'avr.'
+    }, {
+      month: '',
+      fullMonth: 'mai'
+    }, {
+      month: 'juin',
+      fullMonth: 'juin'
+    }, {
+      month: '',
+      fullMonth: 'juil.'
+    }];
     return months.map((monthData, index) => {
       // Generate more random variation using multiple seeds and prime numbers
       const baseSeed = seed + index * 7919; // Large prime number
-      const seed1 = (baseSeed * 16807) % 2147483647;
-      const seed2 = (seed1 * 48271) % 2147483647;
-      const seed3 = (seed2 * 69621) % 2147483647;
-      
+      const seed1 = baseSeed * 16807 % 2147483647;
+      const seed2 = seed1 * 48271 % 2147483647;
+      const seed3 = seed2 * 69621 % 2147483647;
+
       // Combine multiple random sources for better distribution
-      const random1 = (seed1 / 2147483647);
-      const random2 = (seed2 / 2147483647);
-      const random3 = (seed3 / 2147483647);
-      
+      const random1 = seed1 / 2147483647;
+      const random2 = seed2 / 2147483647;
+      const random3 = seed3 / 2147483647;
+
       // Use weighted combination for more natural distribution
-      const combinedRandom = (random1 * 0.4 + random2 * 0.35 + random3 * 0.25);
-      
+      const combinedRandom = random1 * 0.4 + random2 * 0.35 + random3 * 0.25;
+
       // Add some variance to make it more unpredictable
       const variance = Math.sin(baseSeed * 0.01) * 0.15;
       const finalRandom = Math.abs((combinedRandom + variance) % 1);
-      
+
       // Use creator-specific yield range instead of fixed range
       const value = yieldRange.min + finalRandom * (yieldRange.max - yieldRange.min);
-      
       return {
         ...monthData,
         value: Math.round(value * 100) / 100,
@@ -536,10 +554,10 @@ const CreatorDetails = () => {
                     </div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400">
                       {(() => {
-                        const yieldData = generateYieldData(creatorId || '');
-                        const lastYield = yieldData[yieldData.length - 1];
-                        return `${lastYield.value.toFixed(2)} % APY`;
-                      })()}
+                    const yieldData = generateYieldData(creatorId || '');
+                    const lastYield = yieldData[yieldData.length - 1];
+                    return `${lastYield.value.toFixed(2)} % APY`;
+                  })()}
                     </div>
                   </div>
                 </div>
@@ -556,17 +574,9 @@ const CreatorDetails = () => {
                   
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center justify-center mb-2">
-                      {['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '') ? (
-                        <ChevronDown className="h-6 w-6 text-red-500" />
-                      ) : (
-                        <ChevronUp className="h-6 w-6 text-green-500" />
-                      )}
+                      {['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '') ? <ChevronDown className="h-6 w-6 text-red-500" /> : <ChevronUp className="h-6 w-6 text-green-500" />}
                     </div>
-                    <h3 className={`text-xs sm:text-base font-semibold text-center mb-1 ${
-                      ['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '') 
-                        ? 'text-red-600' 
-                        : 'text-green-600'
-                    }`}>Taux d'engagement</h3>
+                    <h3 className={`text-xs sm:text-base font-semibold text-center mb-1 ${['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '') ? 'text-red-600' : 'text-green-600'}`}>Taux d'engagement</h3>
                     <p className="text-[9px] sm:text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                 </div>
@@ -626,10 +636,10 @@ const CreatorDetails = () => {
                         <span className="text-gray-600">Dernier Yield distribué:</span>
                         <span className="font-semibold text-xs">
                           {(() => {
-                            const yieldData = generateYieldData(creatorId || '');
-                            const lastYield = yieldData[yieldData.length - 1];
-                            return `${lastYield.value.toFixed(2)} % APY`;
-                          })()}
+                        const yieldData = generateYieldData(creatorId || '');
+                        const lastYield = yieldData[yieldData.length - 1];
+                        return `${lastYield.value.toFixed(2)} % APY`;
+                      })()}
                         </span>
                       </div>
                       <div className="flex justify-between items-center rounded-sm">
@@ -642,15 +652,7 @@ const CreatorDetails = () => {
                       </div>
                       
                       {/* Taux d'engagement indicator for certain creators */}
-                      {['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '') && (
-                        <div className="flex justify-between items-center mt-3 p-2 bg-red-50 rounded-lg">
-                          <div className="flex items-center gap-2">
-                            <TrendingDown size={16} className="text-red-500" />
-                            <span className="text-red-600 font-medium text-sm">Taux d'engagement</span>
-                          </div>
-                          <span className="text-red-600 text-xs">Mis à jour le 31/07/2025</span>
-                        </div>
-                      )}
+                      {['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '')}
                     </div>
                   </div>
 
