@@ -171,9 +171,57 @@ const Creators = () => {
     }
   }, [shuffledOrder.length, sortedCreators.length]);
 
-  // Helper function to deterministically assign a category based on creator ID
+  // Helper function to assign specific categories based on creator profiles
   const determineCategory = (id: string): string => {
-    const categories = ['Fitness', 'Lifestyle', 'Mode', 'Photographie', 'Cuisine', 'Tech'];
+    // Specific category assignments based on creator profiles and descriptions
+    const categoryMap: Record<string, string> = {
+      // Fitness - Sport, danse, bien-être physique
+      "brooks-mills-🍒": "Fitness", // Lifestyle et fitness
+      "creator3": "Fitness", // Danseuse professionnelle et chorégraphe
+      "creator2": "Fitness", // Maria avec emoji gymnastique
+      
+      // Glamour - Mode, haute couture, mannequinat, luxe
+      "aishah": "Glamour", // Modèle internationale, mode haute couture
+      "creator25": "Glamour", // Natalie - Mannequin et actrice, marques de luxe
+      "brookmills": "Glamour", // Luna - Top model internationale et célébrité
+      "creator1": "Glamour", // Emma - Influenceuse mode asiatique
+      "creator17": "Glamour", // Victoria avec emoji rouge à lèvres
+      "creator26": "Glamour", // Kim
+      "creator19": "Glamour", // Zoe avec emoji rose
+      
+      // Lifestyle - Beauté, cuisine, bien-être, quotidien
+      "creator22": "Lifestyle", // Jasmine - Experte beauté et maquilleuse
+      "creator20": "Lifestyle", // Melanie - Chef pâtissière et contenu culinaire
+      "creator10": "Lifestyle", // Elizabeth - Vétérinaire bien-être animal
+      "creator21": "Lifestyle", // Samantha
+      "creator24": "Lifestyle", // Julia
+      "creator13": "Lifestyle", // Charlotte
+      "creator29": "Lifestyle", // Quinn
+      "creator28": "Lifestyle", // Wendy
+      
+      // Cosplay - Contenu créatif, jeux de rôle, personnages
+      "creator6": "Cosplay", // Bryce's Flix - contenu vidéo/film
+      "creator11": "Cosplay", // Isabella Santos
+      "creator12": "Cosplay", // Autumn ren avec emoji nœud
+      "creator14": "Cosplay", // Audrey Shanice
+      "creator16": "Cosplay", // Sophia Rose
+      "creator4": "Cosplay", // Lala Avi
+      "creator5": "Cosplay", // Antonella
+      "creator8": "Cosplay", // Bianca
+      "creator9": "Cosplay", // Ariana Colombian
+      "creator7": "Cosplay", // Daisy
+      "creator18": "Cosplay", // Nina
+      "creator27": "Cosplay", // Hannah
+      "creator23": "Cosplay", // Isabel
+    };
+    
+    // If we have a specific category for this creator, return it
+    if (categoryMap[id]) {
+      return categoryMap[id];
+    }
+    
+    // Fallback: use deterministic assignment for any other creators
+    const categories = ['Glamour', 'Cosplay', 'Fitness', 'Lifestyle'];
     const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return categories[sum % categories.length];
   };

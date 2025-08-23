@@ -16,6 +16,61 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ActiveInvestors from '@/components/ui/ActiveInvestors';
 import { createInvestment } from '@/utils/investments';
 import CreatorBadge from '@/components/ui/CreatorBadge';
+// Helper function to assign specific categories based on creator profiles
+const determineCreatorCategory = (id: string): string => {
+  // Specific category assignments based on creator profiles and descriptions
+  const categoryMap: Record<string, string> = {
+    // Fitness - Sport, danse, bien-être physique
+    "brooks-mills-🍒": "Fitness", // Lifestyle et fitness
+    "creator3": "Fitness", // Danseuse professionnelle et chorégraphe
+    "creator2": "Fitness", // Maria avec emoji gymnastique
+    
+    // Glamour - Mode, haute couture, mannequinat, luxe
+    "aishah": "Glamour", // Modèle internationale, mode haute couture
+    "creator25": "Glamour", // Natalie - Mannequin et actrice, marques de luxe
+    "brookmills": "Glamour", // Luna - Top model internationale et célébrité
+    "creator1": "Glamour", // Emma - Influenceuse mode asiatique
+    "creator17": "Glamour", // Victoria avec emoji rouge à lèvres
+    "creator26": "Glamour", // Kim
+    "creator19": "Glamour", // Zoe avec emoji rose
+    
+    // Lifestyle - Beauté, cuisine, bien-être, quotidien
+    "creator22": "Lifestyle", // Jasmine - Experte beauté et maquilleuse
+    "creator20": "Lifestyle", // Melanie - Chef pâtissière et contenu culinaire
+    "creator10": "Lifestyle", // Elizabeth - Vétérinaire bien-être animal
+    "creator21": "Lifestyle", // Samantha
+    "creator24": "Lifestyle", // Julia
+    "creator13": "Lifestyle", // Charlotte
+    "creator29": "Lifestyle", // Quinn
+    "creator28": "Lifestyle", // Wendy
+    
+    // Cosplay - Contenu créatif, jeux de rôle, personnages
+    "creator6": "Cosplay", // Bryce's Flix - contenu vidéo/film
+    "creator11": "Cosplay", // Isabella Santos
+    "creator12": "Cosplay", // Autumn ren avec emoji nœud
+    "creator14": "Cosplay", // Audrey Shanice
+    "creator16": "Cosplay", // Sophia Rose
+    "creator4": "Cosplay", // Lala Avi
+    "creator5": "Cosplay", // Antonella
+    "creator8": "Cosplay", // Bianca
+    "creator9": "Cosplay", // Ariana Colombian
+    "creator7": "Cosplay", // Daisy
+    "creator18": "Cosplay", // Nina
+    "creator27": "Cosplay", // Hannah
+    "creator23": "Cosplay", // Isabel
+  };
+  
+  // If we have a specific category for this creator, return it
+  if (categoryMap[id]) {
+    return categoryMap[id];
+  }
+  
+  // Fallback: use deterministic assignment for any other creators
+  const categories = ['Glamour', 'Cosplay', 'Fitness', 'Lifestyle'];
+  const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return categories[sum % categories.length];
+};
+
 const CreatorDetails = () => {
   const {
     creatorId
@@ -220,7 +275,7 @@ const CreatorDetails = () => {
     id: creatorProfile.id,
     name: creatorProfile.name,
     imageUrl: creatorProfile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creatorProfile.id}`,
-    category: "Lifestyle",
+    category: determineCreatorCategory(creatorProfile.id),
     returnRate: creatorProfile.returnRate / 10,
     investorsCount: Math.floor(creatorProfile.followers / 15),
     totalInvested: getMarketCap(creatorProfile.id, creators),
@@ -539,7 +594,7 @@ const CreatorDetails = () => {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Catégorie</span>
-                        <span className="font-medium">Lifestyle</span>
+                        <span className="font-medium">{determineCreatorCategory(creatorProfile.id)}</span>
                       </div>
                     </div>
                   </div>
