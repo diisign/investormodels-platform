@@ -52,10 +52,9 @@ const CreatorCard = ({
 
   // Use the profile image URL instead of the props imageUrl
   const finalImageUrl = creatorProfile.imageUrl || imageUrl;
-  
+
   // Déterminer la largeur basée sur la size prop
   const widthClass = size === 'normal' ? 'w-full max-w-48' : 'w-full max-w-28';
-  
   return <motion.div whileHover={{
     y: -5
   }} transition={{
@@ -86,35 +85,27 @@ const CreatorCard = ({
           <div className="flex-1 flex flex-col items-center justify-center space-y-2">
             {/* Variation */}
             {(() => {
-              const variation = getLastVariation(id);
-              const isPositive = variation >= 0;
-              return (
-                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold ${
-                  isPositive 
-                    ? 'bg-green-200/50 text-green-500' 
-                    : 'bg-red-200/50 text-red-500'
-                }`}>
+            const variation = getLastVariation(id);
+            const isPositive = variation >= 0;
+            return <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold ${isPositive ? 'bg-green-200/50 text-green-500' : 'bg-red-200/50 text-red-500'}`}>
                   {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {isPositive ? '+' : ''}{variation.toFixed(2)}%
-                </div>
-              );
-            })()}
+                </div>;
+          })()}
             
             {/* Yield */}
             {(() => {
-              const yield_ = getCreatorYield(id);
-              console.log(`CreatorCard ${id}: yield=${yield_}`);
-              if (yield_ > 0) {
-                return (
-                  <div className="bg-yellow-300 px-1 py-px rounded-full flex items-center gap-0.5">
+            const yield_ = getCreatorYield(id);
+            console.log(`CreatorCard ${id}: yield=${yield_}`);
+            if (yield_ > 0) {
+              return <div className="bg-yellow-300 px-1 py-px rounded-full flex items-center gap-0.5">
                     <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="yield" className="w-4 h-4" />
-                    <span className="text-black font-medium text-xs">{yield_.toFixed(2)} % <span className="text-[10px]">APY</span></span>
-                  </div>
-                );
-              }
-              console.log(`CreatorCard ${id}: No yield data (${yield_})`);
-              return null;
-            })()}
+                    <span className="text-black font-medium text-xs my-0 py-[2px]">{yield_.toFixed(2)} % <span className="text-[10px]">APY</span></span>
+                  </div>;
+            }
+            console.log(`CreatorCard ${id}: No yield data (${yield_})`);
+            return null;
+          })()}
           </div>
         </div>
         
