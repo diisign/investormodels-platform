@@ -103,6 +103,7 @@ const CreatorCard = ({
             {/* Yield */}
             {(() => {
               const yield_ = getCreatorYield(id);
+              console.log(`CreatorCard ${id}: yield=${yield_}`);
               if (yield_ > 0) {
                 return (
                   <div className="bg-yellow-300 px-1 py-px rounded-full text-xs flex items-center gap-0.5">
@@ -111,6 +112,7 @@ const CreatorCard = ({
                   </div>
                 );
               }
+              console.log(`CreatorCard ${id}: No yield data (${yield_})`);
               return null;
             })()}
           </div>
