@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, CircleDollarSign, TrendingUp, TrendingDown, Percent } from 'lucide-react';
+import { Users, CircleDollarSign, TrendingUp, TrendingDown, Sprout } from 'lucide-react';
 import { getCreatorProfile, getLastVariation } from '@/utils/creatorProfiles';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import CreatorBadge from '@/components/ui/CreatorBadge';
@@ -106,7 +106,7 @@ const CreatorCard = ({
               if (yield_ > 0) {
                 return (
                   <div className="bg-yellow-300 text-gray-900 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                    <Percent size={10} />
+                    <Sprout size={10} />
                     {yield_.toFixed(2)} % APY
                   </div>
                 );
