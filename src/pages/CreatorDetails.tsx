@@ -554,7 +554,7 @@ const CreatorDetails = () => {
                       Yield
                     </div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400 flex items-center gap-2">
-                      <img src="/lovable-uploads/growth-icon.png" alt="Growth" className="w-4 h-4" />
+                      <img src="/lovable-uploads/0e1c6c24-bf0b-40d2-b1eb-41cf997c1c9e.png" alt="Growth" className="w-4 h-4" />
                       {(() => {
                     const yieldData = generateYieldData(creatorId || '');
                     const lastYield = yieldData[yieldData.length - 1];
