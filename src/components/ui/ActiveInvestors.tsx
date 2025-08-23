@@ -7,6 +7,11 @@ const ActiveInvestors = ({
   creatorId
 }: ActiveInvestorsProps) => {
   const [count, setCount] = useState<number>(() => {
+    // Special case for creator22 (Jasmine)
+    if (creatorId === 'creator22') {
+      return 481;
+    }
+    
     // Get stored count or generate new one if none exists
     const stored = localStorage.getItem(`activeInvestors_${creatorId}`);
     if (stored) {
@@ -22,7 +27,12 @@ const ActiveInvestors = ({
     return randomCount;
   });
   useEffect(() => {
-    // Update count every 2 minutes
+    // Special case for creator22 (Jasmine) - don't update automatically
+    if (creatorId === 'creator22') {
+      return;
+    }
+    
+    // Update count every 2 minutes for other creators
     const interval = setInterval(() => {
       const newCount = Math.floor(Math.random() * 20) + 1;
       setCount(newCount);
