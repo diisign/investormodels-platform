@@ -5,6 +5,7 @@ import { Users, CircleDollarSign, TrendingUp, TrendingDown } from 'lucide-react'
 import { getCreatorProfile, getLastVariation } from '@/utils/creatorProfiles';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import CreatorBadge from '@/components/ui/CreatorBadge';
+import { getCreatorYield } from '@/utils/yieldData';
 export interface CreatorCardProps {
   id: string;
   name?: string;
@@ -81,21 +82,35 @@ const CreatorCard = ({
             <h3 className="font-bold text-sm text-center">{creatorProfile.name}</h3>
           </div>
           
-          {/* Variation Percentage - au centre entre le nom et Market Cap */}
-          <div className="flex-1 flex items-center justify-center">
+          {/* Variation Percentage et Yield */}
+          <div className="flex-1 flex flex-col items-center justify-center space-y-1">
+            {/* Variation */}
             {(() => {
               const variation = getLastVariation(id);
               const isPositive = variation >= 0;
               return (
-                <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold ${
+                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold ${
                   isPositive 
                     ? 'bg-green-200/50 text-green-500' 
                     : 'bg-red-200/50 text-red-500'
                 }`}>
-                  {isPositive ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
+                  {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {isPositive ? '+' : ''}{variation.toFixed(2)}%
                 </div>
               );
+            })()}
+            
+            {/* Yield */}
+            {(() => {
+              const yield_ = getCreatorYield(id);
+              if (yield_ > 0) {
+                return (
+                  <div className="bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded text-xs font-bold">
+                    {yield_.toFixed(2)}% APY
+                  </div>
+                );
+              }
+              return null;
             })()}
           </div>
         </div>
