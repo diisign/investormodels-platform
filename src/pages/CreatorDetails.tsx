@@ -530,7 +530,10 @@ const CreatorDetails = () => {
                 {/* Yield Header */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="text-2xl font-bold text-gray-900">Yield</div>
+                    <div className="flex items-center gap-2 text-2xl font-bold text-gray-900">
+                      <TrendingUp className="h-6 w-6" />
+                      Yield
+                    </div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400">
                       {(() => {
                         const yieldData = generateYieldData(creatorId || '');
