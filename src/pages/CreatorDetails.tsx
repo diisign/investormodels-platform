@@ -594,7 +594,7 @@ const CreatorDetails = () => {
                     </div>
                     
                     {/* Chart */}
-                    <div className="h-64 w-full">
+                    <div className="h-48 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={generateYieldData(creatorId || '')}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
