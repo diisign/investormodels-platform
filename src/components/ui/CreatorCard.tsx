@@ -105,9 +105,9 @@ const CreatorCard = ({
               const yield_ = getCreatorYield(id);
               if (yield_ > 0) {
                 return (
-                  <div className="bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded text-xs font-bold flex items-center gap-1">
+                  <div className="bg-yellow-300 text-gray-900 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                     <Percent size={10} />
-                    {yield_.toFixed(2)}% APY
+                    {yield_.toFixed(2)} % APY
                   </div>
                 );
               }
