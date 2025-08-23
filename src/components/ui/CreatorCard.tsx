@@ -105,9 +105,9 @@ const CreatorCard = ({
               const yield_ = getCreatorYield(id);
               if (yield_ > 0) {
                 return (
-                  <div className="bg-yellow-300 px-1.5 py-0.5 rounded-full text-xs font-bold flex items-center gap-1">
+                  <div className="bg-yellow-300 px-1 py-0.5 rounded-full text-xs font-bold flex items-center gap-0.5">
                     <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="yield" className="w-4 h-4" />
-                    <span className="text-orange-600">{yield_.toFixed(2)} % APY</span>
+                    <span className="text-orange-600 font-bold">{yield_.toFixed(2)} % APY</span>
                   </div>
                 );
               }
