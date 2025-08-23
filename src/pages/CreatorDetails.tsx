@@ -553,7 +553,7 @@ const CreatorDetails = () => {
                     <div className="text-2xl font-bold text-gray-900">
                       Yield
                     </div>
-                    <div className="text-yellow-800 px-2 py-1 rounded-full text-sm font-medium bg-yellow-400 flex items-center gap-1">
+                    <div className="text-yellow-800 px-2 py-0.5 rounded-full text-sm font-medium bg-yellow-400 flex items-center gap-1">
                       <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="Growth" className="w-6 h-6" style={{filter: 'hue-rotate(15deg) saturate(0.8) brightness(0.6)'}} />
                       {(() => {
                     const yieldData = generateYieldData(creatorId || '');
