@@ -87,7 +87,7 @@ const CreatorCard = ({
             {(() => {
             const variation = getLastVariation(id);
             const isPositive = variation >= 0;
-            return <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold mb-1 ${isPositive ? 'bg-green-200/50 text-green-500' : 'bg-red-200/50 text-red-500'}`}>
+            return <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold mb-2 ${isPositive ? 'bg-green-200/50 text-green-500' : 'bg-red-200/50 text-red-500'}`}>
                   {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {isPositive ? '+' : ''}{variation.toFixed(2)}%
                 </div>;
@@ -100,7 +100,7 @@ const CreatorCard = ({
             if (yield_ > 0) {
               return <div className="bg-yellow-300 px-1 py-px rounded-full flex items-center gap-0.5">
                     <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="yield" className="w-4 h-4" />
-                    <span className="text-black font-medium text-xs my-0 py-[2px]">{yield_.toFixed(2)} % <span className="text-[10px]">APY</span></span>
+                    <span className="font-medium text-xs my-0 py-[2px]" style={{color: '#904b0e'}}>{yield_.toFixed(2)} % <span className="text-[10px]">APY</span></span>
                   </div>;
             }
             console.log(`CreatorCard ${id}: No yield data (${yield_})`);
