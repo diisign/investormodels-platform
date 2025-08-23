@@ -629,6 +629,17 @@ const CreatorDetails = () => {
                         <span className="text-gray-600">Estimation de Yield:</span>
                         <span className="font-semibold text-xs">Min: {getRandomYieldForCreator(creatorId || '').min.toFixed(2)}% - Max: {getRandomYieldForCreator(creatorId || '').max.toFixed(2)}%</span>
                       </div>
+                      
+                      {/* Taux d'engagement indicator for certain creators */}
+                      {['creator3', 'creator7', 'creator12'].includes(creatorId || '') && (
+                        <div className="flex justify-between items-center mt-3 p-2 bg-red-50 rounded-lg">
+                          <div className="flex items-center gap-2">
+                            <TrendingDown size={16} className="text-red-500" />
+                            <span className="text-red-600 font-medium text-sm">Taux d'engagement</span>
+                          </div>
+                          <span className="text-red-600 text-xs">Mis à jour le 31/07/2025</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
