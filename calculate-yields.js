@@ -1,5 +1,5 @@
-// Script pour calculer exactement les mêmes yields que l'interface
-// Reproduction exacte des fonctions de CreatorDetails.tsx
+// Script pour extraire le "Dernier Yield distribué" de chaque créatrice
+// Réplique exacte du calcul de l'interface utilisateur
 
 const getRandomYieldForCreator = (creatorId) => {
   // Use creator ID as seed for consistent random values
