@@ -631,7 +631,7 @@ const CreatorDetails = () => {
                       </div>
                       
                       {/* Taux d'engagement indicator for certain creators */}
-                      {['creator3', 'creator7', 'creator12'].includes(creatorId || '') && (
+                      {['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '') && (
                         <div className="flex justify-between items-center mt-3 p-2 bg-red-50 rounded-lg">
                           <div className="flex items-center gap-2">
                             <TrendingDown size={16} className="text-red-500" />
