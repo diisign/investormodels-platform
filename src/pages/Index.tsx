@@ -82,7 +82,7 @@ const Index = () => {
   } = useAuth();
   const creatorsRef = useRef<HTMLDivElement>(null);
   const autoplayRef = useRef(Autoplay({
-    delay: 5000,
+    delay: 3500,
     stopOnInteraction: true
   }));
   const isMobile = useIsMobile();
