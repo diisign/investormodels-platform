@@ -33,7 +33,7 @@ const CreatorDetails = () => {
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [estimatedReturn, setEstimatedReturn] = useState<number>(0);
   const [selectedDuration, setSelectedDuration] = useState<'1' | '3' | '6' | '12'>('3');
-  const [activeTab, setActiveTab] = useState<'about' | 'splits'>('about');
+  const [activeTab, setActiveTab] = useState<'about' | 'splits'>('splits');
   const queryClient = useQueryClient();
   const mockCreator = creators.find(c => c.id === creatorId);
   const profileExists = creatorId && creatorProfiles[creatorId];
@@ -428,7 +428,7 @@ const CreatorDetails = () => {
         </section>
 
           {/* Key Statistics */}
-        <section className="bg-white my-0 py-0">
+        <section className="py-8 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-3 gap-2 md:gap-8">
               {/* Market Cap */}
@@ -476,12 +476,12 @@ const CreatorDetails = () => {
         {/* Navigation Tabs */}
         <section className="py-4 bg-white border-b border-gray-200">
           <div className="container mx-auto px-4">
-            <div className="flex space-x-8">
-              <button onClick={() => setActiveTab('about')} className={`py-2 px-4 border-b-2 font-medium ${activeTab === 'about' ? 'border-black text-black dark:text-white' : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'}`}>
-                À propos
-              </button>
+            <div className="flex justify-center space-x-8">
               <button onClick={() => setActiveTab('splits')} className={`py-2 px-4 border-b-2 font-medium ${activeTab === 'splits' ? 'border-black text-black dark:text-white' : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'}`}>
                 SPLITS
+              </button>
+              <button onClick={() => setActiveTab('about')} className={`py-2 px-4 border-b-2 font-medium ${activeTab === 'about' ? 'border-black text-black dark:text-white' : 'border-transparent text-gray-500 hover:text-black dark:hover:text-white'}`}>
+                À propos
               </button>
             </div>
           </div>
@@ -550,8 +550,7 @@ const CreatorDetails = () => {
                 {/* Yield Header */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 text-2xl font-bold text-gray-900">
-                      <TrendingUp className="h-6 w-6" />
+                    <div className="text-2xl font-bold text-gray-900">
                       Yield
                     </div>
                     <div className="text-yellow-800 px-3 py-1 rounded-full text-sm font-medium bg-yellow-400">
