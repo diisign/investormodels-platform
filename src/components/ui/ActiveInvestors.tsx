@@ -7,34 +7,28 @@ const ActiveInvestors = ({
   creatorId
 }: ActiveInvestorsProps) => {
   const [count, setCount] = useState<number>(() => {
-    // Special case for creator22 (Jasmine)
-    if (creatorId === 'creator22') {
-      return 481;
-    }
-    
     // Get stored count or generate new one if none exists
     const stored = localStorage.getItem(`activeInvestors_${creatorId}`);
     if (stored) {
       const parsedCount = parseInt(stored);
-      // Validate the stored count is within valid range (1-20)
-      if (parsedCount >= 1 && parsedCount <= 20) {
+      // For creator22, validate range is 1-14, for others 1-20
+      const maxRange = creatorId === 'creator22' ? 14 : 20;
+      if (parsedCount >= 1 && parsedCount <= maxRange) {
         return parsedCount;
       }
     }
-    // Generate random number between 1 and 20
-    const randomCount = Math.floor(Math.random() * 20) + 1;
+    // Generate random number - 1-14 for creator22, 1-20 for others
+    const maxRange = creatorId === 'creator22' ? 14 : 20;
+    const randomCount = Math.floor(Math.random() * maxRange) + 1;
     localStorage.setItem(`activeInvestors_${creatorId}`, randomCount.toString());
     return randomCount;
   });
   useEffect(() => {
-    // Special case for creator22 (Jasmine) - don't update automatically
-    if (creatorId === 'creator22') {
-      return;
-    }
-    
-    // Update count every 2 minutes for other creators
+    // Update count every 2 minutes
     const interval = setInterval(() => {
-      const newCount = Math.floor(Math.random() * 20) + 1;
+      // Use appropriate range for each creator
+      const maxRange = creatorId === 'creator22' ? 14 : 20;
+      const newCount = Math.floor(Math.random() * maxRange) + 1;
       setCount(newCount);
       localStorage.setItem(`activeInvestors_${creatorId}`, newCount.toString());
     }, 120000); // 2 minutes in milliseconds
