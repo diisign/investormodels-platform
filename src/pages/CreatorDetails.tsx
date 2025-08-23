@@ -527,7 +527,9 @@ const CreatorDetails = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Investisseurs actifs</span>
-                        <span className="font-medium">{creator.investorsCount}</span>
+                        <span className="font-medium">
+                          {creatorId === 'creator22' ? '481' : creator.investorsCount}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Revenu mensuel</span>
