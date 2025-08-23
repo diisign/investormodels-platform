@@ -547,8 +547,8 @@ const CreatorDetails = () => {
                     <div className="flex items-center justify-center mb-2">
                       <ChevronUp className="h-6 w-6 text-green-500" />
                     </div>
-                    <h3 className="text-base font-semibold text-center text-green-600 mb-1">Social followers</h3>
-                    <p className="text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
+                    <h3 className="text-sm sm:text-base font-semibold text-center text-green-600 mb-1">Social followers</h3>
+                    <p className="text-[10px] sm:text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                   
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
@@ -559,12 +559,12 @@ const CreatorDetails = () => {
                         <ChevronUp className="h-6 w-6 text-green-500" />
                       )}
                     </div>
-                    <h3 className={`text-base font-semibold text-center mb-1 ${
+                    <h3 className={`text-sm sm:text-base font-semibold text-center mb-1 ${
                       ['creator3', 'creator7', 'creator12', 'creator5', 'creator9', 'creator15', 'creator18', 'creator22', 'creator25', 'creator29'].includes(creatorId || '') 
                         ? 'text-red-600' 
                         : 'text-green-600'
                     }`}>Taux d'engagement</h3>
-                    <p className="text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 text-center">Mis à jour 31/07/2025</p>
                   </div>
                 </div>
 
