@@ -10,7 +10,11 @@ const ActiveInvestors = ({
     // Get stored count or generate new one if none exists
     const stored = localStorage.getItem(`activeInvestors_${creatorId}`);
     if (stored) {
-      return parseInt(stored);
+      const parsedCount = parseInt(stored);
+      // Validate the stored count is within valid range (1-20)
+      if (parsedCount >= 1 && parsedCount <= 20) {
+        return parsedCount;
+      }
     }
     // Generate random number between 1 and 20
     const randomCount = Math.floor(Math.random() * 20) + 1;
