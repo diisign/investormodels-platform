@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, CircleDollarSign, TrendingUp, TrendingDown } from 'lucide-react';
+import { Users, CircleDollarSign, TrendingUp, TrendingDown, Percent } from 'lucide-react';
 import { getCreatorProfile, getLastVariation } from '@/utils/creatorProfiles';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import CreatorBadge from '@/components/ui/CreatorBadge';
@@ -83,7 +83,7 @@ const CreatorCard = ({
           </div>
           
           {/* Variation Percentage et Yield */}
-          <div className="flex-1 flex flex-col items-center justify-center space-y-1">
+          <div className="flex-1 flex flex-col items-center justify-center space-y-2">
             {/* Variation */}
             {(() => {
               const variation = getLastVariation(id);
@@ -105,7 +105,8 @@ const CreatorCard = ({
               const yield_ = getCreatorYield(id);
               if (yield_ > 0) {
                 return (
-                  <div className="bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded text-xs font-bold">
+                  <div className="bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded text-xs font-bold flex items-center gap-1">
+                    <Percent size={10} />
                     {yield_.toFixed(2)}% APY
                   </div>
                 );
