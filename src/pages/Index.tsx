@@ -335,10 +335,14 @@ const Index = () => {
             </FadeIn>
             
             <div className="relative px-4 md:px-10 pb-12">
-              <Carousel opts={{
-              align: "center",
-              loop: true
-            }} className="w-full">
+              <Carousel 
+                opts={{
+                  align: "center",
+                  loop: true
+                }} 
+                plugins={[Autoplay({ delay: 3000, stopOnInteraction: true })]}
+                className="w-full"
+              >
                 <CarouselContent>
                   {trustpilotReviews.map(review => <CarouselItem key={review.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                       <FadeIn className="bg-white dark:bg-gray-800 h-full rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up">
