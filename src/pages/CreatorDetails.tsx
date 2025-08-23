@@ -553,8 +553,8 @@ const CreatorDetails = () => {
                     <div className="text-2xl font-bold text-gray-900">
                       Yield
                     </div>
-                    <div className="text-yellow-800 px-1.5 py-0.5 rounded-full text-xs font-medium bg-yellow-400 flex items-center gap-1">
-                      <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="Growth" className="w-4 h-4" style={{filter: 'hue-rotate(15deg) saturate(0.8) brightness(0.6)'}} />
+                    <div className="text-yellow-800 px-2 py-0.5 rounded-full text-sm font-medium bg-yellow-400 flex items-center gap-1">
+                      <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="Growth" className="w-5 h-5" style={{filter: 'hue-rotate(15deg) saturate(0.8) brightness(0.6)'}} />
                       {(() => {
                     const yieldData = generateYieldData(creatorId || '');
                     const lastYield = yieldData[yieldData.length - 1];
