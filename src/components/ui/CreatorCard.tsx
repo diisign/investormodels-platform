@@ -100,7 +100,7 @@ const CreatorCard = ({
             const yield_ = getCreatorYield(id);
             console.log(`CreatorCard ${id}: yield=${yield_}`);
             if (yield_ > 0) {
-              return <div className="px-1 py-px rounded-full flex items-center gap-0.5" style={{
+              return <div className="px-1 py-px rounded-full flex items-center gap-0.5 mt-0.5" style={{
                 backgroundColor: '#fff6e8'
               }}>
                     <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="yield" className="w-4 h-4" />
