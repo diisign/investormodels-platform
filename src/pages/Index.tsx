@@ -115,18 +115,38 @@ const Index = () => {
       });
     }
   });
-  const topCreators = [...allCreators].map(creator => {
+  // Ordre personnalisé des top créateurs avec leurs taux
+  const customOrder = [
+    { id: 'brookmills', name: 'Luna', rate: 28.31 },
+    { id: 'creator8', name: 'Bianca', rate: 26.35 },
+    { id: 'creator23', name: 'Isabel', rate: 23.16 },
+    { id: 'creator18', name: 'Nina', rate: 21.60 },
+    { id: 'creator5', name: 'Antonella', rate: 21.36 },
+    { id: 'creator29', name: 'Quinn', rate: 20.53 },
+    { id: 'creator11', name: 'Isabella', rate: 18.03 },
+    { id: 'creator13', name: 'Charlotte', rate: 16.55 },
+    { id: 'creator17', name: 'Victoria', rate: 16.34 },
+    { id: 'creator4', name: 'Lala Avi', rate: 15.78 },
+    { id: 'creator1', name: 'Emma', rate: 15.43 },
+    { id: 'creator6', name: 'Bryce\'s Flix', rate: 15.21 },
+    { id: 'brooks-mills-🍒', name: 'Brooke Mills', rate: 14.48 },
+    { id: 'aishah', name: 'Aishah Sofey', rate: 11.71 }
+  ];
+
+  const topCreators = customOrder.map((orderItem, index) => {
+    const creator = allCreators.find(c => c.id === orderItem.id);
+    if (!creator) return null;
+    
     const profile = getCreatorProfile(creator.id);
-    const lastVariation = getLastVariation(creator.id);
     return {
       ...creator,
+      name: `${orderItem.name} ${orderItem.rate}%`,
       returnRate: profile.returnRate,
       totalInvested: creator.totalInvested,
-      lastVariation: lastVariation
+      lastVariation: orderItem.rate,
+      customRank: index + 1
     };
-  }).filter(creator => creator.lastVariation > 0) // Filtrer seulement les variations positives
-  .sort((a, b) => b.lastVariation - a.lastVariation) // Trier par variation décroissante
-  .slice(0, 15);
+  }).filter(Boolean);
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
