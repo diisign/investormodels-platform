@@ -8,25 +8,25 @@ const AboutUs = () => {
       name: "Julien Briot-Hadar",
       role: "Head of Compliance & Legal",
       description: "Ancien Compliance Officer chez TotalEnergies, Accenture et BMCE Bank, Julien est notre garant de la conformité et de la crédibilité juridique. Son rôle : sécuriser légalement Splitz, protéger nos utilisateurs et assurer une transparence totale.",
-      emoji: "🛡️"
+      photo: "/lovable-uploads/b205bded-cd40-44ab-b06e-61b23c2e932b.png"
     },
     {
       name: "Łukasz Zgiep",
       role: "Head of Growth & Crowdfunding Strategy",
       description: "COO de Beesfund, l'une des plus grandes plateformes européennes de crowdfunding equity. Łukasz conçoit notre modèle économique et optimise la croissance de Splitz en alliant investissement, finance participative et Web3.",
-      emoji: "📈"
+      photo: "/lovable-uploads/8671a3fc-1c86-4e2a-8fd3-f58a6c80b8d0.png"
     },
     {
       name: "Robby Greenfield",
       role: "General Manager (COO)",
       description: "Ancien de ConsenSys et fondateur de Umoja Labs, Robby pilote la vision opérationnelle et le scaling international de Splitz. Il assure l'exécution quotidienne et met en place les partenariats stratégiques qui propulsent notre plateforme.",
-      emoji: "⚡"
+      photo: "/lovable-uploads/468a1a86-2634-452e-a8d7-aaa00dba0668.png"
     },
     {
       name: "Camila Russo",
       role: "Head of Marketing & Community",
       description: "Fondatrice de The Defiant et ex-journaliste chez Bloomberg, Camila est une référence mondiale en Web3 et creator economy. Elle construit la marque Splitz, développe notre stratégie de communication et anime une communauté engagée autour de notre vision.",
-      emoji: "🎤"
+      photo: "/lovable-uploads/89af2bc5-e9a2-4101-aebd-d45e06f58bb1.png"
     }
   ];
 
@@ -71,9 +71,13 @@ const AboutUs = () => {
                   className="text-center hover:scale-105 transition-all duration-300"
                   whileHover={{ y: -5 }}
                 >
-                  {/* Avatar with emoji */}
-                  <div className="w-16 md:w-24 h-16 md:h-24 mx-auto mb-4 md:mb-6 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-2xl md:text-4xl">
-                    {member.emoji}
+                  {/* Avatar with photo */}
+                  <div className="w-16 md:w-24 h-16 md:h-24 mx-auto mb-4 md:mb-6 overflow-hidden rounded-full border-2 border-primary/20">
+                    <img 
+                      src={member.photo} 
+                      alt={`Photo de profil de ${member.name}`}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   
                   {/* Name and role */}
