@@ -65,7 +65,7 @@ const CreatorCard = ({
           {rank}
         </div>}
       <div onClick={handleClick} className="block h-full cursor-pointer flex flex-col">
-        <div className="relative p-2 bg-slate-100 flex-1 flex flex-col justify-between">
+        <div className="relative p-2 bg-slate-100 flex-1 flex flex-col justify-between py-[16px] px-[9px]">
           <div className="flex flex-col items-center bg-transparent">
             <Avatar className="h-16 w-16 border-4 border-white dark:border-gray-700 shadow-lg mb-2">
               <AvatarImage src={finalImageUrl} alt={creatorProfile.name} className="object-cover" onError={e => {
@@ -82,12 +82,14 @@ const CreatorCard = ({
           </div>
           
           {/* Variation Percentage et Yield */}
-          <div className="flex-1 flex flex-col items-center justify-center space-y-1">
+          <div className="flex-1 flex flex-col items-center justify-center space-y-1 py-0 my-0">
             {/* Variation */}
             {(() => {
             const variation = getLastVariation(id);
             const isPositive = variation >= 0;
-            return <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium mt-1 ${isPositive ? 'text-green-500' : 'bg-red-200/50 text-red-500'}`} style={{backgroundColor: isPositive ? '#e7f9f1' : undefined}}>
+            return <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium mt-1 ${isPositive ? 'text-green-500' : 'bg-red-200/50 text-red-500'}`} style={{
+              backgroundColor: isPositive ? '#e7f9f1' : undefined
+            }}>
                   {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {isPositive ? '+' : ''}{variation.toFixed(2)}%
                 </div>;
@@ -98,9 +100,13 @@ const CreatorCard = ({
             const yield_ = getCreatorYield(id);
             console.log(`CreatorCard ${id}: yield=${yield_}`);
             if (yield_ > 0) {
-              return <div className="px-1 py-px rounded-full flex items-center gap-0.5" style={{backgroundColor: '#fff6e8'}}>
+              return <div className="px-1 py-px rounded-full flex items-center gap-0.5" style={{
+                backgroundColor: '#fff6e8'
+              }}>
                     <img src="/lovable-uploads/028b480b-1e9f-47a4-8053-26f64c49f477.png" alt="yield" className="w-4 h-4" />
-                    <span className="font-medium text-xs my-0 py-[2px]" style={{color: '#ff982d'}}>{yield_.toFixed(2)} % <span className="text-[10px]">APY</span></span>
+                    <span className="font-medium text-xs my-0 py-[2px]" style={{
+                  color: '#ff982d'
+                }}>{yield_.toFixed(2)} % <span className="text-[10px]">APY</span></span>
                   </div>;
             }
             console.log(`CreatorCard ${id}: No yield data (${yield_})`);
