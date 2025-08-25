@@ -57,33 +57,33 @@ const AboutUs = () => {
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-foreground">
-              🚀 Notre Équipe
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-foreground">
+              Notre équipe de direction
             </h2>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-6 md:gap-12 max-w-4xl mx-auto">
             {teamMembers.map((member, index) => (
               <FadeIn key={member.name} delay={index * 0.2}>
                 <motion.div
-                  className="glass-card p-8 text-center hover:scale-105 transition-all duration-300"
+                  className="text-center hover:scale-105 transition-all duration-300"
                   whileHover={{ y: -5 }}
                 >
                   {/* Avatar with emoji */}
-                  <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-4xl">
+                  <div className="w-16 md:w-24 h-16 md:h-24 mx-auto mb-4 md:mb-6 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-2xl md:text-4xl">
                     {member.emoji}
                   </div>
                   
                   {/* Name and role */}
-                  <h3 className="text-xl font-bold mb-2 text-foreground">
+                  <h3 className="text-sm md:text-xl font-bold mb-1 md:mb-2 text-foreground">
                     {member.name}
                   </h3>
-                  <p className="text-primary font-semibold mb-4">
+                  <p className="text-primary font-semibold mb-2 md:mb-4 text-xs md:text-base">
                     {member.role}
                   </p>
                   
                   {/* Description */}
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed text-xs md:text-base">
                     {member.description}
                   </p>
                 </motion.div>
