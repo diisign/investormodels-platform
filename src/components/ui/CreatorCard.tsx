@@ -82,7 +82,7 @@ const CreatorCard = ({
           </div>
           
           {/* Variation Percentage et Yield */}
-          <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+          <div className="flex-1 flex flex-col items-center justify-center space-y-1">
             {/* Variation */}
             {(() => {
             const variation = getLastVariation(id);
