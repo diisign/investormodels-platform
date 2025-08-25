@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
+import Navbar from "@/components/layout/Navbar";
 
 const AboutUs = () => {
   const teamMembers = [
@@ -31,11 +32,12 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navbar isLoggedIn={false} />
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-foreground">
               Qui sommes nous
             </h1>
             <div className="text-lg md:text-xl text-muted-foreground space-y-4 max-w-3xl mx-auto">
