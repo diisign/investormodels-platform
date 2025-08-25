@@ -19,6 +19,7 @@ import Profile from "./pages/Profile";
 import WebhookDebug from "./pages/WebhookDebug";
 import FAQ from "./pages/FAQ";
 
+import AboutUs from "./pages/AboutUs";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
@@ -45,6 +46,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/affiliation" element={<Affiliation />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/about" element={<AboutUs />} />
             
             <Route path="/contact" element={<Contact />} />
             <Route path="/examples" element={<Examples />} />

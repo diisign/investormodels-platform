@@ -31,7 +31,9 @@ const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  
+                  <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
+                    Qui sommes nous
+                  </Link>
                 </li>
                 <li>
                   <Link to="/affiliation" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground dark:text-muted-foreground hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300">
