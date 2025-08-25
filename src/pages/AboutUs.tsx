@@ -17,9 +17,9 @@ const AboutUs = () => {
       photo: "/lovable-uploads/8671a3fc-1c86-4e2a-8fd3-f58a6c80b8d0.png"
     },
     {
-      name: "Robby Greenfield",
+      name: "Renaud Laplanche",
       role: "General Manager (COO)",
-      description: "Ancien de ConsenSys et fondateur de Umoja Labs, Robby pilote la vision opérationnelle et le scaling international de Splitz. Il assure l'exécution quotidienne et met en place les partenariats stratégiques qui propulsent notre plateforme.",
+      description: "Entrepreneur français reconnu, fondateur de LendingClub et CEO de Upgrade, Inc., Renaud apporte son expertise unique en fintech et financement participatif. Fort de son expérience dans le scaling international de plateformes financières, il pilote la vision opérationnelle de Splitz et structure notre croissance pour en faire un acteur incontournable de la creator economy.",
       photo: "/lovable-uploads/468a1a86-2634-452e-a8d7-aaa00dba0668.png"
     },
     {
