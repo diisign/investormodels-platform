@@ -63,7 +63,7 @@ const Affiliation = () => {
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center mb-8 py-[43px]">
-              <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3">
+              <h1 className="md:text-5xl font-bold mb-3 text-yellow-400 text-2xl text-center py-[14px]">
                 Programme d'Affiliation
               </h1>
               <p className="mt-3 text-gray-600 max-w-2xl mx-auto text-base md:text-lg">
@@ -92,7 +92,7 @@ const Affiliation = () => {
                     
                     <div className="flex justify-center">
                       <div className="flex items-center gap-1 text-teal-600">
-                        <span className="text-xs text-yellow-300 font-semibold md:text-sm">Sans limite</span>
+                        <span className="text-xs font-semibold md:text-sm text-yellow-400">Sans limite</span>
                         <Rocket size={isMobile ? 12 : 14} className="text-yellow-300" />
                       </div>
                     </div>
@@ -135,7 +135,7 @@ const Affiliation = () => {
                     </div>
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vos Filleuls</h3>
                     <div className="mt-1 mb-1">
-                      <span className="text-sm font-bold text-yellow-300 md:text-xl">50€</span>
+                      <span className="text-sm font-bold md:text-xl text-yellow-400">50€</span>
                       <span className="text-gray-600 text-xs ml-1">bonus</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
@@ -151,7 +151,7 @@ const Affiliation = () => {
                     </div>
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-1">Pour Vous</h3>
                     <div className="mt-1 mb-1">
-                      <span className="text-sm font-bold text-yellow-300 md:text-xl">50%</span>
+                      <span className="text-sm font-bold md:text-xl text-yellow-400">50%</span>
                       <span className="text-gray-600 text-xs ml-1">des gains</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
@@ -169,7 +169,7 @@ const Affiliation = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-6" direction="up">
               <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
-                Nos <span className="text-yellow-300">Meilleurs Parrains</span>
+                Nos <span className="text-yellow-400">Meilleurs Parrains</span>
               </h2>
               <p className="text-base text-gray-600 dark:text-gray-300 text-center">
                 Découvrez les parrains qui ont gagné le plus en recommandant notre plateforme.
