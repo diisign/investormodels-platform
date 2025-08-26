@@ -67,6 +67,9 @@ const Navbar: React.FC<NavbarProps> = ({
             <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Créatrices
             </Link>
+            <Link to="/about-us" className={cn('font-medium transition-colors duration-300', isActive('/about-us') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+              Qui sommes-nous?
+            </Link>
             <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
               Affiliation
             </Link>
@@ -132,6 +135,9 @@ const Navbar: React.FC<NavbarProps> = ({
           <div className="container mx-auto px-4 py-4 space-y-4">
             <Link to="/creators" className={cn('block py-2 font-medium', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Créatrices
+            </Link>
+            <Link to="/about-us" className={cn('block py-2 font-medium', isActive('/about-us') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
+              Qui sommes-nous?
             </Link>
             <Link to="/affiliation" className={cn('block py-2 font-medium', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Affiliation
