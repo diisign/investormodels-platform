@@ -144,7 +144,7 @@ const AboutUs = () => {
               Nos investisseurs
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-              Royaltiz a levé plus de 6 millions€ auprès d'investisseurs de renom qui nous accompagnent dans notre mission
+              SPLITZ a levé plus de 6 millions€ auprès d'<span className="text-primary">investisseurs</span> de renom qui nous accompagnent dans notre mission
             </p>
           </FadeIn>
 
