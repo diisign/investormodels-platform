@@ -113,7 +113,7 @@ const AboutUs = () => {
                 <img src="/lovable-uploads/ef1de523-e995-42cd-9c19-9acc736a03e8.png" alt="L'ambition des fondateurs - Interface mobile Splitz" className="w-full max-w-[200px] md:max-w-md mx-auto rounded-xl" />
               </div>
               <div className="w-2/3 md:w-1/2 text-left">
-                <h2 className="text-lg md:text-3xl lg:text-4xl font-bold mb-3 md:mb-6 text-foreground">
+                <h2 className="md:text-3xl lg:text-4xl mb-3 md:mb-6 text-foreground px-[16px] text-center font-bold text-xl">
                   L'ambition des <span className="text-primary">fondateurs</span>
                 </h2>
                 <div className="space-y-2 md:space-y-4 text-muted-foreground">
