@@ -105,7 +105,7 @@ const AboutUs = () => {
       </section>
 
       {/* Founders' Ambition Section */}
-      <section className="py-16 px-4">
+      <section className="py-0 px-0">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <div className="flex flex-row items-center gap-4 md:gap-8 lg:gap-16">
@@ -117,16 +117,16 @@ const AboutUs = () => {
                   L'ambition des <span className="text-primary">fondateurs</span>
                 </h2>
                 <div className="space-y-2 md:space-y-4 text-muted-foreground">
-                  <p className="text-sm md:text-lg">
+                  <p className="text-sm md:text-lg text-center">
                     Le potentiel humain est une classe d'actifs encore inexploitée.
                   </p>
-                  <p className="text-sm md:text-lg">
+                  <p className="text-sm md:text-lg text-center">
                     Nous voulons offrir aux créatrices et aux utilisateurs un nouveau marché financier basé sur le capital humain.
                   </p>
-                  <p className="text-sm md:text-lg">
+                  <p className="text-sm md:text-lg text-center">
                     Malgré leur potentiel de revenus, les créatrices peinent à obtenir des financements.
                   </p>
-                  <p className="text-sm md:text-lg">
+                  <p className="text-sm md:text-lg text-center">
                     Contrairement aux entreprises, aux actions ou à l'immobilier, il n'existe aucun marché structuré pour investir dans les créatrices.
                   </p>
                 </div>
