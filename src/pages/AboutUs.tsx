@@ -3,7 +3,6 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import Navbar from "@/components/layout/Navbar";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const AboutUs = () => {
   const [openStates, setOpenStates] = useState<{ [key: string]: boolean }>({});
@@ -79,47 +78,50 @@ const AboutUs = () => {
           <div className="grid grid-cols-2 md:grid-cols-2 gap-6 md:gap-12 max-w-4xl mx-auto">
             {teamMembers.map((member, index) => (
               <FadeIn key={member.name} delay={index * 0.2}>
-                <Collapsible open={openStates[member.name] || false} onOpenChange={() => toggleOpen(member.name)}>
-                  <motion.div
-                    className="text-center hover:scale-105 transition-all duration-300"
-                    whileHover={{ y: -5 }}
-                  >
-                    {/* Avatar with photo */}
-                    <div className="w-16 md:w-24 h-16 md:h-24 mx-auto mb-4 md:mb-6 overflow-hidden rounded-full border-2 border-primary/20">
-                      <img 
-                        src={member.photo} 
-                        alt={`Photo de profil de ${member.name}`}
-                        className="w-full h-full object-cover"
+                <motion.div
+                  className="text-center hover:scale-105 transition-all duration-300"
+                  whileHover={{ y: -5 }}
+                >
+                  {/* Avatar with photo */}
+                  <div className="w-16 md:w-24 h-16 md:h-24 mx-auto mb-4 md:mb-6 overflow-hidden rounded-full border-2 border-primary/20">
+                    <img 
+                      src={member.photo} 
+                      alt={`Photo de profil de ${member.name}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Name and role */}
+                  <h3 className="text-sm md:text-xl font-bold mb-1 md:mb-2 text-foreground">
+                    {member.name}
+                  </h3>
+                  <div className="flex items-center justify-center gap-2 mb-2 md:mb-4">
+                    <p className="text-primary font-semibold text-xs md:text-base">
+                      {member.role}
+                    </p>
+                    <button 
+                      onClick={() => toggleOpen(member.name)}
+                      className="opacity-60 hover:opacity-100 transition-all duration-200"
+                    >
+                      <ChevronDown 
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          openStates[member.name] ? 'rotate-180' : ''
+                        }`}
                       />
-                    </div>
-                    
-                    {/* Name and role */}
-                    <h3 className="text-sm md:text-xl font-bold mb-1 md:mb-2 text-foreground">
-                      {member.name}
-                    </h3>
-                    <div className="flex items-center justify-center gap-2">
-                      <p className="text-primary font-semibold text-xs md:text-base">
-                        {member.role}
-                      </p>
-                      <CollapsibleTrigger asChild>
-                        <button className="opacity-60 hover:opacity-100 transition-opacity">
-                          <ChevronDown 
-                            className={`w-4 h-4 transition-transform duration-200 ${
-                              openStates[member.name] ? 'rotate-180' : ''
-                            }`}
-                          />
-                        </button>
-                      </CollapsibleTrigger>
-                    </div>
-                    
-                    {/* Collapsible Description */}
-                    <CollapsibleContent className="mt-2 md:mt-4">
-                      <p className="text-muted-foreground leading-relaxed text-xs md:text-base">
-                        {member.description}
-                      </p>
-                    </CollapsibleContent>
-                  </motion.div>
-                </Collapsible>
+                    </button>
+                  </div>
+                  
+                  {/* Description with smooth transition */}
+                  <div 
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      openStates[member.name] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <p className="text-muted-foreground leading-relaxed text-xs md:text-base">
+                      {member.description}
+                    </p>
+                  </div>
+                </motion.div>
               </FadeIn>
             ))}
           </div>
