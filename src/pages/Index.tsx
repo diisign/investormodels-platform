@@ -116,27 +116,66 @@ const Index = () => {
     }
   });
   // Ordre personnalisé des top créateurs avec leurs taux
-  const customOrder = [
-    { id: 'brookmills', name: 'Luna', rate: 28.31 },
-    { id: 'creator8', name: 'Bianca', rate: 26.35 },
-    { id: 'creator23', name: 'Isabel', rate: 23.16 },
-    { id: 'creator18', name: 'Nina', rate: 21.60 },
-    { id: 'creator5', name: 'Antonella', rate: 21.36 },
-    { id: 'creator29', name: 'Quinn', rate: 20.53 },
-    { id: 'creator11', name: 'Isabella', rate: 18.03 },
-    { id: 'creator13', name: 'Charlotte', rate: 16.55 },
-    { id: 'creator17', name: 'Victoria', rate: 16.34 },
-    { id: 'creator4', name: 'Lala Avi', rate: 15.78 },
-    { id: 'creator1', name: 'Emma', rate: 15.43 },
-    { id: 'creator6', name: 'Bryce\'s Flix', rate: 15.21 },
-    { id: 'brooks-mills-🍒', name: 'Brooke Mills', rate: 14.48 },
-    { id: 'aishah', name: 'Aishah Sofey', rate: 11.71 }
-  ];
-
+  const customOrder = [{
+    id: 'brookmills',
+    name: 'Luna',
+    rate: 28.31
+  }, {
+    id: 'creator8',
+    name: 'Bianca',
+    rate: 26.35
+  }, {
+    id: 'creator23',
+    name: 'Isabel',
+    rate: 23.16
+  }, {
+    id: 'creator18',
+    name: 'Nina',
+    rate: 21.60
+  }, {
+    id: 'creator5',
+    name: 'Antonella',
+    rate: 21.36
+  }, {
+    id: 'creator29',
+    name: 'Quinn',
+    rate: 20.53
+  }, {
+    id: 'creator11',
+    name: 'Isabella',
+    rate: 18.03
+  }, {
+    id: 'creator13',
+    name: 'Charlotte',
+    rate: 16.55
+  }, {
+    id: 'creator17',
+    name: 'Victoria',
+    rate: 16.34
+  }, {
+    id: 'creator4',
+    name: 'Lala Avi',
+    rate: 15.78
+  }, {
+    id: 'creator1',
+    name: 'Emma',
+    rate: 15.43
+  }, {
+    id: 'creator6',
+    name: 'Bryce\'s Flix',
+    rate: 15.21
+  }, {
+    id: 'brooks-mills-🍒',
+    name: 'Brooke Mills',
+    rate: 14.48
+  }, {
+    id: 'aishah',
+    name: 'Aishah Sofey',
+    rate: 11.71
+  }];
   const topCreators = customOrder.map((orderItem, index) => {
     const creator = allCreators.find(c => c.id === orderItem.id);
     if (!creator) return null;
-    
     const profile = getCreatorProfile(creator.id);
     return {
       ...creator,
@@ -200,7 +239,7 @@ const Index = () => {
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-zinc-950 xl:text-2xl">
-                  Investissez dans les <span className="text-3xl text-yellow-300">créatrices OnlyFans.</span>
+                  Investissez dans les <span className="text-3xl text-yellow-400">créatrices OnlyFans</span>
                 </h1>
                 
                 
@@ -290,7 +329,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
               <h2 className="md:text-3xl font-bold mb-3 text-center text-2xl">
-                Nos <span className="text-yellow-300">Meilleurs Parrains</span>
+                Nos <span className="text-yellow-400">Meilleurs Parrains</span>
               </h2>
               <p className="text-base md:text-lg text-center text-gray-950">
                 Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?
@@ -316,7 +355,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="max-w-3xl mx-auto mb-10 text-2xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
-                Un Marché en <span className="text-yellow-300">Pleine Explosion</span>
+                Un Marché en <span className="text-yellow-400">Pleine Explosion</span>
               </h2>
               <div className="space-y-6">
                 <p className="text-base md:text-lg text-center text-gray-950">OnlyFans connaît une croissance explosive depuis sa création en 2017 son Chiffre d'affaire a été multiplié par 300.</p>
@@ -347,7 +386,7 @@ const Index = () => {
                 <span className="text-base font-bold text-inherit">4.7/5</span>
               </div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-                Ce que disent <span className="text-yellow-300">nos utilisateurs</span>
+                Ce que disent <span className="text-yellow-400">nos utilisateurs</span>
               </h2>
               <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
                 Rejoignez plus de 20 000 investisseurs satisfaits qui ont déjà fait confiance à notre plateforme.
@@ -355,14 +394,13 @@ const Index = () => {
             </FadeIn>
             
             <div className="relative px-4 md:px-10 pb-12">
-              <Carousel 
-                opts={{
-                  align: "center",
-                  loop: true
-                }} 
-                plugins={[Autoplay({ delay: 3000, stopOnInteraction: true })]}
-                className="w-full"
-              >
+              <Carousel opts={{
+              align: "center",
+              loop: true
+            }} plugins={[Autoplay({
+              delay: 3000,
+              stopOnInteraction: true
+            })]} className="w-full">
                 <CarouselContent>
                   {trustpilotReviews.map(review => <CarouselItem key={review.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                       <FadeIn className="bg-white dark:bg-gray-800 h-full rounded-xl p-6 shadow-md border border-gray-100 dark:border-gray-700" direction="up">
