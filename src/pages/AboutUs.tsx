@@ -44,13 +44,13 @@ const AboutUs = () => {
               Qui sommes nous
             </h1>
             <div className="text-lg md:text-xl text-muted-foreground space-y-4 max-w-3xl mx-auto">
-              <p>
+              <p className="text-sm">
                 Chez <strong className="text-primary">Splitz</strong>, nous réinventons l'investissement dans la creator economy.
               </p>
-              <p>
+              <p className="text-sm">
                 Notre mission est simple : <strong className="text-primary">permettre aux investisseurs de soutenir des créatrices et de profiter directement de leur succès</strong>.
               </p>
-              <p>
+              <p className="text-sm">
                 Pour bâtir cette vision, nous avons réuni une équipe d'experts complémentaires, chacun apportant une expertise unique.
               </p>
             </div>
@@ -143,55 +143,42 @@ const AboutUs = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-foreground">
               Nos investisseurs
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
+            <p className="md:text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto text-sm">
               <span className="text-primary">SPLITZ a levé plus de 6 millions€</span> auprès d'investisseurs de renom qui nous accompagnent dans notre mission
             </p>
           </FadeIn>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                name: "Alain Clot",
-                role: "Président-cofondateur chez France FinTech",
-                photo: "/lovable-uploads/3d5cc158-5b18-4e0d-a8e0-2829699264a2.png"
-              },
-              {
-                name: "Thomas Gaucher", 
-                role: "Managing Partner At Clearwater Corporate Finance",
-                photo: "/lovable-uploads/f4fcf9e5-32c8-4400-9af7-05e5ffedb545.png"
-              },
-              {
-                name: "Thomas Blondet",
-                role: "Partner Of Rochefort & Associés", 
-                photo: "/lovable-uploads/e16673a4-d1e6-4da5-88a5-968ff7ffd129.png"
-              },
-              {
-                name: "Julien Martinez",
-                role: "Comex Member Allianz Group",
-                photo: "/lovable-uploads/7e221d49-6f3f-41e3-8296-5db94f46917f.png"
-              },
-              {
-                name: "Stephan Catoire", 
-                role: "Founder Of Equitis (N°1 Trust In France)",
-                photo: "/lovable-uploads/eb2d73cb-0130-4d7c-99b3-9c676428b916.png"
-              },
-              {
-                name: "Rémy Boulesteix",
-                role: "Head Of M&A Europe KPMG",
-                photo: "/lovable-uploads/cff2a2c4-f956-4070-814e-0bb71c63e4f0.png"
-              }
-            ].map((investor, index) => (
-              <FadeIn key={investor.name} delay={index * 0.1}>
-                <motion.div 
-                  className="text-center hover:scale-105 transition-all duration-300"
-                  whileHover={{ y: -5 }}
-                >
+            {[{
+            name: "Alain Clot",
+            role: "Président-cofondateur chez France FinTech",
+            photo: "/lovable-uploads/3d5cc158-5b18-4e0d-a8e0-2829699264a2.png"
+          }, {
+            name: "Thomas Gaucher",
+            role: "Managing Partner At Clearwater Corporate Finance",
+            photo: "/lovable-uploads/f4fcf9e5-32c8-4400-9af7-05e5ffedb545.png"
+          }, {
+            name: "Thomas Blondet",
+            role: "Partner Of Rochefort & Associés",
+            photo: "/lovable-uploads/e16673a4-d1e6-4da5-88a5-968ff7ffd129.png"
+          }, {
+            name: "Julien Martinez",
+            role: "Comex Member Allianz Group",
+            photo: "/lovable-uploads/7e221d49-6f3f-41e3-8296-5db94f46917f.png"
+          }, {
+            name: "Stephan Catoire",
+            role: "Founder Of Equitis (N°1 Trust In France)",
+            photo: "/lovable-uploads/eb2d73cb-0130-4d7c-99b3-9c676428b916.png"
+          }, {
+            name: "Rémy Boulesteix",
+            role: "Head Of M&A Europe KPMG",
+            photo: "/lovable-uploads/cff2a2c4-f956-4070-814e-0bb71c63e4f0.png"
+          }].map((investor, index) => <FadeIn key={investor.name} delay={index * 0.1}>
+                <motion.div className="text-center hover:scale-105 transition-all duration-300" whileHover={{
+              y: -5
+            }}>
                   <div className="w-16 md:w-20 h-16 md:h-20 mx-auto mb-3 md:mb-4 overflow-hidden rounded-full border-2 border-primary/20">
-                    <img 
-                      src={investor.photo} 
-                      alt={`Photo de profil de ${investor.name}`} 
-                      className="w-full h-full object-cover" 
-                    />
+                    <img src={investor.photo} alt={`Photo de profil de ${investor.name}`} className="w-full h-full object-cover" />
                   </div>
                   <h3 className="text-sm md:text-lg font-bold mb-1 text-foreground">
                     {investor.name}
@@ -200,8 +187,7 @@ const AboutUs = () => {
                     {investor.role}
                   </p>
                 </motion.div>
-              </FadeIn>
-            ))}
+              </FadeIn>)}
           </div>
         </div>
       </section>
