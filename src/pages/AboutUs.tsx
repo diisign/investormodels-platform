@@ -106,7 +106,7 @@ const AboutUs = () => {
             <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
               <div className="w-full lg:w-1/2">
                 <img 
-                  src="/lovable-uploads/c999e009-9be0-4d56-aec2-827bae9ea0e8.png" 
+                  src="/lovable-uploads/c76c6fab-7758-4e5e-843e-2e081ebaf7cd.png" 
                   alt="L'ambition des fondateurs - Interface mobile Splitz"
                   className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
                 />
