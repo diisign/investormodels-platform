@@ -59,8 +59,8 @@ const AboutUs = () => {
       </section>
 
       {/* Team Section */}
-      <section className="px-4 py-0">
-        <div className="max-w-6xl mx-auto py-[28px]">
+      <section className="px-4 py-0 my-[3px]">
+        <div className="max-w-6xl mx-auto my-0 py-0">
           <FadeIn>
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-foreground">
               Notre équipe de direction
