@@ -103,29 +103,29 @@ const AboutUs = () => {
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-              <div className="w-full lg:w-1/2">
+            <div className="flex flex-row items-center gap-4 md:gap-8 lg:gap-16">
+              <div className="w-1/3 md:w-1/2">
                 <img 
-                  src="/lovable-uploads/c76c6fab-7758-4e5e-843e-2e081ebaf7cd.png" 
+                  src="/lovable-uploads/ef1de523-e995-42cd-9c19-9acc736a03e8.png" 
                   alt="L'ambition des fondateurs - Interface mobile Splitz"
-                  className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
+                  className="w-full max-w-[200px] md:max-w-md mx-auto rounded-xl"
                 />
               </div>
-              <div className="w-full lg:w-1/2 text-center lg:text-left">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+              <div className="w-2/3 md:w-1/2 text-left">
+                <h2 className="text-lg md:text-3xl lg:text-4xl font-bold mb-3 md:mb-6 text-foreground">
                   L'ambition des <span className="text-primary">fondateurs</span>
                 </h2>
-                <div className="space-y-4 text-muted-foreground">
-                  <p className="text-lg">
+                <div className="space-y-2 md:space-y-4 text-muted-foreground">
+                  <p className="text-sm md:text-lg">
                     Le potentiel humain est une classe d'actifs encore inexploitée.
                   </p>
-                  <p className="text-lg">
+                  <p className="text-sm md:text-lg">
                     Nous voulons offrir aux créatrices et aux utilisateurs un nouveau marché financier basé sur le capital humain.
                   </p>
-                  <p className="text-lg">
+                  <p className="text-sm md:text-lg">
                     Malgré leur potentiel de revenus, les créatrices peinent à obtenir des financements.
                   </p>
-                  <p className="text-lg">
+                  <p className="text-sm md:text-lg">
                     Contrairement aux entreprises, aux actions ou à l'immobilier, il n'existe aucun marché structuré pour investir dans les créatrices.
                   </p>
                 </div>
