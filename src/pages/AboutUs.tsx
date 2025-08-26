@@ -108,7 +108,7 @@ const AboutUs = () => {
       <section className="py-0 px-0">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <div className="flex flex-row items-center gap-4 md:gap-8 lg:gap-16">
+            <div className="flex flex-row items-center gap-4 md:gap-8 lg:gap-16 my-[43px]">
               <div className="w-1/3 md:w-1/2">
                 <img src="/lovable-uploads/ef1de523-e995-42cd-9c19-9acc736a03e8.png" alt="L'ambition des fondateurs - Interface mobile Splitz" className="w-full max-w-[200px] md:max-w-md mx-auto rounded-xl" />
               </div>
