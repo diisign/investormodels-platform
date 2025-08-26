@@ -1,37 +1,29 @@
 import { motion } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
 import Navbar from "@/components/layout/Navbar";
-
 const AboutUs = () => {
-  const teamMembers = [
-    {
-      name: "Julien Briot-Hadar",
-      role: "Head of Compliance & Legal",
-      description: "Ancien Compliance Officer chez TotalEnergies, Accenture et BMCE Bank, Julien est notre garant de la conformité et de la crédibilité juridique. Son rôle : sécuriser légalement Splitz, protéger nos utilisateurs et assurer une transparence totale.",
-      photo: "/lovable-uploads/b205bded-cd40-44ab-b06e-61b23c2e932b.png"
-    },
-    {
-      name: "Łukasz Zgiep",
-      role: "Head of Growth & Crowdfunding Strategy",
-      description: "COO de Beesfund, l'une des plus grandes plateformes européennes de crowdfunding equity. Łukasz conçoit notre modèle économique et optimise la croissance de Splitz en alliant investissement, finance participative et Web3.",
-      photo: "/lovable-uploads/8671a3fc-1c86-4e2a-8fd3-f58a6c80b8d0.png"
-    },
-    {
-      name: "Renaud Laplanche",
-      role: "General Manager (COO)",
-      description: "Entrepreneur français reconnu, fondateur de LendingClub et CEO de Upgrade, Inc., Renaud apporte son expertise unique en fintech et financement participatif. Fort de son expérience dans le scaling international de plateformes financières, il pilote la vision opérationnelle de Splitz et structure notre croissance pour en faire un acteur incontournable de la creator economy.",
-      photo: "/lovable-uploads/468a1a86-2634-452e-a8d7-aaa00dba0668.png"
-    },
-    {
-      name: "Camila Russo",
-      role: "Head of Marketing & Community",
-      description: "Fondatrice de The Defiant et ex-journaliste chez Bloomberg, Camila est une référence mondiale en Web3 et creator economy. Elle construit la marque Splitz, développe notre stratégie de communication et anime une communauté engagée autour de notre vision.",
-      photo: "/lovable-uploads/89af2bc5-e9a2-4101-aebd-d45e06f58bb1.png"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const teamMembers = [{
+    name: "Julien Briot-Hadar",
+    role: "Head of Compliance & Legal",
+    description: "Ancien Compliance Officer chez TotalEnergies, Accenture et BMCE Bank, Julien est notre garant de la conformité et de la crédibilité juridique. Son rôle : sécuriser légalement Splitz, protéger nos utilisateurs et assurer une transparence totale.",
+    photo: "/lovable-uploads/b205bded-cd40-44ab-b06e-61b23c2e932b.png"
+  }, {
+    name: "Łukasz Zgiep",
+    role: "Head of Growth & Crowdfunding Strategy",
+    description: "COO de Beesfund, l'une des plus grandes plateformes européennes de crowdfunding equity. Łukasz conçoit notre modèle économique et optimise la croissance de Splitz en alliant investissement, finance participative et Web3.",
+    photo: "/lovable-uploads/8671a3fc-1c86-4e2a-8fd3-f58a6c80b8d0.png"
+  }, {
+    name: "Renaud Laplanche",
+    role: "General Manager (COO)",
+    description: "Entrepreneur français reconnu, fondateur de LendingClub et CEO de Upgrade, Inc., Renaud apporte son expertise unique en fintech et financement participatif. Fort de son expérience dans le scaling international de plateformes financières, il pilote la vision opérationnelle de Splitz et structure notre croissance pour en faire un acteur incontournable de la creator economy.",
+    photo: "/lovable-uploads/468a1a86-2634-452e-a8d7-aaa00dba0668.png"
+  }, {
+    name: "Camila Russo",
+    role: "Head of Marketing & Community",
+    description: "Fondatrice de The Defiant et ex-journaliste chez Bloomberg, Camila est une référence mondiale en Web3 et creator economy. Elle construit la marque Splitz, développe notre stratégie de communication et anime une communauté engagée autour de notre vision.",
+    photo: "/lovable-uploads/89af2bc5-e9a2-4101-aebd-d45e06f58bb1.png"
+  }];
+  return <div className="min-h-screen bg-background">
       <Navbar isLoggedIn={false} />
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4">
@@ -65,19 +57,13 @@ const AboutUs = () => {
           </FadeIn>
 
           <div className="grid grid-cols-2 md:grid-cols-2 gap-6 md:gap-12 max-w-4xl mx-auto">
-            {teamMembers.map((member, index) => (
-              <FadeIn key={member.name} delay={index * 0.2}>
-                <motion.div
-                  className="text-center hover:scale-105 transition-all duration-300"
-                  whileHover={{ y: -5 }}
-                >
+            {teamMembers.map((member, index) => <FadeIn key={member.name} delay={index * 0.2}>
+                <motion.div className="text-center hover:scale-105 transition-all duration-300" whileHover={{
+              y: -5
+            }}>
                   {/* Avatar with photo */}
                   <div className="w-16 md:w-24 h-16 md:h-24 mx-auto mb-4 md:mb-6 overflow-hidden rounded-full border-2 border-primary/20">
-                    <img 
-                      src={member.photo} 
-                      alt={`Photo de profil de ${member.name}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={member.photo} alt={`Photo de profil de ${member.name}`} className="w-full h-full object-cover" />
                   </div>
                   
                   {/* Name and role */}
@@ -93,8 +79,7 @@ const AboutUs = () => {
                     {member.description}
                   </p>
                 </motion.div>
-              </FadeIn>
-            ))}
+              </FadeIn>)}
           </div>
         </div>
       </section>
@@ -105,31 +90,9 @@ const AboutUs = () => {
           <FadeIn>
             <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
               <div className="w-full lg:w-1/2">
-                <img 
-                  src="/lovable-uploads/c999e009-9be0-4d56-aec2-827bae9ea0e8.png" 
-                  alt="L'ambition des fondateurs - Interface mobile Splitz"
-                  className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
-                />
+                <img src="/lovable-uploads/c999e009-9be0-4d56-aec2-827bae9ea0e8.png" alt="L'ambition des fondateurs - Interface mobile Splitz" className="w-full max-w-md mx-auto rounded-2xl shadow-2xl" />
               </div>
-              <div className="w-full lg:w-1/2 text-center lg:text-left">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
-                  L'ambition des <span className="text-primary">fondateurs</span>
-                </h2>
-                <div className="space-y-4 text-muted-foreground">
-                  <p className="text-lg">
-                    Le potentiel humain est une classe d'actifs encore inexploitée.
-                  </p>
-                  <p className="text-lg">
-                    Nous voulons offrir aux créatrices et aux utilisateurs un nouveau marché financier basé sur le capital humain.
-                  </p>
-                  <p className="text-lg">
-                    Malgré leur potentiel de revenus, les créatrices peinent à obtenir des financements.
-                  </p>
-                  <p className="text-lg">
-                    Contrairement aux entreprises, aux actions ou à l'immobilier, il n'existe aucun marché structuré pour investir dans les créatrices.
-                  </p>
-                </div>
-              </div>
+              
             </div>
           </FadeIn>
         </div>
@@ -146,20 +109,17 @@ const AboutUs = () => {
               <p className="text-muted-foreground mb-6">
                 Découvrez comment notre équipe transforme la façon d'investir dans la creator economy
               </p>
-              <motion.a
-                href="/creators"
-                className="btn-primary inline-block"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <motion.a href="/creators" className="btn-primary inline-block" whileHover={{
+              scale: 1.05
+            }} whileTap={{
+              scale: 0.95
+            }}>
                 Découvrir nos créatrices
               </motion.a>
             </div>
           </FadeIn>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default AboutUs;
