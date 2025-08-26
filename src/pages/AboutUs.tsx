@@ -140,9 +140,12 @@ const AboutUs = () => {
       <section className="px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-foreground">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-foreground">
               Nos investisseurs
             </h2>
+            <p className="text-lg md:text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
+              Royaltiz a levé plus de 6 millions€ auprès d'investisseurs de renom qui nous accompagnent dans notre mission
+            </p>
           </FadeIn>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
