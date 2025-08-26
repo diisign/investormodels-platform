@@ -95,13 +95,15 @@ const AboutUs = () => {
                   <h3 className="text-sm md:text-xl font-bold mb-1 md:mb-2 text-foreground">
                     {member.name}
                   </h3>
-                  <div className="flex items-center justify-center gap-2 mb-2 md:mb-4">
-                    <p className="text-primary font-semibold text-xs md:text-base">
-                      {member.role}
-                    </p>
+                  <p className="text-primary font-semibold text-xs md:text-base mb-2">
+                    {member.role}
+                  </p>
+                  
+                  {/* Arrow button centered below role */}
+                  <div className="flex justify-center mb-2 md:mb-4">
                     <button 
                       onClick={() => toggleOpen(member.name)}
-                      className="opacity-60 hover:opacity-100 transition-all duration-200"
+                      className="text-yellow-500 hover:text-yellow-400 transition-all duration-200"
                     >
                       <ChevronDown 
                         className={`w-4 h-4 transition-transform duration-200 ${
