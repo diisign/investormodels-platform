@@ -83,22 +83,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Contact Section */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8">
-          <div className="text-center">
-            <h3 className="font-semibold text-foreground dark:text-foreground mb-2">
-              Une question ? Contactez-nous
-            </h3>
-            <p className="text-muted-foreground dark:text-muted-foreground mb-4">
-              Notre équipe est à votre disposition pour répondre à toutes vos questions
-            </p>
-            <div className="flex justify-center space-x-6">
-              <a href="mailto:contact@splitz.fr" className="flex items-center text-yellow-300 hover:text-yellow-400 transition-colors duration-300">
-                <Mail className="h-4 w-4 mr-2" />
-                contact@splitz.fr
-              </a>
-            </div>
-          </div>
-        </div>
+        
 
         {/* Bottom Bar */}
         <div className="pt-8 mt-8 border-t border-border dark:border-border text-center sm:text-left sm:flex sm:justify-between sm:items-center">
