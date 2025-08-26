@@ -99,6 +99,42 @@ const AboutUs = () => {
         </div>
       </section>
 
+      {/* Founders' Ambition Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <FadeIn>
+            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+              <div className="w-full lg:w-1/2">
+                <img 
+                  src="/lovable-uploads/c999e009-9be0-4d56-aec2-827bae9ea0e8.png" 
+                  alt="L'ambition des fondateurs - Interface mobile Splitz"
+                  className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
+                />
+              </div>
+              <div className="w-full lg:w-1/2 text-center lg:text-left">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+                  L'ambition des <span className="text-primary">fondateurs</span>
+                </h2>
+                <div className="space-y-4 text-muted-foreground">
+                  <p className="text-lg">
+                    Le potentiel humain est une classe d'actifs encore inexploitée.
+                  </p>
+                  <p className="text-lg">
+                    Nous voulons offrir aux créatrices et aux utilisateurs un nouveau marché financier basé sur le capital humain.
+                  </p>
+                  <p className="text-lg">
+                    Malgré leur potentiel de revenus, les créatrices peinent à obtenir des financements.
+                  </p>
+                  <p className="text-lg">
+                    Contrairement aux entreprises, aux actions ou à l'immobilier, il n'existe aucun marché structuré pour investir dans les créatrices.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* Call to Action */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
