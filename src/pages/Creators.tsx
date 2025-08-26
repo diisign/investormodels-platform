@@ -96,10 +96,8 @@ const Creators = () => {
       if (savedSortedOrder) {
         try {
           const savedIds = JSON.parse(savedSortedOrder);
-          const restoredOrder = savedIds.map((id: string) => 
-            combinedCreators.find(c => c.id === id)
-          ).filter(Boolean);
-          
+          const restoredOrder = savedIds.map((id: string) => combinedCreators.find(c => c.id === id)).filter(Boolean);
+
           // Ajouter les nouveaux créateurs qui ne sont pas dans l'ordre sauvegardé
           const newCreators = combinedCreators.filter(c => !savedIds.includes(c.id));
           setSortedCreators([...restoredOrder, ...newCreators]);
@@ -109,7 +107,7 @@ const Creators = () => {
           console.warn('Erreur lors du chargement de l\'ordre sauvegardé');
         }
       }
-      
+
       // Calculer un nouvel ordre
       const positiveVariations = combinedCreators.filter(c => getLastVariation(c.id) > 0);
       const smallNegativeVariations = combinedCreators.filter(c => {
@@ -120,25 +118,24 @@ const Creators = () => {
         const variation = getLastVariation(c.id);
         return variation < -5; // Grosses variations négatives à placer plus bas
       });
-      
+
       // Mélanger les créatrices avec variations positives
       const shuffledPositive = [...positiveVariations].sort(() => Math.random() - 0.5);
       // Mélanger les créatrices avec petites variations négatives
       const shuffledSmallNegative = [...smallNegativeVariations].sort(() => Math.random() - 0.5);
       // Mélanger les créatrices avec grosses variations négatives
       const shuffledLargeNegative = [...largeNegativeVariations].sort(() => Math.random() - 0.5);
-      
+
       // Créer un mix: 85% de positives en haut, 15% de petites négatives, grosses négatives à la fin
       const initialSorted = [];
       let positiveIndex = 0;
       let smallNegativeIndex = 0;
-      
+
       // Première partie: mix positives et petites négatives
       const topCount = Math.min(20, combinedCreators.length); // Les 20 premiers ou moins
       for (let i = 0; i < topCount; i++) {
         // 85% de chances de prendre une positive si disponible
-        const shouldTakePositive = (Math.random() < 0.85 && positiveIndex < shuffledPositive.length) || smallNegativeIndex >= shuffledSmallNegative.length;
-        
+        const shouldTakePositive = Math.random() < 0.85 && positiveIndex < shuffledPositive.length || smallNegativeIndex >= shuffledSmallNegative.length;
         if (shouldTakePositive && positiveIndex < shuffledPositive.length) {
           initialSorted.push(shuffledPositive[positiveIndex]);
           positiveIndex++;
@@ -147,26 +144,25 @@ const Creators = () => {
           smallNegativeIndex++;
         }
       }
-      
+
       // Ajouter le reste des positives
       while (positiveIndex < shuffledPositive.length) {
         initialSorted.push(shuffledPositive[positiveIndex]);
         positiveIndex++;
       }
-      
+
       // Ajouter le reste des petites négatives
       while (smallNegativeIndex < shuffledSmallNegative.length) {
         initialSorted.push(shuffledSmallNegative[smallNegativeIndex]);
         smallNegativeIndex++;
       }
-      
+
       // Ajouter les grosses variations négatives à la fin
       initialSorted.push(...shuffledLargeNegative);
-      
+
       // Sauvegarder l'ordre calculé
       const sortedIds = initialSorted.map(c => c.id);
       localStorage.setItem('creators-sorted-order-v3', JSON.stringify(sortedIds));
-      
       setSortedCreators(initialSorted);
     }
   }, [shuffledOrder.length, sortedCreators.length]);
@@ -176,50 +172,80 @@ const Creators = () => {
     // Specific category assignments based on creator profiles and descriptions
     const categoryMap: Record<string, string> = {
       // Fitness - Sport, danse, bien-être physique
-      "brooks-mills-🍒": "Fitness", // Lifestyle et fitness
-      "creator3": "Fitness", // Danseuse professionnelle et chorégraphe
-      "creator2": "Fitness", // Maria avec emoji gymnastique
-      
+      "brooks-mills-🍒": "Fitness",
+      // Lifestyle et fitness
+      "creator3": "Fitness",
+      // Danseuse professionnelle et chorégraphe
+      "creator2": "Fitness",
+      // Maria avec emoji gymnastique
+
       // Glamour - Mode, haute couture, mannequinat, luxe
-      "aishah": "Glamour", // Modèle internationale, mode haute couture
-      "creator25": "Glamour", // Natalie - Mannequin et actrice, marques de luxe
-      "brookmills": "Glamour", // Luna - Top model internationale et célébrité
-      "creator1": "Glamour", // Emma - Influenceuse mode asiatique
-      "creator17": "Glamour", // Victoria avec emoji rouge à lèvres
-      "creator26": "Glamour", // Kim
-      "creator19": "Glamour", // Zoe avec emoji rose
-      
+      "aishah": "Glamour",
+      // Modèle internationale, mode haute couture
+      "creator25": "Glamour",
+      // Natalie - Mannequin et actrice, marques de luxe
+      "brookmills": "Glamour",
+      // Luna - Top model internationale et célébrité
+      "creator1": "Glamour",
+      // Emma - Influenceuse mode asiatique
+      "creator17": "Glamour",
+      // Victoria avec emoji rouge à lèvres
+      "creator26": "Glamour",
+      // Kim
+      "creator19": "Glamour",
+      // Zoe avec emoji rose
+
       // Lifestyle - Beauté, cuisine, bien-être, quotidien
-      "creator22": "Lifestyle", // Jasmine - Experte beauté et maquilleuse
-      "creator20": "Lifestyle", // Melanie - Chef pâtissière et contenu culinaire
-      "creator10": "Lifestyle", // Elizabeth - Vétérinaire bien-être animal
-      "creator21": "Lifestyle", // Samantha
-      "creator24": "Lifestyle", // Julia
-      "creator13": "Lifestyle", // Charlotte
-      "creator29": "Lifestyle", // Quinn
-      "creator28": "Lifestyle", // Wendy
-      
+      "creator22": "Lifestyle",
+      // Jasmine - Experte beauté et maquilleuse
+      "creator20": "Lifestyle",
+      // Melanie - Chef pâtissière et contenu culinaire
+      "creator10": "Lifestyle",
+      // Elizabeth - Vétérinaire bien-être animal
+      "creator21": "Lifestyle",
+      // Samantha
+      "creator24": "Lifestyle",
+      // Julia
+      "creator13": "Lifestyle",
+      // Charlotte
+      "creator29": "Lifestyle",
+      // Quinn
+      "creator28": "Lifestyle",
+      // Wendy
+
       // Cosplay - Contenu créatif, jeux de rôle, personnages
-      "creator6": "Cosplay", // Bryce's Flix - contenu vidéo/film
-      "creator11": "Cosplay", // Isabella Santos
-      "creator12": "Cosplay", // Autumn ren avec emoji nœud
-      "creator14": "Cosplay", // Audrey Shanice
-      "creator16": "Cosplay", // Sophia Rose
-      "creator4": "Cosplay", // Lala Avi
-      "creator5": "Cosplay", // Antonella
-      "creator8": "Cosplay", // Bianca
-      "creator9": "Cosplay", // Ariana Colombian
-      "creator7": "Cosplay", // Daisy
-      "creator18": "Cosplay", // Nina
-      "creator27": "Cosplay", // Hannah
-      "creator23": "Cosplay", // Isabel
+      "creator6": "Cosplay",
+      // Bryce's Flix - contenu vidéo/film
+      "creator11": "Cosplay",
+      // Isabella Santos
+      "creator12": "Cosplay",
+      // Autumn ren avec emoji nœud
+      "creator14": "Cosplay",
+      // Audrey Shanice
+      "creator16": "Cosplay",
+      // Sophia Rose
+      "creator4": "Cosplay",
+      // Lala Avi
+      "creator5": "Cosplay",
+      // Antonella
+      "creator8": "Cosplay",
+      // Bianca
+      "creator9": "Cosplay",
+      // Ariana Colombian
+      "creator7": "Cosplay",
+      // Daisy
+      "creator18": "Cosplay",
+      // Nina
+      "creator27": "Cosplay",
+      // Hannah
+      "creator23": "Cosplay" // Isabel
     };
-    
+
     // If we have a specific category for this creator, return it
     if (categoryMap[id]) {
       return categoryMap[id];
     }
-    
+
     // Fallback: use deterministic assignment for any other creators
     const categories = ['Glamour', 'Cosplay', 'Fitness', 'Lifestyle'];
     const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -284,7 +310,7 @@ const Creators = () => {
         <section className="py-8 md:py-12">
           <div className="w-full px-6">
             <FadeIn direction="up" className="mb-8">
-              <h1 className="text-3xl font-bold mb-2 text-yellow-300">Découvrez nos créatrices</h1>
+              <h1 className="mb-2 text-yellow-400 text-2xl font-bold text-center">Découvrez nos créatrices</h1>
               
             </FadeIn>
             
