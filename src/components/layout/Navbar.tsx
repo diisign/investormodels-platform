@@ -64,18 +64,10 @@ const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/about-us" className={cn('font-medium transition-colors duration-300', isActive('/about-us') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
-              Qui sommes-nous?
-            </Link>
-            <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
-              Créatrices
-            </Link>
-            <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
-              Affiliation
-            </Link>
-            <Link to="/dashboard" className={cn('font-medium transition-colors duration-300', isActive('/dashboard') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
-              Tableau de bord
-            </Link>
+            <button className="flex items-center space-x-1 font-medium text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300" onClick={toggleMenu}>
+              <span>Menu</span>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
@@ -126,12 +118,12 @@ const Navbar: React.FC<NavbarProps> = ({
               </>}
           </div>
 
-          <button className="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none" onClick={toggleMenu}>
+          <button className="text-gray-700 dark:text-gray-300 focus:outline-none md:hidden" onClick={toggleMenu}>
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        <div className={cn('md:hidden absolute left-0 right-0 bg-white dark:bg-gray-900 shadow-lg border-t border-gray-100 dark:border-gray-800 transition-all duration-300 ease-out-expo', isOpen ? 'top-full opacity-100 visible' : 'top-[-400px] opacity-0 invisible')}>
+        <div className={cn('absolute left-0 right-0 bg-white dark:bg-gray-900 shadow-lg border-t border-gray-100 dark:border-gray-800 transition-all duration-300 ease-out-expo z-50', isOpen ? 'top-full opacity-100 visible' : 'top-[-400px] opacity-0 invisible')}>
           <div className="container mx-auto px-4 py-4 space-y-4">
             <Link to="/about-us" className={cn('block py-2 font-medium', isActive('/about-us') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Qui sommes-nous?
