@@ -62,7 +62,7 @@ const AboutUs = () => {
       <section className="px-4 py-0 my-[3px]">
         <div className="max-w-6xl mx-auto my-0 py-0">
           <FadeIn>
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-foreground">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground">
               Notre équipe de direction
             </h2>
           </FadeIn>
@@ -113,7 +113,7 @@ const AboutUs = () => {
                 <img src="/lovable-uploads/ef1de523-e995-42cd-9c19-9acc736a03e8.png" alt="L'ambition des fondateurs - Interface mobile Splitz" className="w-full max-w-[200px] md:max-w-md mx-auto rounded-xl" />
               </div>
               <div className="w-2/3 md:w-1/2 text-left">
-                <h2 className="md:text-3xl lg:text-4xl mb-3 md:mb-6 text-foreground px-[16px] text-center font-bold text-xl">
+                <h2 className="text-3xl md:text-4xl mb-3 md:mb-6 text-foreground px-[16px] text-center font-bold">
                   L'ambition des <span className="text-primary">fondateurs</span>
                 </h2>
                 <div className="space-y-2 md:space-y-4 text-muted-foreground">
@@ -140,11 +140,11 @@ const AboutUs = () => {
       <section className="px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-foreground">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-foreground">
               Nos investisseurs
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-              SPLITZ a levé plus de 6 millions€ auprès d'<span className="text-primary">investisseurs</span> de renom qui nous accompagnent dans notre mission
+              <span className="text-primary">SPLITZ a levé plus de 6 millions€</span> auprès d'investisseurs de renom qui nous accompagnent dans notre mission
             </p>
           </FadeIn>
 
