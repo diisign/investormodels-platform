@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 const AboutUs = () => {
   const [openStates, setOpenStates] = useState<{
     [key: string]: boolean;
@@ -214,6 +215,8 @@ const AboutUs = () => {
           </FadeIn>
         </div>
       </section>
+      
+      <Footer />
     </div>;
 };
 export default AboutUs;
