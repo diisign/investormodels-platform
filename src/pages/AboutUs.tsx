@@ -84,19 +84,12 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* Founders' Ambition Section */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <FadeIn>
-            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-              <div className="w-full lg:w-1/2">
-                <img src="/lovable-uploads/a80e7cf5-1e55-4346-b3c6-c40ac4f36b39.png" alt="L'ambition des fondateurs - Interface mobile Splitz" className="w-full max-w-md mx-auto rounded-2xl shadow-2xl" />
-              </div>
-              
-            </div>
-          </FadeIn>
+      {/* Image */}
+      <div className="py-8 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <img src="/lovable-uploads/a80e7cf5-1e55-4346-b3c6-c40ac4f36b39.png" alt="Interface mobile Splitz" className="w-full max-w-md mx-auto rounded-2xl shadow-2xl" />
         </div>
-      </section>
+      </div>
 
       {/* Call to Action */}
       <section className="py-16 px-4">
