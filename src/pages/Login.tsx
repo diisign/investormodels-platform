@@ -4,7 +4,7 @@ import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
 import { toast } from 'sonner';
@@ -185,8 +185,6 @@ const Login = () => {
           </div>
         </section>
       </main>
-      
-      <Footer />
     </div>;
 };
 export default Login;
