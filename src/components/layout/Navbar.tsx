@@ -64,14 +64,22 @@ const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="hidden md:flex items-center space-x-8">
-            <button className="flex items-center space-x-1 font-medium text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300 transition-colors duration-300" onClick={toggleMenu}>
-              <span>Menu</span>
-              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-            </button>
+            <Link to="/about-us" className={cn('font-medium transition-colors duration-300', isActive('/about-us') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+              Qui sommes-nous?
+            </Link>
+            <Link to="/creators" className={cn('font-medium transition-colors duration-300', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+              Créatrices
+            </Link>
+            <Link to="/affiliation" className={cn('font-medium transition-colors duration-300', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+              Affiliation
+            </Link>
+            <Link to="/dashboard" className={cn('font-medium transition-colors duration-300', isActive('/dashboard') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300 hover:text-yellow-300 dark:hover:text-yellow-300')}>
+              Tableau de bord
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            {userIsLoggedIn ? <div className="relative">
+            {userIsLoggedIn && <div className="relative">
                 <button className="flex items-center space-x-2 font-medium text-gray-700 dark:text-gray-300 hover:text-investment-500 dark:hover:text-investment-400 transition-colors duration-300" onClick={toggleUserMenu}>
                   <Avatar className="h-8 w-8 border border-gray-200 dark:border-gray-700">
                     <AvatarImage src={user?.avatar_url || ''} alt="Avatar" />
@@ -104,18 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({
                       <span>Déconnexion</span>
                     </button>
                   </div>}
-              </div> : <>
-                <Link to="/login">
-                  <GradientButton variant="secondary" size="default" className="px-5 bg-white !text-black border border-gray-300 hover:bg-gray-50 hover:!text-black">
-                    Connexion
-                  </GradientButton>
-                </Link>
-                <Link to="/register">
-                  <GradientButton variant="primary" size="default" className="px-5">
-                    Inscription
-                  </GradientButton>
-                </Link>
-              </>}
+              </div>}
           </div>
 
           <button className="text-gray-700 dark:text-gray-300 focus:outline-none md:hidden" onClick={toggleMenu}>
@@ -139,7 +136,7 @@ const Navbar: React.FC<NavbarProps> = ({
             </Link>
             
             <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
-              {userIsLoggedIn ? <>
+              {userIsLoggedIn && <>
                   <div className="flex items-center space-x-3 py-2">
                     <Avatar className="h-8 w-8 border border-gray-200 dark:border-gray-700">
                       <AvatarImage src={user?.avatar_url || ''} alt="Avatar" />
@@ -161,18 +158,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   <button className="block w-full text-left py-2 font-medium text-red-600 dark:text-red-400" onClick={handleLogout}>
                     Déconnexion
                   </button>
-                </> : <div className="flex flex-col space-y-3">
-                  <Link to="/login" onClick={closeMenu}>
-                    <GradientButton variant="secondary" fullWidth>
-                      Connexion
-                    </GradientButton>
-                  </Link>
-                  <Link to="/register" onClick={closeMenu}>
-                    <GradientButton variant="primary" fullWidth>
-                      Inscription
-                    </GradientButton>
-                  </Link>
-                </div>}
+                </>}
             </div>
           </div>
         </div>
