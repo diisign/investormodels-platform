@@ -32,7 +32,7 @@ const TrustLogos = () => {
   ];
 
   return (
-    <section className="py-12 md:py-16 bg-gray-50">
+    <section className="py-12 md:py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="relative overflow-hidden">
           <div className="flex animate-infinite-scroll">
