@@ -335,9 +335,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Trust Section - Nouvelle section */}
-        <TrustLogos />
-
         {/* Top Affiliés Section */}
         <section className="py-10 md:py-16 bg-transparent">
           <div className="container mx-auto px-4">
@@ -386,6 +383,9 @@ const Index = () => {
             </FadeIn>
           </div>
         </section>
+        
+        {/* Trust Section - Infinite loop logo slider */}
+        <TrustLogos />
         
         <section className="py-12 md:py-20 bg-white dark:bg-gray-950">
           <div className="container mx-auto px-4">

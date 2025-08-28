@@ -44,7 +44,11 @@ const TrustLogos = () => {
                     <img 
                       src={logo.url} 
                       alt={logo.alt} 
-                      className="h-8 md:h-16 w-auto object-contain" 
+                      className={`w-auto object-contain ${
+                        logo.name === 'Station F' ? 'h-6 md:h-12' : 
+                        logo.name === 'OnlyFans' ? 'h-10 md:h-20' : 
+                        'h-8 md:h-16'
+                      }`} 
                     />
                   </div>
                 ))}
