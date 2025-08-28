@@ -36,7 +36,10 @@ const Navbar: React.FC<NavbarProps> = ({
       replace: true
     });
     // Scroll vers le haut de la page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({
   };
   return <nav className={cn('fixed left-0 right-0 z-50 transition-all duration-300 py-4', 'top-[38px]', isScrolled ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md' : 'bg-transparent')}>
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between py-[5px] my-[10px]">
           <button onClick={handleLogoClick} className="flex items-center">
             <img src="/lovable-uploads/3d2823d0-03f5-4650-92e6-39d1c77529a2.png" alt="SPLITZ" className="h-5 w-auto" />
           </button>
