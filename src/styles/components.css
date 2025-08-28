@@ -66,12 +66,29 @@
   }
 }
 
+@keyframes scroll-trust {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333333%);
+  }
+}
+
 .animate-scroll {
   animation: scroll 30s linear infinite;
+}
+
+.animate-scroll-trust {
+  animation: scroll-trust 20s linear infinite;
 }
 
 @media (max-width: 768px) {
   .animate-scroll {
     animation: scroll-mobile 12s linear infinite;
+  }
+  
+  .animate-scroll-trust {
+    animation: scroll-trust 15s linear infinite;
   }
 }
