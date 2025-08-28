@@ -40,7 +40,7 @@ const TrustLogos = () => {
             {[...Array(8)].map((_, setIndex) => (
               <React.Fragment key={setIndex}>
                 {logos.map((logo, index) => (
-                  <div key={`${setIndex}-${index}`} className="flex-shrink-0 mx-8 md:mx-12">
+                  <div key={`${setIndex}-${index}`} className={`flex-shrink-0 mx-8 md:mx-12 ${logo.name === 'OnlyFans' ? '-mt-2' : ''}`}>
                     <img 
                       src={logo.url} 
                       alt={logo.alt} 
