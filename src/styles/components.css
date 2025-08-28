@@ -80,7 +80,7 @@
 }
 
 .animate-scroll-trust {
-  animation: scroll-trust 12s linear infinite;
+  animation: scroll-trust 8s linear infinite;
 }
 
 @media (max-width: 768px) {
@@ -89,6 +89,6 @@
   }
   
   .animate-scroll-trust {
-    animation: scroll-trust 8s linear infinite;
+    animation: scroll-trust 5s linear infinite;
   }
 }

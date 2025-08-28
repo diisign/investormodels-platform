@@ -35,7 +35,7 @@ const TrustLogos = () => {
     <section className="py-12 md:py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="relative overflow-hidden">
-          <div className="flex animate-scroll-trust space-x-12 md:space-x-16">
+          <div className="flex animate-scroll-trust space-x-16 md:space-x-20">
             {/* Premier set de logos */}
             {logos.map((logo, index) => (
               <div key={`set1-${index}`} className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:h-20 md:w-40">
