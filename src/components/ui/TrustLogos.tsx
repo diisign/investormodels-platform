@@ -36,26 +36,18 @@ const TrustLogos = () => {
       <div className="container mx-auto px-4">
         <div className="relative overflow-hidden">
           <div className="flex animate-scroll-trust space-x-4 md:space-x-20">
-            {/* Premier set de logos */}
-            {logos.map((logo, index) => (
-              <div key={`set1-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
-                <img 
-                  src={logo.url} 
-                  alt={logo.alt} 
-                  className={`max-w-full object-contain ${logo.name === 'MYM' ? 'max-h-4 md:max-h-12' : 'max-h-6 md:max-h-16'}`} 
-                />
-              </div>
-            ))}
-            {/* Deuxième set pour continuité */}
-            {logos.map((logo, index) => (
-              <div key={`set2-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
-                <img 
-                  src={logo.url} 
-                  alt={logo.alt} 
-                  className={`max-w-full object-contain ${logo.name === 'MYM' ? 'max-h-4 md:max-h-12' : 'max-h-6 md:max-h-16'}`} 
-                />
-              </div>
-            ))}
+            {/* Répétition multiple pour animation fluide */}
+            {Array.from({ length: 15 }).map((_, setIndex) => 
+              logos.map((logo, index) => (
+                <div key={`set${setIndex}-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
+                  <img 
+                    src={logo.url} 
+                    alt={logo.alt} 
+                    className={`max-w-full object-contain ${logo.name === 'MYM' ? 'max-h-4 md:max-h-12' : 'max-h-6 md:max-h-16'}`} 
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
