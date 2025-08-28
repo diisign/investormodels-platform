@@ -39,19 +39,21 @@ const TrustLogos = () => {
             {/* Premier set de logos */}
             {logos.map((logo, index) => (
               <div key={`set1-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
-                <img src={logo.url} alt={logo.alt} className="max-h-6 md:max-h-16 max-w-full object-contain" />
+                <img 
+                  src={logo.url} 
+                  alt={logo.alt} 
+                  className={`max-w-full object-contain ${logo.name === 'MYM' ? 'max-h-4 md:max-h-12' : 'max-h-6 md:max-h-16'}`} 
+                />
               </div>
             ))}
             {/* Deuxième set pour continuité */}
             {logos.map((logo, index) => (
               <div key={`set2-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
-                <img src={logo.url} alt={logo.alt} className="max-h-6 md:max-h-16 max-w-full object-contain" />
-              </div>
-            ))}
-            {/* Troisième set pour continuité */}
-            {logos.map((logo, index) => (
-              <div key={`set3-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
-                <img src={logo.url} alt={logo.alt} className="max-h-6 md:max-h-16 max-w-full object-contain" />
+                <img 
+                  src={logo.url} 
+                  alt={logo.alt} 
+                  className={`max-w-full object-contain ${logo.name === 'MYM' ? 'max-h-4 md:max-h-12' : 'max-h-6 md:max-h-16'}`} 
+                />
               </div>
             ))}
           </div>
