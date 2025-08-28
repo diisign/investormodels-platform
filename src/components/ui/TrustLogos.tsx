@@ -21,7 +21,7 @@ const TrustLogos = () => {
     },
     {
       name: "MYM",
-      url: "/lovable-uploads/86f59032-0bfd-41ce-ad65-c1afae091b24.png",
+      url: "/lovable-uploads/01779f25-8be6-4fec-ba27-69ee0aa76393.png",
       alt: "MYM Logo"
     },
     {
