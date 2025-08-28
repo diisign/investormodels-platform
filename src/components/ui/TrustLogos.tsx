@@ -45,25 +45,19 @@ const TrustLogos = () => {
             {/* Premier set de logos */}
             {logos.map((logo, index) => (
               <div key={`set1-${index}`} className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:h-20 md:w-40">
-                <div className="bg-white rounded-lg shadow-sm p-4 w-full h-full flex items-center justify-center border border-gray-200">
-                  <img src={logo.url} alt={logo.alt} className="max-h-8 md:max-h-10 max-w-full object-contain" />
-                </div>
+                <img src={logo.url} alt={logo.alt} className="max-h-12 md:max-h-16 max-w-full object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" />
               </div>
             ))}
             {/* Deuxième set pour continuité */}
             {logos.map((logo, index) => (
               <div key={`set2-${index}`} className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:h-20 md:w-40">
-                <div className="bg-white rounded-lg shadow-sm p-4 w-full h-full flex items-center justify-center border border-gray-200">
-                  <img src={logo.url} alt={logo.alt} className="max-h-8 md:max-h-10 max-w-full object-contain" />
-                </div>
+                <img src={logo.url} alt={logo.alt} className="max-h-12 md:max-h-16 max-w-full object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" />
               </div>
             ))}
             {/* Troisième set pour continuité */}
             {logos.map((logo, index) => (
               <div key={`set3-${index}`} className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:h-20 md:w-40">
-                <div className="bg-white rounded-lg shadow-sm p-4 w-full h-full flex items-center justify-center border border-gray-200">
-                  <img src={logo.url} alt={logo.alt} className="max-h-8 md:max-h-10 max-w-full object-contain" />
-                </div>
+                <img src={logo.url} alt={logo.alt} className="max-h-12 md:max-h-16 max-w-full object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" />
               </div>
             ))}
           </div>
