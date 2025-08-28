@@ -49,29 +49,29 @@
 }
 
 @keyframes scroll {
-  from {
-    transform: translateX(0);
+  0% {
+    transform: translateX(100%);
   }
-  to {
-    transform: translateX(-33.333333%);
+  100% {
+    transform: translateX(-100%);
   }
 }
 
 @keyframes scroll-mobile {
-  from {
-    transform: translateX(0);
+  0% {
+    transform: translateX(100%);
   }
-  to {
-    transform: translateX(-33.333333%);
+  100% {
+    transform: translateX(-300%);
   }
 }
 
 .animate-scroll {
-  animation: scroll 8s linear infinite;
+  animation: scroll 30s linear infinite;
 }
 
 @media (max-width: 768px) {
   .animate-scroll {
-    animation: scroll-mobile 4s linear infinite;
+    animation: scroll-mobile 12s linear infinite;
   }
 }
