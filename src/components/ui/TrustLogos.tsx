@@ -35,26 +35,20 @@ const TrustLogos = () => {
     <section className="py-12 md:py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="relative overflow-hidden">
-          <div className="flex animate-scroll-trust space-x-4 md:space-x-20">
-            {/* Première séquence complète */}
-            {logos.map((logo, index) => (
-              <div key={`original-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
-                <img 
-                  src={logo.url} 
-                  alt={logo.alt} 
-                  className={`max-w-full object-contain ${logo.name === 'MYM' ? 'max-h-4 md:max-h-12' : 'max-h-6 md:max-h-16'}`} 
-                />
-              </div>
-            ))}
-            {/* Deuxième séquence identique pour continuité */}
-            {logos.map((logo, index) => (
-              <div key={`duplicate-${index}`} className="flex-shrink-0 flex items-center justify-center h-12 w-16 md:h-20 md:w-40">
-                <img 
-                  src={logo.url} 
-                  alt={logo.alt} 
-                  className={`max-w-full object-contain ${logo.name === 'MYM' ? 'max-h-4 md:max-h-12' : 'max-h-6 md:max-h-16'}`} 
-                />
-              </div>
+          <div className="flex animate-infinite-scroll">
+            {/* Créer plusieurs copies pour la boucle infinie */}
+            {[...Array(8)].map((_, setIndex) => (
+              <React.Fragment key={setIndex}>
+                {logos.map((logo, index) => (
+                  <div key={`${setIndex}-${index}`} className="flex-shrink-0 mx-8 md:mx-12">
+                    <img 
+                      src={logo.url} 
+                      alt={logo.alt} 
+                      className={`object-contain ${logo.name === 'MYM' ? 'h-6 md:h-12' : 'h-8 md:h-16'} w-auto`} 
+                    />
+                  </div>
+                ))}
+              </React.Fragment>
             ))}
           </div>
         </div>
