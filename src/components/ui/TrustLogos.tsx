@@ -6,27 +6,27 @@ const TrustLogos = () => {
   const logos = [
     {
       name: "OnlyFans",
-      url: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=200&h=80&fit=crop&crop=center",
+      url: "/lovable-uploads/0f3c2e28-dae5-45fe-b927-76448473ca67.png",
       alt: "OnlyFans Logo"
     },
     {
       name: "Stripe", 
-      url: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=80&fit=crop&crop=center",
+      url: "/lovable-uploads/280f726b-2ee9-4965-8557-bbbb02e8fc51.png",
       alt: "Stripe Logo"
     },
     {
       name: "Station F",
-      url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200&h=80&fit=crop&crop=center", 
+      url: "/lovable-uploads/2bfd27d0-1248-45b5-a886-c18b132f1f6a.png", 
       alt: "Station F Logo"
     },
     {
       name: "MYM",
-      url: "https://images.unsplash.com/photo-1611605698323-b1e99cfd37ea?w=200&h=80&fit=crop&crop=center",
+      url: "/lovable-uploads/86f59032-0bfd-41ce-ad65-c1afae091b24.png",
       alt: "MYM Logo"
     },
     {
       name: "BPI France",
-      url: "https://images.unsplash.com/photo-1560472355-536de3962603?w=200&h=80&fit=crop&crop=center",
+      url: "/lovable-uploads/dc54f338-5e9b-4519-ad9f-62dffdf4f580.png",
       alt: "BPI France Logo"
     }
   ];
@@ -46,7 +46,7 @@ const TrustLogos = () => {
             {logos.map((logo, index) => (
               <div key={`set1-${index}`} className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:h-20 md:w-40">
                 <div className="bg-white rounded-lg shadow-sm p-4 w-full h-full flex items-center justify-center border border-gray-200">
-                  <span className="text-gray-700 font-semibold text-sm md:text-base">{logo.name}</span>
+                  <img src={logo.url} alt={logo.alt} className="max-h-8 md:max-h-10 max-w-full object-contain" />
                 </div>
               </div>
             ))}
@@ -54,7 +54,7 @@ const TrustLogos = () => {
             {logos.map((logo, index) => (
               <div key={`set2-${index}`} className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:h-20 md:w-40">
                 <div className="bg-white rounded-lg shadow-sm p-4 w-full h-full flex items-center justify-center border border-gray-200">
-                  <span className="text-gray-700 font-semibold text-sm md:text-base">{logo.name}</span>
+                  <img src={logo.url} alt={logo.alt} className="max-h-8 md:max-h-10 max-w-full object-contain" />
                 </div>
               </div>
             ))}
@@ -62,7 +62,7 @@ const TrustLogos = () => {
             {logos.map((logo, index) => (
               <div key={`set3-${index}`} className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:h-20 md:w-40">
                 <div className="bg-white rounded-lg shadow-sm p-4 w-full h-full flex items-center justify-center border border-gray-200">
-                  <span className="text-gray-700 font-semibold text-sm md:text-base">{logo.name}</span>
+                  <img src={logo.url} alt={logo.alt} className="max-h-8 md:max-h-10 max-w-full object-contain" />
                 </div>
               </div>
             ))}
