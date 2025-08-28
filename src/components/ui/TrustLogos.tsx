@@ -46,7 +46,7 @@ const TrustLogos = () => {
                       alt={logo.alt} 
                       className={`w-auto object-contain ${
                         logo.name === 'Station F' ? 'h-6 md:h-12' : 
-                        logo.name === 'OnlyFans' ? 'h-10 md:h-20' : 
+                        logo.name === 'OnlyFans' ? 'h-12 md:h-24' : 
                         'h-8 md:h-16'
                       }`} 
                     />
