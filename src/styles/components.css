@@ -75,12 +75,20 @@
   }
 }
 
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
 .animate-infinite-scroll {
   animation: infinite-scroll 35s linear infinite;
   width: fit-content;
 }
 
 @media (max-width: 768px) {
+  .animate-scroll {
+    animation: scroll-mobile 12s linear infinite;
+  }
+  
   .animate-infinite-scroll {
     animation: infinite-scroll 25s linear infinite;
   }
