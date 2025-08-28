@@ -8,6 +8,9 @@ const AnnouncementBanner = () => {
         <span className="inline-block px-4 text-sm font-medium">
           🎉 Félicitations au meilleur parrain de juillet, Alexandre ! Avec 743 parrainages et un gain exceptionnel de 111 450 € 👏
         </span>
+        <span className="inline-block px-4 text-sm font-medium">
+          ✨ Nous recherchons des créatrices OnlyFans et MYM pour des collaborations durables et bénéfiques
+        </span>
       </div>
     </div>
   );
