@@ -6,6 +6,7 @@ import CreatorCard from '@/components/ui/CreatorCard';
 import FadeIn from '@/components/animations/FadeIn';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import AnnouncementBanner from '@/components/ui/AnnouncementBanner';
 import { creators } from '@/utils/mockData';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
@@ -15,6 +16,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { getCreatorProfile, creatorProfiles, getMarketCap, getLastVariation } from '@/utils/creatorProfiles';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
+
 const trustpilotReviews = [{
   id: 1,
   name: "Sophie M.",
@@ -76,6 +78,7 @@ const trustpilotReviews = [{
   comment: "J'ai été impressionnée par la transparence et la performance. Un véritable coup de cœur pour cette plateforme innovante!",
   style: "italic"
 }];
+
 const Index = () => {
   const {
     isAuthenticated
@@ -89,11 +92,13 @@ const Index = () => {
   const {
     width
   } = useScreenSize();
+
   const scrollToCreators = () => {
     creatorsRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   };
+
   const allCreators = [...creators];
   Object.values(creatorProfiles).forEach(profile => {
     if (!profile.hidden && !allCreators.some(c => c.id === profile.id)) {
@@ -115,6 +120,7 @@ const Index = () => {
       });
     }
   });
+
   // Ordre personnalisé des top créateurs avec leurs taux
   const customOrder = [{
     id: 'brookmills',
@@ -173,6 +179,7 @@ const Index = () => {
     name: 'Aishah Sofey',
     rate: 11.71
   }];
+
   const topCreators = customOrder.map((orderItem, index) => {
     const creator = allCreators.find(c => c.id === orderItem.id);
     if (!creator) return null;
@@ -186,6 +193,7 @@ const Index = () => {
       customRank: index + 1
     };
   }).filter(Boolean);
+
   const slidesPerView = width < 640 ? 3 : width < 768 ? 3 : width < 1024 ? 3 : 4;
 
   // Function to handle navigation to affiliation page and scroll to top
@@ -193,7 +201,9 @@ const Index = () => {
     // We'll use window.scrollTo after navigation to ensure scrolling to top
     sessionStorage.setItem('scrollToTop', 'true');
   };
+
   return <div className="min-h-screen flex flex-col">
+      <AnnouncementBanner />
       <Navbar isLoggedIn={false} />
       
       <main className="flex-grow pt-20 md:pt-24">
@@ -425,4 +435,5 @@ const Index = () => {
       <Footer />
     </div>;
 };
+
 export default Index;
