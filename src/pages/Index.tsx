@@ -206,7 +206,7 @@ const Index = () => {
       <AnnouncementBanner />
       <Navbar isLoggedIn={false} />
       
-      <main className="flex-grow pt-20 md:pt-24">
+      <main className="flex-grow pt-[100px] md:pt-[110px]">
         <section className="relative overflow-hidden pb-12 md:pb-20 pt-2 md:pt-4">
           <div className="absolute inset-0 overflow-hidden rounded bg-[purple-gradient-to] bg-transparent">
             
