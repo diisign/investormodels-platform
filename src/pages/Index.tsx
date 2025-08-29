@@ -229,12 +229,12 @@ const Index = () => {
                   </CarouselItem>
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
-                      <img src="/lovable-uploads/da3fd589-deae-4018-ad84-7c0c3945226e-hd.png" alt="Collaboration SPLITZ x OnlyFans" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg mt-2" />
+                      <img src="/lovable-uploads/4d22139f-8126-4723-894e-bda18fd81fb2.png" alt="7 Millions € de dividendes versés" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg" />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="pl-0 basis-full">
                     <div className="w-full">
-                      <img src="/lovable-uploads/4d22139f-8126-4723-894e-bda18fd81fb2.png" alt="7 Millions € de dividendes versés" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg" />
+                      <img src="/lovable-uploads/da3fd589-deae-4018-ad84-7c0c3945226e-hd.png" alt="Collaboration SPLITZ x OnlyFans" className="w-full h-64 md:h-96 lg:h-[500px] object-cover rounded-3xl shadow-lg mt-2" />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="pl-0 basis-full">
