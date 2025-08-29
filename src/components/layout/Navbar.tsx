@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus, Globe } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LayoutDashboard, LogOut, Wallet, Plus, Minus } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/utils/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useLanguage } from '@/contexts/LanguageContext';
 interface NavbarProps {
   isLoggedIn: boolean;
   onLogout?: () => void;
@@ -19,7 +18,6 @@ const Navbar: React.FC<NavbarProps> = ({
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { language, setLanguage, t } = useLanguage();
   const {
     logout,
     isAuthenticated,
@@ -76,32 +74,17 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className={cn('absolute left-0 right-0 bg-white dark:bg-gray-900 shadow-lg border-t border-gray-100 dark:border-gray-800 transition-all duration-300 ease-out-expo z-50', isOpen ? 'top-full opacity-100 visible' : 'top-[-400px] opacity-0 invisible')}>
           <div className="container mx-auto px-4 py-4 space-y-4">
             <Link to="/about-us" className={cn('block py-2 font-medium', isActive('/about-us') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
-              {t('nav.about')}
+              Qui sommes-nous?
             </Link>
             <Link to="/creators" className={cn('block py-2 font-medium', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
-              {t('nav.creators')}
+              Créatrices
             </Link>
             <Link to="/affiliation" className={cn('block py-2 font-medium', isActive('/affiliation') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
-              {t('nav.affiliation')}
+              Affiliation
             </Link>
             <Link to="/dashboard" className={cn('block py-2 font-medium', isActive('/dashboard') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
-              {t('nav.dashboard')}
+              Tableau de bord
             </Link>
-            
-            {/* Language Selector */}
-            <div className="py-2">
-              <div className="flex items-center space-x-2">
-                <Globe className="h-4 w-4 text-gray-500" />
-                <button
-                  onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')}
-                  className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-yellow-300 transition-colors"
-                >
-                  <span className="font-medium">{t('language.fr')}</span>
-                  <span>/</span>
-                  <span className="font-medium">{t('language.en')}</span>
-                </button>
-              </div>
-            </div>
             
             <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
               {userIsLoggedIn ? <>
@@ -115,26 +98,26 @@ const Navbar: React.FC<NavbarProps> = ({
                     <span className="font-medium">{user?.name || user?.email}</span>
                   </div>
                   <Link to="/profile" className="block py-2 font-medium text-gray-700 dark:text-gray-300" onClick={closeMenu}>
-                    {t('nav.profile')}
+                    Mon profil
                   </Link>
                   <Link to="/deposit" className="block py-2 font-medium text-primary" onClick={closeMenu}>
-                    {t('nav.deposit')}
+                    Déposer des fonds
                   </Link>
                   <Link to="/profile?action=withdraw" className="block py-2 font-medium text-orange-600 dark:text-orange-400" onClick={closeMenu}>
-                    {t('nav.withdraw')}
+                    Retirer des fonds
                   </Link>
                   <button className="block w-full text-left py-2 font-medium text-red-600 dark:text-red-400" onClick={handleLogout}>
-                    {t('nav.logout')}
+                    Déconnexion
                   </button>
                 </> : <div className="flex flex-col space-y-3">
                   <Link to="/login" onClick={closeMenu}>
                     <GradientButton variant="secondary" fullWidth>
-                      {t('nav.login')}
+                      Connexion
                     </GradientButton>
                   </Link>
                   <Link to="/register" onClick={closeMenu}>
                     <GradientButton variant="primary" fullWidth>
-                      {t('nav.register')}
+                      Inscription
                     </GradientButton>
                   </Link>
                 </div>}

@@ -17,7 +17,6 @@ import OnlyfansRevenueChart from '@/components/charts/OnlyfansRevenueChart';
 import { getCreatorProfile, creatorProfiles, getMarketCap, getLastVariation } from '@/utils/creatorProfiles';
 import TopAffiliates from '@/components/affiliations/TopAffiliates';
 import TrustLogos from '@/components/ui/TrustLogos';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 const trustpilotReviews = [{
   id: 1,
@@ -85,7 +84,6 @@ const Index = () => {
   const {
     isAuthenticated
   } = useAuth();
-  const { t } = useLanguage();
   const creatorsRef = useRef<HTMLDivElement>(null);
   const autoplayRef = useRef(Autoplay({
     delay: 3500,
@@ -251,35 +249,35 @@ const Index = () => {
             <div className="max-w-3xl mx-auto text-center mt-12 md:mt-16">
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-foreground xl:text-2xl">
-                  {t('index.hero.title')}
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-zinc-950 xl:text-2xl">
+                  Investissez dans les <span className="text-3xl text-yellow-400">créatrices OnlyFans</span>
                 </h1>
                 
                 
                 <div className="pt-2 bg-transparent">
                   {isAuthenticated ? <button onClick={scrollToCreators}>
-                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
-                        {t('index.hero.cta')}
+                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                        Commencer maintenant
                       </GradientButton>
                     </button> : <Link to="/login">
-                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
-                        {t('index.hero.cta')}
+                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                        Commencer maintenant
                       </GradientButton>
                     </Link>}
                 </div>
                 
                 <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 pt-4 md:pt-6">
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl md:text-3xl font-bold text-foreground">50+</span>
-                    <span className="text-sm text-muted-foreground">{t('index.stats.creators')}</span>
+                    <span className="text-2xl md:text-3xl font-bold text-gray-950">50+</span>
+                    <span className="text-sm text-gray-500">Créatrices</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl md:text-3xl font-bold text-foreground">20K+</span>
-                    <span className="text-sm text-muted-foreground">{t('index.stats.investors')}</span>
+                    <span className="text-2xl md:text-3xl font-bold text-zinc-950">20K+</span>
+                    <span className="text-sm text-gray-500">Investisseurs</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl md:text-3xl font-bold text-foreground">7M €</span>
-                    <span className="text-sm text-muted-foreground">{t('index.stats.dividends')}</span>
+                    <span className="text-2xl md:text-3xl font-bold text-zinc-950">7M €</span>
+                    <span className="text-sm text-gray-500">Dividendes</span>
                   </div>
                 </div>
               </FadeIn>
@@ -292,13 +290,13 @@ const Index = () => {
             <FadeIn className="text-center mb-8 md:mb-12" direction="up">
               <div>
                 <h2 className="md:text-3xl font-bold mb-3 md:mb-4 lg:text-3xl text-2xl">
-                  {t('index.trending.title')}
+                  <span className="text-zinc-950">Top</span> <span className="text-yellow-400">Tendances</span>
                 </h2>
                 
               </div>
-              <Link to="/creators" className="hidden md:flex items-center text-primary hover:text-primary/80 font-medium mt-4 md:mt-0">
-                <span className="text-foreground">{t('index.trending.viewAll')}</span>
-                <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent text-primary" />
+              <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
+                <span className="text-zinc-950">Voir toutes les créatrices</span>
+                <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent text-yellow-300" />
               </Link>
             </FadeIn>
           </div>
@@ -328,9 +326,9 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
-                <GradientButton gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
-                  {t('index.trending.viewAll')}
-                  <ArrowRight className="h-4 w-4 ml-1" />
+                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                  Voir toutes les créatrices
+                  <ArrowRight className="h-4 w-4 ml-1 text-yellow-300" />
                 </GradientButton>
               </Link>
             </div>
@@ -342,10 +340,10 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn className="max-w-3xl mx-auto mb-8" direction="up">
               <h2 className="md:text-3xl font-bold mb-3 text-center text-2xl">
-                {t('index.affiliates.title')}
+                Nos <span className="text-yellow-400">Meilleurs Parrains</span>
               </h2>
-              <p className="text-base md:text-lg text-center text-muted-foreground">
-                {t('index.affiliates.subtitle')}
+              <p className="text-base md:text-lg text-center text-gray-950">
+                Ils ont recommandé notre plateforme et ont généré des revenus exceptionnels. Pourquoi pas vous ?
               </p>
             </FadeIn>
             
@@ -355,8 +353,8 @@ const Index = () => {
             
             <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
-                <GradientButton gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
-                  {t('index.affiliates.cta')}
+                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                  Rejoindre le programme d'affiliation
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
@@ -368,10 +366,10 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <FadeIn direction="up" className="max-w-3xl mx-auto mb-10 text-2xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
-                {t('index.market.title')}
+                Un Marché en <span className="text-yellow-400">Pleine Explosion</span>
               </h2>
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-center text-muted-foreground">{t('index.market.subtitle')}</p>
+                <p className="text-base md:text-lg text-center text-gray-950">OnlyFans connaît une croissance explosive depuis sa création en 2017 son Chiffre d'affaire a été multiplié par 300.</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
                   
                   
@@ -402,10 +400,10 @@ const Index = () => {
                 <span className="text-base font-bold text-inherit">4.7/5</span>
               </div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-                {t('index.reviews.title')}
+                Ce que disent <span className="text-yellow-400">nos utilisateurs</span>
               </h2>
               <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
-                {t('index.reviews.subtitle')}
+                Rejoignez plus de 20 000 investisseurs satisfaits qui ont déjà fait confiance à notre plateforme.
               </p>
             </FadeIn>
             
