@@ -30,6 +30,7 @@ import Dɑshboɑrd from "./pages/dɑshboɑrd";
 import Dashboɑrd from "./pages/dashboɑrd";
 import DashboardAffiliation from "./pages/DashboardAffiliation";
 import CookieBanner from "./components/layout/CookieBanner";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 
@@ -38,8 +39,9 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
+      <LanguageProvider>
+        <BrowserRouter>
+          <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
@@ -101,10 +103,11 @@ const App = () => (
             
             {/* Route par défaut */}
             <Route path="*" element={<NotFound />} />
-          </Routes>
-          <CookieBanner />
-        </AuthProvider>
-      </BrowserRouter>
+            </Routes>
+            <CookieBanner />
+          </AuthProvider>
+        </BrowserRouter>
+      </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

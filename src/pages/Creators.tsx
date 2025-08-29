@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { creators } from '@/utils/mockData';
 import { useAuth } from '@/utils/auth';
 import { getCreatorProfile, creatorProfiles, getMarketCap, getLastVariation } from '@/utils/creatorProfiles';
+import { useLanguage } from '@/contexts/LanguageContext';
 type SortOption = 'random' | 'popularity' | 'return' | 'alphabetical' | 'performance' | 'marketcap';
 
 // Create an interface for consolidated creator data
@@ -25,6 +26,7 @@ const Creators = () => {
   const {
     isAuthenticated
   } = useAuth();
+  const { t } = useLanguage();
   const [sortBy, setSortBy] = useState<SortOption>('performance'); // Default to 'performance'
   const [showDropdown, setShowDropdown] = useState(false);
   const [allCreators, setAllCreators] = useState<ConsolidatedCreator[]>([]);
@@ -285,19 +287,19 @@ const Creators = () => {
   const getSortLabel = (option: SortOption) => {
     switch (option) {
       case 'random':
-        return 'Aléatoire';
+        return t('sort.random');
       case 'performance':
-        return 'Top Performance';
+        return t('sort.performance');
       case 'marketcap':
-        return 'Top Market Cap';
+        return t('sort.marketcap');
       case 'popularity':
-        return 'Popularité';
+        return t('sort.popularity');
       case 'return':
-        return 'Rendement';
+        return t('sort.return');
       case 'alphabetical':
-        return 'Alphabétique';
+        return t('sort.alphabetical');
       default:
-        return 'Aléatoire';
+        return t('sort.random');
     }
   };
 
@@ -310,14 +312,14 @@ const Creators = () => {
         <section className="py-8 md:py-12">
           <div className="w-full px-6">
             <FadeIn direction="up" className="mb-8">
-              <h1 className="mb-2 text-yellow-400 text-2xl font-bold text-center">Découvrez nos créatrices</h1>
+              <h1 className="mb-2 text-yellow-400 text-2xl font-bold text-center">{t('creators.title')}</h1>
               
             </FadeIn>
             
             <FadeIn direction="up" delay={150} className="mb-6">
               <div className="flex items-center justify-between">
                 <p className="text-gray-600 dark:text-gray-300">
-                  {filteredCreators.length} {filteredCreators.length > 1 ? 'créatrices' : 'créatrice'}
+                  {filteredCreators.length} {filteredCreators.length > 1 ? t('creators.count.plural') : t('creators.count.singular')}
                 </p>
                 
                 {/* Dropdown pour le filtre */}
@@ -335,9 +337,9 @@ const Creators = () => {
                 <div className="text-gray-400 mb-3">
                   <Search className="h-12 w-12 mx-auto opacity-30" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Aucune créatrice trouvée</h3>
+                <h3 className="text-xl font-semibold mb-2">{t('creators.noResults.title')}</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                  Aucune créatrice n'est disponible pour le moment.
+                  {t('creators.noResults.subtitle')}
                 </p>
               </FadeIn>}
           </div>
