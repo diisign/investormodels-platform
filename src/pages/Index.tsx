@@ -251,18 +251,18 @@ const Index = () => {
             <div className="max-w-3xl mx-auto text-center mt-12 md:mt-16">
               <FadeIn className="space-y-4 md:space-y-6" direction="up">
                 
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-zinc-950 xl:text-2xl">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-foreground xl:text-2xl">
                   {t('index.hero.title')}
                 </h1>
                 
                 
                 <div className="pt-2 bg-transparent">
                   {isAuthenticated ? <button onClick={scrollToCreators}>
-                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
                         {t('index.hero.cta')}
                       </GradientButton>
                     </button> : <Link to="/login">
-                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                      <GradientButton size={isMobile ? "default" : "lg"} icon={<ArrowRight className="h-5 w-5" />} iconPosition="right" gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
                         {t('index.hero.cta')}
                       </GradientButton>
                     </Link>}
@@ -270,16 +270,16 @@ const Index = () => {
                 
                 <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 pt-4 md:pt-6">
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl md:text-3xl font-bold text-gray-950">50+</span>
-                    <span className="text-sm text-gray-500">{t('index.stats.creators')}</span>
+                    <span className="text-2xl md:text-3xl font-bold text-foreground">50+</span>
+                    <span className="text-sm text-muted-foreground">{t('index.stats.creators')}</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl md:text-3xl font-bold text-zinc-950">20K+</span>
-                    <span className="text-sm text-gray-500">{t('index.stats.investors')}</span>
+                    <span className="text-2xl md:text-3xl font-bold text-foreground">20K+</span>
+                    <span className="text-sm text-muted-foreground">{t('index.stats.investors')}</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl md:text-3xl font-bold text-zinc-950">7M €</span>
-                    <span className="text-sm text-gray-500">{t('index.stats.dividends')}</span>
+                    <span className="text-2xl md:text-3xl font-bold text-foreground">7M €</span>
+                    <span className="text-sm text-muted-foreground">{t('index.stats.dividends')}</span>
                   </div>
                 </div>
               </FadeIn>
@@ -296,9 +296,9 @@ const Index = () => {
                 </h2>
                 
               </div>
-              <Link to="/creators" className="hidden md:flex items-center text-[#8B5CF6] hover:text-[#7c4ce6] font-medium mt-4 md:mt-0">
-                <span className="text-zinc-950">{t('index.trending.viewAll')}</span>
-                <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent text-yellow-300" />
+              <Link to="/creators" className="hidden md:flex items-center text-primary hover:text-primary/80 font-medium mt-4 md:mt-0">
+                <span className="text-foreground">{t('index.trending.viewAll')}</span>
+                <ArrowRight className="h-4 w-4 ml-1 mx-[5px] bg-transparent text-primary" />
               </Link>
             </FadeIn>
           </div>
@@ -328,9 +328,9 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="mt-8 md:mt-12 text-center md:hidden mx-[17px] py-0 px-0 my-0 bg-transparent">
               <Link to="/creators">
-                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                <GradientButton gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
                   {t('index.trending.viewAll')}
-                  <ArrowRight className="h-4 w-4 ml-1 text-yellow-300" />
+                  <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
               </Link>
             </div>
@@ -344,7 +344,7 @@ const Index = () => {
               <h2 className="md:text-3xl font-bold mb-3 text-center text-2xl">
                 {t('index.affiliates.title')}
               </h2>
-              <p className="text-base md:text-lg text-center text-gray-950">
+              <p className="text-base md:text-lg text-center text-muted-foreground">
                 {t('index.affiliates.subtitle')}
               </p>
             </FadeIn>
@@ -355,7 +355,7 @@ const Index = () => {
             
             <div className="mt-8 text-center bg-transparent">
               <Link to="/affiliation" onClick={handleAffiliationClick}>
-                <GradientButton gradientDirection="to-r" className="from-yellow-300 to-black text-white">
+                <GradientButton gradientDirection="to-r" className="from-primary to-secondary text-primary-foreground">
                   {t('index.affiliates.cta')}
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </GradientButton>
@@ -371,7 +371,7 @@ const Index = () => {
                 {t('index.market.title')}
               </h2>
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-center text-gray-950">{t('index.market.subtitle')}</p>
+                <p className="text-base md:text-lg text-center text-muted-foreground">{t('index.market.subtitle')}</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
                   
                   

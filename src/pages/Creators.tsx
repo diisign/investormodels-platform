@@ -312,13 +312,13 @@ const Creators = () => {
         <section className="py-8 md:py-12">
           <div className="w-full px-6">
             <FadeIn direction="up" className="mb-8">
-              <h1 className="mb-2 text-yellow-400 text-2xl font-bold text-center">{t('creators.title')}</h1>
+              <h1 className="mb-2 text-primary text-2xl font-bold text-center">{t('creators.title')}</h1>
               
             </FadeIn>
             
             <FadeIn direction="up" delay={150} className="mb-6">
               <div className="flex items-center justify-between">
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-muted-foreground">
                   {filteredCreators.length} {filteredCreators.length > 1 ? t('creators.count.plural') : t('creators.count.singular')}
                 </p>
                 
