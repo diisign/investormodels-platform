@@ -30,6 +30,7 @@ import Dɑshboɑrd from "./pages/dɑshboɑrd";
 import Dashboɑrd from "./pages/dashboɑrd";
 import DashboardAffiliation from "./pages/DashboardAffiliation";
 import CreatorApplication from "./pages/CreatorApplication";
+import AdminApplications from "./pages/AdminApplications";
 import CookieBanner from "./components/layout/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -84,6 +85,12 @@ const App = () => (
             <Route path="/dashboard-affiliation" element={
               <RequireAuth>
                 <DashboardAffiliation />
+              </RequireAuth>
+            } />
+            
+            <Route path="/admin/applications" element={
+              <RequireAuth>
+                <AdminApplications />
               </RequireAuth>
             } />
             

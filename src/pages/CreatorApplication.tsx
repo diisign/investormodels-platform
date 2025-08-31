@@ -29,17 +29,25 @@ const CreatorApplication = () => {
     e.preventDefault();
     
     try {
-      const response = await supabase.functions.invoke('send-creator-application', {
-        body: formData
-      });
+      const { data, error } = await supabase
+        .from('creator_applications')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          platform: formData.platform,
+          username: formData.username,
+          followers: formData.followers,
+          monthly_revenue: formData.monthlyRevenue,
+          message: formData.message
+        });
 
-      if (response.error) {
-        throw response.error;
+      if (error) {
+        throw error;
       }
 
       toast({
-        title: "Candidature envoyée !",
-        description: "Nous examinerons votre dossier et vous recontacterons rapidement.",
+        title: "Candidature enregistrée !",
+        description: "Votre candidature a été sauvegardée. Notre équipe l'examinera prochainement.",
       });
       
       // Reset form
@@ -53,10 +61,10 @@ const CreatorApplication = () => {
         message: ''
       });
     } catch (error) {
-      console.error('Error sending application:', error);
+      console.error('Error saving application:', error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi de votre candidature. Veuillez réessayer.",
+        description: "Une erreur est survenue lors de l'enregistrement de votre candidature. Veuillez réessayer.",
         variant: "destructive",
       });
     }

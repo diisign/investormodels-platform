@@ -50,6 +50,48 @@ export type Database = {
         }
         Relationships: []
       }
+      creator_applications: {
+        Row: {
+          created_at: string
+          email: string
+          followers: string
+          id: string
+          message: string | null
+          monthly_revenue: string
+          name: string
+          platform: string
+          status: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          followers: string
+          id?: string
+          message?: string | null
+          monthly_revenue: string
+          name: string
+          platform: string
+          status?: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          followers?: string
+          id?: string
+          message?: string | null
+          monthly_revenue?: string
+          name?: string
+          platform?: string
+          status?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
       investments: {
         Row: {
           amount: number
