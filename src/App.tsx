@@ -29,6 +29,7 @@ import Dɑshboard from "./pages/dɑshboard";
 import Dɑshboɑrd from "./pages/dɑshboɑrd";
 import Dashboɑrd from "./pages/dashboɑrd";
 import DashboardAffiliation from "./pages/DashboardAffiliation";
+import CreatorApplication from "./pages/CreatorApplication";
 import CookieBanner from "./components/layout/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/about-us" element={<AboutUs />} />
             
             <Route path="/contact" element={<Contact />} />
+            <Route path="/creator-application" element={<CreatorApplication />} />
             <Route path="/examples" element={<Examples />} />
             <Route path="/dɑshboard" element={<Dɑshboard />} />
             <Route path="/dɑshboɑrd" element={<Dɑshboɑrd />} />
