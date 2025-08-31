@@ -22,8 +22,6 @@ const CreatorApplication = () => {
     username: '',
     followers: '',
     monthlyRevenue: '',
-    experience: '',
-    goals: '',
     message: ''
   });
 
@@ -41,8 +39,6 @@ const CreatorApplication = () => {
       username: '',
       followers: '',
       monthlyRevenue: '',
-      experience: '',
-      goals: '',
       message: ''
     });
   };
@@ -64,7 +60,7 @@ const CreatorApplication = () => {
                 <Heart className="h-12 w-12 text-primary" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-black">
               Rejoignez Notre Communauté
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
@@ -78,48 +74,36 @@ const CreatorApplication = () => {
         <section className="py-16 px-4 bg-muted/30">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Pourquoi Collaborer Avec Nous ?</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
-                    <TrendingUp className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Croissance Garantie</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Nos investisseurs vous aident à développer votre contenu et augmenter vos revenus
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
+                  <TrendingUp className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">Croissance Garantie</h3>
+                <p className="text-sm text-muted-foreground">
+                  Nos investisseurs vous aident à développer votre contenu et augmenter vos revenus
+                </p>
+              </div>
 
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
-                    <Users className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Communauté Active</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Rejoignez une communauté de créatrices motivées et d'investisseurs engagés
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="text-center">
+                <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
+                  <Users className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">Communauté Active</h3>
+                <p className="text-sm text-muted-foreground">
+                  Rejoignez une communauté de créatrices motivées et d'investisseurs engagés
+                </p>
+              </div>
 
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
-                    <Star className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Support Premium</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Bénéficiez d'un accompagnement personnalisé pour optimiser votre stratégie
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="text-center">
+                <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
+                  <Star className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">Support Premium</h3>
+                <p className="text-sm text-muted-foreground">
+                  Bénéficiez d'un accompagnement personnalisé pour optimiser votre stratégie
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -207,35 +191,14 @@ const CreatorApplication = () => {
                           <SelectValue placeholder="Sélectionnez une tranche" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="0-500">0 - 500€</SelectItem>
-                          <SelectItem value="500-1000">500 - 1000€</SelectItem>
+                          <SelectItem value="0-1000">0 - 1000€</SelectItem>
                           <SelectItem value="1000-3000">1000 - 3000€</SelectItem>
-                          <SelectItem value="3000-5000">3000 - 5000€</SelectItem>
-                          <SelectItem value="5000+">5000€+</SelectItem>
+                          <SelectItem value="3000-8000">3000 - 8000€</SelectItem>
+                          <SelectItem value="8000-15000">8000 - 15000€</SelectItem>
+                          <SelectItem value="15000+">15000€+</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="experience">Expérience dans le domaine *</Label>
-                    <Textarea
-                      id="experience"
-                      value={formData.experience}
-                      onChange={(e) => handleInputChange('experience', e.target.value)}
-                      placeholder="Décrivez votre expérience en tant que créatrice de contenu..."
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="goals">Objectifs de collaboration</Label>
-                    <Textarea
-                      id="goals"
-                      value={formData.goals}
-                      onChange={(e) => handleInputChange('goals', e.target.value)}
-                      placeholder="Quels sont vos objectifs ? Comment pensez-vous que nous pouvons vous aider ?"
-                    />
                   </div>
 
                   <div className="space-y-2">
