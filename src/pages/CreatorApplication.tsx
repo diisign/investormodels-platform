@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/utils/auth';
+import { supabase } from '@/integrations/supabase/client';
 import { Heart, Star, Users, TrendingUp } from 'lucide-react';
 
 const CreatorApplication = () => {
@@ -24,22 +25,41 @@ const CreatorApplication = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Candidature envoyée !",
-      description: "Nous examinerons votre dossier et vous recontacterons rapidement.",
-    });
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      platform: '',
-      username: '',
-      followers: '',
-      monthlyRevenue: '',
-      message: ''
-    });
+    
+    try {
+      const response = await supabase.functions.invoke('send-creator-application', {
+        body: formData
+      });
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      toast({
+        title: "Candidature envoyée !",
+        description: "Nous examinerons votre dossier et vous recontacterons rapidement.",
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        platform: '',
+        username: '',
+        followers: '',
+        monthlyRevenue: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error sending application:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi de votre candidature. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
