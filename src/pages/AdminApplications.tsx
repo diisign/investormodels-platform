@@ -65,13 +65,18 @@ const AdminApplications = () => {
         throw error;
       }
 
-      setApplications(prev => 
-        prev.map(app => 
-          app.id === id ? { ...app, status: newStatus } : app
-        )
-      );
-
-      toast.success('Statut mis à jour');
+      if (newStatus === 'rejected') {
+        // Supprimer la candidature rejetée de la liste
+        setApplications(prev => prev.filter(app => app.id !== id));
+        toast.success('Candidature rejetée et supprimée de la liste');
+      } else {
+        setApplications(prev => 
+          prev.map(app => 
+            app.id === id ? { ...app, status: newStatus } : app
+          )
+        );
+        toast.success('Statut mis à jour');
+      }
     } catch (error) {
       console.error('Error updating status:', error);
       toast.error('Erreur lors de la mise à jour du statut');
