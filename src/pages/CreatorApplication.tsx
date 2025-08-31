@@ -60,7 +60,7 @@ const CreatorApplication = () => {
                 <Heart className="h-12 w-12 text-primary" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-black">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-yellow-400">
               Rejoignez Notre Communauté
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
@@ -71,10 +71,10 @@ const CreatorApplication = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-16 px-4 bg-muted/30">
+        <section className="py-16 px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Pourquoi Collaborer Avec Nous ?</h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
                 <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
                   <TrendingUp className="h-8 w-8 text-primary" />
@@ -92,16 +92,6 @@ const CreatorApplication = () => {
                 <h3 className="font-semibold mb-2">Communauté Active</h3>
                 <p className="text-sm text-muted-foreground">
                   Rejoignez une communauté de créatrices motivées et d'investisseurs engagés
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
-                  <Star className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="font-semibold mb-2">Support Premium</h3>
-                <p className="text-sm text-muted-foreground">
-                  Bénéficiez d'un accompagnement personnalisé pour optimiser votre stratégie
                 </p>
               </div>
             </div>
@@ -176,11 +166,11 @@ const CreatorApplication = () => {
                           <SelectValue placeholder="Sélectionnez une tranche" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="0-100">0 - 100</SelectItem>
-                          <SelectItem value="100-500">100 - 500</SelectItem>
-                          <SelectItem value="500-1000">500 - 1000</SelectItem>
-                          <SelectItem value="1000-5000">1000 - 5000</SelectItem>
-                          <SelectItem value="5000+">5000+</SelectItem>
+                          <SelectItem value="0-10000">0 - 10 000</SelectItem>
+                          <SelectItem value="10000-50000">10 000 - 50 000</SelectItem>
+                          <SelectItem value="50000-100000">50 000 - 100 000</SelectItem>
+                          <SelectItem value="100000-500000">100 000 - 500 000</SelectItem>
+                          <SelectItem value="500000+">500 000+</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
