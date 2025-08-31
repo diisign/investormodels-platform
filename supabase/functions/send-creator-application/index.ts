@@ -46,7 +46,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "Splitz <onboarding@resend.dev>",
+      from: "Candidatures Splitz <noreply@splitz.fr>",
       to: ["contact@splitz.fr"],
       subject: `Nouvelle candidature créatrice - ${formData.name}`,
       html: emailContent,
@@ -63,8 +63,24 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error in send-creator-application function:", error);
+    
+    // Handle specific Resend errors
+    if (error.statusCode === 403) {
+      console.error("Domain verification required. Please verify splitz.fr domain on Resend.");
+      return new Response(
+        JSON.stringify({ 
+          error: "Configuration requise. Veuillez vérifier votre domaine sur Resend.",
+          details: error.message 
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "Erreur lors de l'envoi de l'email", details: error.message }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
