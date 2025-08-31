@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 // Import des composants de layout
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -210,8 +209,6 @@ const CreatorApplication = () => {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 };
