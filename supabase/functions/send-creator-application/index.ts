@@ -47,7 +47,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "Splitz <onboarding@resend.dev>",
-      to: ["contact@splitz.com"],
+      to: ["contact@splitz.fr"],
       subject: `Nouvelle candidature créatrice - ${formData.name}`,
       html: emailContent,
     });
