@@ -5,23 +5,9 @@ import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  Coins, 
-  TrendingUp, 
-  Calendar, 
-  PiggyBank, 
-  Calculator, 
-  ArrowRight, 
-  CheckCircle,
-  DollarSign,
-  Clock,
-  Users,
-  Banknote
-} from 'lucide-react';
-
+import { Coins, TrendingUp, Calendar, PiggyBank, Calculator, ArrowRight, CheckCircle, DollarSign, Clock, Users, Banknote } from 'lucide-react';
 const HowItWorks = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5">
+  return <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5">
       <Navbar isLoggedIn={false} />
       
       <main className="pt-32 pb-16">
@@ -150,9 +136,7 @@ const HowItWorks = () => {
             <div className="space-y-8">
               <div className="text-center">
                 <h4 className="text-xl font-semibold text-green-800 mb-4">Formule de calcul :</h4>
-                <div className="bg-green-50 p-6 rounded-lg font-mono text-center text-xl border border-green-200">
-                  Dividende mensuel = Montant investi × (Taux mensuel ÷ 100)
-                </div>
+                
               </div>
               
               <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -422,8 +406,6 @@ const HowItWorks = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default HowItWorks;
