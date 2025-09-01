@@ -14,10 +14,10 @@ const HowItWorks = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent mb-6">
+            <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent mb-6">
               Comment ça marche ?
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Découvrez notre système d'investissement par parts et dividendes, 
               une nouvelle façon d'investir dans vos créatrices préférées
             </p>
@@ -28,28 +28,28 @@ const HowItWorks = () => {
             <div className="mx-auto mb-6 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
               <Users className="h-8 w-8 text-primary" />
             </div>
-            <h2 className="text-3xl font-bold mb-4">Le concept des parts</h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Le concept des parts</h2>
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Au lieu d'un investissement classique, vous achetez des parts dans une créatrice
             </p>
             
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <div className="space-y-4">
-                <h4 className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <CheckCircle className="h-6 w-6 text-green-500" />
+                <h4 className="text-base md:text-lg font-semibold flex items-center justify-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
                   Propriété de parts
                 </h4>
-                <p className="text-muted-foreground">
+                <p className="text-sm md:text-base text-muted-foreground">
                   Quand vous investissez, vous devenez propriétaire de parts dans la créatrice. 
                   Ces parts vous donnent droit à des dividendes mensuels.
                 </p>
               </div>
               <div className="space-y-4">
-                <h4 className="text-lg font-semibold flex items-center justify-center gap-2">
-                  <CheckCircle className="h-6 w-6 text-green-500" />
+                <h4 className="text-base md:text-lg font-semibold flex items-center justify-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
                   Revenus passifs
                 </h4>
-                <p className="text-muted-foreground">
+                <p className="text-sm md:text-base text-muted-foreground">
                   Chaque mois, vous recevez des dividendes basés sur les performances 
                   de la créatrice et le pourcentage mensuel annoncé.
                 </p>
@@ -59,7 +59,7 @@ const HowItWorks = () => {
 
           {/* Étapes du processus */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-12">Le processus en 5 étapes</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Le processus en 5 étapes</h2>
             
             <div className="grid md:grid-cols-5 gap-8">
               {/* Étape 1 */}
@@ -67,9 +67,9 @@ const HowItWorks = () => {
                 <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                   1
                 </div>
-                <h3 className="text-lg font-semibold">Choisir</h3>
-                <PiggyBank className="h-8 w-8 text-primary mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">
+                <h3 className="text-base md:text-lg font-semibold">Choisir</h3>
+                <PiggyBank className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Sélectionnez une créatrice et le montant à investir
                 </p>
               </div>
@@ -79,9 +79,9 @@ const HowItWorks = () => {
                 <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                   2
                 </div>
-                <h3 className="text-lg font-semibold">Acheter</h3>
-                <Coins className="h-8 w-8 text-primary mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">
+                <h3 className="text-base md:text-lg font-semibold">Acheter</h3>
+                <Coins className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Achetez vos parts. Votre investissement est débité de votre solde
                 </p>
               </div>
@@ -91,9 +91,9 @@ const HowItWorks = () => {
                 <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                   3
                 </div>
-                <h3 className="text-lg font-semibold">Attendre</h3>
-                <Clock className="h-8 w-8 text-primary mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">
+                <h3 className="text-base md:text-lg font-semibold">Attendre</h3>
+                <Clock className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Minimum 1 mois après l'achat pour être éligible aux dividendes
                 </p>
               </div>
@@ -103,9 +103,9 @@ const HowItWorks = () => {
                 <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                   4
                 </div>
-                <h3 className="text-lg font-semibold">Recevoir</h3>
-                <TrendingUp className="h-8 w-8 text-green-500 mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">
+                <h3 className="text-base md:text-lg font-semibold">Recevoir</h3>
+                <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-green-500 mx-auto mb-3" />
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Recevez vos dividendes mensuels automatiquement
                 </p>
               </div>
@@ -115,9 +115,9 @@ const HowItWorks = () => {
                 <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                   5
                 </div>
-                <h3 className="text-lg font-semibold">Vendre</h3>
-                <Banknote className="h-8 w-8 text-orange-500 mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">
+                <h3 className="text-base md:text-lg font-semibold">Vendre</h3>
+                <Banknote className="h-6 w-6 md:h-8 md:w-8 text-orange-500 mx-auto mb-3" />
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Vendez vos parts quand vous voulez pour récupérer votre capital
                 </p>
               </div>
@@ -130,7 +130,7 @@ const HowItWorks = () => {
               <div className="mx-auto mb-4 w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
                 <Calculator className="h-8 w-8 text-green-600" />
               </div>
-              <h2 className="text-3xl font-bold text-green-800 mb-4">Comment sont calculés les dividendes ?</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-4">Comment sont calculés les dividendes ?</h2>
             </div>
             
             <div className="space-y-8">
@@ -186,11 +186,11 @@ const HowItWorks = () => {
           {/* Timeline des dividendes */}
           <div className="mb-16">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold flex items-center justify-center gap-2 mb-4">
-                <Calendar className="h-8 w-8 text-primary" />
+              <h2 className="text-2xl md:text-3xl font-bold flex items-center justify-center gap-2 mb-4">
+                <Calendar className="h-6 w-6 md:h-8 md:w-8 text-primary" />
                 Timeline des dividendes
               </h2>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-lg md:text-xl text-muted-foreground">
                 Comprendre quand vous recevez vos dividendes
               </p>
             </div>
@@ -205,8 +205,8 @@ const HowItWorks = () => {
                       J0
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg">Achat des parts</h4>
-                      <p className="text-muted-foreground">
+                      <h4 className="font-semibold text-base md:text-lg">Achat des parts</h4>
+                      <p className="text-sm md:text-base text-muted-foreground">
                         Vous investissez 1000€ dans une créatrice avec 18% mensuel
                       </p>
                     </div>
@@ -217,8 +217,8 @@ const HowItWorks = () => {
                       J30
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg">Période d'attente</h4>
-                      <p className="text-muted-foreground">
+                      <h4 className="font-semibold text-base md:text-lg">Période d'attente</h4>
+                      <p className="text-sm md:text-base text-muted-foreground">
                         Aucun dividende versé le premier mois (période de grâce)
                       </p>
                     </div>
@@ -229,8 +229,8 @@ const HowItWorks = () => {
                       J60
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg">Premier dividende</h4>
-                      <p className="text-muted-foreground">
+                      <h4 className="font-semibold text-base md:text-lg">Premier dividende</h4>
+                      <p className="text-sm md:text-base text-muted-foreground">
                         Vous recevez votre premier dividende de 180€
                       </p>
                     </div>
@@ -241,8 +241,8 @@ const HowItWorks = () => {
                       J90
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg">Dividendes mensuels</h4>
-                      <p className="text-muted-foreground">
+                      <h4 className="font-semibold text-base md:text-lg">Dividendes mensuels</h4>
+                      <p className="text-sm md:text-base text-muted-foreground">
                         Chaque mois suivant : 180€ de dividende
                       </p>
                     </div>
@@ -258,8 +258,8 @@ const HowItWorks = () => {
               <div className="mx-auto mb-4 w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
                 <DollarSign className="h-8 w-8 text-orange-600" />
               </div>
-              <h2 className="text-3xl font-bold text-orange-800 mb-4">Vendre vos parts</h2>
-              <p className="text-xl text-muted-foreground">
+              <h2 className="text-2xl md:text-3xl font-bold text-orange-800 mb-4">Vendre vos parts</h2>
+              <p className="text-lg md:text-xl text-muted-foreground">
                 Récupérez votre capital quand vous le souhaitez
               </p>
             </div>
@@ -269,8 +269,8 @@ const HowItWorks = () => {
                 <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
                   <Clock className="h-6 w-6 text-orange-600" />
                 </div>
-                <h4 className="font-semibold text-lg">Quand vous voulez</h4>
-                <p className="text-muted-foreground">
+                <h4 className="font-semibold text-base md:text-lg">Quand vous voulez</h4>
+                <p className="text-sm md:text-base text-muted-foreground">
                   Aucune durée minimum, vendez vos parts à tout moment
                 </p>
               </div>
@@ -279,8 +279,8 @@ const HowItWorks = () => {
                 <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
                   <Banknote className="h-6 w-6 text-orange-600" />
                 </div>
-                <h4 className="font-semibold text-lg">Capital garanti</h4>
-                <p className="text-muted-foreground">
+                <h4 className="font-semibold text-base md:text-lg">Capital garanti</h4>
+                <p className="text-sm md:text-base text-muted-foreground">
                   Vous récupérez 100% de votre investissement initial
                 </p>
               </div>
@@ -289,8 +289,8 @@ const HowItWorks = () => {
                 <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
                   <TrendingUp className="h-6 w-6 text-orange-600" />
                 </div>
-                <h4 className="font-semibold text-lg">Dividendes finaux</h4>
-                <p className="text-muted-foreground">
+                <h4 className="font-semibold text-base md:text-lg">Dividendes finaux</h4>
+                <p className="text-sm md:text-base text-muted-foreground">
                   Les dividendes en attente sont automatiquement versés
                 </p>
               </div>
@@ -308,8 +308,8 @@ const HowItWorks = () => {
           {/* Avantages du système */}
           <div className="mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Pourquoi ce système ?</h2>
-              <p className="text-xl text-muted-foreground">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">Pourquoi ce système ?</h2>
+              <p className="text-lg md:text-xl text-muted-foreground">
                 Les avantages de l'investissement par parts et dividendes
               </p>
             </div>
@@ -381,8 +381,8 @@ const HowItWorks = () => {
           {/* Call to action */}
           <div className="text-center space-y-6">
             <div className="space-y-4 mb-8">
-              <h2 className="text-3xl font-bold">Prêt à commencer ?</h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-bold">Prêt à commencer ?</h2>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
                 Découvrez nos créatrices et commencez à générer des revenus passifs dès aujourd'hui
               </p>
             </div>
