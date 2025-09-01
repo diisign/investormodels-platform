@@ -105,7 +105,7 @@ const HowItWorks = () => {
                     4
                   </div>
                   <h3 className="text-base md:text-lg font-semibold">Recevoir</h3>
-                  <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-green-500 mx-auto mb-3" />
+                  <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
                   <p className="text-xs md:text-sm text-muted-foreground">
                     Recevez vos dividendes mensuels automatiquement
                   </p>
@@ -119,7 +119,7 @@ const HowItWorks = () => {
                     5
                   </div>
                   <h3 className="text-base md:text-lg font-semibold">Vendre</h3>
-                  <Banknote className="h-6 w-6 md:h-8 md:w-8 text-orange-500 mx-auto mb-3" />
+                  <Banknote className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
                   <p className="text-xs md:text-sm text-muted-foreground">
                     Vendez vos parts quand vous voulez pour récupérer votre capital
                   </p>
