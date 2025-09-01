@@ -1,11 +1,14 @@
 import { CircleDollarSign, TrendingUp, Users, Plus, Wallet } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 import { Link } from 'react-router-dom';
+import NextBenefitCard from './NextBenefitCard';
+import { Investment } from '@/types/investments';
 interface DashboardStatsProps {
   totalInvested: number;
   totalReturn: number;
   investmentsCount: number;
   balance: number;
+  investments: Investment[];
   onDepositClick: () => void;
 }
 const DashboardStats = ({
@@ -13,10 +16,11 @@ const DashboardStats = ({
   totalReturn,
   investmentsCount,
   balance,
+  investments,
   onDepositClick
 }: DashboardStatsProps) => {
   const percentageReturn = totalInvested > 0 ? totalReturn / totalInvested * 100 : 0;
-  return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
       <FadeIn direction="up" delay={100}>
         <div className="p-6 hover:bg-gray-50/80 dark:hover:bg-gray-800/60 transition-colors py-0 px-[15px]">
           <div className="flex items-center justify-between mb-4">
@@ -72,6 +76,8 @@ const DashboardStats = ({
           </Link>
         </div>
       </FadeIn>
+      
+      <NextBenefitCard investments={investments} />
     </div>;
 };
 export default DashboardStats;

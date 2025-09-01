@@ -102,6 +102,7 @@ const Dɑshboard = () => {
                     totalReturn={investmentData.totalEarnings}
                     investmentsCount={investmentData.investments.length}
                     balance={investmentData.balance}
+                    investments={transformedInvestments}
                     onDepositClick={() => setShowDepositModal(true)}
                   />
                   
