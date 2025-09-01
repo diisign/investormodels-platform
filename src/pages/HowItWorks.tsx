@@ -179,7 +179,7 @@ const HowItWorks = () => {
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span>Aucun dividende n'est versé le premier mois</span>
+                      <span>Les premiers dividendes sont versés 30 jours après l'achat</span>
                     </li>
                   </ul>
                 </div>
