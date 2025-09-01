@@ -61,7 +61,7 @@ const generateRealisticData = () => {
   let monthlyReturns = 0;
   
   // For each month
-  for (let i = 0; i <= 12; i++) { // 0 to 12 = 13 months (including July)
+  for (let i = 0; i <= 13; i++) { // 0 to 13 = 14 months (including August)
     const currentMonthDate = new Date(startDate);
     currentMonthDate.setMonth(startDate.getMonth() + i);
     

@@ -377,7 +377,7 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
   const { minRevenue, maxRevenue, monthlyRevenue } = profile;
   const range = maxRevenue - minRevenue;
   
-  const monthNames = ['Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'];
+  const monthNames = ['Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août'];
   
   // Use creatorId to generate deterministic variations
   // This ensures the same creator always gets the same performance chart
@@ -432,6 +432,38 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
       
       // Ensure it stays within reasonable bounds
       return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+    }
+    
+    // For August (index 13), create a variation from July's value
+    if (index === 13) {
+      // Get July's value first
+      const julyRevenue = revenueValues[12] || monthlyRevenue;
+      
+      // Check for specific creators with predefined variations for August
+      if (creatorId === 'creator22') { // Jasmine
+        const augustRevenue = Math.round(julyRevenue * 1.095); // +9.5% from July
+        return Math.max(minRevenue, Math.min(maxRevenue, augustRevenue));
+      }
+      if (creatorId === 'creator26') { // Kim
+        const augustRevenue = Math.round(julyRevenue * 1.082); // +8.2% from July
+        return Math.max(minRevenue, Math.min(maxRevenue, augustRevenue));
+      }
+      if (creatorId === 'creator27') { // Hannah
+        const augustRevenue = Math.round(julyRevenue * 1.067); // +6.7% from July
+        return Math.max(minRevenue, Math.min(maxRevenue, augustRevenue));
+      }
+      if (creatorId === 'creator23') { // Isabel
+        const augustRevenue = Math.round(julyRevenue * 1.055); // +5.5% from July
+        return Math.max(minRevenue, Math.min(maxRevenue, augustRevenue));
+      }
+      
+      // Generate a variation between -10% and +15% from July's value for other creators
+      const augustVariationSeed = (seed * 89 + 113) % 100;
+      const variationPercent = -10 + (augustVariationSeed / 100) * 25; // -10% to +15%
+      const augustRevenue = Math.round(julyRevenue * (1 + variationPercent / 100));
+      
+      // Ensure it stays within reasonable bounds
+      return Math.max(minRevenue, Math.min(maxRevenue, augustRevenue));
     }
     
     const revenue = Math.round(minRevenue + (range * normalized));
