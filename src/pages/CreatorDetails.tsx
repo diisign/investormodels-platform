@@ -191,9 +191,6 @@ const CreatorDetails = () => {
     const seed = creatorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const yieldRange = getRandomYieldForCreator(creatorId);
     const months = [{
-      month: 'août',
-      fullMonth: 'août'
-    }, {
       month: 'sept.',
       fullMonth: 'sept.'
     }, {
@@ -226,6 +223,9 @@ const CreatorDetails = () => {
     }, {
       month: '',
       fullMonth: 'juil.'
+    }, {
+      month: 'août',
+      fullMonth: 'août'
     }];
     return months.map((monthData, index) => {
       // Generate more random variation using multiple seeds and prime numbers
@@ -662,7 +662,7 @@ const CreatorDetails = () => {
                           <Tooltip formatter={(value, name) => [<span key="value" className="text-yellow-400">{value}%</span>, <span key="label" className="text-yellow-400">Yield distribué</span>]} labelFormatter={(label, payload) => {
                         if (payload && payload.length > 0 && payload[0].payload) {
                           const fullMonth = payload[0].payload.fullMonth;
-                          const monthsAfterJan = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
+                          const monthsAfterJan = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août'];
                           const year = monthsAfterJan.includes(fullMonth) ? '2025' : '2024';
                           return `${fullMonth} ${year}`;
                         }
