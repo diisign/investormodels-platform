@@ -436,9 +436,28 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     
     // For August (index 13), create a variation from July's value
     if (index === 13) {
-      // Get July's value first
-      const julyRevenue = revenueValues[12] || monthlyRevenue;
+      // Calculate July's value first (same logic as index 12)
+      let julyRevenue;
       
+      // Check for specific creators with predefined variations for July
+      if (creatorId === 'creator22') { // Jasmine
+        julyRevenue = Math.round(monthlyRevenue * 1.174); // +17.4%
+      } else if (creatorId === 'creator26') { // Kim
+        julyRevenue = Math.round(monthlyRevenue * 1.147); // +14.7%
+      } else if (creatorId === 'creator27') { // Hannah
+        julyRevenue = Math.round(monthlyRevenue * 1.052); // +5.2%
+      } else if (creatorId === 'creator23') { // Isabel
+        julyRevenue = Math.round(monthlyRevenue * 1.08); // +8%
+      } else {
+        // Generate a variation between -15% and +20% from June's value for other creators
+        const julyVariationSeed = (seed * 73 + 97) % 100;
+        const variationPercent = -15 + (julyVariationSeed / 100) * 35; // -15% to +20%
+        julyRevenue = Math.round(monthlyRevenue * (1 + variationPercent / 100));
+      }
+      
+      julyRevenue = Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
+      
+      // Now calculate August based on July
       // Check for specific creators with predefined variations for August
       if (creatorId === 'creator22') { // Jasmine
         const augustRevenue = Math.round(julyRevenue * 1.095); // +9.5% from July
