@@ -192,9 +192,6 @@ const HowItWorks = () => {
           {/* Vente des parts */}
           <div className="mb-16">
             <div className="text-center mb-12">
-              <div className="mx-auto mb-4 w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
-                <DollarSign className="h-8 w-8 text-orange-600" />
-              </div>
               <h2 className="text-2xl md:text-3xl font-bold text-black mb-6">Vendre vos parts</h2>
               <p className="text-lg md:text-xl text-muted-foreground">
                 Récupérez votre capital quand vous le souhaitez
@@ -295,13 +292,6 @@ const HowItWorks = () => {
               <div className="space-y-6">
                 <h4 className="font-semibold text-orange-600 text-2xl">⚠️ Points d'attention</h4>
                 <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <Clock className="h-6 w-6 text-orange-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium text-lg">Période de grâce</span>
-                      <p className="text-muted-foreground">Aucun dividende le premier mois</p>
-                    </div>
-                  </li>
                   <li className="flex items-start gap-3">
                     <TrendingUp className="h-6 w-6 text-orange-500 mt-0.5 flex-shrink-0" />
                     <div>
