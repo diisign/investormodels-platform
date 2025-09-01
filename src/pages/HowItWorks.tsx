@@ -29,7 +29,7 @@ const HowItWorks = () => {
               <Users className="h-8 w-8 text-primary" />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">Le concept des parts</h2>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-base text-muted-foreground mb-8 max-w-2xl mx-auto">
               Au lieu d'un investissement classique, vous achetez des parts dans une créatrice
             </p>
             
@@ -65,7 +65,7 @@ const HowItWorks = () => {
               {/* Première ligne : Choisir et Acheter */}
               <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
                 <div className="text-center space-y-4">
-                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-black rounded-full flex items-center justify-center text-yellow-400 font-bold">
                     1
                   </div>
                   <h3 className="text-base md:text-lg font-semibold">Choisir</h3>
@@ -76,7 +76,7 @@ const HowItWorks = () => {
                 </div>
 
                 <div className="text-center space-y-4">
-                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-black rounded-full flex items-center justify-center text-yellow-400 font-bold">
                     2
                   </div>
                   <h3 className="text-base md:text-lg font-semibold">Acheter</h3>
@@ -90,7 +90,7 @@ const HowItWorks = () => {
               {/* Deuxième ligne : Attendre et Recevoir */}
               <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
                 <div className="text-center space-y-4">
-                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-black rounded-full flex items-center justify-center text-yellow-400 font-bold">
                     3
                   </div>
                   <h3 className="text-base md:text-lg font-semibold">Attendre</h3>
@@ -101,7 +101,7 @@ const HowItWorks = () => {
                 </div>
 
                 <div className="text-center space-y-4">
-                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-black rounded-full flex items-center justify-center text-yellow-400 font-bold">
                     4
                   </div>
                   <h3 className="text-base md:text-lg font-semibold">Recevoir</h3>
@@ -115,7 +115,7 @@ const HowItWorks = () => {
               {/* Troisième ligne : Vendre centré */}
               <div className="flex justify-center">
                 <div className="text-center space-y-4">
-                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-black rounded-full flex items-center justify-center text-yellow-400 font-bold">
                     5
                   </div>
                   <h3 className="text-base md:text-lg font-semibold">Vendre</h3>
