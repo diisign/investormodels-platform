@@ -256,7 +256,7 @@ const HowItWorks = () => {
             
             <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
               <div className="space-y-6">
-                <h4 className="font-semibold text-green-600 text-2xl">✅ Avantages</h4>
+                <h4 className="font-semibold text-green-600 text-2xl text-center">✅ Avantages</h4>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <CheckCircle className="h-6 w-6 text-green-500 mt-0.5 flex-shrink-0" />
@@ -290,7 +290,7 @@ const HowItWorks = () => {
               </div>
               
               <div className="space-y-6">
-                <h4 className="font-semibold text-orange-600 text-2xl">⚠️ Points d'attention</h4>
+                <h4 className="font-semibold text-orange-600 text-2xl text-center">⚠️ Points d'attention</h4>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <TrendingUp className="h-6 w-6 text-orange-500 mt-0.5 flex-shrink-0" />
@@ -320,14 +320,14 @@ const HowItWorks = () => {
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/creators">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link to="/creators" className="flex justify-center">
                 <Button size="lg" className="flex items-center gap-2">
                   Voir les créatrices
                   <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
-              <Link to="/register">
+              <Link to="/register" className="flex justify-center">
                 <Button size="lg" variant="outline" className="flex items-center gap-2">
                   Créer un compte
                   <Users className="h-5 w-5" />
