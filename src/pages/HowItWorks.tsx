@@ -25,9 +25,6 @@ const HowItWorks = () => {
 
           {/* Principe de base */}
           <div className="mb-16 text-center">
-            <div className="mx-auto mb-6 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-              <Users className="h-8 w-8 text-primary" />
-            </div>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">Le concept des parts</h2>
             <p className="text-base text-muted-foreground mb-8 max-w-2xl mx-auto">
               Au lieu d'un investissement classique, vous achetez des parts dans une créatrice
