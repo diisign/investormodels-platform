@@ -1,7 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
-import { getCreatorProfile } from './creatorProfiles';
+import { creatorProfiles, getCreatorProfile } from './creatorProfiles';
 
 export const createInvestment = async (
   creatorId: string,

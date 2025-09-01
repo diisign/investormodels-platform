@@ -37,25 +37,23 @@ const Creators = () => {
     // Add creators from mockData
     creators.forEach(creator => {
       const profile = getCreatorProfile(creator.id);
-      if (profile) {
-        combinedCreators.push({
-          id: creator.id,
-          name: profile.name,
-          // Utiliser le nom du profil pour assurer la cohérence
-          imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
-          category: creator.category,
-          investorsCount: creator.investorsCount,
-          totalInvested: getMarketCap(creator.id, creators),
-          monthlyRevenue: profile.monthlyRevenue,
-          // Utiliser le revenu du profil pour assurer la cohérence
-          returnRate: profile.returnRate || 0
-        });
-      }
+      combinedCreators.push({
+        id: creator.id,
+        name: profile.name,
+        // Utiliser le nom du profil pour assurer la cohérence
+        imageUrl: creator.imageUrl || profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${creator.id}`,
+        category: creator.category,
+        investorsCount: creator.investorsCount,
+        totalInvested: getMarketCap(creator.id, creators),
+        monthlyRevenue: profile.monthlyRevenue,
+        // Utiliser le revenu du profil pour assurer la cohérence
+        returnRate: profile.returnRate
+      });
     });
 
     // Add additional creators from creatorProfiles that aren't already in combinedCreators
     Object.values(creatorProfiles).forEach(profile => {
-      if (profile && !combinedCreators.some(c => c.id === profile.id)) {
+      if (!combinedCreators.some(c => c.id === profile.id)) {
         // Calculer le "total investi" de façon cohérente
         const totalInvested = getMarketCap(profile.id);
 
@@ -66,10 +64,10 @@ const Creators = () => {
           imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
           category: determineCategory(profile.id),
           // Helper function to assign random category
-          investorsCount: Math.floor((profile.followers || 1000) / 15),
+          investorsCount: Math.floor(profile.followers / 15),
           totalInvested: totalInvested,
           monthlyRevenue: profile.monthlyRevenue,
-          returnRate: profile.returnRate || 0
+          returnRate: profile.returnRate
         });
       }
     });
