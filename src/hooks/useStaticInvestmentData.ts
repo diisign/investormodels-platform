@@ -108,7 +108,8 @@ const STATIC_PERFORMANCE_DATA: StaticPerformanceData[] = [
   { month: 'Mars', value: 2645, withdrawal: 4850 },
   { month: 'Avr', value: 3491, withdrawal: 4100 },
   { month: 'Mai', value: 4608, withdrawal: 5150 },
-  { month: 'Juin', value: 6083, withdrawal: 5800 }
+  { month: 'Juin', value: 6083, withdrawal: 5800 },
+  { month: 'Juil', value: 8030, withdrawal: 7650 }
 ];
 
 export const useStaticInvestmentData = (): StaticInvestmentData => {
