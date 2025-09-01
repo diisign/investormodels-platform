@@ -27,7 +27,7 @@ const trustpilotReviews = [{
   id: 2,
   name: "Thomas L.",
   rating: 5,
-  comment: "Interface intuitive et support client exceptionnel. Mes investissements ont augmenté de 120% en trois mois!!! INCROYABLE",
+  comment: "Interface intuitive et support client exceptionnel. Mes investissements ont explosé en seulement trois mois, c'est incroyable !",
   style: "font-bold"
 }, {
   id: 3,
