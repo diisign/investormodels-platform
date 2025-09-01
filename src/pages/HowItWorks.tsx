@@ -195,41 +195,47 @@ const HowItWorks = () => {
               <div className="mx-auto mb-4 w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
                 <DollarSign className="h-8 w-8 text-orange-600" />
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-orange-800 mb-4">Vendre vos parts</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-black mb-4">Vendre vos parts</h2>
               <p className="text-lg md:text-xl text-muted-foreground">
                 Récupérez votre capital quand vous le souhaitez
               </p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-8">
-              <div className="text-center space-y-4">
-                <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <Clock className="h-6 w-6 text-orange-600" />
+            <div className="space-y-8">
+              {/* Première ligne : Quand vous voulez et Capital garanti */}
+              <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <div className="text-center space-y-4">
+                  <div className="mx-auto w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                    <Clock className="h-6 w-6 text-black" />
+                  </div>
+                  <h4 className="font-semibold text-base md:text-lg">Quand vous voulez</h4>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    Aucune durée minimum, vendez vos parts à tout moment
+                  </p>
                 </div>
-                <h4 className="font-semibold text-base md:text-lg">Quand vous voulez</h4>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Aucune durée minimum, vendez vos parts à tout moment
-                </p>
+                
+                <div className="text-center space-y-4">
+                  <div className="mx-auto w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                    <Banknote className="h-6 w-6 text-black" />
+                  </div>
+                  <h4 className="font-semibold text-base md:text-lg">Capital garanti</h4>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    Vous récupérez 100% de votre investissement initial
+                  </p>
+                </div>
               </div>
               
-              <div className="text-center space-y-4">
-                <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <Banknote className="h-6 w-6 text-orange-600" />
+              {/* Deuxième ligne : Dividendes finaux centré */}
+              <div className="flex justify-center">
+                <div className="text-center space-y-4">
+                  <div className="mx-auto w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-6 w-6 text-black" />
+                  </div>
+                  <h4 className="font-semibold text-base md:text-lg">Dividendes finaux</h4>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    Les dividendes en attente sont automatiquement versés
+                  </p>
                 </div>
-                <h4 className="font-semibold text-base md:text-lg">Capital garanti</h4>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Vous récupérez 100% de votre investissement initial
-                </p>
-              </div>
-              
-              <div className="text-center space-y-4">
-                <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <TrendingUp className="h-6 w-6 text-orange-600" />
-                </div>
-                <h4 className="font-semibold text-base md:text-lg">Dividendes finaux</h4>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Les dividendes en attente sont automatiquement versés
-                </p>
               </div>
             </div>
             
