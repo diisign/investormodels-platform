@@ -434,10 +434,8 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
       return Math.max(minRevenue, Math.min(maxRevenue, julyRevenue));
     }
     
-    // For August (index 12, the new last month), create mostly positive variations from July's value
+    // For August (index 12, the new last month), create mostly positive variations from June's value
     if (index === 12) {
-      const julyRevenue = revenueValues[11]; // Get July's revenue
-      
       // Generate a variation that favors positive changes (70% chance of increase)
       const augustVariationSeed = (seed * 89 + 113) % 100;
       let variationPercent;
@@ -450,7 +448,7 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
         variationPercent = -8 + ((augustVariationSeed - 70) / 30) * 9; // -8% to +1%
       }
       
-      const augustRevenue = Math.round(julyRevenue * (1 + variationPercent / 100));
+      const augustRevenue = Math.round(monthlyRevenue * (1 + variationPercent / 100));
       
       // Ensure it stays within reasonable bounds
       return Math.max(minRevenue, Math.min(maxRevenue, augustRevenue));
