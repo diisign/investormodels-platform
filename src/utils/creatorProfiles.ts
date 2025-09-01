@@ -9,30 +9,40 @@ const creatorProfiles: Record<string, CreatorProfile> = {
     name: 'Brooks Mills 🍒',
     imageUrl: '/lovable-uploads/e09bb6c4-2388-4ba2-bc33-10429376180d.png',
     monthlyRevenue: 15000,
+    returnRate: 25.5,
+    followers: 15000,
   },
   'emma-wilson': {
     id: 'emma-wilson',
     name: 'Emma Wilson',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/p/pd/pd9/pd9plrrb99cb0kkhev4iczume0abbr4h1737510365/269048356/avatar.jpg',
     monthlyRevenue: 9000,
+    returnRate: 22.3,
+    followers: 12000,
   },
   'sophia-martinez': {
     id: 'sophia-martinez',
     name: 'Sophia Martinez',
     imageUrl: 'https://thumbs.onlyfans.com/public/files/thumbs/c144/l/lq/lqy/lqyww860kcjl7vlskjkvhqujrfpks1rr1708457235/373336356/avatar.jpg',
     monthlyRevenue: 11000,
+    returnRate: 28.7,
+    followers: 14000,
   },
   'kayla-smith': {
     id: 'kayla-smith',
     name: 'Kayla Smith',
     imageUrl: 'https://onlyfinder.com/cdn-cgi/image/width=160,quality=75/https://media.onlyfinder.com/d9/d95cc6ad-2b07-4bd3-a31a-95c00fd31bef/kaylapufff-onlyfans.webp',
     monthlyRevenue: 8500,
+    returnRate: 19.8,
+    followers: 10500,
   },
   'mia-rodriguez': {
     id: 'mia-rodriguez',
     name: 'Mia Rodriguez',
     imageUrl: 'https://example.com/mia-rodriguez.jpg',
     monthlyRevenue: 7500,
+    returnRate: 17.2,
+    followers: 9000,
   }
 };
 
@@ -165,3 +175,39 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     investment: Math.round(revenueValues[index] * 0.15)
   }));
 };
+
+export const getLastVariation = (creatorId: string): number => {
+  const performanceData = generateMonthlyPerformanceData(creatorId);
+  if (performanceData.length < 2) return 0;
+  
+  const lastMonth = performanceData[performanceData.length - 1];
+  const secondLastMonth = performanceData[performanceData.length - 2];
+  
+  const variation = ((lastMonth.revenue - secondLastMonth.revenue) / secondLastMonth.revenue) * 100;
+  return Math.round(variation * 100) / 100;
+};
+
+export const getMarketCap = (creatorId: string, creators?: any[]): number => {
+  const creator = getCreatorProfile(creatorId);
+  if (!creator) return 0;
+  
+  // Base market cap calculation on monthly revenue and followers
+  const baseMarketCap = (creator.monthlyRevenue || 0) * 12;
+  const followersMultiplier = Math.min((creator.followers || 1000) / 1000, 50);
+  
+  return Math.round(baseMarketCap * followersMultiplier);
+};
+
+export const getCreatorRanking = (creatorId: string): number => {
+  const allCreators = Object.values(creatorProfiles);
+  const sortedByRevenue = allCreators.sort((a, b) => (b.monthlyRevenue || 0) - (a.monthlyRevenue || 0));
+  
+  const index = sortedByRevenue.findIndex(c => c.id === creatorId);
+  return index + 1;
+};
+
+// Export the creatorProfiles object
+export { creatorProfiles };
+
+// Export the CreatorProfile type for backward compatibility
+export type { CreatorProfile };
