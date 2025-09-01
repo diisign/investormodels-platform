@@ -165,15 +165,15 @@ const HowItWorks = () => {
                     </div>
                     <div className="flex justify-between text-lg">
                       <span>Taux mensuel de la créatrice :</span>
-                      <span className="font-semibold">2%</span>
+                      <span className="font-semibold">18%</span>
                     </div>
                     <div className="flex justify-between border-t pt-3 text-lg">
                       <span>Dividende mensuel :</span>
-                      <span className="font-bold text-green-600">20€</span>
+                      <span className="font-bold text-green-600">180€</span>
                     </div>
                     <div className="flex justify-between text-lg">
                       <span>Dividende annuel (estimé) :</span>
-                      <span className="font-bold text-green-600">240€</span>
+                      <span className="font-bold text-green-600">2160€</span>
                     </div>
                   </div>
                 </div>
@@ -223,7 +223,7 @@ const HowItWorks = () => {
                     <div>
                       <h4 className="font-semibold text-lg">Achat des parts</h4>
                       <p className="text-muted-foreground">
-                        Vous investissez 1000€ dans une créatrice avec 2% mensuel
+                        Vous investissez 1000€ dans une créatrice avec 18% mensuel
                       </p>
                     </div>
                   </div>
@@ -247,7 +247,7 @@ const HowItWorks = () => {
                     <div>
                       <h4 className="font-semibold text-lg">Premier dividende</h4>
                       <p className="text-muted-foreground">
-                        Vous recevez votre premier dividende de 20€
+                        Vous recevez votre premier dividende de 180€
                       </p>
                     </div>
                   </div>
@@ -259,7 +259,7 @@ const HowItWorks = () => {
                     <div>
                       <h4 className="font-semibold text-lg">Dividendes mensuels</h4>
                       <p className="text-muted-foreground">
-                        Chaque mois suivant : 20€ de dividende
+                        Chaque mois suivant : 180€ de dividende
                       </p>
                     </div>
                   </div>
