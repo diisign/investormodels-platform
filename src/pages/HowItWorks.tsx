@@ -61,65 +61,69 @@ const HowItWorks = () => {
           <div className="mb-16">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Le processus en 5 étapes</h2>
             
-            <div className="grid md:grid-cols-5 gap-8">
-              {/* Étape 1 */}
-              <div className="text-center space-y-4">
-                <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                  1
+            <div className="space-y-8">
+              {/* Première ligne : Choisir et Acheter */}
+              <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <div className="text-center space-y-4">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                    1
+                  </div>
+                  <h3 className="text-base md:text-lg font-semibold">Choisir</h3>
+                  <PiggyBank className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
+                  <p className="text-xs md:text-sm text-muted-foreground">
+                    Sélectionnez une créatrice et le montant à investir
+                  </p>
                 </div>
-                <h3 className="text-base md:text-lg font-semibold">Choisir</h3>
-                <PiggyBank className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  Sélectionnez une créatrice et le montant à investir
-                </p>
+
+                <div className="text-center space-y-4">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                    2
+                  </div>
+                  <h3 className="text-base md:text-lg font-semibold">Acheter</h3>
+                  <Coins className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
+                  <p className="text-xs md:text-sm text-muted-foreground">
+                    Achetez vos parts. Votre investissement est débité de votre solde
+                  </p>
+                </div>
               </div>
 
-              {/* Étape 2 */}
-              <div className="text-center space-y-4">
-                <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                  2
+              {/* Deuxième ligne : Attendre et Recevoir */}
+              <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <div className="text-center space-y-4">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                    3
+                  </div>
+                  <h3 className="text-base md:text-lg font-semibold">Attendre</h3>
+                  <Clock className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
+                  <p className="text-xs md:text-sm text-muted-foreground">
+                    Minimum 1 mois après l'achat pour être éligible aux dividendes
+                  </p>
                 </div>
-                <h3 className="text-base md:text-lg font-semibold">Acheter</h3>
-                <Coins className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  Achetez vos parts. Votre investissement est débité de votre solde
-                </p>
+
+                <div className="text-center space-y-4">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                    4
+                  </div>
+                  <h3 className="text-base md:text-lg font-semibold">Recevoir</h3>
+                  <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-green-500 mx-auto mb-3" />
+                  <p className="text-xs md:text-sm text-muted-foreground">
+                    Recevez vos dividendes mensuels automatiquement
+                  </p>
+                </div>
               </div>
 
-              {/* Étape 3 */}
-              <div className="text-center space-y-4">
-                <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                  3
+              {/* Troisième ligne : Vendre centré */}
+              <div className="flex justify-center">
+                <div className="text-center space-y-4">
+                  <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                    5
+                  </div>
+                  <h3 className="text-base md:text-lg font-semibold">Vendre</h3>
+                  <Banknote className="h-6 w-6 md:h-8 md:w-8 text-orange-500 mx-auto mb-3" />
+                  <p className="text-xs md:text-sm text-muted-foreground">
+                    Vendez vos parts quand vous voulez pour récupérer votre capital
+                  </p>
                 </div>
-                <h3 className="text-base md:text-lg font-semibold">Attendre</h3>
-                <Clock className="h-6 w-6 md:h-8 md:w-8 text-primary mx-auto mb-3" />
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  Minimum 1 mois après l'achat pour être éligible aux dividendes
-                </p>
-              </div>
-
-              {/* Étape 4 */}
-              <div className="text-center space-y-4">
-                <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                  4
-                </div>
-                <h3 className="text-base md:text-lg font-semibold">Recevoir</h3>
-                <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-green-500 mx-auto mb-3" />
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  Recevez vos dividendes mensuels automatiquement
-                </p>
-              </div>
-
-              {/* Étape 5 */}
-              <div className="text-center space-y-4">
-                <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                  5
-                </div>
-                <h3 className="text-base md:text-lg font-semibold">Vendre</h3>
-                <Banknote className="h-6 w-6 md:h-8 md:w-8 text-orange-500 mx-auto mb-3" />
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  Vendez vos parts quand vous voulez pour récupérer votre capital
-                </p>
               </div>
             </div>
           </div>
