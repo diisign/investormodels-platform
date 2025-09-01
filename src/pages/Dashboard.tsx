@@ -208,7 +208,7 @@ const Dashboard = () => {
                     </select>
                   </div>
                   
-                  <DashboardStats totalInvested={totalInvested} totalReturn={totalReturn} investmentsCount={investments.length} balance={balance} investments={investments} onDepositClick={() => setShowDepositModal(true)} />
+                  <DashboardStats totalInvested={totalInvested} totalReturn={totalReturn} investmentsCount={investments.length} balance={balance} onDepositClick={() => setShowDepositModal(true)} />
                   
                   <PerformanceChart investments={investments} performanceData={performanceData} onWithdraw={handleWithdraw} />
                 </div>
