@@ -377,7 +377,7 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
   const { minRevenue, maxRevenue, monthlyRevenue } = profile;
   const range = maxRevenue - minRevenue;
   
-  const monthNames = ['Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'];
+  const monthNames = ['Août', 'Sep', 'Oct', 'Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août'];
   
   // Use creatorId to generate deterministic variations
   // This ensures the same creator always gets the same performance chart
@@ -400,13 +400,13 @@ export const generateMonthlyPerformanceData = (creatorId: string) => {
     const normalized = (uniqueFactor + 1) / 2;
     
     // Convert to a revenue value within the min-max range
-    // For June (index 11), use the exact monthlyRevenue value
-    if (index === 11) {
+    // For June (index 10), use the exact monthlyRevenue value
+    if (index === 10) {
       return monthlyRevenue;
     }
     
-    // For July (index 12, the new month), create a variation from June's value
-    if (index === 12) {
+    // For July (index 11, the previous last month), create a variation from June's value
+    if (index === 11) {
       // Check for specific creators with predefined variations
       if (creatorId === 'creator22') { // Jasmine
         const julyRevenue = Math.round(monthlyRevenue * 1.174); // +17.4%
@@ -487,15 +487,15 @@ export const getMarketCap = (creatorId: string, creators?: any[]): number => {
 
 // Fonction pour calculer la dernière variation en pourcentage
 export const getLastVariation = (creatorId: string): number => {
-  // Générer les données de performance pour obtenir juin et juillet
+  // Générer les données de performance pour obtenir juillet et août
   const performanceData = generateMonthlyPerformanceData(creatorId);
   
-  // Trouver juin (index 11) et juillet (index 12)
-  const juneRevenue = performanceData[11].revenue; // Juin
-  const julyRevenue = performanceData[12].revenue; // Juillet
+  // Trouver juillet (index 11) et août (index 12)  
+  const julyRevenue = performanceData[11].revenue; // Juillet
+  const augustRevenue = performanceData[12].revenue; // Août
   
   // Calculer la variation en pourcentage
-  const variation = ((julyRevenue - juneRevenue) / juneRevenue) * 100;
+  const variation = ((augustRevenue - julyRevenue) / julyRevenue) * 100;
   
   // Retourner la variation avec une décimale, arrondie
   return Math.round(variation * 10) / 10;
