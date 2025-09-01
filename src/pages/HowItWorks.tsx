@@ -57,6 +57,65 @@ const HowItWorks = () => {
             </div>
           </div>
 
+          {/* Calcul des dividendes */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <div className="mx-auto mb-4 w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <Calculator className="h-8 w-8 text-green-600" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-4">Comment sont calculés les dividendes ?</h2>
+            </div>
+            
+            <div className="space-y-8">
+              <div className="text-center">
+                <h4 className="text-xl font-semibold text-green-800 mb-4">Formule de calcul :</h4>
+                
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-green-800">Exemple concret :</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-lg">
+                      <span>Montant investi :</span>
+                      <span className="font-semibold">1000€</span>
+                    </div>
+                    <div className="flex justify-between text-lg">
+                      <span>Taux mensuel de la créatrice :</span>
+                      <span className="font-semibold">18%</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-3 text-lg">
+                      <span>Dividende mensuel :</span>
+                      <span className="font-bold text-green-600">180€</span>
+                    </div>
+                    <div className="flex justify-between text-lg">
+                      <span>Dividende annuel (estimé) :</span>
+                      <span className="font-bold text-green-600">2160€</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-green-800">Points importants :</h4>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span>Les dividendes sont calculés sur le montant initial</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span>Ils sont versés chaque mois tant que vous possédez les parts</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span>Les premiers dividendes sont versés 30 jours après l'achat</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Étapes du processus */}
           <div className="mb-16">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Le processus en 5 étapes</h2>
@@ -128,64 +187,6 @@ const HowItWorks = () => {
             </div>
           </div>
 
-          {/* Calcul des dividendes */}
-          <div className="mb-16">
-            <div className="text-center mb-8">
-              <div className="mx-auto mb-4 w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                <Calculator className="h-8 w-8 text-green-600" />
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-4">Comment sont calculés les dividendes ?</h2>
-            </div>
-            
-            <div className="space-y-8">
-              <div className="text-center">
-                <h4 className="text-xl font-semibold text-green-800 mb-4">Formule de calcul :</h4>
-                
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold text-green-800">Exemple concret :</h4>
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-lg">
-                      <span>Montant investi :</span>
-                      <span className="font-semibold">1000€</span>
-                    </div>
-                    <div className="flex justify-between text-lg">
-                      <span>Taux mensuel de la créatrice :</span>
-                      <span className="font-semibold">18%</span>
-                    </div>
-                    <div className="flex justify-between border-t pt-3 text-lg">
-                      <span>Dividende mensuel :</span>
-                      <span className="font-bold text-green-600">180€</span>
-                    </div>
-                    <div className="flex justify-between text-lg">
-                      <span>Dividende annuel (estimé) :</span>
-                      <span className="font-bold text-green-600">2160€</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold text-green-800">Points importants :</h4>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span>Les dividendes sont calculés sur le montant initial</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span>Ils sont versés chaque mois tant que vous possédez les parts</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span>Les premiers dividendes sont versés 30 jours après l'achat</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
 
 
           {/* Vente des parts */}
