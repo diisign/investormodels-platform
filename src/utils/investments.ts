@@ -7,7 +7,7 @@ export const createInvestment = async (
   creatorId: string,
   amount: number,
   returnRate: number,
-  durationMonths: number = 3
+  durationMonths: number = 1 // Minimum 1 mois pour le nouveau système
 ) => {
   const { data: { user } } = await supabase.auth.getUser();
   
@@ -15,7 +15,7 @@ export const createInvestment = async (
     throw new Error("User must be logged in to invest");
   }
 
-  // First, create the investment record
+  // First, create the investment (parts) record
   const { data: investment, error: investmentError } = await supabase
     .from('investments')
     .insert({
@@ -23,7 +23,10 @@ export const createInvestment = async (
       amount: amount,
       return_rate: returnRate,
       user_id: user.id,
-      duration_months: durationMonths
+      duration_months: durationMonths,
+      shares_owned: true,
+      sold_at: null,
+      last_dividend_date: null
     })
     .select()
     .single();
@@ -44,8 +47,8 @@ export const createInvestment = async (
       user_id: user.id,
       amount: -amount, // Negative amount to subtract from balance
       status: 'completed',
-      payment_method: 'investment',
-      payment_id: creatorId, // Store creator ID in payment_id
+      payment_method: 'shares_purchase', // Updated payment method
+      payment_id: investment.id, // Store investment ID
       currency: 'EUR' // Required currency field
     })
     .select()
@@ -119,6 +122,9 @@ export const getUserInvestments = async () => {
 
   return data.map(investment => ({
     ...investment,
-    initial: investment.amount // Pour maintenir la compatibilité, nous utilisons amount comme valeur initiale par défaut
+    initial: investment.amount, // Pour maintenir la compatibilité, nous utilisons amount comme valeur initiale par défaut
+    shares_owned: investment.shares_owned ?? true, // Par défaut true pour les anciens investissements
+    sold_at: investment.sold_at ?? null,
+    last_dividend_date: investment.last_dividend_date ?? null
   }));
 };

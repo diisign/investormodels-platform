@@ -43,7 +43,10 @@ const Dɑshboard = () => {
     created_at: '2024-09-15T00:00:00.000Z',
     status: 'active',
     user_id: 'test-user',
-    duration_months: inv.duration_months || 3
+    duration_months: inv.duration_months || 3,
+    shares_owned: true,
+    sold_at: null,
+    last_dividend_date: null
   }));
 
   const transformedTransactions = investmentData.transactions.map(trans => ({

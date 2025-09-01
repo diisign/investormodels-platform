@@ -92,6 +92,36 @@ export type Database = {
         }
         Relationships: []
       }
+      dividends: {
+        Row: {
+          amount: number
+          created_at: string
+          dividend_date: string
+          id: string
+          investment_id: string
+          user_id: string
+          yield_rate: number
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          dividend_date: string
+          id?: string
+          investment_id: string
+          user_id: string
+          yield_rate: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          dividend_date?: string
+          id?: string
+          investment_id?: string
+          user_id?: string
+          yield_rate?: number
+        }
+        Relationships: []
+      }
       investments: {
         Row: {
           amount: number
@@ -99,7 +129,10 @@ export type Database = {
           creator_id: string
           duration_months: number
           id: string
+          last_dividend_date: string | null
           return_rate: number
+          shares_owned: boolean | null
+          sold_at: string | null
           status: string
           updated_at: string
           user_id: string
@@ -110,7 +143,10 @@ export type Database = {
           creator_id: string
           duration_months?: number
           id?: string
+          last_dividend_date?: string | null
           return_rate: number
+          shares_owned?: boolean | null
+          sold_at?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -121,7 +157,10 @@ export type Database = {
           creator_id?: string
           duration_months?: number
           id?: string
+          last_dividend_date?: string | null
           return_rate?: number
+          shares_owned?: boolean | null
+          sold_at?: string | null
           status?: string
           updated_at?: string
           user_id?: string
@@ -256,7 +295,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      calculate_monthly_dividend: {
+        Args: { investment_amount: number; yield_rate: number }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
