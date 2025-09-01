@@ -254,7 +254,7 @@ const HowItWorks = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-2 gap-12 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
               <div className="space-y-6">
                 <h4 className="font-semibold text-green-600 text-2xl">✅ Avantages</h4>
                 <ul className="space-y-4">
