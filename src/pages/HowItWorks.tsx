@@ -33,7 +33,7 @@ const HowItWorks = () => {
               Au lieu d'un investissement classique, vous achetez des parts dans une créatrice
             </p>
             
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto">
               <div className="space-y-4">
                 <h4 className="text-base md:text-lg font-semibold flex items-center justify-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500" />
