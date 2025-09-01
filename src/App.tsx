@@ -18,6 +18,7 @@ import Deposit from "./pages/Deposit";
 import Profile from "./pages/Profile";
 import WebhookDebug from "./pages/WebhookDebug";
 import FAQ from "./pages/FAQ";
+import HowItWorks from "./pages/HowItWorks";
 
 import AboutUs from "./pages/AboutUs";
 import Terms from "./pages/Terms";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/affiliation" element={<Affiliation />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/about-us" element={<AboutUs />} />
             
             <Route path="/contact" element={<Contact />} />

@@ -76,6 +76,9 @@ const Navbar: React.FC<NavbarProps> = ({
             <Link to="/about-us" className={cn('block py-2 font-medium', isActive('/about-us') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Qui sommes-nous?
             </Link>
+            <Link to="/how-it-works" className={cn('block py-2 font-medium', isActive('/how-it-works') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
+              Comment ça marche?
+            </Link>
             <Link to="/creators" className={cn('block py-2 font-medium', isActive('/creators') ? 'text-yellow-300' : 'text-gray-700 dark:text-gray-300')} onClick={closeMenu}>
               Créatrices
             </Link>
