@@ -98,7 +98,7 @@ const Index = () => {
   };
   const allCreators = [...creators];
   Object.values(creatorProfiles).forEach(profile => {
-    if (!profile.hidden && !allCreators.some(c => c.id === profile.id)) {
+    if (profile && !(profile.hidden) && !allCreators.some(c => c.id === profile.id)) {
       const totalInvested = getMarketCap(profile.id, allCreators);
       allCreators.push({
         id: profile.id,
@@ -106,11 +106,11 @@ const Index = () => {
         imageUrl: profile.imageUrl || `https://api.dicebear.com/7.x/lorelei/svg?seed=${profile.id}`,
         coverImageUrl: 'https://images.unsplash.com/photo-1616096142563-ce1506e232ce?q=80&w=2070&auto=format&fit=crop',
         category: "Lifestyle",
-        returnRate: profile.returnRate,
-        investorsCount: Math.floor(profile.followers / 15),
+        returnRate: profile.returnRate || 0,
+        investorsCount: Math.floor((profile.followers || 1000) / 15),
         totalInvested: totalInvested,
         monthlyRevenue: profile.monthlyRevenue,
-        followers: profile.followers,
+        followers: profile.followers || 1000,
         creationDate: new Date().toISOString().split('T')[0],
         description: "",
         plans: []
