@@ -521,7 +521,7 @@ const CreatorDetails = () => {
                   <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
                     {monthlyRevenueData.length > 0 && monthlyRevenueData[monthlyRevenueData.length - 1] ? `${Math.round(monthlyRevenueData[monthlyRevenueData.length - 1].revenue / 1000)}k €` : '0k €'}
                   </div>
-                  <div className="text-sm text-gray-500">Juillet</div>
+                  <div className="text-sm text-gray-500">Août</div>
                 </div>
               </FadeIn>
             </div>
